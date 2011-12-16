@@ -1,0 +1,8 @@
+/bin
+*.log
+*.pgn
+*.ini
+*.lck
+.classpath
+.settings
+.project
