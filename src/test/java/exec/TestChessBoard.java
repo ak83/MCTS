@@ -1,12 +1,11 @@
 package exec;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.TreeMap;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,9 +13,19 @@ import org.junit.Test;
 import exceptions.ChessboardException;
 
 public class TestChessBoard {
+    
+    private static Chessboard cb;
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {}
+    public static void setUpBeforeClass() throws Exception {
+        Constants.ENDING = "KRK";
+        TreeMap<Integer, Integer> initislBoardState = new TreeMap<Integer, Integer>();
+        initislBoardState.put(51, 4);
+        initislBoardState.put(66, 0);
+        initislBoardState.put(83, 28);
+
+        TestChessBoard.cb = new Chessboard("test board", initislBoardState);
+    }
 
 
     @AfterClass
@@ -34,23 +43,17 @@ public class TestChessBoard {
     @Test
     public void testKRKWhiteMovesWhereRookChecksIfKingsAreInOpposition()
             throws Exception {
-        Constants.ENDING = "KRK";
-        TreeMap<Integer, Integer> initislBoardState = new TreeMap<Integer, Integer>();
-        initislBoardState.put(51, 4);
-        initislBoardState.put(66, 0);
-        initislBoardState.put(83, 28);
 
-        Chessboard cb = new Chessboard("test board", initislBoardState);
-        ArrayList<Move> returned = cb
-                .KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(cb
+        ArrayList<Move> returned = TestChessBoard.cb
+                .KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(TestChessBoard.cb
                         .getAllLegalWhiteMoves());
 
         // there are 2 possible moves where white checks
-        assertEquals(2, returned.size());
+        Assert.assertEquals(2, returned.size());
 
         // we check if returned moves are
-        assertEquals(1111687423, returned.get(0).moveNumber);
-        assertEquals(1112670463, returned.get(1).moveNumber);
+        Assert.assertEquals(1111687423, returned.get(0).moveNumber);
+        Assert.assertEquals(1112670463, returned.get(1).moveNumber);
     }
 
 
@@ -66,13 +69,41 @@ public class TestChessBoard {
 
         for (int x = 0; x < 128; x++) {
             if (initialBoardState.containsKey(x)) {
-                assertEquals((int) initialBoardState.get(x),
+                Assert.assertEquals((int) initialBoardState.get(x),
                         testBoard.getBoard()[x]);
             }
             else {
-                assertEquals(-1, testBoard.getBoard()[x]);
+                Assert.assertEquals(-1, testBoard.getBoard()[x]);
             }
         }
+    }
+    
+    @Test
+    public void testKRKWhiteSafeMoves() throws Exception{
+        ArrayList<Move> returned = TestChessBoard.cb.KRKWhiteSafeMoves(cb.getAllLegalWhiteMoves());
+        
+        Assert.assertTrue(returned.contains(new Move(1111687423)));
+        Assert.assertTrue(returned.contains(new Move(1111752959)));
+        
+        for(Move move : returned) {
+            int to = Utils.getToFromMoveNumber(move.moveNumber);
+            int movedPiece = Utils.getMovedPieceFromMoveNumber(move.moveNumber);
+            
+            Assert.assertFalse(to == 82);
+            Assert.assertFalse(to == 98);
+            
+            Assert.assertFalse(movedPiece == 4 && to != 50);
+        }
+    }
+    
+    @Test
+    public void testKRKWhiteUrgentMoves() throws Exception {
+        ArrayList<Move> returned = TestChessBoard.cb.KRKWhiteUrgentMoves(cb.getAllLegalWhiteMoves());
+//        Assert.assertEquals(0, returned.size());
+        for(Move move : returned) {
+            System.out.println(move);
+        }
+        
     }
 
 }

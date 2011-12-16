@@ -1,5 +1,7 @@
 package exec;
 
+import java.util.Comparator;
+
 public class Move {
 
     public int moveNumber;
@@ -18,6 +20,15 @@ public class Move {
 
 	return "from: " + from + "\tto: " + to + "\tmovedPiece: " + movedPiece
 		+ "\ttargetPiece: " + targetPiece;
+    }
+
+
+    public boolean equals(Object m1) {
+        
+        if (m1 instanceof Move) { return this.moveNumber == ((Move) m1).moveNumber;
+        } else {
+            return m1.equals(m1);
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package utils;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -28,7 +29,13 @@ public class TestChessboardUtils {
 
     @Test
     public void testIsPositionBetweenPositionsOnLine() {
-        fail("Not yet implemented");
+        assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(1, 0, 2));
+        assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(50, 55, 49));
+        assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(68, 84, 36));
+        assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(55, 7, 119));
+
+        assertFalse(ChessboardUtils.isPositionBetweenPositionsOnLine(0, 3, 8));
+        assertFalse(ChessboardUtils.isPositionBetweenPositionsOnLine(39, 2, 5));
     }
 
 }

@@ -23,9 +23,9 @@ public class Chessboard {
      */
     private int[]   piecePosition;
 
-    private boolean isWhitesTurn = true;
+    private boolean isWhitesTurn      = true;
     private int     numberOfMovesMade = 0;
-    private int     maxNumberOfMoves = Constants.MAX_DEPTH;
+    private int     maxNumberOfMoves  = Constants.MAX_DEPTH;
 
     // private final boolean READLN = Constants.READLN;
     private String  name;
@@ -112,24 +112,24 @@ public class Chessboard {
         this.maxNumberOfMoves = 100;
 
     }
-    
+
+
     public Chessboard(String name, TreeMap<Integer, Integer> startingPosition) {
         this.name = name;
         this.board = new int[128];
-        //we empty entire board
-        for(int x = 0; x < 128; x++) {
+        // we empty entire board
+        for (int x = 0; x < 128; x++) {
             this.board[x] = -1;
         }
-        
-        //we set those board according to map
-        for(int position : startingPosition.keySet()) {
+
+        // we set those board according to map
+        for (int position : startingPosition.keySet()) {
             this.board[position] = startingPosition.get(position);
         }
-        
-        //we update piecesPosition
+
+        // we update piecesPosition
         this.constructPiecePositionFromBoard();
-        
-        
+
     }
 
 
@@ -2956,19 +2956,24 @@ public class Chessboard {
     }
 
 
+    /**
+     * filter moves to those that need to be made (so that white doesn't loose a
+     * piece).
+     * 
+     * @param allWhiteMoves
+     * @return list of moves that white must do to avoid loosing a piece
+     */
     public ArrayList<Move> KRKWhiteUrgentMoves(ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int rookPos;
+        int rookPos = -1;
         if (piecePosition[0] != -1) {
             rookPos = piecePosition[0];
         }
         else if (piecePosition[7] != -1) {
             rookPos = piecePosition[7];
         }
-        else {
-            return rez;
-        }
 
+        //if rook is not near black king then it's not in danger
         if (!isPositionAdjacentToBlackKing(rookPos)) { return rez; }
 
         for (int x = 0; x < allWhiteMoves.size(); x++) {
@@ -2992,6 +2997,13 @@ public class Chessboard {
     }
 
 
+    /**
+     * heuristic that filters moves so that white wont give black king and
+     * pieces (not true in all cases).
+     * 
+     * @param allWhiteMoves
+     * @return list of safe moves
+     */
     public ArrayList<Move> KRKWhiteSafeMoves(ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
         int rookPos = piecePosition[0];
