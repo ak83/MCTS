@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import exceptions.ChessboardException;
+
 public class TestChessBoard {
 
     private static Chessboard      cbKRK;
@@ -166,6 +168,21 @@ public class TestChessBoard {
         Assert.assertEquals(28, (int) returned.get(0));
         Assert.assertEquals(0, (int) returned.get(1));
 
+    }
+    
+    @Test
+    public void neki() throws ChessboardException {
+        TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
+        map.put(52, 0);
+        map.put(37, 4);
+        map.put(69, 28);
+        Chessboard gg = new Chessboard("ss", map);
+        System.out.println(gg);
+        
+        ArrayList<Move> ret = gg.whiteSafeMoves(gg.getAllLegalWhiteMoves());
+        for(Move m : ret) {
+            System.out.println(m);
+        }
     }
 
 }

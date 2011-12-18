@@ -3046,7 +3046,7 @@ public class Chessboard {
                             && !ChessboardUtils
                                     .isPositionBetweenPositionsOnLine(
                                             this.piecePosition[4],
-                                            blackKingPos, from)) {
+                                            blackKingPos, to)) {
                         rez.add(new Move(currMove.moveNumber));
                     }
                 }
