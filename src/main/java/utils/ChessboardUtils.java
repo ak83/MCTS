@@ -53,4 +53,25 @@ public class ChessboardUtils {
             return false;
         }
     }
+
+
+    /**
+     * Checks if one position is near some other position
+     * 
+     * @param positionA
+     *            position on chess board
+     * @param positionB
+     *            position on chess board
+     * @return true if positions are adjacent, otherwise false
+     */
+    public static boolean arePositionsAdjacent(int positionA, int positionB) {
+        int diff = Math.abs(positionB - positionA);
+
+        if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

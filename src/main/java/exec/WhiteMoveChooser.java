@@ -17,12 +17,12 @@ public class WhiteMoveChooser {
 
 
     public WhiteMoveChooser() {
-        r = new Random();
+        this.r = new Random();
     }
 
 
     public WhiteMoveChooser(long seed) {
-        r = new Random(seed);
+        this.r = new Random(seed);
     }
 
 
@@ -40,13 +40,13 @@ public class WhiteMoveChooser {
         int rez = -1;
         switch (choosingStrategy) {
         case 0:
-            rez = chooseRandomMove(node);
+            rez = this.chooseRandomMove(node);
             break;
         case 1:
-            rez = chooseMaxVisitCountMove(node);
+            rez = this.chooseMaxVisitCountMove(node);
             break;
         case 2:
-            rez = chooseMaxRatingMove(node, rankingMethod);
+            rez = this.chooseMaxRatingMove(node, rankingMethod);
             break;
         default:
             throw new WhiteMoveChooserException("neveljavna strategija");
@@ -55,7 +55,7 @@ public class WhiteMoveChooser {
                 + " je beli izbiral med potezami :\r\n"
                 + node.nexMovesToString() + "Izbral si pa je potezo "
                 + (rez + 1);
-        log.fine(logString);
+        this.log.fine(logString);
 
         return rez;
     }
@@ -81,7 +81,7 @@ public class WhiteMoveChooser {
             }
         }
 
-        int chosenMove = r.nextInt(rezCand.size());
+        int chosenMove = this.r.nextInt(rezCand.size());
         chosenMove = rezCand.get(chosenMove);
 
         return chosenMove;
@@ -107,7 +107,7 @@ public class WhiteMoveChooser {
             }
         }
 
-        int chosenMove = r.nextInt(rezCand.size());
+        int chosenMove = this.r.nextInt(rezCand.size());
         chosenMove = rezCand.get(chosenMove);
 
         return chosenMove;
@@ -115,7 +115,7 @@ public class WhiteMoveChooser {
 
 
     private int chooseRandomMove(MCTNode node) {
-        int rez = r.nextInt(node.nextMoves.size());
+        int rez = this.r.nextInt(node.nextMoves.size());
         return rez;
     }
 

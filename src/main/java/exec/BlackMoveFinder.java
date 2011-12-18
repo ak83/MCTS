@@ -24,12 +24,12 @@ public class BlackMoveFinder {
 
 
     public static void initRandom() {
-	random = new Random();
+	BlackMoveFinder.random = new Random();
     }
 
 
     public static void initRandom(long seed) {
-	random = new Random(seed);
+	BlackMoveFinder.random = new Random(seed);
     }
 
 
@@ -48,11 +48,11 @@ public class BlackMoveFinder {
 
 	switch (strategy) {
 	case 0:
-	    return findBlackKingRandomMove(moves);
+	    return BlackMoveFinder.findBlackKingRandomMove(moves);
 	case 1:
-	    return findBlackKingCenterMove(moves);
+	    return BlackMoveFinder.findBlackKingCenterMove(moves);
 	case 3:
-	    return findBlackPerfectMove(board);
+	    return BlackMoveFinder.findBlackPerfectMove(board);
 	case 2: { // crni tezi proti centru, toda ce je mozno pa poje belo
 		  // figuro, poleg tega se pa tudi izgiba opoziciji kraljev
 	    ArrayList<Move> blackEats = board.movesWhereBlackKingEatsWhite();
@@ -61,15 +61,15 @@ public class BlackMoveFinder {
 		    ArrayList<Move> avoidsOpp = board
 			    .movesWhereBlackKingEvadesOposition(moves);
 		    if (avoidsOpp.size() == 0) {
-			return findBlackKingCenterMove(moves);
+			return BlackMoveFinder.findBlackKingCenterMove(moves);
 		    }
 		    else {
-			return findBlackKingCenterMove(avoidsOpp);
+			return BlackMoveFinder.findBlackKingCenterMove(avoidsOpp);
 		    }
 		}
 	    }
 	    else {
-		return selectRandomMoveNumber(blackEats);
+		return BlackMoveFinder.selectRandomMoveNumber(blackEats);
 	    }
 	}
 	default:
@@ -81,23 +81,23 @@ public class BlackMoveFinder {
 
 
     private static int findBlackKingCenterMove(ArrayList<Move> moves) {
-	int minDist = findMinimumDistanceFromCenterFromMoves(moves);
+	int minDist = BlackMoveFinder.findMinimumDistanceFromCenterFromMoves(moves);
 	ArrayList<Move> rezMoves = new ArrayList<Move>();
 
 	for (int x = 0; x < moves.size(); x++) {
-	    int dist = distanceOfMoveFromCenter(moves.get(x).moveNumber);
+	    int dist = BlackMoveFinder.distanceOfMoveFromCenter(moves.get(x).moveNumber);
 	    if (dist == minDist) {
 		rezMoves.add(moves.get(x));
 	    }
 	}
 
-	int rez = randomIntUpTo(rezMoves.size());
+	int rez = BlackMoveFinder.randomIntUpTo(rezMoves.size());
 	return rezMoves.get(rez).moveNumber;
     }
 
 
     private static int findBlackKingRandomMove(ArrayList<Move> moves) {
-	int rez = randomIntUpTo(moves.size());
+	int rez = BlackMoveFinder.randomIntUpTo(moves.size());
 	return moves.get(rez).moveNumber;
     }
 
@@ -106,19 +106,19 @@ public class BlackMoveFinder {
 	try {
 	    Runtime rt = Runtime.getRuntime();
 	    Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-	    writeToProcess(pr, "ucinewgame");
-	    writeToProcess(pr, "setoption name Hash value 128");
-	    writeToProcess(pr, "setoption name MultiPV value 100");
-	    writeToProcess(pr, "setoption name NalimovPath value "
+	    BlackMoveFinder.writeToProcess(pr, "ucinewgame");
+	    BlackMoveFinder.writeToProcess(pr, "setoption name Hash value 128");
+	    BlackMoveFinder.writeToProcess(pr, "setoption name MultiPV value 100");
+	    BlackMoveFinder.writeToProcess(pr, "setoption name NalimovPath value "
 		    + Constants.EMD_DIR);
-	    writeToProcess(pr, "setoption name NalimovCache value 32");
-	    writeToProcess(pr, "setoption name EGBB Path value "
+	    BlackMoveFinder.writeToProcess(pr, "setoption name NalimovCache value 32");
+	    BlackMoveFinder.writeToProcess(pr, "setoption name EGBB Path value "
 		    + Constants.EMD_DIR);
-	    writeToProcess(pr, "setoption name EGBB Cache value 32");
+	    BlackMoveFinder.writeToProcess(pr, "setoption name EGBB Cache value 32");
 	    // writeToProcess(pr,
 	    // "position fen r7/8/5k2/8/8/8/R7/K7 w - - 0 1");
-	    writeToProcess(pr, "position fen " + board.boardToFen());
-	    writeToProcess(pr, "go depth 2");
+	    BlackMoveFinder.writeToProcess(pr, "position fen " + board.boardToFen());
+	    BlackMoveFinder.writeToProcess(pr, "go depth 2");
 	    pr.getOutputStream().close();
 
 	    BufferedReader input = new BufferedReader(new InputStreamReader(
@@ -147,8 +147,8 @@ public class BlackMoveFinder {
      ****************************************************************************************************************************/
 
     private static int distanceOfMoveFromCenter(int moveNumber) {
-	int fileDiff = rankDistanceOfMoveFromCenter(moveNumber);
-	int rankDiff = fileDistanceOfMoveFromCenter(moveNumber);
+	int fileDiff = BlackMoveFinder.rankDistanceOfMoveFromCenter(moveNumber);
+	int rankDiff = BlackMoveFinder.fileDistanceOfMoveFromCenter(moveNumber);
 
 	return fileDiff + rankDiff;
     }
@@ -199,7 +199,7 @@ public class BlackMoveFinder {
 	int minDist = -1;
 	for (int x = 0; x < moves.size(); x++) {
 	    int moveNumber = moves.get(x).moveNumber;
-	    int dist = distanceOfMoveFromCenter(moveNumber);
+	    int dist = BlackMoveFinder.distanceOfMoveFromCenter(moveNumber);
 
 	    if (dist < minDist || minDist == -1) {
 		minDist = dist;
@@ -211,12 +211,12 @@ public class BlackMoveFinder {
 
 
     private static int randomIntUpTo(int n) {
-	return random.nextInt(n);
+	return BlackMoveFinder.random.nextInt(n);
     }
 
 
     private static int selectRandomMoveNumber(ArrayList<Move> moves) {
-	int index = randomIntUpTo(moves.size());
+	int index = BlackMoveFinder.randomIntUpTo(moves.size());
 	return moves.get(index).moveNumber;
     }
 
@@ -237,7 +237,7 @@ public class BlackMoveFinder {
 	try {
 	    Runtime rt = Runtime.getRuntime();
 	    Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-	    writeToProcess(pr, "isready");
+	    BlackMoveFinder.writeToProcess(pr, "isready");
 
 	    pr.getOutputStream().close();
 	    BufferedReader input = new BufferedReader(new InputStreamReader(

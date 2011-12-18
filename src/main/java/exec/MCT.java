@@ -49,7 +49,7 @@ public class MCT {
     // ////////////////////////////////////////////////////////////////////////////////
 
     public MCT() {
-        setParameters();
+        this.setParameters();
     }
 
 
@@ -64,8 +64,8 @@ public class MCT {
             if (node.getEvalFromWhitesPerspective() != 0) { return node; }
         }
 
-        boolean maxDepthReached = node.moveDepth > maxDepth;
-        boolean gobanStrategy = node.visitCount < goban;
+        boolean maxDepthReached = node.moveDepth > this.maxDepth;
+        boolean gobanStrategy = node.visitCount < this.goban;
         boolean nerazvitiNasledniki = node.nextMoves == null;
 
         if (maxDepthReached || gobanStrategy || nerazvitiNasledniki
@@ -73,15 +73,15 @@ public class MCT {
 
         ArrayList<Integer> maxRatingIndexes = MCTUtils
                 .getInedexesWithMaxRating(node,
-                        whiteNodeRatingComputationMethod,
-                        blackNodeRatingComputationMethod);
+                        this.whiteNodeRatingComputationMethod,
+                        this.blackNodeRatingComputationMethod);
 
-        int selectedIndex = r.nextInt(maxRatingIndexes.size());
+        int selectedIndex = this.r.nextInt(maxRatingIndexes.size());
         selectedIndex = maxRatingIndexes.get(selectedIndex);
 
         int moveNo = node.nextMoves.get(selectedIndex).moveNumber;
 
-        simulationChessboard.makeAMove(moveNo);
+        this.simulationChessboard.makeAMove(moveNo);
         return this.selection(node.nextMoves.get(selectedIndex));
     }
 
@@ -112,7 +112,7 @@ public class MCT {
         }
 
         if (node.parent != null) {
-            backPropagation(node.parent, numberOfMats,
+            this.backPropagation(node.parent, numberOfMats,
                     numberOfSimulationsPerNode, addedNodeDepth,
                     doesAddedNodeRepresentsMat);
         }
@@ -136,12 +136,12 @@ public class MCT {
 
         if (node.nextMoves == null) {
             int moveNo = MCTUtils.findNextMove(currNode,
-                    whiteSimulationStrategy, blackSimulationStrategy);
+                    this.whiteSimulationStrategy, this.blackSimulationStrategy);
 
             if (moveNo == -1) { return currNode; }
 
             this.currentTreeSize++;
-            simulationChessboard.makeAMove(moveNo);
+            this.simulationChessboard.makeAMove(moveNo);
             node.addNextMove(moveNo, false);
 
             return node.nextMoves.get(0);
@@ -151,13 +151,13 @@ public class MCT {
 
             if (currNode.getEvalFromWhitesPerspective() != 0) {
                 if (currNode.getEvalFromWhitesPerspective() == 1) {
-                    stats.numberOfMatsInSimAddsOneNode++;
+                    this.stats.numberOfMatsInSimAddsOneNode++;
                 }
                 return node;
             }
 
             int moveNo = MCTUtils.findNextMove(currNode,
-                    whiteSimulationStrategy, blackSimulationStrategy);
+                    this.whiteSimulationStrategy, this.blackSimulationStrategy);
 
             if (moveNo == -1) {
                 // ni vec moznih naslednjih potez
@@ -168,7 +168,7 @@ public class MCT {
                 this.currentTreeSize++;
                 currNode.nextMoves = new ArrayList<MCTNode>();
                 currNode.nextMoves.add(new MCTNode(currNode, moveNo));
-                simulationChessboard.makeAMove(moveNo);
+                this.simulationChessboard.makeAMove(moveNo);
 
                 return currNode.nextMoves.get(0);
             }
@@ -179,18 +179,18 @@ public class MCT {
             if (moveIndex == -1) {
                 this.currentTreeSize++;
                 currNode.addNextMove(moveNo, false);
-                simulationChessboard.makeAMove(moveNo);
+                this.simulationChessboard.makeAMove(moveNo);
 
                 int temp = currNode.nextMoves.size() - 1;
                 return currNode.nextMoves.get(temp);
             }
             else {
-                simulationChessboard.makeAMove(moveNo);
+                this.simulationChessboard.makeAMove(moveNo);
 
                 currNode = currNode.nextMoves.get(moveIndex);
             }
 
-            if (currNode.moveDepth > maxDepth) { return currNode; }
+            if (currNode.moveDepth > this.maxDepth) { return currNode; }
         }
     }
 
@@ -210,18 +210,18 @@ public class MCT {
         int rez = 0;
         Chessboard temp = new Chessboard("resetBoard", node);
 
-        for (int x = 0; x < numberOfSimulationsPerEvaluation; x++) {
+        for (int x = 0; x < this.numberOfSimulationsPerEvaluation; x++) {
             int currDepth = node.moveDepth;
             boolean itsWhitesTurn = Utils.isWhitesTurn(node);
-            simulationChessboard = new Chessboard(temp, "simulation Chessboard");
+            this.simulationChessboard = new Chessboard(temp, "simulation Chessboard");
 
             while (true) {
-                int eval = simulationChessboard
+                int eval = this.simulationChessboard
                         .evaluateChessboardFromWhitesPerpective();
 
                 if (eval != 0) {
                     if (eval == 1) {
-                        stats.numberOfMatsInSimulation++;
+                        this.stats.numberOfMatsInSimulation++;
                         rez++;
                     }
                     break;
@@ -229,23 +229,23 @@ public class MCT {
                 else {
                     if (itsWhitesTurn) {
                         int moveNo = WhiteMoveFinder.findWhiteMove(
-                                simulationChessboard, whiteSimulationStrategy);
+                                this.simulationChessboard, this.whiteSimulationStrategy);
                         if (moveNo == -1)
                             throw new MCTException("to se ne bi smelo zgoditi");
-                        simulationChessboard.makeAMove(moveNo);
+                        this.simulationChessboard.makeAMove(moveNo);
                         itsWhitesTurn = !itsWhitesTurn;
                     }
                     else {
                         int moveNo = BlackMoveFinder.findBlackKingMove(
-                                simulationChessboard, blackSimulationStrategy);
+                                this.simulationChessboard, this.blackSimulationStrategy);
                         if (moveNo == -1)
                             throw new MCTException("to se ne bio smelo zgoditi");
-                        simulationChessboard.makeAMove(moveNo);
+                        this.simulationChessboard.makeAMove(moveNo);
                         itsWhitesTurn = !itsWhitesTurn;
                     }
                 }
                 currDepth++;
-                if (currDepth > maxDepth) {
+                if (currDepth > this.maxDepth) {
                     break;
                 }
             }
@@ -256,7 +256,7 @@ public class MCT {
 
 
     public void resetSimulationChessboard() {
-        simulationChessboard = new Chessboard(mainChessboard,
+        this.simulationChessboard = new Chessboard(this.mainChessboard,
                 "Simulation board");
     }
 
@@ -271,17 +271,17 @@ public class MCT {
             MCTUtilsException, MCTNodeException {
         this.resetSimulationChessboard();
 
-        MCTNode node = selection(root);
+        MCTNode node = this.selection(this.root);
 
-        node = simulationAddsOneNode(node);
+        node = this.simulationAddsOneNode(node);
 
-        int diff = simulation(node);
+        int diff = this.simulation(node);
 
         Chessboard newCB = new Chessboard("temp eval", node);
 
         boolean nodeIsMat = newCB.evaluateChessboard() == 1;
 
-        backPropagation(node, diff, this.numberOfSimulationsPerEvaluation,
+        this.backPropagation(node, diff, this.numberOfSimulationsPerEvaluation,
                 node.mcDepth, nodeIsMat);
     }
 
@@ -289,41 +289,41 @@ public class MCT {
     // ni stestirana
     public void makeMCMove(int moveNumber) throws ChessboardException {
 
-        int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, root);
+        int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this.root);
 
         if (index == -1) {
-            this.log.info("V polpotezi " + (root.moveDepth + 1)
+            this.log.info("V polpotezi " + (this.root.moveDepth + 1)
                     + " je prišlo do zrušitve drevesa");
-            stats.numberOfMCTreeColapses++;
-            stats.movesWhereMCTreeCollapsed.add(root.moveDepth + 1);
-            stats.sizeOfTreeBeforeCollapses.add(this.currentTreeSize);
-            root = new MCTNode(moveNumber, root.moveDepth + 1, mainChessboard);
+            this.stats.numberOfMCTreeColapses++;
+            this.stats.movesWhereMCTreeCollapsed.add(this.root.moveDepth + 1);
+            this.stats.sizeOfTreeBeforeCollapses.add(this.currentTreeSize);
+            this.root = new MCTNode(moveNumber, this.root.moveDepth + 1, this.mainChessboard);
             this.currentTreeSize = 0;
         }
         else {
-            root = root.nextMoves.get(index);
+            this.root = this.root.nextMoves.get(index);
         }
 
-        mainChessboard.makeAMove(moveNumber);
+        this.mainChessboard.makeAMove(moveNumber);
     }
 
 
     // ni stestirana
     public void makeMCMove(Move move) throws ChessboardException {
-        makeMCMove(move.moveNumber);
+        this.makeMCMove(move.moveNumber);
     }
 
 
     // ni stestirana
     public void makeWhiteMCMove(int moveIndex) throws ChessboardException {
-        int moveNumber = root.nextMoves.get(moveIndex).moveNumber;
-        root = root.nextMoves.get(moveIndex);
-        mainChessboard.makeAMove(moveNumber);
+        int moveNumber = this.root.nextMoves.get(moveIndex).moveNumber;
+        this.root = this.root.nextMoves.get(moveIndex);
+        this.mainChessboard.makeAMove(moveNumber);
     }
 
 
     public ArrayList<Integer> getMovesToChooseFrom() {
-        return root.getNextMovesMoveNumbers();
+        return this.root.getNextMovesMoveNumbers();
     }
 
 
@@ -344,14 +344,14 @@ public class MCT {
             ChessboardException, BlackMoveFinderException, MCTUtilsException {
         int rez = -1;
 
-        if (Utils.isWhitesTurn(root)) {
-            stats.whiteMoveChoices.add(root.nexMovesToString());
-            rez = whiteMoveChooser.chooseAMove(root, whiteChoosingStrategy, 1);
-            stats.whiteMovesChosen.add(rez);
-            rez = root.nextMoves.get(rez).moveNumber;
+        if (Utils.isWhitesTurn(this.root)) {
+            this.stats.whiteMoveChoices.add(this.root.nexMovesToString());
+            rez = this.whiteMoveChooser.chooseAMove(this.root, whiteChoosingStrategy, 1);
+            this.stats.whiteMovesChosen.add(rez);
+            rez = this.root.nextMoves.get(rez).moveNumber;
         }
         else {
-            rez = blackMoveChooser.chooseBlackKingMove(mainChessboard,
+            rez = this.blackMoveChooser.chooseBlackKingMove(this.mainChessboard,
                     blackChoosingStrategy);
         }
 
@@ -360,33 +360,33 @@ public class MCT {
 
 
     public int evaluateMainChessBoardState() throws ChessboardException {
-        if (root.moveDepth > maxDepth) { return -1; }
-        return mainChessboard.evaluateChessboard();
+        if (this.root.moveDepth > this.maxDepth) { return -1; }
+        return this.mainChessboard.evaluateChessboard();
     }
 
 
     public void printCurrentState() throws UtilsException {
-        mainChessboard.printChessboard();
+        this.mainChessboard.printChessboard();
     }
 
 
     public void printSimulationChessboard() throws UtilsException {
-        simulationChessboard.printChessboard();
+        this.simulationChessboard.printChessboard();
     }
 
 
     public void printMainChessboard() throws UtilsException {
-        mainChessboard.printChessboard();
+        this.mainChessboard.printChessboard();
     }
 
 
     public String getFEN() throws UtilsException {
-        return mainChessboard.boardToFen();
+        return this.mainChessboard.boardToFen();
     }
 
 
     public MCTStats getMCTStatistics() {
-        MCTStats rez = new MCTStats(stats);
+        MCTStats rez = new MCTStats(this.stats);
         return rez;
     }
 
@@ -403,10 +403,10 @@ public class MCT {
 
     private void setParameters() {
         this.mainChessboard = new Chessboard("Main board");
-        this.simulationChessboard = new Chessboard(mainChessboard,
+        this.simulationChessboard = new Chessboard(this.mainChessboard,
                 "Simulation board");
 
-        this.root = new MCTNode(mainChessboard);
+        this.root = new MCTNode(this.mainChessboard);
         // this.c = 0.5d;
         this.goban = Constants.GOBAN;
         this.maxDepth = Constants.MAX_DEPTH;

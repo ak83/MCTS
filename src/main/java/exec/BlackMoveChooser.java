@@ -32,7 +32,7 @@ public class BlackMoveChooser {
     public int chooseBlackKingMove(Chessboard board, int strategy)
 	    throws ChessboardException, BlackMoveFinderException {
 	int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
-	log.fine("V polpotezi " + (board.getNumberOfMovesMade() + 1)
+	this.log.fine("V polpotezi " + (board.getNumberOfMovesMade() + 1)
 		+ " je èrni izbral potezo "
 		+ Utils.singleMoveNumberToString(rez).toLowerCase());
 	return rez;

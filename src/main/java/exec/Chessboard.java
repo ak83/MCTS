@@ -1,7 +1,5 @@
 package exec;
 
-import static exec.Print.print;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
@@ -47,32 +45,32 @@ public class Chessboard {
         // /////////////////////////////
 
         if (Constants.ENDING.equalsIgnoreCase("KRK")) {
-            board[0] = 0;
-            board[4] = 4;
-            board[67] = 28;
+            this.board[0] = 0;
+            this.board[4] = 4;
+            this.board[67] = 28;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KQK")) {
-            board[0] = 3;
-            board[4] = 4;
-            board[67] = 28;
+            this.board[0] = 3;
+            this.board[4] = 4;
+            this.board[67] = 28;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KRRK")) {
-            board[0] = 0;
-            board[4] = 4;
-            board[7] = 7;
-            board[67] = 28;
+            this.board[0] = 0;
+            this.board[4] = 4;
+            this.board[7] = 7;
+            this.board[67] = 28;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KBBK")) {
-            board[2] = 2;
-            board[4] = 4;
-            board[5] = 5;
-            board[67] = 28;
+            this.board[2] = 2;
+            this.board[4] = 4;
+            this.board[5] = 5;
+            this.board[67] = 28;
         }
 
         // /////////////////////////////
         // konec zacetne postavitve//
         // ////////////////////////////
-        constructPiecePositionFromBoard();
+        this.constructPiecePositionFromBoard();
 
     }
 
@@ -98,7 +96,7 @@ public class Chessboard {
         this.board = node.boardState.clone();
         this.isWhitesTurn = node.isWhitesMove;
 
-        constructPiecePositionFromBoard();
+        this.constructPiecePositionFromBoard();
 
     }
 
@@ -146,7 +144,7 @@ public class Chessboard {
         for (int x = 112; x >= 0; x = x - 16) {
             int counter = 0;
             for (int y = 0; y < 8; y++) {
-                int piece = board[x + y];
+                int piece = this.board[x + y];
 
                 if (piece == -1) {
                     counter++;
@@ -169,11 +167,11 @@ public class Chessboard {
                 counter = 0;
             }
             else {
-                if (isWhitesTurn) {
-                    sb.append(" w - - 0 " + (numberOfMovesMade / 2));
+                if (this.isWhitesTurn) {
+                    sb.append(" w - - 0 " + (this.numberOfMovesMade / 2));
                 }
                 else {
-                    sb.append(" b - - 0 " + (numberOfMovesMade / 2));
+                    sb.append(" b - - 0 " + (this.numberOfMovesMade / 2));
                 }
             }
         }
@@ -188,10 +186,10 @@ public class Chessboard {
         }
         System.out.println();
 
-        print("board: ");
-        Utils.printBoardArray(board);
-        print("piecePosition: ");
-        Utils.printIntArray(piecePosition);
+        Print.print("board: ");
+        Utils.printBoardArray(this.board);
+        Print.print("piecePosition: ");
+        Utils.printIntArray(this.piecePosition);
 
         if (this.isWhitesTurn) {
             System.out.println("beli je na potezi na plo��i " + this.name);
@@ -207,7 +205,7 @@ public class Chessboard {
         for (int x = 7; x >= 0; x--) {
             int baza = x * 16;
             for (int y = 0; y < 8; y++) {
-                int t = board[baza + y];
+                int t = this.board[baza + y];
                 if (t == -1) {
                     System.out.print("*00");
                 }
@@ -224,6 +222,7 @@ public class Chessboard {
     }
 
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(50);
         for (int x = 0; x < 24; x++) {
@@ -246,7 +245,7 @@ public class Chessboard {
         for (int x = 7; x >= 0; x--) {
             int baza = x * 16;
             for (int y = 0; y < 8; y++) {
-                int t = board[baza + y];
+                int t = this.board[baza + y];
                 if (t == -1) {
                     sb.append("*00");
                 }
@@ -293,7 +292,7 @@ public class Chessboard {
 
 
     public int getNumberOfMovesMade() {
-        return numberOfMovesMade;
+        return this.numberOfMovesMade;
     }
 
 
@@ -306,7 +305,7 @@ public class Chessboard {
         String toS = move.substring(2);
         int from = Utils.positionFromString(fromS);
         int to = Utils.positionFromString(toS);
-        return constructMoveNumber(from, to);
+        return this.constructMoveNumber(from, to);
     }
 
 
@@ -321,7 +320,7 @@ public class Chessboard {
      */
     public boolean makeWhitePawnMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeWhitePawnMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -329,22 +328,22 @@ public class Chessboard {
 
         if (piece < 8 || piece > 15)
             throw new ChessboardException("na from je figura" + piece);
-        if (!isWhitePawnMoveLegal(from, to)) {
+        if (!this.isWhitePawnMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeWhitePawnMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         return true;
     }
@@ -361,7 +360,7 @@ public class Chessboard {
      */
     public boolean makeBlackPawnMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeBlackPawnMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -369,22 +368,22 @@ public class Chessboard {
 
         if (piece < 16 || piece > 23)
             throw new ChessboardException("na from je figura" + piece);
-        if (!isBlackPawnMoveLegal(from, to)) {
+        if (!this.isBlackPawnMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeBlackPawnMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeBlackPawnMove(int from, int to)");
 
@@ -403,7 +402,7 @@ public class Chessboard {
      */
     public boolean makeWhiteRookMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeWhiteRookMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -411,22 +410,22 @@ public class Chessboard {
 
         if (piece != 0 && piece != 7)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isWhiteRookMoveLegal(from, to)) {
+        if (!this.isWhiteRookMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeWhiteRookMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makwWhiteRookMove(int from, int to)");
 
@@ -445,7 +444,7 @@ public class Chessboard {
      */
     public boolean makeBlackRookMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeBlackRookMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -453,22 +452,22 @@ public class Chessboard {
 
         if (piece != 24 && piece != 31)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isBlackRookMoveLegal(from, to)) {
+        if (!this.isBlackRookMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeBlackRookMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeBlackRookMove(int from, int to)");
 
@@ -487,7 +486,7 @@ public class Chessboard {
      */
     public boolean makeWhiteKnightMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeWhiteKnightMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -495,22 +494,22 @@ public class Chessboard {
 
         if (piece != 1 && piece != 6)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isWhiteKnightMoveLegal(from, to)) {
+        if (!this.isWhiteKnightMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makwWhiteKnightMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeWhiteKnightMove(int from, int to)");
 
@@ -529,7 +528,7 @@ public class Chessboard {
      */
     public boolean makeBlackKnightMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeBlackKnightMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -537,21 +536,21 @@ public class Chessboard {
 
         if (piece != 25 && piece != 30)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isBlackKnightMoveLegal(from, to)) {
+        if (!this.isBlackKnightMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeBlackKnightMove(int from, int to)");
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeBlackKnightMove(int from, int to");
 
@@ -570,7 +569,7 @@ public class Chessboard {
      */
     public boolean makeWhiteBishopMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeWhiteBishopMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -578,22 +577,22 @@ public class Chessboard {
 
         if (piece != 2 && piece != 5)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isWhiteBishopMoveLegal(from, to)) {
+        if (!this.isWhiteBishopMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeWhiteBishopMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeWhiteBishopMove(int from, int to)");
 
@@ -613,8 +612,8 @@ public class Chessboard {
     public boolean makeBlackBishopMove(int from, int to)
             throws ChessboardException {
 
-        int piece = board[from];
-        int targetPiece = board[to];
+        int piece = this.board[from];
+        int targetPiece = this.board[to];
 
         // if(DEBUG) println("Za�etek makeBlackBishopMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -623,20 +622,20 @@ public class Chessboard {
         if (piece != 26 && piece != 29)
             throw new ChessboardException("na from je figura " + piece);
 
-        if (!isBlackBishopMoveLegal(from, to)) {
+        if (!this.isBlackBishopMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false;");
             // if(DEBUG) println("Konec makeBlackBishopMove(int from, int to)");
 
             return false;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
         // if(DEBUG) println("Konec makeBlackBishopMove(int from, int to)");
@@ -656,7 +655,7 @@ public class Chessboard {
      */
     public boolean makeWhiteQueenMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeWhiteQueenMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -665,22 +664,22 @@ public class Chessboard {
         if (piece != 3)
             throw new ChessboardException("na from je figura " + piece);
 
-        if (!isWhiteQueenMoveLegal(from, to)) {
+        if (!this.isWhiteQueenMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeWhiteQueenMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeWhiteQueenMove(int from, int to)");
 
@@ -699,7 +698,7 @@ public class Chessboard {
      */
     public boolean makeBlackQueenMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeBlackQueenMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -707,22 +706,22 @@ public class Chessboard {
 
         if (piece != 27)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isBlackQueenMoveLegal(from, to)) {
+        if (!this.isBlackQueenMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeBlackQueenMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeBlackQueenMove(int from, int to)");
 
@@ -741,7 +740,7 @@ public class Chessboard {
      */
     public boolean makeWhiteKingMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeWhiteKingMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -749,22 +748,22 @@ public class Chessboard {
 
         if (piece != 4)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isWhiteKingMoveLegal(from, to)) {
+        if (!this.isWhiteKingMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeWhiteKingMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         // if(DEBUG) println("Konec makeWhiteKingMove(int from, int to)");
 
@@ -783,7 +782,7 @@ public class Chessboard {
      */
     public boolean makeBlackKingMove(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek makeBlackKingMove(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -791,22 +790,22 @@ public class Chessboard {
 
         if (piece != 28)
             throw new ChessboardException("na from je figura " + piece);
-        if (!isBlackKingMoveLegal(from, to)) {
+        if (!this.isBlackKingMoveLegal(from, to)) {
             // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
             // if(DEBUG) println("Konec makeBlackKingMove(int from, int to)");
 
             return false;
         }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
         if (targetPiece != -1) {
-            piecePosition[targetPiece] = -1;
+            this.piecePosition[targetPiece] = -1;
         }
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
-        numberOfMovesMade++;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         return true;
     }
@@ -823,21 +822,26 @@ public class Chessboard {
      */
     public boolean makeAMove(int from, int to) throws ChessboardException {
         // println(this);
-        isWhitesTurn = !isWhitesTurn;
-        int piece = board[from];
+        this.isWhitesTurn = !this.isWhitesTurn;
+        int piece = this.board[from];
 
-        if (piece == 0 || piece == 7) { return makeWhiteRookMove(from, to); }
-        if (piece == 1 || piece == 6) { return makeWhiteKnightMove(from, to); }
-        if (piece == 2 || piece == 5) { return makeWhiteBishopMove(from, to); }
-        if (piece == 3) { return makeWhiteQueenMove(from, to); }
-        if (piece == 4) { return makeWhiteKingMove(from, to); }
-        if (piece > 7 && piece < 16) { return makeWhitePawnMove(from, to); }
-        if (piece > 15 && piece < 24) { return makeBlackPawnMove(from, to); }
-        if (piece == 24 || piece == 31) { return makeBlackRookMove(from, to); }
-        if (piece == 25 || piece == 30) { return makeBlackKnightMove(from, to); }
-        if (piece == 26 || piece == 29) { return makeBlackBishopMove(from, to); }
-        if (piece == 27) { return makeBlackQueenMove(from, to); }
-        if (piece == 28) { return makeBlackKingMove(from, to); }
+        if (piece == 0 || piece == 7) { return this.makeWhiteRookMove(from, to); }
+        if (piece == 1 || piece == 6) { return this.makeWhiteKnightMove(from,
+                to); }
+        if (piece == 2 || piece == 5) { return this.makeWhiteBishopMove(from,
+                to); }
+        if (piece == 3) { return this.makeWhiteQueenMove(from, to); }
+        if (piece == 4) { return this.makeWhiteKingMove(from, to); }
+        if (piece > 7 && piece < 16) { return this.makeWhitePawnMove(from, to); }
+        if (piece > 15 && piece < 24) { return this.makeBlackPawnMove(from, to); }
+        if (piece == 24 || piece == 31) { return this.makeBlackRookMove(from,
+                to); }
+        if (piece == 25 || piece == 30) { return this.makeBlackKnightMove(from,
+                to); }
+        if (piece == 26 || piece == 29) { return this.makeBlackBishopMove(from,
+                to); }
+        if (piece == 27) { return this.makeBlackQueenMove(from, to); }
+        if (piece == 28) { return this.makeBlackKingMove(from, to); }
 
         throw new ChessboardException();
     }
@@ -861,17 +865,18 @@ public class Chessboard {
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
         int targetPiece = Utils.getTargetPieceFromMoveNumber(moveNumber);
 
-        if (board[from] != movedPiece || piecePosition[movedPiece] != from) { throw new ChessboardException(
+        if (this.board[from] != movedPiece
+                || this.piecePosition[movedPiece] != from) { throw new ChessboardException(
                 "na mestu " + from + "ni figura " + movedPiece); }
         if (targetPiece != -1
-                && (board[to] != targetPiece || piecePosition[targetPiece] != to)) {
+                && (this.board[to] != targetPiece || this.piecePosition[targetPiece] != to)) {
             throw new ChessboardException("na mestu " + to + " ni figura "
-                    + targetPiece + ", ampak je " + board[to]);
+                    + targetPiece + ", ampak je " + this.board[to]);
         }
-        else if (targetPiece == -1 && board[to] != -1) { throw new ChessboardException(
+        else if (targetPiece == -1 && this.board[to] != -1) { throw new ChessboardException(
                 "Pozijia to: " + to + " ni prazna"); }
 
-        return makeAMove(from, to);
+        return this.makeAMove(from, to);
     }
 
 
@@ -886,15 +891,15 @@ public class Chessboard {
      *             ce je na from poziciji prazen kvadrat
      */
     public void makeAMoveQuick(int from, int to) throws ChessboardException {
-        isWhitesTurn = !isWhitesTurn;
+        this.isWhitesTurn = !this.isWhitesTurn;
 
-        int piece = board[from];
+        int piece = this.board[from];
         if (piece == -1)
             throw new ChessboardException();
 
-        board[from] = -1;
-        board[to] = piece;
-        piecePosition[piece] = to;
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
     }
 
 
@@ -912,7 +917,7 @@ public class Chessboard {
         int from = Utils.getFromFromMove(move);
         int to = Utils.getToFromMove(move);
 
-        makeAMove(from, to);
+        this.makeAMove(from, to);
     }
 
 
@@ -927,7 +932,7 @@ public class Chessboard {
         int from = Utils.getFromFromMoveNumber(moveNumber);
         int to = Utils.getToFromMoveNumber(moveNumber);
 
-        makeAMoveQuick(from, to);
+        this.makeAMoveQuick(from, to);
     }
 
 
@@ -941,14 +946,14 @@ public class Chessboard {
 
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < 16; x++) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
 
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
-                    if (isWhiteMoveLegal(from, y)) {
+                    if (this.isWhiteMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -969,13 +974,13 @@ public class Chessboard {
     public ArrayList<Move> getAllLegalBlackMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 16; x < 32; x++) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
-                    if (isBlackMoveLegal(from, y)) {
+                    if (this.isBlackMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -997,13 +1002,13 @@ public class Chessboard {
             throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 8; x < 16; x++) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
-                    if (isWhitePawnMoveLegal(from, y)) {
+                    if (this.isWhitePawnMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1024,13 +1029,13 @@ public class Chessboard {
             throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 16; x < 24; x++) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
-                    if (isBlackPawnMoveLegal(from, y)) {
+                    if (this.isBlackPawnMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1053,13 +1058,13 @@ public class Chessboard {
         int[] rooks = { 0, 7 };
 
         for (int x : rooks) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
-                    if (isWhiteRookMoveLegal(from, y)) {
+                    if (this.isWhiteRookMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1082,13 +1087,13 @@ public class Chessboard {
         int[] rooks = { 24, 31 };
 
         for (int x : rooks) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
-                    if (isBlackRookMoveLegal(from, y)) {
+                    if (this.isBlackRookMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1111,14 +1116,14 @@ public class Chessboard {
         int[] knights = { 1, 6 };
 
         for (int x : knights) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
-                    if (isWhiteKnightMoveLegal(from, y)) {
+                    if (this.isWhiteKnightMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1141,14 +1146,14 @@ public class Chessboard {
         int[] knights = { 25, 30 };
 
         for (int x : knights) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
-                    if (isBlackKnightMoveLegal(from, y)) {
+                    if (this.isBlackKnightMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1171,14 +1176,14 @@ public class Chessboard {
         int[] bishops = { 2, 5 };
 
         for (int x : bishops) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
-                    if (isWhiteBishopMoveLegal(from, y)) {
+                    if (this.isWhiteBishopMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1201,14 +1206,14 @@ public class Chessboard {
         int[] bishops = { 26, 29 };
 
         for (int x : bishops) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
-                if (!isPositionLegal(from))
+                if (!Chessboard.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
-                    if (isBlackBishopMoveLegal(from, y)) {
+                    if (this.isBlackBishopMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
                         rez.add(new Move(t));
                     }
@@ -1228,15 +1233,15 @@ public class Chessboard {
     public ArrayList<Move> getAllLegalWhiteQueenMoves()
             throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int from = piecePosition[3];
+        int from = this.piecePosition[3];
 
         if (from != -1) {
-            if (!isPositionLegal(from))
+            if (!Chessboard.isPositionLegal(from))
                 throw new ChessboardException("figura " + 3
                         + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
-                if (isWhiteQueenMoveLegal(from, y)) {
+                if (this.isWhiteQueenMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
                     rez.add(new Move(t));
                 }
@@ -1255,15 +1260,15 @@ public class Chessboard {
     public ArrayList<Move> getAllLegalBlackQueenMoves()
             throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int from = piecePosition[27];
+        int from = this.piecePosition[27];
 
         if (from != -1) {
-            if (!isPositionLegal(from))
+            if (!Chessboard.isPositionLegal(from))
                 throw new ChessboardException("figura " + 27
                         + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
-                if (isBlackQueenMoveLegal(from, y)) {
+                if (this.isBlackQueenMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
                     rez.add(new Move(t));
                 }
@@ -1282,15 +1287,15 @@ public class Chessboard {
     public ArrayList<Move> getAllLegalWhiteKingMoves()
             throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int from = piecePosition[4];
+        int from = this.piecePosition[4];
 
         if (from != -1) {
-            if (!isPositionLegal(from))
+            if (!Chessboard.isPositionLegal(from))
                 throw new ChessboardException("figura " + 4
                         + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
-                if (isWhiteKingMoveLegal(from, y)) {
+                if (this.isWhiteKingMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
                     rez.add(new Move(t));
                 }
@@ -1309,15 +1314,15 @@ public class Chessboard {
     public ArrayList<Move> getAllLegalBlackKingMoves()
             throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int from = piecePosition[28];
+        int from = this.piecePosition[28];
 
         if (from != -1) {
-            if (!isPositionLegal(from))
+            if (!Chessboard.isPositionLegal(from))
                 throw new ChessboardException("figura " + 28
                         + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
-                if (isBlackKingMoveLegal(from, y)) {
+                if (this.isBlackKingMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
                     rez.add(new Move(t));
                 }
@@ -1336,10 +1341,10 @@ public class Chessboard {
      */
     public int evaluateChessboardFromWhitesPerpective()
             throws ChessboardException {
-        if (isBlackKingMated()) { return 1; }
-        if (isBlackKingPatted()) { return -1; }
-        if (isAnyWhiteFigureUnderAttackFromBlack() && !isWhitesTurn) { return -1; }
-        if (numberOfMovesMade > maxNumberOfMoves) { return -1; }
+        if (this.isBlackKingMated()) { return 1; }
+        if (this.isBlackKingPatted()) { return -1; }
+        if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return -1; }
+        if (this.numberOfMovesMade > this.maxNumberOfMoves) { return -1; }
 
         return 0;
     }
@@ -1352,10 +1357,10 @@ public class Chessboard {
      * @throws ChessboardException
      */
     public int evaluateChessboard() throws ChessboardException {
-        if (isBlackKingMated()) { return 1; }
+        if (this.isBlackKingMated()) { return 1; }
 
-        if (isBlackKingPatted()) { return -1; }
-        if (numberOfMovesMade > maxNumberOfMoves) { return -1; }
+        if (this.isBlackKingPatted()) { return -1; }
+        if (this.numberOfMovesMade > this.maxNumberOfMoves) { return -1; }
 
         return 0;
     }
@@ -1364,7 +1369,7 @@ public class Chessboard {
     public boolean isBlackKingChecked() throws ChessboardException {
         // ni stestirana
 
-        int blackKingPos = piecePosition[28];
+        int blackKingPos = this.piecePosition[28];
 
         if (this.isPositionUnderAttackByWhite(blackKingPos, false)) {
             return true;
@@ -1380,7 +1385,7 @@ public class Chessboard {
                 .size();
 
         if (numberOfBlackKingPossibleMoves == 0) {
-            return isBlackKingChecked();
+            return this.isBlackKingChecked();
         }
         else {
             return false;
@@ -1390,10 +1395,11 @@ public class Chessboard {
 
     public boolean isBlackKingPatted() throws ChessboardException {
         // ni stestirana
-        int numberOfPossibleBlackKingMoves = getAllLegalBlackKingMoves().size();
+        int numberOfPossibleBlackKingMoves = this.getAllLegalBlackKingMoves()
+                .size();
 
         if (numberOfPossibleBlackKingMoves == 0) {
-            return !isBlackKingChecked();
+            return !this.isBlackKingChecked();
         }
         else {
             return false;
@@ -1405,12 +1411,12 @@ public class Chessboard {
             throws ChessboardException {
         // ni stestirana
         for (int x = 0; x < 16; x++) {
-            int pos = piecePosition[x];
+            int pos = this.piecePosition[x];
             if (pos == -1) {
                 continue;
             }
 
-            if (isPositionUnderAttackByBlack(pos, false)) { return true; }
+            if (this.isPositionUnderAttackByBlack(pos, false)) { return true; }
         }
 
         return false;
@@ -1428,16 +1434,16 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
         int diff = to - from;
-        if (diff == 16 && board[to] == -1)
+        if (diff == 16 && this.board[to] == -1)
             return true;
         if (diff == 15 || diff == 17) {
-            if (board[to] != -1 && !isPieceWhite(board[to]))
+            if (this.board[to] != -1 && !this.isPieceWhite(this.board[to]))
                 return true;
         }
         return false;
@@ -1452,16 +1458,16 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
         int diff = to - from;
-        if (diff == 16 && board[to] == -1)
+        if (diff == 16 && this.board[to] == -1)
             return true;
         if (diff == 15 || diff == 17) {
-            if (board[to] != -1)
+            if (this.board[to] != -1)
                 return true;
         }
         return false;
@@ -1477,16 +1483,16 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
         int diff = to - from;
-        if (diff == -16 && board[to] == -1)
+        if (diff == -16 && this.board[to] == -1)
             return true;
         if (diff == -15 || diff == -17) {
-            if (board[to] != -1 && isPieceWhite(board[to]))
+            if (this.board[to] != -1 && this.isPieceWhite(this.board[to]))
                 return true;
         }
         return false;
@@ -1502,16 +1508,16 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
         int diff = to - from;
-        if (diff == -16 && board[to] == -1)
+        if (diff == -16 && this.board[to] == -1)
             return true;
         if (diff == -15 || diff == -17) {
-            if (board[to] != -1)
+            if (this.board[to] != -1)
                 return true;
         }
         return false;
@@ -1526,12 +1532,13 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (getRankFromPosition(from) == getRankFromPosition(to)) {
+        if (Chessboard.getRankFromPosition(from) == Chessboard
+                .getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1541,17 +1548,18 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
 
-            if (board[to] == -1 || !isPieceWhite(board[to]))
+            if (this.board[to] == -1 || !this.isPieceWhite(this.board[to]))
                 return true;
-            if (isPieceWhite(board[to]))
+            if (this.isPieceWhite(this.board[to]))
                 return false;
         }
-        if (getFileFromPosition(from) == getFileFromPosition(to)) {
+        if (Chessboard.getFileFromPosition(from) == Chessboard
+                .getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1561,13 +1569,13 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
-            if (board[to] == -1 || !isPieceWhite(board[to]))
+            if (this.board[to] == -1 || !this.isPieceWhite(this.board[to]))
                 return true;
-            if (isPieceWhite(board[to]))
+            if (this.isPieceWhite(this.board[to]))
                 return false;
         }
 
@@ -1583,12 +1591,13 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (getRankFromPosition(from) == getRankFromPosition(to)) {
+        if (Chessboard.getRankFromPosition(from) == Chessboard
+                .getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1598,14 +1607,15 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
 
             return true;
         }
-        if (getFileFromPosition(from) == getFileFromPosition(to)) {
+        if (Chessboard.getFileFromPosition(from) == Chessboard
+                .getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1615,7 +1625,7 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
@@ -1634,12 +1644,13 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (getRankFromPosition(from) == getRankFromPosition(to)) {
+        if (Chessboard.getRankFromPosition(from) == Chessboard
+                .getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1649,17 +1660,18 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
 
-            if (board[to] == -1 || isPieceWhite(board[to]))
+            if (this.board[to] == -1 || this.isPieceWhite(this.board[to]))
                 return true;
-            if (!isPieceWhite(board[to]))
+            if (!this.isPieceWhite(this.board[to]))
                 return false;
         }
-        if (getFileFromPosition(from) == getFileFromPosition(to)) {
+        if (Chessboard.getFileFromPosition(from) == Chessboard
+                .getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1669,13 +1681,13 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
-            if (board[to] == -1 || isPieceWhite(board[to]))
+            if (this.board[to] == -1 || this.isPieceWhite(this.board[to]))
                 return true;
-            if (!isPieceWhite(board[to]))
+            if (!this.isPieceWhite(this.board[to]))
                 return false;
         }
 
@@ -1691,12 +1703,13 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (getRankFromPosition(from) == getRankFromPosition(to)) {
+        if (Chessboard.getRankFromPosition(from) == Chessboard
+                .getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1706,14 +1719,15 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
 
             return true;
         }
-        if (getFileFromPosition(from) == getFileFromPosition(to)) {
+        if (Chessboard.getFileFromPosition(from) == Chessboard
+                .getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1723,7 +1737,7 @@ public class Chessboard {
 
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
@@ -1742,7 +1756,7 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1764,12 +1778,12 @@ public class Chessboard {
         if (Math.abs(diff) == 17 || Math.abs(diff) == 15) {
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
 
-            if (board[to] == -1 || !isPieceWhite(board[to]))
+            if (this.board[to] == -1 || !this.isPieceWhite(this.board[to]))
                 return true;
             else
                 return false;
@@ -1786,7 +1800,7 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1808,7 +1822,7 @@ public class Chessboard {
         if (Math.abs(diff) == 17 || Math.abs(diff) == 15) {
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
@@ -1827,7 +1841,7 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1849,7 +1863,7 @@ public class Chessboard {
         if (Math.abs(diff) == 17 || Math.abs(diff) == 15) {
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
@@ -1868,7 +1882,7 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1890,12 +1904,12 @@ public class Chessboard {
         if (Math.abs(diff) == 17 || Math.abs(diff) == 15) {
             int temp = from + diff;
             while (temp != to) {
-                if (board[temp] != -1)
+                if (this.board[temp] != -1)
                     return false;
                 temp += diff;
             }
 
-            if (board[to] == -1 || isPieceWhite(board[to]))
+            if (this.board[to] == -1 || this.isPieceWhite(this.board[to]))
                 return true;
             else
                 return false;
@@ -1912,12 +1926,12 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (board[to] == -1 || !isPieceWhite(board[to])) {
+        if (this.board[to] == -1 || !this.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
             case 14:
@@ -1942,7 +1956,7 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1972,12 +1986,12 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (board[to] == -1 || isPieceWhite(board[to])) {
+        if (this.board[to] == -1 || this.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
             case 14:
@@ -2002,7 +2016,7 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -2029,9 +2043,9 @@ public class Chessboard {
      */
     public boolean isWhiteQueenMoveLegal(int from, int to)
             throws ChessboardException {
-        if (isWhiteBishopMoveLegal(from, to))
+        if (this.isWhiteBishopMoveLegal(from, to))
             return true;
-        if (isWhiteRookMoveLegal(from, to))
+        if (this.isWhiteRookMoveLegal(from, to))
             return true;
 
         return false;
@@ -2043,9 +2057,9 @@ public class Chessboard {
      */
     public boolean isWhiteCannibalQueenMoveLegal(int from, int to)
             throws ChessboardException {
-        if (isWhiteCannibalBishopMoveLegal(from, to))
+        if (this.isWhiteCannibalBishopMoveLegal(from, to))
             return true;
-        if (isWhiteCannibalRookMoveLegal(from, to))
+        if (this.isWhiteCannibalRookMoveLegal(from, to))
             return true;
 
         return false;
@@ -2057,9 +2071,9 @@ public class Chessboard {
      */
     public boolean isBlackQueenMoveLegal(int from, int to)
             throws ChessboardException {
-        if (isBlackBishopMoveLegal(from, to))
+        if (this.isBlackBishopMoveLegal(from, to))
             return true;
-        if (isBlackRookMoveLegal(from, to))
+        if (this.isBlackRookMoveLegal(from, to))
             return true;
 
         return false;
@@ -2071,9 +2085,9 @@ public class Chessboard {
      */
     public boolean isBlackCannibalQueenMoveLegal(int from, int to)
             throws ChessboardException {
-        if (isBlackCannibalBishopMoveLegal(from, to))
+        if (this.isBlackCannibalBishopMoveLegal(from, to))
             return true;
-        if (isBlackCannibalRookMoveLegal(from, to))
+        if (this.isBlackCannibalRookMoveLegal(from, to))
             return true;
 
         return false;
@@ -2088,31 +2102,31 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (isPositionAdjacentToBlackKing(to)) { return false; }
+        if (this.isPositionAdjacentToBlackKing(to)) { return false; }
 
-        int targetPiece = board[to];
-        if (targetPiece != -1 && isPieceWhite(targetPiece)) { return false; }
+        int targetPiece = this.board[to];
+        if (targetPiece != -1 && this.isPieceWhite(targetPiece)) { return false; }
 
-        int whiteKingPos = piecePosition[4];
-        piecePosition[4] = -1;
-        board[whiteKingPos] = -1;
+        int whiteKingPos = this.piecePosition[4];
+        this.piecePosition[4] = -1;
+        this.board[whiteKingPos] = -1;
 
-        if (isPositionUnderAttackByBlack(to, true)) {
-            piecePosition[4] = whiteKingPos;
-            board[whiteKingPos] = 4;
+        if (this.isPositionUnderAttackByBlack(to, true)) {
+            this.piecePosition[4] = whiteKingPos;
+            this.board[whiteKingPos] = 4;
 
             return false;
         }
 
-        piecePosition[4] = whiteKingPos;
-        board[whiteKingPos] = 4;
+        this.piecePosition[4] = whiteKingPos;
+        this.board[whiteKingPos] = 4;
 
-        if (isPositionAdjacentToWhiteKing(to)) {
+        if (this.isPositionAdjacentToWhiteKing(to)) {
             return true;
         }
         else {
@@ -2129,27 +2143,27 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to))
+        if (!Chessboard.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (isPositionAdjacentToBlackKing(to)) { return false; }
+        if (this.isPositionAdjacentToBlackKing(to)) { return false; }
 
-        int whiteKingPos = piecePosition[4];
-        piecePosition[4] = -1;
-        board[whiteKingPos] = -1;
+        int whiteKingPos = this.piecePosition[4];
+        this.piecePosition[4] = -1;
+        this.board[whiteKingPos] = -1;
 
-        if (isPositionUnderAttackByBlack(to, true)) {
-            piecePosition[4] = whiteKingPos;
-            board[whiteKingPos] = 4;
+        if (this.isPositionUnderAttackByBlack(to, true)) {
+            this.piecePosition[4] = whiteKingPos;
+            this.board[whiteKingPos] = 4;
 
             return false;
         }
-        piecePosition[4] = whiteKingPos;
-        board[whiteKingPos] = 4;
+        this.piecePosition[4] = whiteKingPos;
+        this.board[whiteKingPos] = 4;
 
-        if (isPositionAdjacentToWhiteKing(to)) {
+        if (this.isPositionAdjacentToWhiteKing(to)) {
             return true;
         }
         else {
@@ -2162,60 +2176,36 @@ public class Chessboard {
     /*
      * ne ugotavlja kaj je s figuro na from poziciji
      */
-    // public boolean isWhiteInvincibleKingMoveLegal(int from, int to) throws
-    // ChessboardException
-    // {
-    // if(from < 0 || from > 127) throw new ChessboardException("from = " +
-    // from);
-    //
-    // if(!isPositionLegal(to)) return false;
-    // if(from == to) return false;
-    //
-    // int diff = Math.abs(to - from);
-    // if(diff == 1 || diff == 15 || diff == 16 || diff == 17)
-    // {
-    // if(board[to] == -1 || !isPieceWhite(board[to])) return true;
-    // else return false;
-    // }
-    // else
-    // {
-    // return false;
-    // }
-    // }
-
-    /*
-     * ne ugotavlja kaj je s figuro na from poziciji
-     */
     public boolean isBlackKingMoveLegal(int from, int to)
             throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to)) { return false; }
+        if (!Chessboard.isPositionLegal(to)) { return false; }
         if (from == to)
             return false;
 
-        if (isPositionAdjacentToWhiteKing(to)) { return false; }
+        if (this.isPositionAdjacentToWhiteKing(to)) { return false; }
 
-        int targetPiece = board[to];
+        int targetPiece = this.board[to];
 
-        if (targetPiece != -1 && isPieceBlack(targetPiece)) { return false; }
+        if (targetPiece != -1 && this.isPieceBlack(targetPiece)) { return false; }
 
-        int blackKingPos = piecePosition[28];
-        piecePosition[28] = -1;
-        board[blackKingPos] = -1;
+        int blackKingPos = this.piecePosition[28];
+        this.piecePosition[28] = -1;
+        this.board[blackKingPos] = -1;
 
-        if (isPositionUnderAttackByWhite(to, true)) {
-            piecePosition[28] = blackKingPos;
-            board[blackKingPos] = 28;
+        if (this.isPositionUnderAttackByWhite(to, true)) {
+            this.piecePosition[28] = blackKingPos;
+            this.board[blackKingPos] = 28;
 
             return false;
         }
 
-        piecePosition[28] = blackKingPos;
-        board[blackKingPos] = 28;
+        this.piecePosition[28] = blackKingPos;
+        this.board[blackKingPos] = 28;
 
-        if (isPositionAdjacentToBlackKing(to)) {
+        if (this.isPositionAdjacentToBlackKing(to)) {
             return true;
         }
         else {
@@ -2233,27 +2223,27 @@ public class Chessboard {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!isPositionLegal(to)) { return false; }
+        if (!Chessboard.isPositionLegal(to)) { return false; }
         if (from == to)
             return false;
 
-        if (isPositionAdjacentToWhiteKing(to)) { return false; }
+        if (this.isPositionAdjacentToWhiteKing(to)) { return false; }
 
-        int blackKingPos = piecePosition[28];
-        piecePosition[28] = -1;
-        board[blackKingPos] = -1;
+        int blackKingPos = this.piecePosition[28];
+        this.piecePosition[28] = -1;
+        this.board[blackKingPos] = -1;
 
-        if (isPositionUnderAttackByWhite(to, true)) {
-            piecePosition[28] = blackKingPos;
-            board[blackKingPos] = 28;
+        if (this.isPositionUnderAttackByWhite(to, true)) {
+            this.piecePosition[28] = blackKingPos;
+            this.board[blackKingPos] = 28;
 
             return false;
         }
 
-        piecePosition[28] = blackKingPos;
-        board[blackKingPos] = 28;
+        this.piecePosition[28] = blackKingPos;
+        this.board[blackKingPos] = 28;
 
-        if (isPositionAdjacentToBlackKing(to)) {
+        if (this.isPositionAdjacentToBlackKing(to)) {
             return true;
         }
         else {
@@ -2267,7 +2257,7 @@ public class Chessboard {
      */
     public boolean isWhiteMoveLegal(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek isWhiteMoveLegal(int from, int to)");
         // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
@@ -2275,17 +2265,17 @@ public class Chessboard {
         // if(DEBUG) println("Kli�em in vra�am isWhiteXXXMoveLegal");
 
         if (piece == 0 || piece == 7)
-            return isWhiteRookMoveLegal(from, to);
+            return this.isWhiteRookMoveLegal(from, to);
         if (piece == 1 || piece == 6)
-            return isWhiteKnightMoveLegal(from, to);
+            return this.isWhiteKnightMoveLegal(from, to);
         if (piece == 2 || piece == 5)
-            return isWhiteBishopMoveLegal(from, to);
+            return this.isWhiteBishopMoveLegal(from, to);
         if (piece == 3)
-            return isWhiteQueenMoveLegal(from, to);
+            return this.isWhiteQueenMoveLegal(from, to);
         if (piece == 4)
-            return isWhiteKingMoveLegal(from, to);
+            return this.isWhiteKingMoveLegal(from, to);
         if (piece > 7 && piece < 16)
-            return isWhitePawnMoveLegal(from, to);
+            return this.isWhitePawnMoveLegal(from, to);
 
         // if(DEBUG)
         // {
@@ -2311,20 +2301,20 @@ public class Chessboard {
      */
     public boolean isBlackMoveLegal(int from, int to)
             throws ChessboardException {
-        int piece = board[from];
+        int piece = this.board[from];
 
         if (piece > 15 && piece < 24)
-            return isBlackPawnMoveLegal(from, to);
+            return this.isBlackPawnMoveLegal(from, to);
         if (piece == 24 || piece == 31)
-            return isBlackRookMoveLegal(from, to);
+            return this.isBlackRookMoveLegal(from, to);
         if (piece == 25 || piece == 30)
-            return isBlackKnightMoveLegal(from, to);
+            return this.isBlackKnightMoveLegal(from, to);
         if (piece == 26 || piece == 29)
-            return isBlackBishopMoveLegal(from, to);
+            return this.isBlackBishopMoveLegal(from, to);
         if (piece == 27)
-            return isBlackQueenMoveLegal(from, to);
+            return this.isBlackQueenMoveLegal(from, to);
         if (piece == 28)
-            return isBlackKingMoveLegal(from, to);
+            return this.isBlackKingMoveLegal(from, to);
 
         throw new ChessboardException("na from je figura " + piece);
     }
@@ -2341,8 +2331,8 @@ public class Chessboard {
          * premaknemo zadnjih 8 bitov je pa figura, ki na mestu kamor se
          * premikamo
          */
-        int rez = board[to] & 0xFF;
-        rez |= (board[from] & 0xFF) << 8;
+        int rez = this.board[to] & 0xFF;
+        rez |= (this.board[from] & 0xFF) << 8;
         rez |= (to & 0xFF) << 16;
         rez |= (from & 0xFF) << 24;
         return rez;
@@ -2391,13 +2381,13 @@ public class Chessboard {
 
 
     private void constructPiecePositionFromBoard() {
-        piecePosition = new int[32];
-        for (int x = 0; x < piecePosition.length; x++) {
-            piecePosition[x] = -1;
+        this.piecePosition = new int[32];
+        for (int x = 0; x < this.piecePosition.length; x++) {
+            this.piecePosition[x] = -1;
         }
-        for (int x = 0; x < board.length; x++) {
-            if (board[x] != -1) {
-                piecePosition[board[x]] = x;
+        for (int x = 0; x < this.board.length; x++) {
+            if (this.board[x] != -1) {
+                this.piecePosition[this.board[x]] = x;
             }
         }
     }
@@ -2420,7 +2410,7 @@ public class Chessboard {
      *         moves to postiion, otherwise <code>false</code>.
      */
     public boolean willBlackKingBeInOppositionIfItMovesTo(int position) {
-        int whiteKingPos = piecePosition[4];
+        int whiteKingPos = this.piecePosition[4];
         return Utils.distanceBetweenPositions(whiteKingPos, position) == 2;
     }
 
@@ -2435,34 +2425,38 @@ public class Chessboard {
      */
     public boolean isPositionUnderAttackByBlack(int position,
             boolean ignoreBlackKing) throws ChessboardException {
-        if (!isPositionLegal(position))
+        if (!Chessboard.isPositionLegal(position))
             return true;
 
         for (int x = 16; x < 32; x++) {
             // trdnjavi
-            if ((x == 24 || x == 31) && piecePosition[x] != -1) {
-                if (isBlackCannibalRookMoveLegal(piecePosition[x], position)) { return true; }
+            if ((x == 24 || x == 31) && this.piecePosition[x] != -1) {
+                if (this.isBlackCannibalRookMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // konja
-            if ((x == 25 || x == 30) && piecePosition[x] != -1) {
-                if (isBlackCannibalKnightMoveLegal(piecePosition[x], position)) { return true; }
+            if ((x == 25 || x == 30) && this.piecePosition[x] != -1) {
+                if (this.isBlackCannibalKnightMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // tekaca
-            if ((x == 26 || x == 29) && piecePosition[x] != -1) {
-                if (isBlackCannibalBishopMoveLegal(piecePosition[x], position)) { return true; }
+            if ((x == 26 || x == 29) && this.piecePosition[x] != -1) {
+                if (this.isBlackCannibalBishopMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // kraljica
-            if (x == 27 && piecePosition[x] != -1) {
-                if (isBlackCannibalQueenMoveLegal(piecePosition[x], position)) { return true; }
+            if (x == 27 && this.piecePosition[x] != -1) {
+                if (this.isBlackCannibalQueenMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // kralj
             if (x == 28 && !ignoreBlackKing) {
-                if (isBlackKingMoveLegal(piecePosition[x], position)) { return true; }
+                if (this.isBlackKingMoveLegal(this.piecePosition[x], position)) { return true; }
             }
         }
 
         for (int x = 16; x < 24; x++) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
                 int diff = position - from;
                 if (diff == -17 || diff == -15)
@@ -2479,34 +2473,38 @@ public class Chessboard {
         if (position < 0 || position > 127)
             throw new ChessboardException("position = " + position);
 
-        if (!isPositionLegal(position))
+        if (!Chessboard.isPositionLegal(position))
             return true;
 
         for (int x = 0; x < 8; x++) {
             // trdnjavi
-            if ((x == 0 || x == 7) && piecePosition[x] != -1) {
-                if (isWhiteCannibalRookMoveLegal(piecePosition[x], position)) { return true; }
+            if ((x == 0 || x == 7) && this.piecePosition[x] != -1) {
+                if (this.isWhiteCannibalRookMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // konja
-            if ((x == 1 || x == 6) && piecePosition[x] != -1) {
-                if (isWhiteCannibalKnightMoveLegal(piecePosition[x], position)) { return true; }
+            if ((x == 1 || x == 6) && this.piecePosition[x] != -1) {
+                if (this.isWhiteCannibalKnightMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // tekaca
-            if ((x == 2 || x == 5) && piecePosition[x] != -1) {
-                if (isWhiteCannibalBishopMoveLegal(piecePosition[x], position)) { return true; }
+            if ((x == 2 || x == 5) && this.piecePosition[x] != -1) {
+                if (this.isWhiteCannibalBishopMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // kraljica
-            if (x == 3 && piecePosition[x] != -1) {
-                if (isWhiteCannibalQueenMoveLegal(piecePosition[x], position)) { return true; }
+            if (x == 3 && this.piecePosition[x] != -1) {
+                if (this.isWhiteCannibalQueenMoveLegal(this.piecePosition[x],
+                        position)) { return true; }
             }
             // kralj
             if (x == 4 && !ignoreWhiteKing) {
-                if (isWhiteKingMoveLegal(piecePosition[x], position)) { return true; }
+                if (this.isWhiteKingMoveLegal(this.piecePosition[x], position)) { return true; }
             }
         }
 
         for (int x = 8; x < 16; x++) {
-            int from = piecePosition[x];
+            int from = this.piecePosition[x];
             if (from != -1) {
                 int diff = position - from;
                 if (diff == 17 || diff == 15)
@@ -2519,7 +2517,7 @@ public class Chessboard {
 
 
     public boolean isPositionAdjacentToWhiteKing(int position) {
-        int kingPos = piecePosition[4];
+        int kingPos = this.piecePosition[4];
         int diff = Math.abs(kingPos - position);
 
         if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
@@ -2532,7 +2530,7 @@ public class Chessboard {
 
 
     public boolean isPositionAdjacentToBlackKing(int position) {
-        int kingPos = piecePosition[28];
+        int kingPos = this.piecePosition[28];
         int diff = Math.abs(kingPos - position);
 
         if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
@@ -2541,42 +2539,6 @@ public class Chessboard {
         else {
             return false;
         }
-    }
-
-
-    public boolean isPositionProtectedByWhiteKing(int position) {
-        if (isPositionAdjacentToWhiteKing(position)) { return true; }
-
-        int whiteKingPos = piecePosition[4];
-        if (Utils.distanceBetweenPositions(whiteKingPos, position) == 2) {
-            int whiteKingRank = Utils.getRankFromPosition(whiteKingPos);
-            int whiteKingFile = Utils.getFileFromPosition(whiteKingPos);
-            int posRank = Utils.getRankFromPosition(position);
-            int posFile = Utils.getFileFromPosition(position);
-            boolean differentRanks = whiteKingRank != posRank;
-            boolean differentFiles = whiteKingFile != posFile;
-            if (differentFiles && differentRanks) { return true; }
-        }
-
-        return false;
-    }
-
-
-    public boolean isPositionProtectedByBlackKing(int position) {
-        if (isPositionAdjacentToBlackKing(position)) { return true; }
-
-        int whiteKingPos = piecePosition[28];
-        if (Utils.distanceBetweenPositions(whiteKingPos, position) == 2) {
-            int whiteKingRank = Utils.getRankFromPosition(whiteKingPos);
-            int whiteKingFile = Utils.getFileFromPosition(whiteKingPos);
-            int posRank = Utils.getRankFromPosition(position);
-            int posFile = Utils.getFileFromPosition(position);
-            boolean differentRanks = whiteKingRank != posRank;
-            boolean differentFiles = whiteKingFile != posFile;
-            if (differentFiles && differentRanks) { return true; }
-        }
-
-        return false;
     }
 
 
@@ -2610,10 +2572,10 @@ public class Chessboard {
         for (int x = 0; x < 16; x++) {
             int piecePosition = this.piecePosition[x];
             if (piecePosition != -1
-                    && isPositionAdjacentToBlackKing(piecePosition)) {
+                    && this.isPositionAdjacentToBlackKing(piecePosition)) {
                 int from = this.piecePosition[28];
                 int to = piecePosition;
-                if (isBlackKingMoveLegal(from, to)) {
+                if (this.isBlackKingMoveLegal(from, to)) {
                     int movedPiece = 28;
                     int targetPiece = x;
                     Move add = new Move(Utils.constructMoveNumber(from, to,
@@ -2647,25 +2609,25 @@ public class Chessboard {
         ArrayList<Move> rez = new ArrayList<Move>();
         int distance = 17;
         int rookPosition = -1;
-        if (piecePosition[0] != -1 && piecePosition[7] != -1) {
-            int dis0 = Utils.distanceBetweenPositions(piecePosition[28],
-                    piecePosition[0]);
-            int dis7 = Utils.distanceBetweenPositions(piecePosition[28],
-                    piecePosition[7]);
+        if (this.piecePosition[0] != -1 && this.piecePosition[7] != -1) {
+            int dis0 = Utils.distanceBetweenPositions(this.piecePosition[28],
+                    this.piecePosition[0]);
+            int dis7 = Utils.distanceBetweenPositions(this.piecePosition[28],
+                    this.piecePosition[7]);
             if (dis0 < dis7) {
-                rookPosition = piecePosition[0];
+                rookPosition = this.piecePosition[0];
             }
             else if (dis7 < dis0) {
-                rookPosition = piecePosition[7];
+                rookPosition = this.piecePosition[7];
             }
             else {
                 Random rand = new Random();
                 int i = rand.nextInt(2);
                 if (i == 0) {
-                    rookPosition = piecePosition[0];
+                    rookPosition = this.piecePosition[0];
                 }
                 else {
-                    rookPosition = piecePosition[7];
+                    rookPosition = this.piecePosition[7];
                 }
             }
         }
@@ -2700,7 +2662,7 @@ public class Chessboard {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
             int to = Utils.getToFromMoveNumber(moves.get(x).moveNumber);
-            if (!isPositionAdjacentToBlackKing(to)) {
+            if (!this.isPositionAdjacentToBlackKing(to)) {
                 rez.add(new Move(moves.get(x).moveNumber));
             }
         }
@@ -2795,8 +2757,8 @@ public class Chessboard {
         for (int x = 0; x < moves.size(); x++) {
             int from = Utils.getFromFromMoveNumber(moves.get(x).moveNumber);
             int to = Utils.getToFromMoveNumber(moves.get(x).moveNumber);
-            if (isPositionAdjacentToBlackKing(from)
-                    && !isPositionAdjacentToBlackKing(to)) {
+            if (this.isPositionAdjacentToBlackKing(from)
+                    && !this.isPositionAdjacentToBlackKing(to)) {
                 rez.add(moves.get(x));
             }
         }
@@ -2806,7 +2768,7 @@ public class Chessboard {
 
     public ArrayList<Move> movesWhereWhiteKingMovesCloserToBlackKind(
             ArrayList<Move> posKingMoves) {
-        int distance = distanceBewteenKings();
+        int distance = this.distanceBewteenKings();
         int blackKingPosition = this.piecePosition[28];
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < posKingMoves.size(); x++) {
@@ -2827,7 +2789,7 @@ public class Chessboard {
 
     public ArrayList<Move> movesWhereWhiteKingMovesCloserOrEqualToBlackKind(
             ArrayList<Move> posMoves) {
-        int distance = distanceBewteenKings();
+        int distance = this.distanceBewteenKings();
         int blackKingPosition = this.piecePosition[28];
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < posMoves.size(); x++) {
@@ -2874,17 +2836,17 @@ public class Chessboard {
             throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int queenPosition = this.piecePosition[3];
-        if (isPositionAdjacentToBlackKing(queenPosition)) {
+        if (this.isPositionAdjacentToBlackKing(queenPosition)) {
             for (int x = 0; x < moves.size(); x++) {
                 int movedPiece = Utils
                         .getMovedPieceFromMoveNumber(moves.get(x).moveNumber);
                 int to = Utils.getToFromMoveNumber(moves.get(x).moveNumber);
                 if (movedPiece == 3) {
-                    if (!isPositionAdjacentToBlackKing(to)) {
+                    if (!this.isPositionAdjacentToBlackKing(to)) {
                         rez.add(moves.get(x));
                     }
-                    else if (isPositionAdjacentToBlackKing(to)
-                            && isPositionAdjacentToWhiteKing(to)) {
+                    else if (this.isPositionAdjacentToBlackKing(to)
+                            && this.isPositionAdjacentToWhiteKing(to)) {
                         rez.add(moves.get(x));
                     }
                 }
@@ -2908,8 +2870,8 @@ public class Chessboard {
                 }
                 else if (movedPiece == 3) {
                     int to = Utils.getToFromMoveNumber(moves.get(x).moveNumber);
-                    if (isPositionAdjacentToBlackKing(to)) {
-                        if (isPositionAdjacentToWhiteKing(to)) {
+                    if (this.isPositionAdjacentToBlackKing(to)) {
+                        if (this.isPositionAdjacentToWhiteKing(to)) {
                             rez.add(moves.get(x));
                         }
                     }
@@ -2939,11 +2901,11 @@ public class Chessboard {
             int to = Utils.getToFromMoveNumber(temp.moveNumber);
             int movedPiece = Utils.getMovedPieceFromMoveNumber(temp.moveNumber);
             if (movedPiece != 4) {
-                if (isPositionAdjacentToBlackKing(to)
-                        && isPositionAdjacentToWhiteKing(to)) {
+                if (this.isPositionAdjacentToBlackKing(to)
+                        && this.isPositionAdjacentToWhiteKing(to)) {
                     rez.add(temp);
                 }
-                if (!isPositionAdjacentToBlackKing(to)) {
+                if (!this.isPositionAdjacentToBlackKing(to)) {
                     rez.add(temp);
                 }
             }
@@ -2958,37 +2920,41 @@ public class Chessboard {
 
     /**
      * filter moves to those that need to be made (so that white doesn't loose a
-     * piece).
+     * piece), this method only checks protection between piece and white king
+     * (it doesnt know that for instance two rooks can protect each other).
      * 
      * @param allWhiteMoves
      * @return list of moves that white must do to avoid loosing a piece
      */
-    public ArrayList<Move> KRKWhiteUrgentMoves(ArrayList<Move> allWhiteMoves) {
+    public ArrayList<Move> whiteUrgentMoves(ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int rookPos = -1;
-        if (piecePosition[0] != -1) {
-            rookPos = piecePosition[0];
-        }
-        else if (piecePosition[7] != -1) {
-            rookPos = piecePosition[7];
-        }
 
-        //if rook is not near black king then it's not in danger
-        if (!isPositionAdjacentToBlackKing(rookPos)) { return rez; }
+        // if black king isn't near any pieces, it can't eat them
+        if (this.piecesNearPosition(this.piecePosition[28]).size() == 0) { return rez; }
 
-        for (int x = 0; x < allWhiteMoves.size(); x++) {
-            Move currMove = new Move(allWhiteMoves.get(x).moveNumber);
+        for (Move currMove : allWhiteMoves) {
+            int from = Utils.getFromFromMoveNumber(currMove.moveNumber);
             int to = Utils.getToFromMoveNumber(currMove.moveNumber);
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.moveNumber);
 
-            if ((movedPiece == 0 || movedPiece == 7)
-                    && !isPositionAdjacentToBlackKing(to)) {
-                rez.add(currMove);
+            if (movedPiece == 4) {
+                for (int piecesAroundBlackKing : this
+                        .piecesNearPosition(this.piecePosition[28])) {
+                    if (!ChessboardUtils.arePositionsAdjacent(from,
+                            this.piecePosition[piecesAroundBlackKing])
+                            && ChessboardUtils.arePositionsAdjacent(to,
+                                    this.piecePosition[piecesAroundBlackKing])) {
+                        rez.add(currMove);
+                    }
+                }
             }
-
-            if (movedPiece == 4
-                    && isPositionProtectedByKingIfKingIsMovedTo(rookPos, to)) {
+            else if (!ChessboardUtils.arePositionsAdjacent(from,
+                    this.piecePosition[4])
+                    && ChessboardUtils.arePositionsAdjacent(from,
+                            this.piecePosition[28])
+                    && !ChessboardUtils.arePositionsAdjacent(to,
+                            this.piecePosition[28])) {
                 rez.add(currMove);
             }
         }
@@ -2998,43 +2964,48 @@ public class Chessboard {
 
 
     /**
-     * heuristic that filters moves so that white wont give black king and
-     * pieces (not true in all cases).
+     * heuristic that filters moves so that white wont give black king any
+     * pieces (however this method only consideres piece protected by other
+     * piece if other piece is white king), but it doesn't check if any moves
+     * need to be made to avoid being eaten
      * 
      * @param allWhiteMoves
      * @return list of safe moves
      */
-    public ArrayList<Move> KRKWhiteSafeMoves(ArrayList<Move> allWhiteMoves) {
+    public ArrayList<Move> whiteSafeMoves(ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int rookPos = piecePosition[0];
-        if (rookPos == -1) {
-            rookPos = piecePosition[7];
-        }
-        if (rookPos == -1) { return allWhiteMoves; }
 
         for (Move currMove : allWhiteMoves) {
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.moveNumber);
             int to = Utils.getToFromMoveNumber(currMove.moveNumber);
+
+            // since black only has black king, white kings move is always safe
             if (movedPiece == 4) {
-                if (isPositionAdjacentToBlackKing(rookPos)) {
-                    if (isPositionProtectedByKingIfKingIsMovedTo(rookPos, to)) {
-                        rez.add(new Move(currMove.moveNumber));
+                // we get all pieces that could be eaten by black king
+                ArrayList<Integer> piecesThatCantLooseProtection = this
+                        .piecesNearPosition(this.piecePosition[28]);
+                boolean addKingMove = true;
+                for (int piece : piecesThatCantLooseProtection) {
+                    int positionOfPiece = this.piecePosition[piece];
+
+                    // if some piece is protected by king, then king shouldn't
+                    // withdraw protection
+                    if (this.isPositionAdjacentToWhiteKing(positionOfPiece)
+                            && !ChessboardUtils.arePositionsAdjacent(
+                                    positionOfPiece, to)) {
+                        addKingMove = false;
                     }
                 }
-                else {
-                    rez.add(new Move(currMove.moveNumber));
+                if (addKingMove) {
+                    rez.add(currMove);
                 }
             }
-            else {
-                if (isPositionAdjacentToBlackKing(to)) {
-                    if (isPositionAdjacentToWhiteKing(to)) {
-                        rez.add(new Move(currMove.moveNumber));
-                    }
-                }
-                else {
-                    rez.add(new Move(currMove.moveNumber));
-                }
+            // if piece doesn't move near black king or is near white king, than
+            // it's also safe move
+            else if (!this.isPositionAdjacentToBlackKing(to)
+                    || this.isPositionAdjacentToWhiteKing(to)) {
+                rez.add(currMove);
             }
         }
         return rez;
@@ -3044,17 +3015,17 @@ public class Chessboard {
     public ArrayList<Move> KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(
             ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int blackKingPos = piecePosition[28];
+        int blackKingPos = this.piecePosition[28];
 
         // there are two rooks and only one should be on board
-        int rookPos = piecePosition[0];
+        int rookPos = this.piecePosition[0];
         if (rookPos == -1) {
-            rookPos = piecePosition[7];
+            rookPos = this.piecePosition[7];
         }
 
         // if kings are on oppossition we find those in which white checks
         // otherwise all moves are valid
-        if (willBlackKingBeInOppositionIfItMovesTo(blackKingPos)) {
+        if (this.willBlackKingBeInOppositionIfItMovesTo(blackKingPos)) {
             int blackKingRank = Utils.getRankFromPosition(blackKingPos);
             int blackKingFile = Utils.getFileFromPosition(blackKingPos);
 
@@ -3081,7 +3052,7 @@ public class Chessboard {
                 }
                 else {
                     // poteze kralja
-                    int whiteKingPos = piecePosition[4];
+                    int whiteKingPos = this.piecePosition[4];
                     int whiteKingFile = Utils.getFileFromPosition(whiteKingPos);
                     int whiteKingRank = Utils.getRankFromPosition(whiteKingPos);
                     int rookRank = Utils.getRankFromPosition(rookPos);
@@ -3114,67 +3085,19 @@ public class Chessboard {
     }
 
 
-    public ArrayList<Move> KRRKWhiteUrgentMoves(ArrayList<Move> allWhiteMoves) {
-        ArrayList<Move> rez = new ArrayList<Move>();
-        int rook0Position = piecePosition[0];
-        int rook7Position = piecePosition[7];
-        boolean isRook0NearBlackKing = false;
-        boolean isRook7NearBlackKing = false;
-        if (rook0Position != -1) {
-            isRook0NearBlackKing = isPositionAdjacentToBlackKing(rook0Position);
-        }
-        if (rook7Position != -1) {
-            isRook7NearBlackKing = isPositionAdjacentToBlackKing(rook7Position);
-        }
-
-        if (!isRook0NearBlackKing && !isRook7NearBlackKing) { return rez; }
-
-        for (Move currMove : allWhiteMoves) {
-            int to = Utils.getToFromMoveNumber(currMove.moveNumber);
-            int movedPiece = Utils
-                    .getMovedPieceFromMoveNumber(currMove.moveNumber);
-            if (movedPiece == 4) {
-                if (isRook0NearBlackKing) {
-                    if (isPositionProtectedByKingIfKingIsMovedTo(rook0Position,
-                            to)) {
-                        rez.add(new Move(currMove.moveNumber));
-                    }
-                }
-                if (isRook7NearBlackKing) {
-                    if (isPositionProtectedByKingIfKingIsMovedTo(rook7Position,
-                            to)) {
-                        rez.add(new Move(currMove.moveNumber));
-                    }
-                }
-            }
-            else {
-                if (isRook0NearBlackKing && movedPiece == 0
-                        && !isPositionAdjacentToWhiteKing(rook0Position)
-                        && !isPositionAdjacentToBlackKing(to)) {
-                    rez.add(new Move(currMove.moveNumber));
-                }
-                else if (isRook7NearBlackKing && movedPiece == 7
-                        && !isPositionAdjacentToWhiteKing(rook7Position)
-                        && !isPositionAdjacentToBlackKing(to)) {
-                    rez.add(new Move(currMove.moveNumber));
-                }
-            }
-        }
-        return rez;
-    }
-
-
     public ArrayList<Move> KBBKWhiteUrgentMoves(ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
-        int bishop2Position = piecePosition[2];
-        int bishop5Position = piecePosition[5];
+        int bishop2Position = this.piecePosition[2];
+        int bishop5Position = this.piecePosition[5];
         boolean isBishop2NearBlackKing = false;
         boolean isBishop5NearBlackKing = false;
         if (bishop2Position != -1) {
-            isBishop2NearBlackKing = isPositionAdjacentToBlackKing(bishop2Position);
+            isBishop2NearBlackKing = this
+                    .isPositionAdjacentToBlackKing(bishop2Position);
         }
         if (bishop5Position != -1) {
-            isBishop5NearBlackKing = isPositionAdjacentToBlackKing(bishop5Position);
+            isBishop5NearBlackKing = this
+                    .isPositionAdjacentToBlackKing(bishop5Position);
         }
         if (!isBishop2NearBlackKing && !isBishop5NearBlackKing) { return rez; }
 
@@ -3184,13 +3107,13 @@ public class Chessboard {
                     .getMovedPieceFromMoveNumber(currMove.moveNumber);
             if (movedPiece == 4) {
                 if (isBishop2NearBlackKing) {
-                    if (isPositionProtectedByKingIfKingIsMovedTo(
+                    if (this.isPositionProtectedByKingIfKingIsMovedTo(
                             bishop2Position, to)) {
                         rez.add(new Move(currMove.moveNumber));
                     }
                 }
                 if (isBishop5NearBlackKing) {
-                    if (isPositionProtectedByKingIfKingIsMovedTo(
+                    if (this.isPositionProtectedByKingIfKingIsMovedTo(
                             bishop5Position, to)) {
                         rez.add(new Move(currMove.moveNumber));
                     }
@@ -3198,38 +3121,18 @@ public class Chessboard {
             }
             else {
                 if (isBishop2NearBlackKing && movedPiece == 2
-                        && !isPositionAdjacentToBlackKing(to)
-                        && !isPositionAdjacentToWhiteKing(bishop2Position)) {
+                        && !this.isPositionAdjacentToBlackKing(to)
+                        && !this.isPositionAdjacentToWhiteKing(bishop2Position)) {
                     rez.add(new Move(currMove.moveNumber));
                 }
                 else if (isBishop5NearBlackKing && movedPiece == 5
-                        && !isPositionAdjacentToBlackKing(to)
-                        && !isPositionAdjacentToWhiteKing(to)) {
+                        && !this.isPositionAdjacentToBlackKing(to)
+                        && !this.isPositionAdjacentToWhiteKing(to)) {
                     rez.add(new Move(currMove.moveNumber));
                 }
             }
         }
 
-        return rez;
-    }
-
-
-    public ArrayList<Move> KRRKWhiteSafeMoves(ArrayList<Move> allWhiteMoves) {
-        ArrayList<Move> rez = new ArrayList<Move>();
-        for (Move currMove : allWhiteMoves) {
-            int to = Utils.getToFromMoveNumber(currMove.moveNumber);
-            int movedPiece = Utils
-                    .getMovedPieceFromMoveNumber(currMove.moveNumber);
-            if (movedPiece == 4) {
-                rez.add(new Move(currMove.moveNumber));
-            }
-            else {
-                if (!isPositionAdjacentToBlackKing(to)
-                        || isPositionAdjacentToWhiteKing(to)) {
-                    rez.add(new Move(currMove.moveNumber));
-                }
-            }
-        }
         return rez;
     }
 
@@ -3244,11 +3147,11 @@ public class Chessboard {
                 rez.add(new Move(currMove.moveNumber));
             }
             else {
-                if (!isPositionAdjacentToBlackKing(to)) {
+                if (!this.isPositionAdjacentToBlackKing(to)) {
                     rez.add(new Move(currMove.moveNumber));
                 }
-                if (isPositionAdjacentToBlackKing(to)
-                        && isPositionAdjacentToWhiteKing(to)) {
+                if (this.isPositionAdjacentToBlackKing(to)
+                        && this.isPositionAdjacentToWhiteKing(to)) {
                     rez.add(new Move(currMove.moveNumber));
                 }
             }
@@ -3268,7 +3171,7 @@ public class Chessboard {
             }
             else {
                 int otherBishop = movedPiece == 2 ? 5 : 2;
-                int otherBishopPosition = piecePosition[otherBishop];
+                int otherBishopPosition = this.piecePosition[otherBishop];
                 int to = Utils.getToFromMoveNumber(currMove.moveNumber);
                 if (otherBishopPosition != -1
                         && Utils.arePsotionsDiagonallyAdjacent(to,
@@ -3322,12 +3225,32 @@ public class Chessboard {
         return rez;
     }
 
-    /* ********************************************************************
-     * **************************DEBUG FUNKCIJE***************************
-     */
 
-    /* *******************************************************************
-     * **********************KONSTANTE************************************
+    /**
+     * Get all pieces that are near selected position, meaning they are on
+     * positions that have distance from selected position exactly 1.
+     * 
+     * @param position
+     *            selected position
+     * @return list of all pieces that are near position
      */
+    protected ArrayList<Integer> piecesNearPosition(int position) {
+        ArrayList<Integer> rez = new ArrayList<Integer>();
+        int[] diff = { 1, 15, 16, 17 };
+        for (int off : diff) {
+            int currPlusPosition = position + off;
+            int currMinusPosition = position - off;
+            if (Utils.isPositionLegal(currPlusPosition)
+                    && this.board[currPlusPosition] != -1) {
+                rez.add(this.board[currPlusPosition]);
+            }
+
+            if (Utils.isPositionLegal(currMinusPosition)
+                    && this.board[currMinusPosition] != -1) {
+                rez.add(this.board[currMinusPosition]);
+            }
+        }
+        return rez;
+    }
 
 }

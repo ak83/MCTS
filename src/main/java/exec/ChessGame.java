@@ -54,7 +54,7 @@ public class ChessGame {
             WhiteMoveChooserException, UtilsException, IOException,
             MCTUtilsException, MCTNodeException {
 
-        log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n\r\n");
+        this.log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n\r\n");
 
         long startTime = System.currentTimeMillis();
         this.fen += "[fen \"" + this.MCTree.getFEN() + "\"]\n\n";
@@ -115,7 +115,7 @@ public class ChessGame {
                 this.depth++;
             }
 
-            log.fine("Velikost drevesa je " + MCTree.getCurrentTreeSize());
+            this.log.fine("Velikost drevesa je " + this.MCTree.getCurrentTreeSize());
             this.MCTree.makeMCMove(moveNumber);
 
         }

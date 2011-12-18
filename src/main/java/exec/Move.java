@@ -1,7 +1,5 @@
 package exec;
 
-import java.util.Comparator;
-
 public class Move {
 
     public int moveNumber;
@@ -12,17 +10,19 @@ public class Move {
     }
 
 
+    @Override
     public String toString() {
-	int from = Utils.getFromFromMoveNumber(moveNumber);
-	int to = Utils.getToFromMoveNumber(moveNumber);
-	int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
-	int targetPiece = Utils.getTargetPieceFromMoveNumber(moveNumber);
+	int from = Utils.getFromFromMoveNumber(this.moveNumber);
+	int to = Utils.getToFromMoveNumber(this.moveNumber);
+	int movedPiece = Utils.getMovedPieceFromMoveNumber(this.moveNumber);
+	int targetPiece = Utils.getTargetPieceFromMoveNumber(this.moveNumber);
 
 	return "from: " + from + "\tto: " + to + "\tmovedPiece: " + movedPiece
 		+ "\ttargetPiece: " + targetPiece;
     }
 
 
+    @Override
     public boolean equals(Object m1) {
         
         if (m1 instanceof Move) { return this.moveNumber == ((Move) m1).moveNumber;

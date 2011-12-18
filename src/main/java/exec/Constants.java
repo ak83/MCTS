@@ -289,7 +289,7 @@ public class Constants {
                         System.exit(1);
                     }
                     Constants.NUMBER_OF_GAMES_PLAYED = numOfGames;
-                    file_mandatory_parameters[0] = true;
+                    Constants.file_mandatory_parameters[0] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("c")) {
@@ -333,7 +333,7 @@ public class Constants {
                     }
 
                     Constants.GOBAN = goban;
-                    file_mandatory_parameters[2] = true;
+                    Constants.file_mandatory_parameters[2] = true;
 
                 }
                 else if (words[0]
@@ -357,7 +357,7 @@ public class Constants {
                     }
 
                     Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION = numOfSim;
-                    file_mandatory_parameters[3] = true;
+                    Constants.file_mandatory_parameters[3] = true;
                 }
                 else if (words[0].equalsIgnoreCase("number_of_inital_steps")
                         || words[0].equalsIgnoreCase("initial_steps")) {
@@ -380,7 +380,7 @@ public class Constants {
                     }
 
                     Constants.NUMBER_OF_INITAL_STEPS = numOfSteps;
-                    file_mandatory_parameters[4] = true;
+                    Constants.file_mandatory_parameters[4] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("number_of_running_steps")
@@ -404,7 +404,7 @@ public class Constants {
                     }
 
                     Constants.NUMBER_OF_RUNNING_STEPS = numOfSteps;
-                    file_mandatory_parameters[5] = true;
+                    Constants.file_mandatory_parameters[5] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("ending")) {
@@ -428,7 +428,7 @@ public class Constants {
                     }
 
                     Constants.ENDING = words[1];
-                    file_mandatory_parameters[6] = true;
+                    Constants.file_mandatory_parameters[6] = true;
                 }
                 else if (words[0]
                         .equalsIgnoreCase("white_move_chooser_strategy")
@@ -464,7 +464,7 @@ public class Constants {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY = 0;
                     }
 
-                    file_mandatory_parameters[7] = true;
+                    Constants.file_mandatory_parameters[7] = true;
                 }
 
                 /*
@@ -702,8 +702,8 @@ public class Constants {
 
         StringBuffer sb = new StringBuffer(300);
         boolean missing = false;
-        for (int x = 0; x < file_mandatory_parameters.length; x++) {
-            if (!file_mandatory_parameters[x]) {
+        for (int x = 0; x < Constants.file_mandatory_parameters.length; x++) {
+            if (!Constants.file_mandatory_parameters[x]) {
                 missing = true;
                 switch (x) {
                 case 0:

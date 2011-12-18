@@ -76,7 +76,7 @@ public class WhiteMoveFinder {
      */
     private static int findKRKWhiteMove(Chessboard board)
             throws ChessboardException {
-        ArrayList<Move> rez = generalHeuristics(board);
+        ArrayList<Move> rez = WhiteMoveFinder.generalHeuristics(board);
 
         if (Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition) {
             ArrayList<Move> opp = board
@@ -184,12 +184,12 @@ public class WhiteMoveFinder {
         }
 
         if (Constants.HEURISTICS_check_for_urgent_moves) {
-            ArrayList<Move> urgent = board.KRKWhiteUrgentMoves(rez);
+            ArrayList<Move> urgent = board.whiteUrgentMoves(rez);
             if (urgent.size() > 0) { return urgent; }
         }
 
         if (Constants.HEURISTICS_only_safe_moves) {
-            ArrayList<Move> safe = board.KRKWhiteSafeMoves(rez);
+            ArrayList<Move> safe = board.whiteSafeMoves(rez);
             if (safe.size() != 0) {
                 rez = safe;
             }

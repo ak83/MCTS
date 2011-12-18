@@ -166,7 +166,7 @@ public class Utils {
 
 
     public static int getTargetPieceFromMove(Move a) {
-        return getTargetPieceFromMoveNumber(a.moveNumber);
+        return Utils.getTargetPieceFromMoveNumber(a.moveNumber);
     }
 
 
@@ -243,11 +243,11 @@ public class Utils {
 
 
     public static void printMoveNmber(int moveNumber) {
-        print("moveNumber: " + moveNumber);
-        print("\tfrom: " + Utils.getFromFromMoveNumber(moveNumber));
-        print("\tto: " + Utils.getToFromMoveNumber(moveNumber));
-        print("\tmovedPiece: " + Utils.getMovedPieceFromMoveNumber(moveNumber));
-        println("\ttargetPiece: "
+        Print.print("moveNumber: " + moveNumber);
+        Print.print("\tfrom: " + Utils.getFromFromMoveNumber(moveNumber));
+        Print.print("\tto: " + Utils.getToFromMoveNumber(moveNumber));
+        Print.print("\tmovedPiece: " + Utils.getMovedPieceFromMoveNumber(moveNumber));
+        Print.println("\ttargetPiece: "
                 + Utils.getTargetPieceFromMoveNumber(moveNumber));
     }
 
@@ -255,10 +255,10 @@ public class Utils {
     public static String moveNumberToString(int moveNumber) {
         String rez = "";
         rez += "moveNumber: " + moveNumber;
-        rez += "\tfrom: " + getFromFromMoveNumber(moveNumber);
-        rez += "\tto: " + getToFromMoveNumber(moveNumber);
-        rez += "\tmovedPiece: " + getMovedPieceFromMoveNumber(moveNumber);
-        rez += "\ttargetPiece: " + getTargetPieceFromMoveNumber(moveNumber);
+        rez += "\tfrom: " + Utils.getFromFromMoveNumber(moveNumber);
+        rez += "\tto: " + Utils.getToFromMoveNumber(moveNumber);
+        rez += "\tmovedPiece: " + Utils.getMovedPieceFromMoveNumber(moveNumber);
+        rez += "\ttargetPiece: " + Utils.getTargetPieceFromMoveNumber(moveNumber);
         return rez;
     }
 
@@ -314,14 +314,14 @@ public class Utils {
 
 
     public static String positionToString(int position) throws UtilsException {
-        if (!isPositionLegal(position)) { throw new UtilsException(
+        if (!Utils.isPositionLegal(position)) { throw new UtilsException(
                 "Neveljavna pozicija."); }
 
-        int file = (byte) getFileFromPosition(position);
+        int file = (byte) Utils.getFileFromPosition(position);
         int znak = 96 + file;
         char t = ((char) znak);
 
-        int rank = getRankFromPosition(position);
+        int rank = Utils.getRankFromPosition(position);
         return t + "" + rank + "";
     }
 
@@ -469,10 +469,10 @@ public class Utils {
 
 
     public static int distanceBetweenPositions(int positionA, int positionB) {
-        int rankA = getRankFromPosition(positionA);
-        int rankB = getRankFromPosition(positionB);
-        int fileA = getFileFromPosition(positionA);
-        int fileB = getFileFromPosition(positionB);
+        int rankA = Utils.getRankFromPosition(positionA);
+        int rankB = Utils.getRankFromPosition(positionB);
+        int fileA = Utils.getFileFromPosition(positionA);
+        int fileB = Utils.getFileFromPosition(positionB);
 
         int rankDiff = Math.abs(rankA - rankB);
         int fileDiff = Math.abs(fileA - fileB);
@@ -495,7 +495,7 @@ public class Utils {
                 + ", number of simulations per evaluation: "
                 + numberOfSimulationsPerEvaluation + "\"]\n";
         String site = "[Site \"C = " + c + ", goban = " + goban + "\"]\n";
-        String date = "[Date \"" + today() + "\"]\n";
+        String date = "[Date \"" + Utils.today() + "\"]\n";
         String round = "[Round \"" + whatRound + "\"]\n";
         String white = "[White \"" + whiteStrategy + "\"]\n";
         String black = "[Black \"" + blackStrategy + "\"]\n";
@@ -536,7 +536,7 @@ public class Utils {
 
 
     public static boolean arePositionsAdjacent(int positionA, int positionB) {
-        if (!isPositionLegal(positionA) || !isPositionLegal(positionB)) { return false; }
+        if (!Utils.isPositionLegal(positionA) || !Utils.isPositionLegal(positionB)) { return false; }
 
         int diff = Math.abs(positionB - positionA);
         if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
@@ -554,9 +554,9 @@ public class Utils {
     public static int positionFromString(String pos) throws UtilsException {
         if (pos.length() != 2)
             throw new UtilsException("Neustrezen pos: " + pos);
-        int file = charToIntFile(pos.charAt(0));
+        int file = Utils.charToIntFile(pos.charAt(0));
         int rank = Integer.parseInt(pos.substring(1));
-        return positionFromRankAndFile(file, rank);
+        return Utils.positionFromRankAndFile(file, rank);
     }
 
 
@@ -648,8 +648,8 @@ public class Utils {
 
 
     public static int getNegativeEdgePositionFromPosition(int position) {
-        int multi1 = getRankFromPosition(position);
-        int multi2 = 9 - getFileFromPosition(position);
+        int multi1 = Utils.getRankFromPosition(position);
+        int multi2 = 9 - Utils.getFileFromPosition(position);
         int multiplier = Math.min(multi1, multi2) - 1;
         int edgePosition = position - multiplier * 15;
         return edgePosition;
@@ -658,30 +658,30 @@ public class Utils {
 
     public static boolean arePsotionsDiagonallyAdjacent(int position1,
             int position2) {
-        int edgePos1 = getPositiveEdgePositionFromPosition(position1);
-        int edgePos2 = getPositiveEdgePositionFromPosition(position2);
+        int edgePos1 = Utils.getPositiveEdgePositionFromPosition(position1);
+        int edgePos2 = Utils.getPositiveEdgePositionFromPosition(position2);
         if (edgePos1 < 8 && edgePos2 < 8) {
-            int file1 = getFileFromPosition(edgePos1);
-            int file2 = getFileFromPosition(edgePos2);
+            int file1 = Utils.getFileFromPosition(edgePos1);
+            int file2 = Utils.getFileFromPosition(edgePos2);
             return Math.abs(file2 - file1) == 1;
         }
         else if ((edgePos1 > 7 || edgePos1 == 0)
                 && (edgePos2 > 7 || edgePos2 == 0)) {
-            int rank1 = getRankFromPosition(edgePos1);
-            int rank2 = getRankFromPosition(edgePos2);
+            int rank1 = Utils.getRankFromPosition(edgePos1);
+            int rank2 = Utils.getRankFromPosition(edgePos2);
             return Math.abs(rank2 - rank1) == 1;
         }
 
-        edgePos1 = getNegativeEdgePositionFromPosition(position1);
-        edgePos2 = getNegativeEdgePositionFromPosition(position2);
+        edgePos1 = Utils.getNegativeEdgePositionFromPosition(position1);
+        edgePos2 = Utils.getNegativeEdgePositionFromPosition(position2);
         if (edgePos1 < 8 && edgePos2 < 8) {
-            int file1 = getFileFromPosition(edgePos1);
-            int file2 = getFileFromPosition(edgePos2);
+            int file1 = Utils.getFileFromPosition(edgePos1);
+            int file2 = Utils.getFileFromPosition(edgePos2);
             return Math.abs(file2 - file1) == 1;
         }
         else if (edgePos1 > 6 && edgePos2 > 6) {
-            int rank1 = getRankFromPosition(edgePos1);
-            int rank2 = getRankFromPosition(edgePos2);
+            int rank1 = Utils.getRankFromPosition(edgePos1);
+            int rank2 = Utils.getRankFromPosition(edgePos2);
             return Math.abs(rank2 - rank1) == 1;
         }
 
