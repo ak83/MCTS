@@ -3,7 +3,7 @@
 *.pgn
 *.ini
 *.lck
-*.class
+/*.class
 .classpath
 .settings
 .project
