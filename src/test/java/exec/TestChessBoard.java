@@ -171,14 +171,24 @@ public class TestChessBoard {
     }
     
     @Test
-    public void neki() throws ChessboardException {
+    public void neki() throws Exception {
+        Constants.HEURISTICS_check_for_urgent_moves = true;
+        Constants.HEURISTICS_only_safe_moves = true;
+        Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = true;
+        Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king= true;
+        Constants.HEURISTICS_zero_moves_satefy = true;
+        Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = true;
+        
         TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
-        map.put(52, 0);
-        map.put(37, 4);
-        map.put(69, 28);
+        map.put(99, 0);
+        map.put(53, 4);
+        map.put(21, 28);
         Chessboard gg = new Chessboard("ss", map);
         System.out.println(gg);
+        WhiteMoveFinder.findWhiteMove(gg, 3);
         
+//        ArrayList<Move> ret = gg.KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(gg.getAllLegalWhiteMoves());
+//        ArrayList<Move> ret = gg.whiteUrgentMoves(gg.getAllLegalWhiteMoves());
         ArrayList<Move> ret = gg.whiteSafeMoves(gg.getAllLegalWhiteMoves());
         for(Move m : ret) {
             System.out.println(m);

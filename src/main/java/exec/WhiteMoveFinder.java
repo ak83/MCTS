@@ -42,8 +42,8 @@ public class WhiteMoveFinder {
      * @param board
      *            postavitev za katero iscemo naslednje poteze
      * @param strategy
-     *            0 za random strategijo, 1 za KRRK strategijo
-     * @return
+     *            0 - random strategy, 1 - KRRK ending, 2 - KQK ending, 3 - KRK ending, 4 - KBBK ending
+     * @return movenumber 
      */
     public static int findWhiteMove(Chessboard board, int strategy)
             throws ChessboardException, WhiteMoveFinderException {
