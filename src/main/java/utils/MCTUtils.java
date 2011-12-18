@@ -2,15 +2,16 @@ package utils;
 
 import java.util.ArrayList;
 
+import moveFinders.BlackMoveFinder;
+import moveFinders.WhiteMoveFinder;
+
 import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
 import exceptions.MCTUtilsException;
 import exceptions.WhiteMoveFinderException;
-import exec.BlackMoveFinder;
 import exec.Chessboard;
 import exec.Constants;
 import exec.MCTNode;
-import exec.WhiteMoveFinder;
 
 public class MCTUtils {
 

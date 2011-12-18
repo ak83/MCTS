@@ -1,4 +1,4 @@
-package exec;
+package moveFinders;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,10 @@ import java.util.Random;
 
 import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
+import exec.Chessboard;
+import exec.Constants;
+import exec.Move;
+import exec.Utils;
 
 /**
  * za nekatere funkcije je pred samo funkcijo potrebno vsaj enkrat klicati

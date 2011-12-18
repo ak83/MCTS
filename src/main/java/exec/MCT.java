@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import moveChoosers.BlackMoveChooser;
+import moveChoosers.WhiteMoveChooser;
+import moveFinders.BlackMoveFinder;
+import moveFinders.WhiteMoveFinder;
+
 import utils.MCTUtils;
 
 import exceptions.BlackMoveFinderException;

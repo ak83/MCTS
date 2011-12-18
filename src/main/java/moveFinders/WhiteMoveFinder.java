@@ -1,4 +1,4 @@
-package exec;
+package moveFinders;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,6 +7,9 @@ import javax.management.RuntimeErrorException;
 
 import exceptions.ChessboardException;
 import exceptions.WhiteMoveFinderException;
+import exec.Chessboard;
+import exec.Constants;
+import exec.Move;
 
 /**
  * za nekatere funkcije je pred samo funkcijo potrebno vsaj enkrat klicati
@@ -169,7 +172,7 @@ public class WhiteMoveFinder {
      * @return moves that are allowed by general heuristics
      */
     @SuppressWarnings("unchecked")
-    private static ArrayList<Move> generalHeuristics(Chessboard board) {
+    protected static ArrayList<Move> generalHeuristics(Chessboard board) {
         ArrayList<Move> allMoves = new ArrayList<Move>();
         ArrayList<Move> rez = null;
         try {

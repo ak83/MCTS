@@ -3,7 +3,13 @@
 *.pgn
 *.ini
 *.lck
+*.class
 /*.class
+target/classes/
+/target/surefire-reports
+/target/surefire
+/target/test-classes
+/target/classes
 .classpath
 .settings
 .project
