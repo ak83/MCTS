@@ -3,6 +3,16 @@
 *.pgn
 *.ini
 *.lck
+<<<<<<< HEAD
+=======
+*.class
+/*.class
+target/classes/
+/target/surefire-reports
+/target/surefire
+/target/test-classes
+/target/classes
+>>>>>>> issue1
 .classpath
 .settings
 .project

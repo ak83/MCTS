@@ -1,4 +1,4 @@
-package exec;
+package moveChoosers;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,6 +9,7 @@ import utils.MCTUtils;
 import exceptions.MCTUtilsException;
 import exceptions.UtilsException;
 import exceptions.WhiteMoveChooserException;
+import exec.MCTNode;
 
 public class WhiteMoveChooser {
 

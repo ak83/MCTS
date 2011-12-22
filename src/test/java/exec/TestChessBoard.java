@@ -11,8 +11,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import exceptions.ChessboardException;
-
 public class TestChessBoard {
 
     private static Chessboard      cbKRK;
@@ -85,7 +83,7 @@ public class TestChessBoard {
         // there are 2 possible moves where white checks
         Assert.assertEquals(2, returned.size());
 
-        // we check if returned moves are
+        // we check if returned moves are correct
         Assert.assertEquals(1111687423, returned.get(0).moveNumber);
         Assert.assertEquals(1112670463, returned.get(1).moveNumber);
     }
@@ -115,8 +113,8 @@ public class TestChessBoard {
 
     @Test
     public void testKRKWhiteSafeMoves() throws Exception {
-        ArrayList<Move> returned = TestChessBoard.cbKRK.whiteSafeMoves(TestChessBoard.cbKRK
-                .getAllLegalWhiteMoves());
+        ArrayList<Move> returned = TestChessBoard.cbKRK
+                .whiteSafeMoves(TestChessBoard.cbKRK.getAllLegalWhiteMoves());
 
         for (int x = 0; x < TestChessBoard.cbKRKAllMoves.size(); x++) {
             if ((x < 14 && x != 11 && x != 12) || x == 17) {
@@ -168,31 +166,6 @@ public class TestChessBoard {
         Assert.assertEquals(28, (int) returned.get(0));
         Assert.assertEquals(0, (int) returned.get(1));
 
-    }
-    
-    @Test
-    public void neki() throws Exception {
-        Constants.HEURISTICS_check_for_urgent_moves = true;
-        Constants.HEURISTICS_only_safe_moves = true;
-        Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = true;
-        Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king= true;
-        Constants.HEURISTICS_zero_moves_satefy = true;
-        Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = true;
-        
-        TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
-        map.put(99, 0);
-        map.put(53, 4);
-        map.put(21, 28);
-        Chessboard gg = new Chessboard("ss", map);
-        System.out.println(gg);
-        WhiteMoveFinder.findWhiteMove(gg, 3);
-        
-//        ArrayList<Move> ret = gg.KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(gg.getAllLegalWhiteMoves());
-//        ArrayList<Move> ret = gg.whiteUrgentMoves(gg.getAllLegalWhiteMoves());
-        ArrayList<Move> ret = gg.whiteSafeMoves(gg.getAllLegalWhiteMoves());
-        for(Move m : ret) {
-            System.out.println(m);
-        }
     }
 
 }
