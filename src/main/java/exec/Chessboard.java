@@ -1352,22 +1352,22 @@ public class Chessboard {
         int numberOfPossibleBlackKingMoves = this.getAllLegalBlackKingMoves()
                 .size();
 
-        // aanlyzes previous moves to see if pat occured through thtrrefold
-        // repetition
-        boolean fistOne = (this.previousMoves.get(0).moveNumber == this.previousMoves
-                .get(4).moveNumber)
-                && (this.previousMoves.get(4).moveNumber == this.previousMoves
-                        .get(8).moveNumber);
-        boolean secondOne = this.previousMoves.get(1).moveNumber == this.previousMoves
-                .get(5).moveNumber;
-        boolean thirdOne = this.previousMoves.get(2).moveNumber == this.previousMoves
-                .get(6).moveNumber;
-        boolean fourthOne = this.previousMoves.get(3).moveNumber == this.previousMoves
-                .get(7).moveNumber;
-
-        if (fistOne && secondOne && thirdOne && fourthOne) { return true; }
-
-        if (numberOfPossibleBlackKingMoves == 0) {
+        if (this.previousMoves.size() > 8) {
+	    // aanlyzes previous moves to see if pat occured through thtrrefold
+	    // repetition
+	    boolean fistOne = (this.previousMoves.get(0).moveNumber == this.previousMoves
+		    .get(4).moveNumber)
+		    && (this.previousMoves.get(4).moveNumber == this.previousMoves
+			    .get(8).moveNumber);
+	    boolean secondOne = this.previousMoves.get(1).moveNumber == this.previousMoves
+		    .get(5).moveNumber;
+	    boolean thirdOne = this.previousMoves.get(2).moveNumber == this.previousMoves
+		    .get(6).moveNumber;
+	    boolean fourthOne = this.previousMoves.get(3).moveNumber == this.previousMoves
+		    .get(7).moveNumber;
+	    if (fistOne && secondOne && thirdOne && fourthOne) { return true; }
+	}
+	if (numberOfPossibleBlackKingMoves == 0) {
             return !this.isBlackKingChecked();
         }
         else {
