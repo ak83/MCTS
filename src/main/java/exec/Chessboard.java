@@ -15,18 +15,19 @@ public class Chessboard {
     /*
      * board hrani stevilko figure, ki je na doloceni lokaciji
      */
-    private int[]   board;
+    private int[]           board;
     /*
      * piecePosition shrani lokacijo vsake figure na plosci
      */
-    private int[]   piecePosition;
+    private int[]           piecePosition;
 
-    private boolean isWhitesTurn      = true;
-    private int     numberOfMovesMade = 0;
-    private int     maxNumberOfMoves  = Constants.MAX_DEPTH;
+    private boolean         isWhitesTurn      = true;
+    private int             numberOfMovesMade = 0;
+    private int             maxNumberOfMoves  = Constants.MAX_DEPTH;
+    private ArrayList<Move> previousMoves     = new ArrayList<Move>();
 
     // private final boolean READLN = Constants.READLN;
-    private String  name;
+    private String          name;
 
 
     public Chessboard(String name) {
@@ -820,8 +821,8 @@ public class Chessboard {
      *            pozicija na katero premikamo
      * @return true ce je bila poteza narejena, drugace vrne false
      */
+    @Deprecated
     public boolean makeAMove(int from, int to) throws ChessboardException {
-        // println(this);
         this.isWhitesTurn = !this.isWhitesTurn;
         int piece = this.board[from];
 
@@ -860,6 +861,9 @@ public class Chessboard {
         if (moveNumber == -1) { throw new ChessboardException(
                 "neveljavna poteza"); }
 
+        Move move = new Move(moveNumber);
+        this.previousMoves.add(0, move);
+
         int from = Utils.getFromFromMoveNumber(moveNumber);
         int to = Utils.getToFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
@@ -877,62 +881,6 @@ public class Chessboard {
                 "Pozijia to: " + to + " ni prazna"); }
 
         return this.makeAMove(from, to);
-    }
-
-
-    /**
-     * Naredi potezo, toda ne preverja ali je poteza pravilna ali ne
-     * 
-     * @param from
-     *            - pozicija s katere premikamo
-     * @param to
-     *            - pozicija na kotero premikamo
-     * @throws ChessboardException
-     *             ce je na from poziciji prazen kvadrat
-     */
-    public void makeAMoveQuick(int from, int to) throws ChessboardException {
-        this.isWhitesTurn = !this.isWhitesTurn;
-
-        int piece = this.board[from];
-        if (piece == -1)
-            throw new ChessboardException();
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-    }
-
-
-    /**
-     * Naredi potezo, toda ne preverja ali je poteza pravilna ali ne
-     * 
-     * @param from
-     *            - pozicija s katere premikamo
-     * @param to
-     *            - pozicija na kotero premikamo
-     * @throws ChessboardException
-     *             ce je na from poziciji prazen kvadrat
-     */
-    public void makeAMoveQuick(Move move) throws ChessboardException {
-        int from = Utils.getFromFromMove(move);
-        int to = Utils.getToFromMove(move);
-
-        this.makeAMove(from, to);
-    }
-
-
-    /**
-     * Naredi potezo, toda ne preverja ali je poteza pravilna ali ne
-     * 
-     * @param moveNumber
-     *            - stevilka poteze, ki jo delamo
-     * @throws ChessboardException
-     */
-    public void makeAQuickMove(int moveNumber) throws ChessboardException {
-        int from = Utils.getFromFromMoveNumber(moveNumber);
-        int to = Utils.getToFromMoveNumber(moveNumber);
-
-        this.makeAMoveQuick(from, to);
     }
 
 
@@ -1393,10 +1341,31 @@ public class Chessboard {
     }
 
 
+    /**
+     * Checks if black king is in pat position (either it has no more moves left
+     * or same board state has occured three times in a row).
+     * 
+     * @return true if black king is in pat position, otherwise false
+     * @throws ChessboardException
+     */
     public boolean isBlackKingPatted() throws ChessboardException {
-        // ni stestirana
         int numberOfPossibleBlackKingMoves = this.getAllLegalBlackKingMoves()
                 .size();
+
+        // aanlyzes previous moves to see if pat occured through thtrrefold
+        // repetition
+        boolean fistOne = (this.previousMoves.get(0).moveNumber == this.previousMoves
+                .get(4).moveNumber)
+                && (this.previousMoves.get(4).moveNumber == this.previousMoves
+                        .get(8).moveNumber);
+        boolean secondOne = this.previousMoves.get(1).moveNumber == this.previousMoves
+                .get(5).moveNumber;
+        boolean thirdOne = this.previousMoves.get(2).moveNumber == this.previousMoves
+                .get(6).moveNumber;
+        boolean fourthOne = this.previousMoves.get(3).moveNumber == this.previousMoves
+                .get(7).moveNumber;
+
+        if (fistOne && secondOne && thirdOne && fourthOne) { return true; }
 
         if (numberOfPossibleBlackKingMoves == 0) {
             return !this.isBlackKingChecked();
@@ -3038,7 +3007,6 @@ public class Chessboard {
                     // poteze trdnjave
                     int rank = Utils.getRankFromPosition(to);
                     int file = Utils.getFileFromPosition(to);
-                    int from = Utils.getFromFromMoveNumber(currMove.moveNumber);
 
                     boolean sameRank = rank == blackKingRank;
                     boolean sameFile = file == blackKingFile;
