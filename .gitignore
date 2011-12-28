@@ -1,15 +1,11 @@
 /bin
+/target
 *.log
 *.pgn
 *.ini
 *.lck
 *.class
-/*.class
-/target/surefire-reports
-/target/surefire
-/target/test-classes
-/target/classes
+*/**/*.class
 .classpath
 .settings
 .project
-/target
