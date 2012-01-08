@@ -1,6 +1,7 @@
 package chessboard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -19,19 +20,27 @@ public class Chessboard {
     /*
      * board hrani stevilko figure, ki je na doloceni lokaciji
      */
-    private int[]           board;
+    private int[]                       board;
     /*
      * piecePosition shrani lokacijo vsake figure na plosci
      */
-    private int[]           piecePosition;
+    private int[]                       piecePosition;
 
-    private boolean         isWhitesTurn      = true;
-    private int             numberOfMovesMade = 0;
-    private int             maxNumberOfMoves  = Constants.MAX_DEPTH;
-    private ArrayList<Move> previousMoves     = new ArrayList<Move>();
+    private boolean                     isWhitesTurn                      = true;
+    private int                         numberOfMovesMade                 = 0;
+    private int                         maxNumberOfMoves                  = Constants.MAX_DEPTH;
+    private ArrayList<Move>             previousMoves                     = new ArrayList<Move>();
+    /**
+     * This is used for keeping track how many times some chess board state has
+     * occurred. Key is hash code of chess board and values is how may times
+     * that has has occurred.
+     */
+    private HashMap<Integer, Integer> numberOfTimesBoardStateHasOccured = new HashMap<Integer, Integer>(
+                                                                                  100000);
 
     // private final boolean READLN = Constants.READLN;
-    private String          name;
+    private String                      name;
+    private boolean                     wasBoardStateRepeatedThreeTimes   = false;
 
 
     public Chessboard(String name) {
@@ -817,7 +826,9 @@ public class Chessboard {
 
 
     /**
-     * ce je poteza mozna naredi potezo
+     * This move is only used from Chessboard.makeAMove(int). It moves poiece
+     * from <code>from</code> position to <code>to</code> position. It also
+     * fills numberOfTimesBoardStateHasOccured.
      * 
      * @param from
      *            pozicija iz katere premikamo
@@ -829,6 +840,22 @@ public class Chessboard {
     public boolean makeAMove(int from, int to) throws ChessboardException {
         this.isWhitesTurn = !this.isWhitesTurn;
         int piece = this.board[from];
+
+        int hash = this.hashCode();
+
+        if (this.numberOfTimesBoardStateHasOccured.containsKey(hash)) {
+            // we increase number of times that state has appeared.
+            int stateAppeared = this.numberOfTimesBoardStateHasOccured
+                    .get(hash) + 1;
+            this.numberOfTimesBoardStateHasOccured.put(hash, stateAppeared);
+
+            if (stateAppeared > 2) {
+                this.wasBoardStateRepeatedThreeTimes = true;
+            }
+        }
+        else {
+            this.numberOfTimesBoardStateHasOccured.put(hash, 1);
+        }
 
         if (piece == 0 || piece == 7) { return this.makeWhiteRookMove(from, to); }
         if (piece == 1 || piece == 6) { return this.makeWhiteKnightMove(from,
@@ -1297,6 +1324,7 @@ public class Chessboard {
         if (this.isBlackKingPatted()) { return -1; }
         if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return -1; }
         if (this.numberOfMovesMade > this.maxNumberOfMoves) { return -1; }
+        if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
 
         return 0;
     }
@@ -1312,6 +1340,7 @@ public class Chessboard {
         if (this.isBlackKingMated()) { return 1; }
 
         if (this.isBlackKingPatted()) { return -1; }
+        if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
         if (this.numberOfMovesMade > this.maxNumberOfMoves) { return -1; }
 
         return 0;
@@ -1356,21 +1385,25 @@ public class Chessboard {
         int numberOfPossibleBlackKingMoves = this.getAllLegalBlackKingMoves()
                 .size();
 
-        if (this.previousMoves.size() > 8) {
-            // aanlyzes previous moves to see if pat occured through thtrrefold
-            // repetition
-            boolean fistOne = (this.previousMoves.get(0).moveNumber == this.previousMoves
-                    .get(4).moveNumber)
-                    && (this.previousMoves.get(4).moveNumber == this.previousMoves
-                            .get(8).moveNumber);
-            boolean secondOne = this.previousMoves.get(1).moveNumber == this.previousMoves
-                    .get(5).moveNumber;
-            boolean thirdOne = this.previousMoves.get(2).moveNumber == this.previousMoves
-                    .get(6).moveNumber;
-            boolean fourthOne = this.previousMoves.get(3).moveNumber == this.previousMoves
-                    .get(7).moveNumber;
-            if (fistOne && secondOne && thirdOne && fourthOne) { return true; }
-        }
+        // if (this.previousMoves.size() > 8) {
+        // // aanlyzes previous moves to see if pat occured through thtrrefold
+        // // repetition
+        // boolean fistOne = (this.previousMoves.get(0).moveNumber ==
+        // this.previousMoves
+        // .get(4).moveNumber)
+        // && (this.previousMoves.get(4).moveNumber == this.previousMoves
+        // .get(8).moveNumber);
+        // boolean secondOne = this.previousMoves.get(1).moveNumber ==
+        // this.previousMoves
+        // .get(5).moveNumber;
+        // boolean thirdOne = this.previousMoves.get(2).moveNumber ==
+        // this.previousMoves
+        // .get(6).moveNumber;
+        // boolean fourthOne = this.previousMoves.get(3).moveNumber ==
+        // this.previousMoves
+        // .get(7).moveNumber;
+        // if (fistOne && secondOne && thirdOne && fourthOne) { return true; }
+        // }
         if (numberOfPossibleBlackKingMoves == 0) {
             return !this.isBlackKingChecked();
         }
@@ -1907,14 +1940,14 @@ public class Chessboard {
         if (this.board[to] == -1 || !this.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
-            case 14:
-                return true;
-            case 31:
-                return true;
-            case 33:
-                return true;
-            case 18:
-                return true;
+                case 14:
+                    return true;
+                case 31:
+                    return true;
+                case 33:
+                    return true;
+                case 18:
+                    return true;
             }
         }
         return false;
@@ -1937,14 +1970,14 @@ public class Chessboard {
         if (true) {
             int raz = Math.abs(from - to);
             switch (raz) {
-            case 14:
-                return true;
-            case 31:
-                return true;
-            case 33:
-                return true;
-            case 18:
-                return true;
+                case 14:
+                    return true;
+                case 31:
+                    return true;
+                case 33:
+                    return true;
+                case 18:
+                    return true;
             }
         }
         return false;
@@ -1967,14 +2000,14 @@ public class Chessboard {
         if (this.board[to] == -1 || this.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
-            case 14:
-                return true;
-            case 31:
-                return true;
-            case 33:
-                return true;
-            case 18:
-                return true;
+                case 14:
+                    return true;
+                case 31:
+                    return true;
+                case 33:
+                    return true;
+                case 18:
+                    return true;
             }
         }
         return false;
@@ -1997,14 +2030,14 @@ public class Chessboard {
         if (true) {
             int raz = Math.abs(from - to);
             switch (raz) {
-            case 14:
-                return true;
-            case 31:
-                return true;
-            case 33:
-                return true;
-            case 18:
-                return true;
+                case 14:
+                    return true;
+                case 31:
+                    return true;
+                case 33:
+                    return true;
+                case 18:
+                    return true;
             }
         }
         return false;
@@ -3237,8 +3270,8 @@ public class Chessboard {
     public int hashCode() {
         int result = 0;
         int counter = 0;
-        for(int pos: this.piecePosition) {
-            if(pos != -1) {
+        for (int pos : this.piecePosition) {
+            if (pos != -1) {
                 int offset = counter * 8;
                 int shiftedPos = pos & 0xFF;
                 shiftedPos = shiftedPos << offset;
@@ -3246,7 +3279,7 @@ public class Chessboard {
                 counter++;
             }
         }
-        
+
         return result;
     }
 
