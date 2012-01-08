@@ -11,9 +11,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import utils.MiscUtils;
-
-import chessboard.Chessboard;
 import exec.Constants;
 import exec.Move;
 

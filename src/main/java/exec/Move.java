@@ -10,6 +10,12 @@ public class Move {
     }
 
 
+    public Move(int from, int to, int movedPiece, int targetPiece) {
+        this.moveNumber = Utils.constructMoveNumber(from, to, movedPiece,
+                targetPiece);
+    }
+
+
     @Override
     public String toString() {
         int from = Utils.getFromFromMoveNumber(this.moveNumber);
@@ -30,8 +36,46 @@ public class Move {
             return this.moveNumber == ((Move) m1).moveNumber;
         }
         else {
-            return m1.equals(m1);
+            return false;
         }
+    }
+    
+    @Override
+    public int hashCode() {
+        return this.moveNumber;
+    }
+
+
+    /**
+     * @return position to which movedPiece will be moved.
+     */
+    public int getTo() {
+        return Utils.getToFromMoveNumber(this.moveNumber);
+    }
+
+
+    /**
+     * @return position on which movedPiece is standing.
+     */
+    public int getFrom() {
+        return Utils.getFromFromMoveNumber(this.moveNumber);
+    }
+
+
+    /**
+     * @return movedPiece of this move.
+     */
+    public int getMovedPiece() {
+        return Utils.getMovedPieceFromMoveNumber(this.moveNumber);
+    }
+
+
+    /**
+     * @return piece that get eaten by movedPiece or -1 if position to which
+     *         movedPiece moves is empty.
+     */
+    public int getTargetPiece() {
+        return Utils.getTargetPieceFromMoveNumber(this.moveNumber);
     }
 
 }
