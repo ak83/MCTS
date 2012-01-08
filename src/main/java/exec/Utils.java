@@ -1,8 +1,5 @@
 package exec;
 
-import static exec.Print.print;
-import static exec.Print.println;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,42 +49,42 @@ public class Utils {
         if (pieceNumber > 15 && pieceNumber < 24)
             return "BP";
         switch (pieceNumber) {
-        case 0:
-            return "WR";
-        case 1:
-            return "WN";
-        case 2:
-            return "WB";
-        case 3:
-            return "WQ";
-        case 4:
-            return "WK";
-        case 5:
-            return "WB";
-        case 6:
-            return "WN";
-        case 7:
-            return "WR";
+            case 0:
+                return "WR";
+            case 1:
+                return "WN";
+            case 2:
+                return "WB";
+            case 3:
+                return "WQ";
+            case 4:
+                return "WK";
+            case 5:
+                return "WB";
+            case 6:
+                return "WN";
+            case 7:
+                return "WR";
 
-        case 24:
-            return "BR";
-        case 25:
-            return "BN";
-        case 26:
-            return "BB";
-        case 27:
-            return "BQ";
-        case 28:
-            return "BK";
-        case 29:
-            return "BB";
-        case 30:
-            return "BN";
-        case 31:
-            return "BR";
+            case 24:
+                return "BR";
+            case 25:
+                return "BN";
+            case 26:
+                return "BB";
+            case 27:
+                return "BQ";
+            case 28:
+                return "BK";
+            case 29:
+                return "BB";
+            case 30:
+                return "BN";
+            case 31:
+                return "BR";
 
-        default:
-            throw new UtilsException("pieceNumber = " + pieceNumber);
+            default:
+                throw new UtilsException("pieceNumber = " + pieceNumber);
         }
     }
 
@@ -246,7 +243,8 @@ public class Utils {
         Print.print("moveNumber: " + moveNumber);
         Print.print("\tfrom: " + Utils.getFromFromMoveNumber(moveNumber));
         Print.print("\tto: " + Utils.getToFromMoveNumber(moveNumber));
-        Print.print("\tmovedPiece: " + Utils.getMovedPieceFromMoveNumber(moveNumber));
+        Print.print("\tmovedPiece: "
+                + Utils.getMovedPieceFromMoveNumber(moveNumber));
         Print.println("\ttargetPiece: "
                 + Utils.getTargetPieceFromMoveNumber(moveNumber));
     }
@@ -258,7 +256,8 @@ public class Utils {
         rez += "\tfrom: " + Utils.getFromFromMoveNumber(moveNumber);
         rez += "\tto: " + Utils.getToFromMoveNumber(moveNumber);
         rez += "\tmovedPiece: " + Utils.getMovedPieceFromMoveNumber(moveNumber);
-        rez += "\ttargetPiece: " + Utils.getTargetPieceFromMoveNumber(moveNumber);
+        rez += "\ttargetPiece: "
+                + Utils.getTargetPieceFromMoveNumber(moveNumber);
         return rez;
     }
 
@@ -536,7 +535,8 @@ public class Utils {
 
 
     public static boolean arePositionsAdjacent(int positionA, int positionB) {
-        if (!Utils.isPositionLegal(positionA) || !Utils.isPositionLegal(positionB)) { return false; }
+        if (!Utils.isPositionLegal(positionA)
+                || !Utils.isPositionLegal(positionB)) { return false; }
 
         int diff = Math.abs(positionB - positionA);
         if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
@@ -589,18 +589,18 @@ public class Utils {
             throws UtilsException {
         String chooser = "izbiranje: ";
         switch (chooserStrat) {
-        case 0:
-            chooser += "random";
-            break;
-        case 1:
-            chooser += "max Visit Count";
-            break;
-        case 2:
-            chooser += "max Rating";
-            break;
-        default:
-            throw new UtilsException("neveljavna strategija izbiranja: "
-                    + chooserStrat);
+            case 0:
+                chooser += "random";
+                break;
+            case 1:
+                chooser += "max Visit Count";
+                break;
+            case 2:
+                chooser += "max Rating";
+                break;
+            default:
+                throw new UtilsException("neveljavna strategija izbiranja: "
+                        + chooserStrat);
         }
         return chooser;
     }
@@ -610,20 +610,20 @@ public class Utils {
             throws UtilsException {
         String str = "izbiranje in simulacija: ";
         switch (strategy) {
-        case 0:
-            str += "random";
-            break;
-        case 1:
-            str += "tezi k centru ne glede na belega";
-            break;
-        case 2:
-            str += "tezi k centru, ce je mozno poje belega";
-            break;
-        case 3:
-            str += "igra s popolno informacijo";
-            break;
-        default:
-            throw new UtilsException("neveljavna strategija: " + strategy);
+            case 0:
+                str += "random";
+                break;
+            case 1:
+                str += "tezi k centru ne glede na belega";
+                break;
+            case 2:
+                str += "tezi k centru, ce je mozno poje belega";
+                break;
+            case 3:
+                str += "igra s popolno informacijo";
+                break;
+            default:
+                throw new UtilsException("neveljavna strategija: " + strategy);
         }
         return str;
     }

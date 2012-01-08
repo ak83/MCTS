@@ -6,9 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+import chessboard.Chessboard;
+
 import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
-import exec.Chessboard;
 import exec.Constants;
 import exec.Move;
 import exec.Utils;

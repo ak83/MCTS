@@ -5,9 +5,10 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
+import chessboard.Chessboard;
+
 import exceptions.ChessboardException;
 import exceptions.WhiteMoveFinderException;
-import exec.Chessboard;
 import exec.Constants;
 import exec.Move;
 

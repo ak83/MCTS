@@ -1,4 +1,4 @@
-package exec;
+package chessboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +10,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import chessboard.Chessboard;
+import exec.Constants;
+import exec.Move;
 
 public class TestChessBoard {
 

@@ -2,11 +2,12 @@ package moveChoosers;
 
 import java.util.logging.Logger;
 
+import chessboard.Chessboard;
+
 import moveFinders.BlackMoveFinder;
 
 import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
-import exec.Chessboard;
 import exec.Utils;
 
 public class BlackMoveChooser {

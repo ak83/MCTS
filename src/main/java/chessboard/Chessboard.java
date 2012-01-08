@@ -1,4 +1,4 @@
-package exec;
+package chessboard;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -6,9 +6,13 @@ import java.util.TreeMap;
 
 import javax.management.RuntimeErrorException;
 
-import utils.ChessboardUtils;
 import exceptions.ChessboardException;
 import exceptions.UtilsException;
+import exec.Constants;
+import exec.MCTNode;
+import exec.Move;
+import exec.Print;
+import exec.Utils;
 
 public class Chessboard {
 
@@ -1353,21 +1357,21 @@ public class Chessboard {
                 .size();
 
         if (this.previousMoves.size() > 8) {
-	    // aanlyzes previous moves to see if pat occured through thtrrefold
-	    // repetition
-	    boolean fistOne = (this.previousMoves.get(0).moveNumber == this.previousMoves
-		    .get(4).moveNumber)
-		    && (this.previousMoves.get(4).moveNumber == this.previousMoves
-			    .get(8).moveNumber);
-	    boolean secondOne = this.previousMoves.get(1).moveNumber == this.previousMoves
-		    .get(5).moveNumber;
-	    boolean thirdOne = this.previousMoves.get(2).moveNumber == this.previousMoves
-		    .get(6).moveNumber;
-	    boolean fourthOne = this.previousMoves.get(3).moveNumber == this.previousMoves
-		    .get(7).moveNumber;
-	    if (fistOne && secondOne && thirdOne && fourthOne) { return true; }
-	}
-	if (numberOfPossibleBlackKingMoves == 0) {
+            // aanlyzes previous moves to see if pat occured through thtrrefold
+            // repetition
+            boolean fistOne = (this.previousMoves.get(0).moveNumber == this.previousMoves
+                    .get(4).moveNumber)
+                    && (this.previousMoves.get(4).moveNumber == this.previousMoves
+                            .get(8).moveNumber);
+            boolean secondOne = this.previousMoves.get(1).moveNumber == this.previousMoves
+                    .get(5).moveNumber;
+            boolean thirdOne = this.previousMoves.get(2).moveNumber == this.previousMoves
+                    .get(6).moveNumber;
+            boolean fourthOne = this.previousMoves.get(3).moveNumber == this.previousMoves
+                    .get(7).moveNumber;
+            if (fistOne && secondOne && thirdOne && fourthOne) { return true; }
+        }
+        if (numberOfPossibleBlackKingMoves == 0) {
             return !this.isBlackKingChecked();
         }
         else {
@@ -3219,6 +3223,19 @@ public class Chessboard {
             }
         }
         return rez;
+    }
+
+
+    /**
+     * Calculates hashcode of chessboard. Each chessboard state has its own
+     * hashcode. WARNING: it only works correctly as long as there are no more
+     * than 4 pieces on the board.
+     * 
+     * @return chessboard hashcode
+     */
+    @Override
+    public int hashCode() {
+        return 0;
     }
 
 }

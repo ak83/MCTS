@@ -1,11 +1,10 @@
-/bin
-/target
+bin
+target
 *.log
 *.pgn
 *.ini
 *.lck
 *.class
-*/**/*.class
 .classpath
 .settings
 .project

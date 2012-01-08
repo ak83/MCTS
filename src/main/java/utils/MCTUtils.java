@@ -2,6 +2,8 @@ package utils;
 
 import java.util.ArrayList;
 
+import chessboard.Chessboard;
+
 import moveFinders.BlackMoveFinder;
 import moveFinders.WhiteMoveFinder;
 
@@ -9,7 +11,6 @@ import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
 import exceptions.MCTUtilsException;
 import exceptions.WhiteMoveFinderException;
-import exec.Chessboard;
 import exec.Constants;
 import exec.MCTNode;
 
