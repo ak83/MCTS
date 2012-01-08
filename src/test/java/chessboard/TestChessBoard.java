@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import utils.MiscUtils;
+
 import chessboard.Chessboard;
 import exec.Constants;
 import exec.Move;
@@ -105,8 +107,8 @@ public class TestChessBoard {
 
         for (int x = 0; x < 128; x++) {
             if (initialBoardState.containsKey(x)) {
-                Assert.assertEquals((int) initialBoardState.get(x),
-                        testBoard.getBoard()[x]);
+                Assert.assertEquals((int) initialBoardState.get(x), testBoard
+                        .getBoard()[x]);
             }
             else {
                 Assert.assertEquals(-1, testBoard.getBoard()[x]);
@@ -149,13 +151,13 @@ public class TestChessBoard {
         for (int x = 0; x < TestChessBoard.cbKRRKALLMoves.size(); x++) {
             if (listOfexpectedIndexesOfNotUrgentMoves.contains(x)) {
                 Assert.assertFalse(
-                        "Move with index: " + x + " is urgent move.",
-                        returned.contains(TestChessBoard.cbKRRKALLMoves.get(x)));
+                        "Move with index: " + x + " is urgent move.", returned
+                                .contains(TestChessBoard.cbKRRKALLMoves.get(x)));
             }
             else {
                 Assert.assertTrue("Move with index: " + x
-                        + " isn't urgent move.",
-                        returned.contains(TestChessBoard.cbKRRKALLMoves.get(x)));
+                        + " isn't urgent move.", returned
+                        .contains(TestChessBoard.cbKRRKALLMoves.get(x)));
             }
         }
 
@@ -170,6 +172,12 @@ public class TestChessBoard {
         Assert.assertEquals(28, (int) returned.get(0));
         Assert.assertEquals(0, (int) returned.get(1));
 
+    }
+
+
+    @Test
+    public void testHashCode() {
+        Assert.assertEquals(5452610, TestChessBoard.cbKRK.hashCode());
     }
 
 }

@@ -3235,7 +3235,19 @@ public class Chessboard {
      */
     @Override
     public int hashCode() {
-        return 0;
+        int result = 0;
+        int counter = 0;
+        for(int pos: this.piecePosition) {
+            if(pos != -1) {
+                int offset = counter * 8;
+                int shiftedPos = pos & 0xFF;
+                shiftedPos = shiftedPos << offset;
+                result = result | shiftedPos;
+                counter++;
+            }
+        }
+        
+        return result;
     }
 
 }
