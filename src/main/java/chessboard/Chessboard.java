@@ -31,7 +31,6 @@ public class Chessboard {
     private boolean		   isWhitesTurn					     = true;
     private int		       numberOfMovesMade					= 0;
     private int		       maxNumberOfMoves					 = Constants.MAX_DEPTH;
-    private ArrayList<Move>	   previousMoves					    = new ArrayList<Move>();
     /**
      * This is used for keeping track how many times some chess board state has
      * occurred. Key is hash code of chess board and values is how may times
@@ -901,9 +900,6 @@ public class Chessboard {
     public boolean makeAMove(int moveNumber) throws ChessboardException {
 	if (moveNumber == -1) { throw new ChessboardException(
 		"neveljavna poteza"); }
-
-	Move move = new Move(moveNumber);
-	this.previousMoves.add(0, move);
 
 	int from = Utils.getFromFromMoveNumber(moveNumber);
 	int to = Utils.getToFromMoveNumber(moveNumber);
