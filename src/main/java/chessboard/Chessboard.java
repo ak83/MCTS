@@ -842,6 +842,26 @@ public class Chessboard {
 	this.isWhitesTurn = !this.isWhitesTurn;
 	int piece = this.board[from];
 
+	boolean result = false;
+	
+	if (piece == 0 || piece == 7) { result = this.makeWhiteRookMove(from, to); }
+	if (piece == 1 || piece == 6) { result = this.makeWhiteKnightMove(from,
+		to); }
+	if (piece == 2 || piece == 5) { result = this.makeWhiteBishopMove(from,
+		to); }
+	if (piece == 3) { result = this.makeWhiteQueenMove(from, to); }
+	if (piece == 4) { result = this.makeWhiteKingMove(from, to); }
+	if (piece > 7 && piece < 16) { result = this.makeWhitePawnMove(from, to); }
+	if (piece > 15 && piece < 24) { result = this.makeBlackPawnMove(from, to); }
+	if (piece == 24 || piece == 31) { result = this.makeBlackRookMove(from,
+		to); }
+	if (piece == 25 || piece == 30) { result = this.makeBlackKnightMove(from,
+		to); }
+	if (piece == 26 || piece == 29) { result = this.makeBlackBishopMove(from,
+		to); }
+	if (piece == 27) { result = this.makeBlackQueenMove(from, to); }
+	if (piece == 28) { result = this.makeBlackKingMove(from, to); }
+	
 	int hash = this.hashCode();
 	this.previousHashes.add(hash);
 
@@ -866,25 +886,7 @@ public class Chessboard {
 	    this.numberOfTimesBoardStateHasOccured.put(hash, 1);
 	}
 
-	if (piece == 0 || piece == 7) { return this.makeWhiteRookMove(from, to); }
-	if (piece == 1 || piece == 6) { return this.makeWhiteKnightMove(from,
-		to); }
-	if (piece == 2 || piece == 5) { return this.makeWhiteBishopMove(from,
-		to); }
-	if (piece == 3) { return this.makeWhiteQueenMove(from, to); }
-	if (piece == 4) { return this.makeWhiteKingMove(from, to); }
-	if (piece > 7 && piece < 16) { return this.makeWhitePawnMove(from, to); }
-	if (piece > 15 && piece < 24) { return this.makeBlackPawnMove(from, to); }
-	if (piece == 24 || piece == 31) { return this.makeBlackRookMove(from,
-		to); }
-	if (piece == 25 || piece == 30) { return this.makeBlackKnightMove(from,
-		to); }
-	if (piece == 26 || piece == 29) { return this.makeBlackBishopMove(from,
-		to); }
-	if (piece == 27) { return this.makeBlackQueenMove(from, to); }
-	if (piece == 28) { return this.makeBlackKingMove(from, to); }
-
-	throw new ChessboardException();
+	return result;
     }
 
 
