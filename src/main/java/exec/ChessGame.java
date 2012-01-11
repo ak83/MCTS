@@ -86,7 +86,10 @@ public class ChessGame {
 			+ ", ");
 		gameInProgress = false;
 		if (!whitesTurn) {
-//		    this.fen += Utils.moveNumberToString(mW, this.depth);
+		    System.out.println("Zadnjo potezo je imel beli");
+		    this.fen += Utils.moveNumberToString(mW, this.depth);
+		} else {
+		    System.out.println("Zadnjo potezo je imel crni");
 		}
 
 		break;
@@ -123,6 +126,7 @@ public class ChessGame {
 	    this.MCTree.makeMCMove(moveNumber);
 
 	}
+	
 	long runTime = System.currentTimeMillis() - startTime;
 	MCTStats stats = this.MCTree.getMCTStatistics();
 	String logString0 = "\r\n##########################\r\n###########################\r\nPOVZETEK igre "
