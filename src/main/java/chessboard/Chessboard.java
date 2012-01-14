@@ -2726,9 +2726,9 @@ public class Chessboard implements Cloneable {
 	    Chessboard tempBoard = (Chessboard) this.clone();
 	    tempBoard.makeAMove(move.moveNumber);
 	    int hash = tempBoard.hashCode();
-	    Integer stateOccured = tempBoard.numberOfTimesBoardStateHasOccured
+	    Integer stateOccured = this.numberOfTimesBoardStateHasOccured
 		    .get(hash);
-	    if ((stateOccured != null && stateOccured < 2)) {
+	    if (stateOccured == null) {
 		rez.add(move);
 	    }
 	}
