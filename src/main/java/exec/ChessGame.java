@@ -16,7 +16,6 @@ import exceptions.WhiteMoveFinderException;
 
 public class ChessGame {
 
-    private int    numberOfInitialSimulations;
     private int    numberOfRunningSimulations;
 
     private int    whiteMoveChooserStrategy;
@@ -59,22 +58,20 @@ public class ChessGame {
 	this.fen += "[fen \"" + this.MCTree.getFEN() + "\"]\n\n";
 	boolean didWhiteWin = false;
 
-	for (int x = 0; x < this.numberOfInitialSimulations; x++) {
+	for (int x = 0; x < Constants.NUMBER_OF_INITAL_STEPS; x++) {
 	    this.MCTree.oneMCTStep();
 	}
 
 	boolean whitesTurn = true;
-	boolean gameInProgress = true;
 	int mW = -1;
 	int mB = -1;
-	while (gameInProgress) {
+	while (true) {
 	    int eval = this.MCTree.evaluateMainChessBoardState();
 	    if (eval > 0) {
 		// ZMAGA BELEGA
 		didWhiteWin = true;
 		System.out.print("Zmaga BELEGA v igri " + this.pgnFileName
 			+ ", ");
-		gameInProgress = false;
 		this.fen += Utils.moveNumberToString(mW, this.depth);
 		break;
 	    }
@@ -83,13 +80,8 @@ public class ChessGame {
 		didWhiteWin = false;
 		System.out.print("Zmaga ÈRNEGA v igri " + this.pgnFileName
 			+ ", ");
-		gameInProgress = false;
 		if (!whitesTurn) {
-		    System.out.println("Zadnjo potezo je imel beli");
 		    this.fen += Utils.moveNumberToString(mW, this.depth);
-		}
-		else {
-		    System.out.println("Zadnjo potezo je imel crni");
 		}
 
 		break;
@@ -143,8 +135,10 @@ public class ChessGame {
 	String logString1 = "V igri je bilo:";
 	String logString2 = stats.numberOfMatsInSimAddsOneNode
 		+ " matov v simulationAddsOneNode.";
+
 	String logString3 = stats.numberOfMatsInSimulation
 		+ " matov v simulation";
+
 	String logString4 = "Crni je " + stats.numberOfMCTreeColapses
 		+ "-krat izbral potezo, ki je ni v drevesu";
 	if (stats.numberOfMCTreeColapses > 0) {
@@ -189,7 +183,6 @@ public class ChessGame {
     // ///////////////////////////////////////////////////////////////////////////
 
     private void setParameters() {
-	this.numberOfInitialSimulations = Constants.NUMBER_OF_INITAL_STEPS;
 	this.numberOfRunningSimulations = Constants.NUMBER_OF_RUNNING_STEPS;
 	this.whiteMoveChooserStrategy = Constants.WHITE_MOVE_CHOOSER_STRATEGY;
 	this.blackMoveChooserStrategy = Constants.BLACK_MOVE_CHOOSER_STRATEGY;
