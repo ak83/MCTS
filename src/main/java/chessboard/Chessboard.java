@@ -2728,8 +2728,7 @@ public class Chessboard implements Cloneable {
 	    int hash = tempBoard.hashCode();
 	    Integer stateOccured = tempBoard.numberOfTimesBoardStateHasOccured
 		    .get(hash);
-	    if (stateOccured == null
-		    || (stateOccured != null && stateOccured < 2)) {
+	    if ((stateOccured != null && stateOccured < 2)) {
 		rez.add(move);
 	    }
 	}
@@ -3262,7 +3261,8 @@ public class Chessboard implements Cloneable {
 	result.numberOfTimesBoardStateHasOccured = (HashMap<Integer, Integer>) this.numberOfTimesBoardStateHasOccured
 		.clone();
 	result.piecePosition = this.piecePosition.clone();
-	result.previousHashes = this.previousHashes;
+	result.previousHashes = (ArrayList<Integer>) this.previousHashes
+		.clone();
 	result.wasBoardStateRepeatedThreeTimes = this.wasBoardStateRepeatedThreeTimes;
 
 	return result;

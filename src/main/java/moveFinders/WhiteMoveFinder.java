@@ -225,7 +225,6 @@ public class WhiteMoveFinder {
 		avoidance = board.movesWhereWhiteAvoidsMoveRepetition(rez);
 	    }
 	    catch (Exception e) {
-		System.out.println(e.getMessage());
 		e.printStackTrace();
 	    }
 
