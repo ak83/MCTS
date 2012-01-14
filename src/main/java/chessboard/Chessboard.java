@@ -12,7 +12,6 @@ import exceptions.UtilsException;
 import exec.Constants;
 import exec.MCTNode;
 import exec.Move;
-import exec.Print;
 import exec.Utils;
 
 public class Chessboard {
@@ -201,9 +200,9 @@ public class Chessboard {
 	}
 	System.out.println();
 
-	Print.print("board: ");
+	System.out.print("board: ");
 	Utils.printBoardArray(this.board);
-	Print.print("piecePosition: ");
+	System.out.print("piecePosition: ");
 	Utils.printIntArray(this.piecePosition);
 
 	if (this.isWhitesTurn) {
@@ -843,25 +842,44 @@ public class Chessboard {
 	int piece = this.board[from];
 
 	boolean result = false;
-	
-	if (piece == 0 || piece == 7) { result = this.makeWhiteRookMove(from, to); }
-	if (piece == 1 || piece == 6) { result = this.makeWhiteKnightMove(from,
-		to); }
-	if (piece == 2 || piece == 5) { result = this.makeWhiteBishopMove(from,
-		to); }
-	if (piece == 3) { result = this.makeWhiteQueenMove(from, to); }
-	if (piece == 4) { result = this.makeWhiteKingMove(from, to); }
-	if (piece > 7 && piece < 16) { result = this.makeWhitePawnMove(from, to); }
-	if (piece > 15 && piece < 24) { result = this.makeBlackPawnMove(from, to); }
-	if (piece == 24 || piece == 31) { result = this.makeBlackRookMove(from,
-		to); }
-	if (piece == 25 || piece == 30) { result = this.makeBlackKnightMove(from,
-		to); }
-	if (piece == 26 || piece == 29) { result = this.makeBlackBishopMove(from,
-		to); }
-	if (piece == 27) { result = this.makeBlackQueenMove(from, to); }
-	if (piece == 28) { result = this.makeBlackKingMove(from, to); }
-	
+
+	if (piece == 0 || piece == 7) {
+	    result = this.makeWhiteRookMove(from, to);
+	}
+	if (piece == 1 || piece == 6) {
+	    result = this.makeWhiteKnightMove(from, to);
+	}
+	if (piece == 2 || piece == 5) {
+	    result = this.makeWhiteBishopMove(from, to);
+	}
+	if (piece == 3) {
+	    result = this.makeWhiteQueenMove(from, to);
+	}
+	if (piece == 4) {
+	    result = this.makeWhiteKingMove(from, to);
+	}
+	if (piece > 7 && piece < 16) {
+	    result = this.makeWhitePawnMove(from, to);
+	}
+	if (piece > 15 && piece < 24) {
+	    result = this.makeBlackPawnMove(from, to);
+	}
+	if (piece == 24 || piece == 31) {
+	    result = this.makeBlackRookMove(from, to);
+	}
+	if (piece == 25 || piece == 30) {
+	    result = this.makeBlackKnightMove(from, to);
+	}
+	if (piece == 26 || piece == 29) {
+	    result = this.makeBlackBishopMove(from, to);
+	}
+	if (piece == 27) {
+	    result = this.makeBlackQueenMove(from, to);
+	}
+	if (piece == 28) {
+	    result = this.makeBlackKingMove(from, to);
+	}
+
 	int hash = this.hashCode();
 	this.previousHashes.add(hash);
 
