@@ -43,6 +43,12 @@ public class Chessboard implements Cloneable {
     private ArrayList<Integer>	previousHashes					   = new ArrayList<Integer>();
 
 
+    /**
+     * Constructor that should be used with clone method.
+     */
+    public Chessboard() {}
+
+
     public Chessboard(String name) {
 	this.name = name;
 	this.isWhitesTurn = true;
@@ -2720,7 +2726,7 @@ public class Chessboard implements Cloneable {
 	    Chessboard tempBoard = (Chessboard) this.clone();
 	    tempBoard.makeAMove(move.moveNumber);
 	    int hash = tempBoard.hashCode();
-	    Integer stateOccured = this.numberOfTimesBoardStateHasOccured
+	    Integer stateOccured = tempBoard.numberOfTimesBoardStateHasOccured
 		    .get(hash);
 	    if (stateOccured == null
 		    || (stateOccured != null && stateOccured < 2)) {
@@ -3247,7 +3253,8 @@ public class Chessboard implements Cloneable {
 
     @SuppressWarnings("unchecked")
     public Object clone() {
-	Chessboard result = new Chessboard(this.name + " clone");
+	Chessboard result = new Chessboard();
+	result.name = this.name + " clone";
 	result.board = this.board.clone();
 	result.isWhitesTurn = this.isWhitesTurn;
 	result.maxNumberOfMoves = this.maxNumberOfMoves;
