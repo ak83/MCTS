@@ -14,7 +14,7 @@ import exec.MCTNode;
 import exec.Move;
 import exec.Utils;
 
-public class Chessboard {
+public class Chessboard implements Cloneable {
 
     private static final int	  NUMBER_OF_PREVIOUS_MOVES_WE_CHECK_FOR_REPEATED_STATE_PAT = 20;
 
@@ -115,6 +115,7 @@ public class Chessboard {
     }
 
 
+    @SuppressWarnings("unchecked")
     public Chessboard(Chessboard cb, String name) {
 	this.name = name;
 	this.isWhitesTurn = cb.getIsWhitesTurn();
@@ -122,6 +123,8 @@ public class Chessboard {
 	this.constructPiecePositionFromBoard();
 	this.numberOfMovesMade = cb.getNumberOfMovesMade();
 	this.maxNumberOfMoves = 100;
+	this.numberOfTimesBoardStateHasOccured = (HashMap<Integer, Integer>) cb.numberOfTimesBoardStateHasOccured
+		.clone();
 
     }
 
@@ -2702,6 +2705,33 @@ public class Chessboard {
     }
 
 
+    /**
+     * Filters out those moves that void lead to repeated chessboard state.
+     * 
+     * @param whiteMoves
+     *            moves that we want to filter.
+     * @return filtered moves.
+     * @throws Exception
+     */
+    public ArrayList<Move> movesWhereWhiteAvoidsMoveRepetition(
+	    ArrayList<Move> whiteMoves) throws Exception {
+	ArrayList<Move> rez = new ArrayList<Move>();
+	for (Move move : whiteMoves) {
+	    Chessboard tempBoard = (Chessboard) this.clone();
+	    tempBoard.makeAMove(move.moveNumber);
+	    int hash = tempBoard.hashCode();
+	    Integer stateOccured = this.numberOfTimesBoardStateHasOccured
+		    .get(hash);
+	    if (stateOccured == null
+		    || (stateOccured != null && stateOccured < 2)) {
+		rez.add(move);
+	    }
+	}
+
+	return rez;
+    }
+
+
     public ArrayList<Move> movesWhereWhiteKingMovesCloserToBlackKind(
 	    ArrayList<Move> posKingMoves) {
 	int distance = this.distanceBewteenKings();
@@ -3210,6 +3240,23 @@ public class Chessboard {
 		counter++;
 	    }
 	}
+
+	return result;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public Object clone() {
+	Chessboard result = new Chessboard(this.name + " clone");
+	result.board = this.board.clone();
+	result.isWhitesTurn = this.isWhitesTurn;
+	result.maxNumberOfMoves = this.maxNumberOfMoves;
+	result.numberOfMovesMade = this.numberOfMovesMade;
+	result.numberOfTimesBoardStateHasOccured = (HashMap<Integer, Integer>) this.numberOfTimesBoardStateHasOccured
+		.clone();
+	result.piecePosition = this.piecePosition.clone();
+	result.previousHashes = this.previousHashes;
+	result.wasBoardStateRepeatedThreeTimes = this.wasBoardStateRepeatedThreeTimes;
 
 	return result;
     }
