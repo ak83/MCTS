@@ -210,6 +210,8 @@ public class WhiteMoveFinder {
 
 	    if (avoidance.size() != 0) {
 		rez = avoidance;
+	    } else {
+		System.out.println("Zmanjkalo potez....");
 	    }
 	}
 
