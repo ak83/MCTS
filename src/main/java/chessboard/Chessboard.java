@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import javax.management.RuntimeErrorException;
 
@@ -41,6 +42,9 @@ public class Chessboard implements Cloneable {
     private String                    name;
     private boolean                   wasBoardStateRepeatedThreeTimes                          = false;
     private ArrayList<Integer>        previousHashes                                           = new ArrayList<Integer>();
+
+    @SuppressWarnings("unused")
+    private Logger                    log                                                      = Logger.getLogger("MCTS.Chessboard");
 
 
     /**
@@ -2798,6 +2802,8 @@ public class Chessboard implements Cloneable {
      */
     public ArrayList<Move> movesWhereWhiteAvoidsMoveRepetition(
             ArrayList<Move> whiteMoves) throws Exception {
+        String logString = "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n";
+        logString += this.toString();
         ArrayList<Move> rez = new ArrayList<Move>();
         for (Move move : whiteMoves) {
             Chessboard tempBoard = (Chessboard) this.clone();
@@ -2806,8 +2812,14 @@ public class Chessboard implements Cloneable {
 
             if (!this.previousHashes.contains(hash)) {
                 rez.add(move);
+                logString += "\tadded: " + move;
+            }
+            else {
+                logString += "\trejected: " + move;
             }
         }
+        logString += "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&";
+        this.log.finest(logString);
 
         return rez;
     }
