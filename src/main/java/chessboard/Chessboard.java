@@ -2728,11 +2728,22 @@ public class Chessboard implements Cloneable {
 	ArrayList<Move> rez = new ArrayList<Move>();
 
 	for (Move move : whiteMoves) {
+	    System.out
+		    .println("***********************************\nthis board hash: "
+			    + this.hashCode());
 	    Chessboard temp = (Chessboard) this.clone();
 	    temp.makeAMove(move.moveNumber);
 	    Integer hash = temp.hashCode();
 	    if (!this.previousHashes.contains(hash)) {
 		rez.add(move);
+	    }
+	    else {
+		System.out.println(this);
+		System.out.println(temp);
+		System.out.println(move);
+		System.out.println("previous hashes: " + this.previousHashes
+			+ "\r\n");
+		System.out.println("hash after move: " + hash);
 	    }
 	}
 
