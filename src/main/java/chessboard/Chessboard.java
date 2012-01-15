@@ -3258,8 +3258,8 @@ public class Chessboard implements Cloneable {
 	result.isWhitesTurn = this.isWhitesTurn;
 	result.maxNumberOfMoves = this.maxNumberOfMoves;
 	result.numberOfMovesMade = this.numberOfMovesMade;
-	result.numberOfTimesBoardStateHasOccured = (HashMap<Integer, Integer>) this.numberOfTimesBoardStateHasOccured
-		.clone();
+	result.numberOfTimesBoardStateHasOccured = new HashMap<Integer, Integer>(
+		this.numberOfMovesMade);
 	result.piecePosition = this.piecePosition.clone();
 	result.previousHashes = (ArrayList<Integer>) this.previousHashes
 		.clone();
