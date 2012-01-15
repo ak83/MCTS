@@ -2802,25 +2802,8 @@ public class Chessboard implements Cloneable {
      */
     public ArrayList<Move> movesWhereWhiteAvoidsMoveRepetition(
             ArrayList<Move> whiteMoves) throws Exception {
-        String logString = "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n";
-        logString += this.toString();
-        logString += this.previousHashes + "\n";
         ArrayList<Move> rez = new ArrayList<Move>();
-        for (Move move : whiteMoves) {
-            Chessboard tempBoard = (Chessboard) this.clone();
-            tempBoard.makeAMove(move.moveNumber);
-            int hash = tempBoard.hashCode();
-
-            if (!this.previousHashes.contains(hash)) {
-                rez.add(move);
-                logString += "\tadded: " + move;
-            }
-            else {
-                logString += "\trejected: " + move;
-            }
-        }
-        logString += "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&";
-        this.log.finest(logString);
+       
 
         return rez;
     }
