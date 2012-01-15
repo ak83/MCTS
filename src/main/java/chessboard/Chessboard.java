@@ -2728,9 +2728,10 @@ public class Chessboard implements Cloneable {
 	ArrayList<Move> rez = new ArrayList<Move>();
 
 	System.out
-		.println("***********************************\nthis board hash: "
+		.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\nthis board hash: "
 			+ this.hashCode());
 	System.out.println("previous hashes: " + this.previousHashes + "\r\n");
+	System.out.println(this);
 
 	for (Move move : whiteMoves) {
 
@@ -2744,7 +2745,6 @@ public class Chessboard implements Cloneable {
 	    else {
 		System.out.println("removed move: " + move);
 		System.out.println("hash after move: " + hash);
-		System.out.println(this);
 		System.out.println(temp);
 	    }
 	}
