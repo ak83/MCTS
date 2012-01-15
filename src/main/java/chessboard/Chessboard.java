@@ -2804,6 +2804,7 @@ public class Chessboard implements Cloneable {
             ArrayList<Move> whiteMoves) throws Exception {
         String logString = "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n";
         logString += this.toString();
+        logString += this.previousHashes + "\n";
         ArrayList<Move> rez = new ArrayList<Move>();
         for (Move move : whiteMoves) {
             Chessboard tempBoard = (Chessboard) this.clone();
