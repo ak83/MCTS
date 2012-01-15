@@ -252,7 +252,7 @@ public class Chessboard implements Cloneable {
     @Override
     public String toString() {
 	StringBuffer sb = new StringBuffer(50);
-	for (int x = 0; x < 24; x++) {
+	for (int x = 0; x < 25; x++) {
 	    sb.append("*");
 	}
 	sb.append("\n");
@@ -264,12 +264,13 @@ public class Chessboard implements Cloneable {
 	    sb.append("crni je na potezi na plosci " + this.name + "\n");
 	}
 
-	for (int x = 0; x < 24; x++) {
+	for (int x = 0; x < 25; x++) {
 	    sb.append("*");
 	}
 
-	sb.append("*\n");
+	sb.append("*\r\n");
 	for (int x = 7; x >= 0; x--) {
+	    sb.append(8 - x);
 	    int baza = x * 16;
 	    for (int y = 0; y < 8; y++) {
 		int t = this.board[baza + y];
@@ -287,10 +288,16 @@ public class Chessboard implements Cloneable {
 	    }
 	    sb.append("*\n");
 	}
-	for (int x = 0; x < 24; x++) {
+	for (int x = 0; x < 25; x++) {
 	    sb.append("*");
 	}
-	sb.append("*\n");
+	sb.append("*\r\n");
+
+	for (int x = 0; x < 8; x++) {
+	    char file = (char) ((int) 'A' + x);
+	    sb.append("**" + file);
+	}
+	sb.append("**\r\n");
 
 	return sb.toString();
     }
@@ -2741,6 +2748,7 @@ public class Chessboard implements Cloneable {
 	    if (!this.previousHashes.contains(hash)) {
 		rez.add(move);
 		System.out.println("added move: " + move);
+		System.out.println("hash after move: " + hash);
 	    }
 	    else {
 		System.out.println("removed move: " + move);
