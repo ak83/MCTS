@@ -317,7 +317,10 @@ public class MCT {
 
 	this.mainChessboard.makeAMove(moveNumber);
 
-	this.log.fine(this.mainChessboard + "\r\n\r\n");
+	this.log.fine("Stanje sahovnice je:\r\n" + this.mainChessboard + "\r\n"
+		+ "To stanje se je pojavilo "
+		+ this.mainChessboard.howManyTimeHasCurrentStateAppeared()
+		+ "-krat.\r\n\r\n");
     }
 
 

@@ -3221,6 +3221,10 @@ public class Chessboard implements Cloneable {
 	}
 	return rez;
     }
+    
+    public int howManyTimeHasCurrentStateAppeared() {
+	return this.numberOfTimesBoardStateHasOccured.get(this.hashCode());
+    }
 
 
     /**
