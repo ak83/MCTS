@@ -135,6 +135,8 @@ public class Chessboard implements Cloneable {
 	this.maxNumberOfMoves = 100;
 	this.numberOfTimesBoardStateHasOccured = (HashMap<Integer, Integer>) cb.numberOfTimesBoardStateHasOccured
 		.clone();
+	this.previousHashes = (ArrayList<Integer>) cb.previousHashes.clone();
+	this.piecePosition = cb.piecePosition.clone();
 
     }
 
