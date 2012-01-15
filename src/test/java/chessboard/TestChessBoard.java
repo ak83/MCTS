@@ -173,8 +173,15 @@ public class TestChessBoard {
 
 
     @Test
-    public void testHashCode() {
+    public void testHashCode() throws Exception {
         Assert.assertEquals(5452610, TestChessBoard.cbKRK.hashCode());
+        
+        for(Move move : TestChessBoard.cbKRKAllMoves) {
+            Chessboard temp = new Chessboard(TestChessBoard.cbKRK, "clone");
+            temp.makeAMove(move.moveNumber);
+            Assert.assertNotSame(TestChessBoard.cbKRK.hashCode(), temp.hashCode());
+        }
+        
     }
 
 }
