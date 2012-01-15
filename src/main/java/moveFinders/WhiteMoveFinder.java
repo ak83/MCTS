@@ -199,6 +199,20 @@ public class WhiteMoveFinder {
 	    }
 	}
 
+	if (Constants.HEURISTICS_avoid_move_repetition) {
+	    ArrayList<Move> avoidance = new ArrayList<Move>();
+	    try {
+		avoidance = board.movesWhereWhiteAvoidsMoveRepetition(rez);
+	    }
+	    catch (Exception e) {
+		e.printStackTrace();
+	    }
+
+	    if (avoidance.size() != 0) {
+		rez = avoidance;
+	    }
+	}
+
 	if (Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king) {
 	    ArrayList<Move> kingCloser = board
 		    .movesWhereWhiteKingMovesCloserOrEqualToBlackKind(rez);
@@ -216,20 +230,6 @@ public class WhiteMoveFinder {
 		if (kingMoves.size() != 0) {
 		    rez = kingMoves;
 		}
-	    }
-	}
-
-	if (Constants.HEURISTICS_avoid_move_repetition) {
-	    ArrayList<Move> avoidance = new ArrayList<Move>();
-	    try {
-		avoidance = board.movesWhereWhiteAvoidsMoveRepetition(rez);
-	    }
-	    catch (Exception e) {
-		e.printStackTrace();
-	    }
-
-	    if (avoidance.size() != 0) {
-		rez = avoidance;
 	    }
 	}
 
