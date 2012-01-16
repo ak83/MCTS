@@ -2742,11 +2742,11 @@ public class Chessboard implements Cloneable {
 	    ArrayList<Move> whiteMoves) throws Exception {
 	ArrayList<Move> rez = new ArrayList<Move>();
 
-	System.out
-		.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\nthis board hash: "
-			+ this.hashCode());
-	System.out.println("previous hashes: " + this.previousHashes + "\r\n");
-	System.out.println(this);
+//	System.out
+//		.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\nthis board hash: "
+//			+ this.hashCode());
+//	System.out.println("previous hashes: " + this.previousHashes + "\r\n");
+//	System.out.println(this);
 
 	for (Move move : whiteMoves) {
 
@@ -2755,13 +2755,13 @@ public class Chessboard implements Cloneable {
 	    Integer hash = temp.hashCode();
 	    if (!this.previousHashes.contains(hash)) {
 		rez.add(move);
-		 System.out.println("added move: " + move);
-		 System.out.println("hash after move: " + hash);
+//		 System.out.println("added move: " + move);
+//		 System.out.println("hash after move: " + hash);
 	    }
 	    else {
-		 System.out.println("removed move: " + move);
-		 System.out.println("hash after move: " + hash);
-		 System.out.println(temp);
+		// System.out.println("removed move: " + move);
+		// System.out.println("hash after move: " + hash);
+		// System.out.println(temp);
 	    }
 	}
 
