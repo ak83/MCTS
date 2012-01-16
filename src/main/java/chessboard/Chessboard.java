@@ -41,7 +41,7 @@ public class Chessboard implements Cloneable {
 
     private String		    name;
     private boolean		   wasBoardStateRepeatedThreeTimes			  = false;
-    private ArrayList<Integer>	previousHashes					   = new ArrayList<Integer>();
+    public ArrayList<Integer>	previousHashes					   = new ArrayList<Integer>();
 
     @SuppressWarnings("unused")
     private Logger		    log						      = Logger.getLogger("MCTS.Chessboard");
@@ -111,6 +111,7 @@ public class Chessboard implements Cloneable {
      * @param node
      *            node from which we get chess board state
      */
+    @SuppressWarnings("unchecked")
     public Chessboard(String name, MCTNode node) {
 	this.name = name;
 	this.numberOfMovesMade = node.moveDepth;
@@ -122,6 +123,7 @@ public class Chessboard implements Cloneable {
 	}
 
 	this.board = node.boardState.clone();
+	this.previousHashes = (ArrayList<Integer>) node.previousHashes.clone();
 	this.isWhitesTurn = node.isWhitesMove;
 
 	this.constructPiecePositionFromBoard();

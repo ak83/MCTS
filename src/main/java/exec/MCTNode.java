@@ -49,6 +49,7 @@ public class MCTNode {
     // exploration
     public boolean            isWhitesMove;
     public int[]              boardState;
+    public ArrayList<Integer> previousHashes;
 
     // fields for statistics
     // WARNING: minimumDepthOfDescendadWhoRepresentsMat and maximumSubTreeDepth
@@ -78,6 +79,7 @@ public class MCTNode {
      * @param board
      *            chess board representation from which we get chess board state
      */
+    @SuppressWarnings("unchecked")
     public MCTNode(Chessboard board) {
         this.parent = null;
         this.moveDepth = 0;
@@ -86,6 +88,7 @@ public class MCTNode {
         this.c = Constants.C;
         this.isWhitesMove = true;
         this.boardState = board.getBoard();
+        this.previousHashes = (ArrayList<Integer>) board.previousHashes.clone();
         try {
             this.evalFromWhitesPerspective = board
                     .evaluateChessboardFromWhitesPerpective();
