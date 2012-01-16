@@ -53,6 +53,10 @@ public class Chessboard implements Cloneable {
     public Chessboard() {}
 
 
+    /**
+     * 
+     * @param name chessboard name
+     */
     public Chessboard(String name) {
 	this.name = name;
 	this.isWhitesTurn = true;
@@ -130,13 +134,13 @@ public class Chessboard implements Cloneable {
 	this.name = name;
 	this.isWhitesTurn = cb.getIsWhitesTurn();
 	this.board = cb.getBoard();
-	this.constructPiecePositionFromBoard();
 	this.numberOfMovesMade = cb.getNumberOfMovesMade();
 	this.maxNumberOfMoves = 100;
 	this.numberOfTimesBoardStateHasOccured = (HashMap<Integer, Integer>) cb.numberOfTimesBoardStateHasOccured
 		.clone();
 	this.previousHashes = (ArrayList<Integer>) cb.previousHashes.clone();
 	this.piecePosition = cb.piecePosition.clone();
+	this.wasBoardStateRepeatedThreeTimes = cb.wasBoardStateRepeatedThreeTimes;
 
     }
 
@@ -2749,13 +2753,13 @@ public class Chessboard implements Cloneable {
 	    Integer hash = temp.hashCode();
 	    if (!this.previousHashes.contains(hash)) {
 		rez.add(move);
-		System.out.println("added move: " + move);
-		System.out.println("hash after move: " + hash);
+		 System.out.println("added move: " + move);
+		 System.out.println("hash after move: " + hash);
 	    }
 	    else {
-		System.out.println("removed move: " + move);
-		System.out.println("hash after move: " + hash);
-		System.out.println(temp);
+		 System.out.println("removed move: " + move);
+		 System.out.println("hash after move: " + hash);
+		 System.out.println(temp);
 	    }
 	}
 
