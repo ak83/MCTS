@@ -86,7 +86,7 @@ public class MCTNode {
         this.visitCount = 1;
         this.c = Constants.C;
         this.isWhitesMove = true;
-        this.boardState = board.getBoard();
+        this.boardState = board.cloneBoard();
         this.previousHashes = board.clonePreviousHashes();
         try {
             this.evalFromWhitesPerspective = board
@@ -118,7 +118,7 @@ public class MCTNode {
 
         Chessboard temp = new Chessboard("temp", parent);
         temp.makeAMove(moveNumber);
-        this.boardState = temp.getBoard();
+        this.boardState = temp.cloneBoard();
         this.previousHashes = temp.clonePreviousHashes();
         this.evalFromWhitesPerspective = temp
                 .evaluateChessboardFromWhitesPerpective();
@@ -146,7 +146,7 @@ public class MCTNode {
 
         Chessboard temp = new Chessboard(boardState, "temp");
         temp.makeAMove(moveNumber);
-        this.boardState = temp.getBoard();
+        this.boardState = temp.cloneBoard();
         this.previousHashes = boardState.clonePreviousHashes();
         this.evalFromWhitesPerspective = temp
                 .evaluateChessboardFromWhitesPerpective();

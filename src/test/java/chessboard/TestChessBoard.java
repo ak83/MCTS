@@ -105,10 +105,10 @@ public class TestChessBoard {
         for (int x = 0; x < 128; x++) {
             if (initialBoardState.containsKey(x)) {
                 Assert.assertEquals((int) initialBoardState.get(x), testBoard
-                        .getBoard()[x]);
+                        .cloneBoard()[x]);
             }
             else {
-                Assert.assertEquals(-1, testBoard.getBoard()[x]);
+                Assert.assertEquals(-1, testBoard.cloneBoard()[x]);
             }
         }
     }
