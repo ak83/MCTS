@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.management.RuntimeErrorException;
 
 import chessboard.Chessboard;
-
 import exceptions.ChessboardException;
 import exceptions.WhiteMoveFinderException;
 import exec.Constants;
@@ -46,26 +45,27 @@ public class WhiteMoveFinder {
      * @param board
      *            postavitev za katero iscemo naslednje poteze
      * @param strategy
-     *            0 - random strategy, 1 - KRRK ending, 2 - KQK ending, 3 - KRK ending, 4 - KBBK ending
-     * @return movenumber 
+     *            0 - random strategy, 1 - KRRK ending, 2 - KQK ending, 3 - KRK
+     *            ending, 4 - KBBK ending
+     * @return movenumber
      */
     public static int findWhiteMove(Chessboard board, int strategy)
             throws ChessboardException, WhiteMoveFinderException {
         switch (strategy) {
-        case 0:
-            return WhiteMoveFinder.findRandomWhiteMove(board
-                    .getAllLegalWhiteMoves());
-        case 1:
-            return WhiteMoveFinder.findKRRKWhiteMove(board);
-        case 2:
-            return WhiteMoveFinder.findKQKWhiteMove(board);
-        case 3:
-            return WhiteMoveFinder.findKRKWhiteMove(board);
-        case 4:
-            return WhiteMoveFinder.findKBBKWhiteMove(board);
-        default:
-            throw new WhiteMoveFinderException("strategija je neustrezna: "
-                    + strategy);
+            case 0:
+                return WhiteMoveFinder.findRandomWhiteMove(board
+                        .getAllLegalWhiteMoves());
+            case 1:
+                return WhiteMoveFinder.findKRRKWhiteMove(board);
+            case 2:
+                return WhiteMoveFinder.findKQKWhiteMove(board);
+            case 3:
+                return WhiteMoveFinder.findKRKWhiteMove(board);
+            case 4:
+                return WhiteMoveFinder.findKBBKWhiteMove(board);
+            default:
+                throw new WhiteMoveFinderException("strategija je neustrezna: "
+                        + strategy);
         }
     }
 
@@ -189,13 +189,32 @@ public class WhiteMoveFinder {
 
         if (Constants.HEURISTICS_check_for_urgent_moves) {
             ArrayList<Move> urgent = board.whiteUrgentMoves(rez);
-            if (urgent.size() > 0) { return urgent; }
+            if (urgent.size() > 0) {
+                rez = urgent;
+            }
         }
 
         if (Constants.HEURISTICS_only_safe_moves) {
             ArrayList<Move> safe = board.whiteSafeMoves(rez);
             if (safe.size() != 0) {
                 rez = safe;
+            }
+        }
+
+        if (Constants.HEURISTICS_avoid_move_repetition) {
+            ArrayList<Move> avoidance = new ArrayList<Move>();
+            try {
+                avoidance = board.movesWhereWhiteAvoidsMoveRepetition(rez);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (avoidance.size() != 0) {
+                rez = avoidance;
+            }
+            else {
+                System.out.println("Zmanjkalo potez....");
             }
         }
 
