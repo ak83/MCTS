@@ -302,7 +302,7 @@ public class MCT {
         int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this.root);
 
         if (index == -1) {
-            this.log.info("V polpotezi " + (this.root.moveDepth + 1)
+            this.log.fine("V polpotezi " + (this.root.moveDepth + 1)
                     + " je prišlo do zrušitve drevesa");
             this.stats.numberOfMCTreeColapses++;
             this.stats.movesWhereMCTreeCollapsed.add(this.root.moveDepth + 1);

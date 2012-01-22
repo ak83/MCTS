@@ -15,7 +15,6 @@ public class Main {
     public static void main(String[] args) {
 	Constants.readConfigFile();
 	Constants.initConstants(args);
-	System.out.println(Constants.constantsString());
 
 	if (Constants.WRITE_INDIVIDUAL_GAMES) {
 	    new File("sgames").mkdir();
@@ -40,9 +39,9 @@ public class Main {
 	    e.printStackTrace();
 	    System.exit(1);
 	}
-	System.out.println("Igre so bile zapisane v " + Constants.PGN_FILENAME
+	Main.log.info("Igre so bile zapisane v " + Constants.PGN_FILENAME
 		+ ", prodrobnosti so pa zapisane v " + Constants.LOG_FILENAME
 		+ ".");
-	System.out.println("Konec programa.");
+	Main.log.info("Konec programa.");
     }
 }

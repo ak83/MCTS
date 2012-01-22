@@ -52,7 +52,7 @@ public class ChessGame {
             WhiteMoveChooserException, UtilsException, IOException,
             MCTUtilsException, MCTNodeException {
 
-        this.log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n\r\n");
+        this.log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n");
 
         long startTime = System.currentTimeMillis();
         this.fen += "[fen \"" + this.MCTree.getFEN() + "\"]\n\n";
@@ -70,16 +70,12 @@ public class ChessGame {
             if (eval > 0) {
                 // ZMAGA BELEGA
                 didWhiteWin = true;
-                System.out.print("Zmaga BELEGA v igri " + this.pgnFileName
-                        + ", ");
                 this.fen += Utils.moveNumberToString(mW, this.depth);
                 break;
             }
             if (eval < 0) {
                 // ZMAGA ÈRNEGA
                 didWhiteWin = false;
-                System.out.print("Zmaga ÈRNEGA v igri " + this.pgnFileName
-                        + ", ");
                 if (!whitesTurn) {
                     this.fen += Utils.moveNumberToString(mW, this.depth);
                 }
@@ -161,8 +157,6 @@ public class ChessGame {
                 + logString4
                 + "\r\n###########################################################################################\r\n###########################################################################################\r\n");
 
-        System.out.println("igra je bila odigrana v "
-                + Utils.timeMillisToString(runTime) + ".");
         String whiteStrat = Utils.whiteStrategyToString(
                 Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                 Constants.WHITE_SIMULATION_STRATEGY);
