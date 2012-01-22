@@ -39,7 +39,6 @@ public class Constants {
     public static boolean      KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals		= false;
 
     public static boolean      HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
-    public static boolean      HEURISTICS_zero_moves_satefy						    = false;
     public static boolean      HEURISTICS_white_KING_only_moves_coser_to_black_king			    = false;
     public static boolean      HEURISTICS_check_for_urgent_moves					       = false;
     public static boolean      HEURISTICS_only_safe_moves						      = false;
@@ -218,9 +217,6 @@ public class Constants {
 	rez += "HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 "
 		+ Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3
 		+ " (if set and white king is more than 3 title away from black king, then white moves king closer to black king).\r\n";
-	rez += "HEURISTICS_zero_moves_satefy "
-		+ Constants.HEURISTICS_zero_moves_satefy
-		+ " (if set and if heuristics filter moves so that is none left then white uses no heuristics, but still continues).\r\n";
 
 	rez += "HEURISTICS_white_KING_only_moves_coser_to_black_king "
 		+ Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king
@@ -579,9 +575,6 @@ public class Constants {
 		    else if (words[1].equalsIgnoreCase("kingMovesOnlyCloser")) {
 			Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king = true;
 		    }
-		    else if (words[1].equalsIgnoreCase("zeroMovesSafety")) {
-			Constants.HEURISTICS_zero_moves_satefy = true;
-		    }
 		    else if (words[1].equalsIgnoreCase("checkForUrgentMoves")) {
 			Constants.HEURISTICS_check_for_urgent_moves = true;
 		    }
@@ -591,7 +584,6 @@ public class Constants {
 		    else if (words[1].equalsIgnoreCase("basic")) {
 			Constants.HEURISTICS_check_for_urgent_moves = true;
 			Constants.HEURISTICS_only_safe_moves = true;
-			Constants.HEURISTICS_zero_moves_satefy = true;
 			Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
 			Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king = false;
 		    }
@@ -684,7 +676,6 @@ public class Constants {
 		    Constants.HEURISTICS_only_safe_moves = false;
 		    Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
 		    Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king = false;
-		    Constants.HEURISTICS_zero_moves_satefy = false;
 		    Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = false;
 		    Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = false;
 
