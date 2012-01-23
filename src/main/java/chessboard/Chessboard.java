@@ -30,7 +30,6 @@ public class Chessboard implements Cloneable {
 
     private boolean                   isWhitesTurn                                             = true;
     private int                       numberOfMovesMade                                        = 0;
-    private int                       maxNumberOfMoves                                         = Constants.MAX_DEPTH;
     /**
      * This is used for keeping track how many times some chess board state has
      * occurred. Key is hash code of chess board and values is how may times
@@ -43,7 +42,6 @@ public class Chessboard implements Cloneable {
     private boolean                   wasBoardStateRepeatedThreeTimes                          = false;
     private ArrayList<Integer>        previousHashes                                           = new ArrayList<Integer>();
 
-    @SuppressWarnings("unused")
     private Logger                    log                                                      = Logger.getLogger("MCTS.Chessboard");
 
 
@@ -61,7 +59,6 @@ public class Chessboard implements Cloneable {
         this.name = name;
         this.isWhitesTurn = true;
         this.numberOfMovesMade = 0;
-        this.maxNumberOfMoves = 100;
 
         this.board = new int[128];
         for (int x = 0; x < 128; x++) {
@@ -115,18 +112,18 @@ public class Chessboard implements Cloneable {
      * @param node
      *            node from which we get chess board state
      */
-    @SuppressWarnings("unchecked")
     public Chessboard(String name, MCTNode node) {
+
         this.name = name;
-        this.numberOfMovesMade = node.moveDepth;
-        this.maxNumberOfMoves = 100;
-
-        this.board = node.boardState.clone();
-        this.previousHashes = (ArrayList<Integer>) node.previousHashes.clone();
-        this.isWhitesTurn = node.isWhitesMove;
-
-        this.constructPiecePositionFromBoard();
-
+        this.board = node.chessboard.cloneBoard();
+        this.isWhitesTurn = node.chessboard.isWhitesTurn;
+        this.log = node.chessboard.log;
+        this.numberOfMovesMade = node.chessboard.numberOfMovesMade;
+        this.numberOfTimesBoardStateHasOccured = node.chessboard
+                .cloneNumberOfTimesBoardStateHasOccured();
+        this.piecePosition = node.chessboard.clonePiecePosition();
+        this.previousHashes = node.chessboard.clonePreviousHashes();
+        this.wasBoardStateRepeatedThreeTimes = node.chessboard.wasBoardStateRepeatedThreeTimes;
     }
 
 
@@ -143,7 +140,6 @@ public class Chessboard implements Cloneable {
         this.isWhitesTurn = cb.getIsWhitesTurn();
         this.board = cb.cloneBoard();
         this.numberOfMovesMade = cb.getNumberOfMovesMade();
-        this.maxNumberOfMoves = 100;
         this.numberOfTimesBoardStateHasOccured = cb
                 .cloneNumberOfTimesBoardStateHasOccured();
         this.previousHashes = cb.clonePreviousHashes();
@@ -332,6 +328,14 @@ public class Chessboard implements Cloneable {
      */
     public int[] cloneBoard() {
         return this.board.clone();
+    }
+
+
+    /**
+     * @return clone of piecePosition
+     */
+    public int[] clonePiecePosition() {
+        return this.piecePosition.clone();
     }
 
 
@@ -1406,7 +1410,7 @@ public class Chessboard implements Cloneable {
         if (this.isBlackKingMated()) { return 1; }
         if (this.isBlackKingPatted()) { return -1; }
         if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return -1; }
-        if (this.numberOfMovesMade > this.maxNumberOfMoves) { return -1; }
+        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return -1; }
         if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
 
         return 0;
@@ -1424,7 +1428,7 @@ public class Chessboard implements Cloneable {
 
         if (this.isBlackKingPatted()) { return -1; }
         if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
-        if (this.numberOfMovesMade > this.maxNumberOfMoves) { return -1; }
+        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return -1; }
 
         return 0;
     }
@@ -3406,7 +3410,6 @@ public class Chessboard implements Cloneable {
         result.name = this.name + " clone";
         result.board = this.board.clone();
         result.isWhitesTurn = this.isWhitesTurn;
-        result.maxNumberOfMoves = this.maxNumberOfMoves;
         result.numberOfMovesMade = this.numberOfMovesMade;
         result.numberOfTimesBoardStateHasOccured = new HashMap<Integer, Integer>(
                 this.numberOfMovesMade);

@@ -11,16 +11,16 @@ import exceptions.MCTNodeException;
 
 public class MCTNode {
 
-    public MCTNode            parent;                                                            // oce
+    public MCTNode            parent;                                                     // oce
     // trenutne
     // poteze
     // public MCTNode[] nextMoves; //sinovi trenutnega vozlisca
-    public ArrayList<MCTNode> nextMoves;                                                         // sinovi
+    public ArrayList<MCTNode> nextMoves;                                                  // sinovi
     // trenutnega
     /**
      * consecutive move number // vozlisca
      */
-    public int                moveDepth;                                                         // katera
+    public int                moveDepth;                                                  // katera
     // je
     // trenutna
     // poteza
@@ -30,15 +30,15 @@ public class MCTNode {
 
     // node depth in MC tree
     public int                mcDepth                                 = 1;
-    public int                moveNumber;                                                        // stevilka
+    public int                moveNumber;                                                 // stevilka
     // poteze
-    public int                visitCount;                                                        // kolikokrat
+    public int                visitCount;                                                 // kolikokrat
     // je
     // bila
     // poteza
     public int                numberOfMatsInNode                      = 0;
     // obiskana
-    public double             c;                                                                 // ce
+    public double             c;                                                          // ce
     // je
     // c
     // nizek
@@ -48,8 +48,7 @@ public class MCTNode {
     // je c visok -
     // exploration
     public boolean            isWhitesMove;
-    public int[]              boardState;
-    public ArrayList<Integer> previousHashes                          = new ArrayList<Integer>();
+    public Chessboard         chessboard;
 
     // fields for statistics
     // WARNING: minimumDepthOfDescendadWhoRepresentsMat and maximumSubTreeDepth
@@ -86,8 +85,7 @@ public class MCTNode {
         this.visitCount = 1;
         this.c = Constants.C;
         this.isWhitesMove = true;
-        this.boardState = board.cloneBoard();
-        this.previousHashes = board.clonePreviousHashes();
+        this.chessboard = (Chessboard) board.clone();
         try {
             this.evalFromWhitesPerspective = board
                     .evaluateChessboardFromWhitesPerpective();
@@ -118,8 +116,7 @@ public class MCTNode {
 
         Chessboard temp = new Chessboard("temp", parent);
         temp.makeAMove(moveNumber);
-        this.boardState = temp.cloneBoard();
-        this.previousHashes = temp.clonePreviousHashes();
+        this.chessboard = temp;
         this.evalFromWhitesPerspective = temp
                 .evaluateChessboardFromWhitesPerpective();
     }
@@ -146,8 +143,7 @@ public class MCTNode {
 
         Chessboard temp = new Chessboard(boardState, "temp");
         temp.makeAMove(moveNumber);
-        this.boardState = temp.cloneBoard();
-        this.previousHashes = boardState.clonePreviousHashes();
+        this.chessboard = temp;
         this.evalFromWhitesPerspective = temp
                 .evaluateChessboardFromWhitesPerpective();
     }
