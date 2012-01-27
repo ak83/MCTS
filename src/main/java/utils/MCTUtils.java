@@ -71,10 +71,8 @@ public class MCTUtils {
                 "node nima razvitih naslednikov"); }
         if (node.nextMoves.size() == 0) { return rez; }
 
-        // double maxRating = computeNodeRating(node.nextMoves.get(0),
-        // whiteRankingMethod);
-        double maxRating = Double.MIN_VALUE;
-        double currRating = Double.MIN_VALUE;
+        double maxRating = -Double.MAX_VALUE;
+        double currRating = -Double.MAX_VALUE;
 
         for (int x = 0; x < node.nextMoves.size(); x++) {
             if (node.isWhitesMove) {
