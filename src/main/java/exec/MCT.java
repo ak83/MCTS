@@ -32,8 +32,6 @@ public class MCT {
 
     private int              whiteNodeRatingComputationMethod = 1;
     private int              blackNodeRatingComputationMethod = 2;
-    private int              blackSimulationStrategy;
-    private int              whiteSimulationStrategy;
 
     private Random           r                                = new Random();
 
@@ -128,7 +126,8 @@ public class MCT {
 
         if (node.nextMoves == null) {
             int moveNo = MCTUtils.findNextMove(currNode,
-                    this.whiteSimulationStrategy, this.blackSimulationStrategy);
+                    Constants.WHITE_SIMULATION_STRATEGY,
+                    Constants.BLACK_SIMULATION_STRATEGY);
 
             if (moveNo == -1) { return currNode; }
 
@@ -149,7 +148,8 @@ public class MCT {
             }
 
             int moveNo = MCTUtils.findNextMove(currNode,
-                    this.whiteSimulationStrategy, this.blackSimulationStrategy);
+                    Constants.WHITE_SIMULATION_STRATEGY,
+                    Constants.BLACK_SIMULATION_STRATEGY);
 
             if (moveNo == -1) {
                 // ni vec moznih naslednjih potez
@@ -223,7 +223,7 @@ public class MCT {
                     if (itsWhitesTurn) {
                         int moveNo = WhiteMoveFinder.findWhiteMove(
                                 this.simulationChessboard,
-                                this.whiteSimulationStrategy);
+                                Constants.WHITE_SIMULATION_STRATEGY);
                         if (moveNo == -1)
                             throw new MCTException("to se ne bi smelo zgoditi");
                         this.simulationChessboard.makeAMove(moveNo);
@@ -232,7 +232,7 @@ public class MCT {
                     else {
                         int moveNo = BlackMoveFinder.findBlackKingMove(
                                 this.simulationChessboard,
-                                this.blackSimulationStrategy);
+                                Constants.BLACK_SIMULATION_STRATEGY);
                         if (moveNo == -1)
                             throw new MCTException("to se ne bio smelo zgoditi");
                         this.simulationChessboard.makeAMove(moveNo);
@@ -387,9 +387,6 @@ public class MCT {
                 "Simulation board");
 
         this.root = new MCTNode(this.mainChessboard);
-
-        this.blackSimulationStrategy = Constants.BLACK_SIMULATION_STRATEGY;
-        this.whiteSimulationStrategy = Constants.WHITE_SIMULATION_STRATEGY;
 
     }
 
