@@ -188,7 +188,7 @@ public class Utils {
 
 
     public static boolean isWhitesTurn(MCTNode node) {
-	if (node.moveDepth % 2 == 0) {
+	if (node.plyDepth % 2 == 0) {
 	    return true;
 	}
 	else

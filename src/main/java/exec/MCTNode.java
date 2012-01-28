@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.management.RuntimeErrorException;
 
 import chessboard.Chessboard;
-
 import exceptions.ChessboardException;
 import exceptions.MCTNodeException;
 
@@ -18,9 +17,9 @@ public class MCTNode {
     public ArrayList<MCTNode> nextMoves;                                                  // sinovi
     // trenutnega
     /**
-     * consecutive move number // vozlisca
+     * consecutive ply number vozlisca
      */
-    public int                moveDepth;                                                  // katera
+    public int                plyDepth;                                                   // katera
     // je
     // trenutna
     // poteza
@@ -80,7 +79,7 @@ public class MCTNode {
      */
     public MCTNode(Chessboard board) {
         this.parent = null;
-        this.moveDepth = 0;
+        this.plyDepth = 0;
         this.moveNumber = 0;
         this.visitCount = 1;
         this.c = Constants.C;
@@ -107,7 +106,7 @@ public class MCTNode {
      */
     public MCTNode(MCTNode parent, int moveNumber) throws ChessboardException {
         this.parent = parent;
-        this.moveDepth = this.parent.moveDepth + 1;
+        this.plyDepth = this.parent.plyDepth + 1;
         this.moveNumber = moveNumber;
         this.visitCount = 0;
         this.c = Constants.C;
@@ -135,7 +134,7 @@ public class MCTNode {
     public MCTNode(int moveNumber, int depth, Chessboard boardState)
             throws ChessboardException {
         this.parent = null;
-        this.moveDepth = depth;
+        this.plyDepth = depth;
         this.moveNumber = moveNumber;
         this.visitCount = 1;
         this.c = Constants.C;
@@ -190,7 +189,7 @@ public class MCTNode {
 
     @Override
     public String toString() {
-        String s = "Globina: " + this.moveDepth + ", poteza: "
+        String s = "Globina: " + this.plyDepth + ", poteza: "
                 + Utils.singleMoveNumberToString(this.moveNumber)
                 + ", stevilo matov: " + this.numberOfMatsInNode
                 + ", visitCount: " + this.visitCount + ", isWhitesMove: "
@@ -220,7 +219,7 @@ public class MCTNode {
                 sb.append("\t"
                         + (x + 1)
                         + ",\t"
-                        + n.moveDepth
+                        + n.plyDepth
                         + ",\t"
                         + Utils.singleMoveNumberToString(n.moveNumber)
                         + ",\t"

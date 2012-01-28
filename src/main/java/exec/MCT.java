@@ -54,7 +54,7 @@ public class MCT {
             if (node.getEvalFromWhitesPerspective() != 0) { return node; }
         }
 
-        boolean maxDepthReached = node.moveDepth > Constants.MAX_DEPTH;
+        boolean maxDepthReached = node.plyDepth > Constants.MAX_DEPTH;
         boolean gobanStrategy = node.visitCount < Constants.GOBAN;
         boolean nerazvitiNasledniki = node.nextMoves == null;
 
@@ -182,7 +182,7 @@ public class MCT {
                 currNode = currNode.nextMoves.get(moveIndex);
             }
 
-            if (currNode.moveDepth > Constants.MAX_DEPTH) { return currNode; }
+            if (currNode.plyDepth > Constants.MAX_DEPTH) { return currNode; }
         }
     }
 
@@ -203,7 +203,7 @@ public class MCT {
         Chessboard temp = new Chessboard("resetBoard", node);
 
         for (int x = 0; x < Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION; x++) {
-            int currDepth = node.moveDepth;
+            int currDepth = node.plyDepth;
             boolean itsWhitesTurn = Utils.isWhitesTurn(node);
             this.simulationChessboard = new Chessboard(temp,
                     "simulation Chessboard");
@@ -288,12 +288,12 @@ public class MCT {
         int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this.root);
 
         if (index == -1) {
-            this.log.fine("V polpotezi " + (this.root.moveDepth + 1)
+            this.log.fine("V polpotezi " + (this.root.plyDepth + 1)
                     + " je prišlo do zrušitve drevesa");
             this.stats.numberOfMCTreeColapses++;
-            this.stats.movesWhereMCTreeCollapsed.add(this.root.moveDepth + 1);
+            this.stats.movesWhereMCTreeCollapsed.add(this.root.plyDepth + 1);
             this.stats.sizeOfTreeBeforeCollapses.add(this.currentTreeSize);
-            this.root = new MCTNode(moveNumber, this.root.moveDepth + 1,
+            this.root = new MCTNode(moveNumber, this.root.plyDepth + 1,
                     this.mainChessboard);
             this.currentTreeSize = 0;
         }
@@ -345,7 +345,7 @@ public class MCT {
 
 
     public int evaluateMainChessBoardState() throws ChessboardException {
-        if (this.root.moveDepth > Constants.MAX_DEPTH) { return -1; }
+        if (this.root.plyDepth > Constants.MAX_DEPTH) { return -1; }
         return this.mainChessboard.evaluateChessboard();
     }
 

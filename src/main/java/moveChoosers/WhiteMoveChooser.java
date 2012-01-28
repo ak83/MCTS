@@ -52,7 +52,7 @@ public class WhiteMoveChooser {
         default:
             throw new WhiteMoveChooserException("neveljavna strategija");
         }
-        String logString = "V polpotezi " + (node.moveDepth + 1)
+        String logString = "V polpotezi " + (node.plyDepth + 1)
                 + " je beli izbiral med potezami :\r\n"
                 + node.nexMovesToString() + "Izbral si pa je potezo "
                 + (rez + 1);
