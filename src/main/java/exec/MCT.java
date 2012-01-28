@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import chessboard.Chessboard;
-
 import moveChoosers.BlackMoveChooser;
 import moveChoosers.WhiteMoveChooser;
 import moveFinders.BlackMoveFinder;
 import moveFinders.WhiteMoveFinder;
-
 import utils.MCTUtils;
-
+import chessboard.Chessboard;
 import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
 import exceptions.MCTException;
