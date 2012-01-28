@@ -16,37 +16,44 @@ import exceptions.WhiteMoveFinderException;
 
 public class ChessGame {
 
-    private int    numberOfRunningSimulations;
-
-    private int    whiteMoveChooserStrategy;
-    private int    blackMoveChooserStrategy;
-
-    private int    depth;
-    private String fen;
+    private int    depth  = 1;
+    private String fen    = "";
     private String pgnFileName;
     File           file;
     FileWriter     fw;
 
-    private MCT    MCTree;
+    private MCT    MCTree = new MCT();
 
-    private Logger log;
+    private Logger log    = Logger.getLogger("MCTS.ChessGame"); ;
 
 
-    // ////////////////////////////////////////////////////////////////////////////////////
-    // /////////////////////////////////KONSTRUKTORJI/////////////////////////////////////
-    // ////////////////////////////////////////////////////////////////////////////////////
-
+    /**
+     * Constructor
+     * 
+     * @param outputFilename
+     *            file name to where individual game will be saved
+     */
     public ChessGame(String outputFilename) {
-        this.setParameters();
         this.pgnFileName = outputFilename;
     }
 
 
-    // ////////////////////////////////////////////////////////////////////////////
-    // ///////////////////////////////JAVNE
-    // FUNKCIJE///////////////////////////////
-    // ///////////////////////////////////////////////////////////////////////////
-
+    /**
+     * Plays one game
+     * 
+     * @param round
+     *            which which round is played, needed for logging purposes
+     * @return
+     * @throws ChessboardException
+     * @throws MCTException
+     * @throws WhiteMoveFinderException
+     * @throws BlackMoveFinderException
+     * @throws WhiteMoveChooserException
+     * @throws UtilsException
+     * @throws IOException
+     * @throws MCTUtilsException
+     * @throws MCTNodeException
+     */
     public String playGame(int round) throws ChessboardException, MCTException,
             WhiteMoveFinderException, BlackMoveFinderException,
             WhiteMoveChooserException, UtilsException, IOException,
@@ -83,24 +90,24 @@ public class ChessGame {
                 break;
             }
 
-            int moveNumber = -1;
+            int plyNumber = -1;
 
             if (whitesTurn) {
 
-                for (int x = 0; x < this.numberOfRunningSimulations; x++) {
+                for (int x = 0; x < Constants.NUMBER_OF_RUNNING_STEPS; x++) {
                     this.MCTree.oneMCTStep();
                 }
 
-                moveNumber = this.MCTree.chooseAMove(
-                        this.whiteMoveChooserStrategy,
-                        this.blackMoveChooserStrategy);
-                mW = moveNumber;
+                plyNumber = this.MCTree.chooseAPlyNumber(
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY,
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY);
+                mW = plyNumber;
             }
             else {
-                moveNumber = this.MCTree.chooseAMove(
-                        this.whiteMoveChooserStrategy,
-                        this.blackMoveChooserStrategy);
-                mB = moveNumber;
+                plyNumber = this.MCTree.chooseAPlyNumber(
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY,
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY);
+                mB = plyNumber;
 
                 this.fen += Utils.moveNumberToString(mW, mB, this.depth) + " ";
                 this.depth++;
@@ -110,7 +117,7 @@ public class ChessGame {
 
             this.log.fine("Velikost drevesa je "
                     + this.MCTree.getCurrentTreeSize());
-            this.MCTree.makeMCMove(moveNumber);
+            this.MCTree.makeMCPly(plyNumber);
 
         }
 
@@ -175,22 +182,6 @@ public class ChessGame {
             this.writePGN();
         }
         return this.fen;
-    }
-
-
-    // /////////////////////////////////////////////////////////////////////////////
-    // ///////////////////////////////PRIVATNE
-    // FUNKCIJE/////////////////////////////
-    // ///////////////////////////////////////////////////////////////////////////
-
-    private void setParameters() {
-        this.numberOfRunningSimulations = Constants.NUMBER_OF_RUNNING_STEPS;
-        this.whiteMoveChooserStrategy = Constants.WHITE_MOVE_CHOOSER_STRATEGY;
-        this.blackMoveChooserStrategy = Constants.BLACK_MOVE_CHOOSER_STRATEGY;
-        this.depth = 1;
-        this.fen = "";
-        this.log = Logger.getLogger("MCTS.ChessGame");
-        this.MCTree = new MCT();
     }
 
 

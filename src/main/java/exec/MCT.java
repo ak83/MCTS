@@ -29,41 +29,29 @@ public class MCT {
      * poteze 0
      */
     private MCTNode          root;
-    private int              goban;
-    private int              numberOfSimulationsPerEvaluation;
 
     private Chessboard       mainChessboard;
     private Chessboard       simulationChessboard;
 
-    private int              whiteNodeRatingComputationMethod;
-    private int              blackNodeRatingComputationMethod;
+    private int              whiteNodeRatingComputationMethod = 1;
+    private int              blackNodeRatingComputationMethod = 2;
     private int              blackSimulationStrategy;
     private int              whiteSimulationStrategy;
-    private int              maxDepth;
 
-    private Random           r;
+    private Random           r                                = new Random();
 
-    private WhiteMoveChooser whiteMoveChooser;
-    private BlackMoveChooser blackMoveChooser;
+    private WhiteMoveChooser whiteMoveChooser                 = new WhiteMoveChooser();
+    private BlackMoveChooser blackMoveChooser                 = new BlackMoveChooser();
 
-    private MCTStats         stats;
-    private Logger           log = Logger.getLogger("MCTS.MCT");
-    private int              currentTreeSize;
+    private MCTStats         stats                            = new MCTStats();
+    private Logger           log                              = Logger.getLogger("MCTS.MCT");
+    private int              currentTreeSize                  = 0;
 
-
-    // /////////////////////////////////////////////////////////////////////////////////
-    // //////////////////////KONSTRUKTORJI/////////////////////////////////////////////
-    // ////////////////////////////////////////////////////////////////////////////////
 
     public MCT() {
         this.setParameters();
     }
 
-
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // ////////////////////////////JAVNE
-    // METODE////////////////////////////////////////////
-    // ///////////////////////////////////////////////////////////////////////////////////
 
     public MCTNode selection(MCTNode node) throws UtilsException,
             ChessboardException, MCTUtilsException {
@@ -71,8 +59,8 @@ public class MCT {
             if (node.getEvalFromWhitesPerspective() != 0) { return node; }
         }
 
-        boolean maxDepthReached = node.moveDepth > this.maxDepth;
-        boolean gobanStrategy = node.visitCount < this.goban;
+        boolean maxDepthReached = node.moveDepth > Constants.MAX_DEPTH;
+        boolean gobanStrategy = node.visitCount < Constants.GOBAN;
         boolean nerazvitiNasledniki = node.nextMoves == null;
 
         if (maxDepthReached || gobanStrategy || nerazvitiNasledniki
@@ -197,7 +185,7 @@ public class MCT {
                 currNode = currNode.nextMoves.get(moveIndex);
             }
 
-            if (currNode.moveDepth > this.maxDepth) { return currNode; }
+            if (currNode.moveDepth > Constants.MAX_DEPTH) { return currNode; }
         }
     }
 
@@ -217,7 +205,7 @@ public class MCT {
         int rez = 0;
         Chessboard temp = new Chessboard("resetBoard", node);
 
-        for (int x = 0; x < this.numberOfSimulationsPerEvaluation; x++) {
+        for (int x = 0; x < Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION; x++) {
             int currDepth = node.moveDepth;
             boolean itsWhitesTurn = Utils.isWhitesTurn(node);
             this.simulationChessboard = new Chessboard(temp,
@@ -255,7 +243,7 @@ public class MCT {
                     }
                 }
                 currDepth++;
-                if (currDepth > this.maxDepth) {
+                if (currDepth > Constants.MAX_DEPTH) {
                     break;
                 }
             }
@@ -291,13 +279,14 @@ public class MCT {
 
         boolean nodeIsMat = newCB.evaluateChessboard() == 1;
 
-        this.backPropagation(node, diff, this.numberOfSimulationsPerEvaluation,
-                node.mcDepth, nodeIsMat);
+        this.backPropagation(node, diff,
+                Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION, node.mcDepth,
+                nodeIsMat);
     }
 
 
     // ni stestirana
-    public void makeMCMove(int moveNumber) throws ChessboardException {
+    public void makeMCPly(int moveNumber) throws ChessboardException {
 
         int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this.root);
 
@@ -336,9 +325,10 @@ public class MCT {
      * @throws ChessboardException
      * @throws MCTUtilsException
      */
-    public int chooseAMove(int whiteChoosingStrategy, int blackChoosingStrategy)
-            throws WhiteMoveChooserException, UtilsException,
-            ChessboardException, BlackMoveFinderException, MCTUtilsException {
+    public int chooseAPlyNumber(int whiteChoosingStrategy,
+            int blackChoosingStrategy) throws WhiteMoveChooserException,
+            UtilsException, ChessboardException, BlackMoveFinderException,
+            MCTUtilsException {
         int rez = -1;
 
         if (Utils.isWhitesTurn(this.root)) {
@@ -358,7 +348,7 @@ public class MCT {
 
 
     public int evaluateMainChessBoardState() throws ChessboardException {
-        if (this.root.moveDepth > this.maxDepth) { return -1; }
+        if (this.root.moveDepth > Constants.MAX_DEPTH) { return -1; }
         return this.mainChessboard.evaluateChessboard();
     }
 
@@ -394,36 +384,16 @@ public class MCT {
     }
 
 
-    // /////////////////////////////////////////////////////////////////////////////////////
-    // ///////////////////////////PRIVATNE
-    // METODE//////////////////////////////////////////
-    // ///////////////////////////////////////////////////////////////////////////////////
-
     private void setParameters() {
         this.mainChessboard = new Chessboard("Main board");
         this.simulationChessboard = new Chessboard(this.mainChessboard,
                 "Simulation board");
 
         this.root = new MCTNode(this.mainChessboard);
-        // this.c = 0.5d;
-        this.goban = Constants.GOBAN;
-        this.maxDepth = Constants.MAX_DEPTH;
-        this.numberOfSimulationsPerEvaluation = Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION;
-
-        this.whiteNodeRatingComputationMethod = 1;
-        this.blackNodeRatingComputationMethod = 2;
 
         this.blackSimulationStrategy = Constants.BLACK_SIMULATION_STRATEGY;
         this.whiteSimulationStrategy = Constants.WHITE_SIMULATION_STRATEGY;
 
-        this.r = new Random();
-
-        this.whiteMoveChooser = new WhiteMoveChooser();
-        this.blackMoveChooser = new BlackMoveChooser();
-        WhiteMoveFinder.initRandom();
-
-        this.stats = new MCTStats();
-        this.currentTreeSize = 0;
     }
 
 }
