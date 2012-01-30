@@ -227,48 +227,6 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public void printChessboard() throws UtilsException {
-        for (int x = 0; x < 24; x++) {
-            System.out.print("*");
-        }
-        System.out.println();
-
-        System.out.print("board: ");
-        Utils.printBoardArray(this.board);
-        System.out.print("piecePosition: ");
-        Utils.printIntArray(this.piecePosition);
-
-        if (this.isWhitesTurn) {
-            System.out.println("beli je na potezi na plo��i " + this.name);
-        }
-        else {
-            System.out.println("�rni je na potezi na " + this.name);
-        }
-
-        for (int x = 0; x < 24; x++) {
-            System.out.print("*");
-        }
-        System.out.println("*");
-        for (int x = 7; x >= 0; x--) {
-            int baza = x * 16;
-            for (int y = 0; y < 8; y++) {
-                int t = this.board[baza + y];
-                if (t == -1) {
-                    System.out.print("*00");
-                }
-                else {
-                    System.out.print("*" + Utils.pieceNumberToString(t));
-                }
-            }
-            System.out.println("*");
-        }
-        for (int x = 0; x < 24; x++) {
-            System.out.print("*");
-        }
-        System.out.println("*");
-    }
-
-
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(50);
@@ -356,7 +314,7 @@ public class Chessboard implements Cloneable {
      * @return polje int[] v katerem je v x elementu shranjena pozicija za
      *         figuro x
      */
-    public int[] getPiecesPosition() {
+    public int[] clonePiecesPosition() {
         return this.piecePosition.clone();
     }
 
@@ -371,7 +329,7 @@ public class Chessboard implements Cloneable {
     }
 
 
-    /*
+    /**
      * zgradi �tevilko poteze vhod je oblike xnxn (naprimer a2a5 - premik iz
      * a2 na a5)
      */
@@ -397,18 +355,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeWhitePawnMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece < 8 || piece > 15)
             throw new ChessboardException("na from je figura" + piece);
-        if (!this.isWhitePawnMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeWhitePawnMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isWhitePawnMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -437,18 +386,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeBlackPawnMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece < 16 || piece > 23)
             throw new ChessboardException("na from je figura" + piece);
-        if (!this.isBlackPawnMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeBlackPawnMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isBlackPawnMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -459,8 +399,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeBlackPawnMove(int from, int to)");
 
         return true;
     }
@@ -479,18 +417,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeWhiteRookMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 0 && piece != 7)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteRookMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeWhiteRookMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isWhiteRookMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -501,8 +430,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makwWhiteRookMove(int from, int to)");
 
         return true;
     }
@@ -521,18 +448,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeBlackRookMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 24 && piece != 31)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackRookMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeBlackRookMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isBlackRookMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -543,8 +461,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeBlackRookMove(int from, int to)");
 
         return true;
     }
@@ -563,18 +479,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeWhiteKnightMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 1 && piece != 6)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteKnightMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makwWhiteKnightMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isWhiteKnightMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -585,8 +492,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeWhiteKnightMove(int from, int to)");
 
         return true;
     }
@@ -605,17 +510,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeBlackKnightMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 25 && piece != 30)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackKnightMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeBlackKnightMove(int from, int to)");
-            return false;
-        }
+        if (!this.isBlackKnightMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -626,8 +523,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeBlackKnightMove(int from, int to");
 
         return true;
     }
@@ -646,18 +541,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeWhiteBishopMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 2 && piece != 5)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteBishopMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeWhiteBishopMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isWhiteBishopMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -668,8 +554,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeWhiteBishopMove(int from, int to)");
 
         return true;
     }
@@ -690,19 +574,10 @@ public class Chessboard implements Cloneable {
         int piece = this.board[from];
         int targetPiece = this.board[to];
 
-        // if(DEBUG) println("Za�etek makeBlackBishopMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 26 && piece != 29)
             throw new ChessboardException("na from je figura " + piece);
 
-        if (!this.isBlackBishopMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false;");
-            // if(DEBUG) println("Konec makeBlackBishopMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isBlackBishopMoveLegal(from, to)) { return false; }
 
         this.board[from] = -1;
         this.board[to] = piece;
@@ -712,8 +587,6 @@ public class Chessboard implements Cloneable {
         if (targetPiece != -1) {
             this.piecePosition[targetPiece] = -1;
         }
-
-        // if(DEBUG) println("Konec makeBlackBishopMove(int from, int to)");
 
         return true;
     }
@@ -732,19 +605,10 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeWhiteQueenMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 3)
             throw new ChessboardException("na from je figura " + piece);
 
-        if (!this.isWhiteQueenMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeWhiteQueenMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isWhiteQueenMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -755,8 +619,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeWhiteQueenMove(int from, int to)");
 
         return true;
     }
@@ -775,18 +637,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeBlackQueenMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 27)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackQueenMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeBlackQueenMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isBlackQueenMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -797,8 +650,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeBlackQueenMove(int from, int to)");
 
         return true;
     }
@@ -817,18 +668,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeWhiteKingMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 4)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteKingMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeWhiteKingMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isWhiteKingMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -839,8 +681,6 @@ public class Chessboard implements Cloneable {
         this.board[to] = piece;
         this.piecePosition[piece] = to;
         this.numberOfMovesMade++;
-
-        // if(DEBUG) println("Konec makeWhiteKingMove(int from, int to)");
 
         return true;
     }
@@ -859,18 +699,9 @@ public class Chessboard implements Cloneable {
             throws ChessboardException {
         int piece = this.board[from];
 
-        // if(DEBUG) println("Za�etek makeBlackKingMove(int from, int to)");
-        // if(DEBUG) println("from: " + from + "\tto: " + to + "\tpiece: " +
-        // piece);
-
         if (piece != 28)
             throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackKingMoveLegal(from, to)) {
-            // if(DEBUG) println("Poteza ni dovoljena, vra�am false");
-            // if(DEBUG) println("Konec makeBlackKingMove(int from, int to)");
-
-            return false;
-        }
+        if (!this.isBlackKingMoveLegal(from, to)) { return false; }
 
         int targetPiece = this.board[to];
         if (targetPiece != -1) {
@@ -895,51 +726,21 @@ public class Chessboard implements Cloneable {
      *            pozicija iz katere premikamo
      * @param to
      *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
      */
     @Deprecated
-    public boolean makeAMove(int from, int to) throws ChessboardException {
+    public void makeAMove(int from, int to) throws ChessboardException {
         this.isWhitesTurn = !this.isWhitesTurn;
         int piece = this.board[from];
 
-        boolean result = false;
+        int targetPiece = this.board[to];
+        if (targetPiece != -1) {
+            this.piecePosition[targetPiece] = -1;
+        }
 
-        if (piece == 0 || piece == 7) {
-            result = this.makeWhiteRookMove(from, to);
-        }
-        if (piece == 1 || piece == 6) {
-            result = this.makeWhiteKnightMove(from, to);
-        }
-        if (piece == 2 || piece == 5) {
-            result = this.makeWhiteBishopMove(from, to);
-        }
-        if (piece == 3) {
-            result = this.makeWhiteQueenMove(from, to);
-        }
-        if (piece == 4) {
-            result = this.makeWhiteKingMove(from, to);
-        }
-        if (piece > 7 && piece < 16) {
-            result = this.makeWhitePawnMove(from, to);
-        }
-        if (piece > 15 && piece < 24) {
-            result = this.makeBlackPawnMove(from, to);
-        }
-        if (piece == 24 || piece == 31) {
-            result = this.makeBlackRookMove(from, to);
-        }
-        if (piece == 25 || piece == 30) {
-            result = this.makeBlackKnightMove(from, to);
-        }
-        if (piece == 26 || piece == 29) {
-            result = this.makeBlackBishopMove(from, to);
-        }
-        if (piece == 27) {
-            result = this.makeBlackQueenMove(from, to);
-        }
-        if (piece == 28) {
-            result = this.makeBlackKingMove(from, to);
-        }
+        this.board[from] = -1;
+        this.board[to] = piece;
+        this.piecePosition[piece] = to;
+        this.numberOfMovesMade++;
 
         int hash = this.hashCode();
         this.previousHashes.add(hash);
@@ -965,7 +766,6 @@ public class Chessboard implements Cloneable {
             this.numberOfTimesBoardStateHasOccured.put(hash, 1);
         }
 
-        return result;
     }
 
 
@@ -978,7 +778,7 @@ public class Chessboard implements Cloneable {
      * @throws ChessboardException
      * @throws UtilsException
      */
-    public boolean makeAMove(int moveNumber) throws ChessboardException {
+    public void makeAMove(int moveNumber) throws ChessboardException {
         if (moveNumber == -1) { throw new ChessboardException(
                 "neveljavna poteza"); }
 
@@ -998,7 +798,7 @@ public class Chessboard implements Cloneable {
         else if (targetPiece == -1 && this.board[to] != -1) { throw new ChessboardException(
                 "Pozijia to: " + to + " ni prazna"); }
 
-        return this.makeAMove(from, to);
+        this.makeAMove(from, to);
     }
 
 
@@ -2852,13 +2652,6 @@ public class Chessboard implements Cloneable {
             ArrayList<Move> whiteMoves) throws Exception {
         ArrayList<Move> rez = new ArrayList<Move>();
 
-        // System.out
-        // .println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\nthis board hash: "
-        // + this.hashCode());
-        // System.out.println("previous hashes: " + this.previousHashes +
-        // "\r\n");
-        // System.out.println(this);
-
         for (Move move : whiteMoves) {
 
             Chessboard temp = (Chessboard) this.clone();
@@ -2866,13 +2659,6 @@ public class Chessboard implements Cloneable {
             Integer hash = temp.hashCode();
             if (!this.previousHashes.contains(hash)) {
                 rez.add(move);
-                // System.out.println("added move: " + move);
-                // System.out.println("hash after move: " + hash);
-            }
-            else {
-                // System.out.println("removed move: " + move);
-                // System.out.println("hash after move: " + hash);
-                // System.out.println(temp);
             }
         }
 
@@ -3038,6 +2824,7 @@ public class Chessboard implements Cloneable {
      * (it doesnt know that for instance two rooks can protect each other).
      * 
      * @param allWhiteMoves
+     *            list of moves to filter
      * @return list of moves that white must do to avoid loosing a piece
      */
     public ArrayList<Move> whiteUrgentMoves(ArrayList<Move> allWhiteMoves) {

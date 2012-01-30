@@ -350,21 +350,6 @@ public class MCT {
     }
 
 
-    public void printCurrentState() throws UtilsException {
-        this.mainChessboard.printChessboard();
-    }
-
-
-    public void printSimulationChessboard() throws UtilsException {
-        this.simulationChessboard.printChessboard();
-    }
-
-
-    public void printMainChessboard() throws UtilsException {
-        this.mainChessboard.printChessboard();
-    }
-
-
     public String getFEN() throws UtilsException {
         return this.mainChessboard.boardToFen();
     }
