@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import chessboard.Chessboard;
 
 import moveFinders.BlackMoveFinder;
+import moveFinders.BlackMoveFinderStrategy;
 
 import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
@@ -16,12 +17,12 @@ public class BlackMoveChooser {
 
 
     public BlackMoveChooser() {
-	BlackMoveFinder.initRandom();
+        BlackMoveFinder.initRandom();
     }
 
 
     public BlackMoveChooser(long randomSeed) {
-	BlackMoveFinder.initRandom(randomSeed);
+        BlackMoveFinder.initRandom(randomSeed);
     }
 
 
@@ -34,13 +35,14 @@ public class BlackMoveChooser {
      * @throws ChessboardException
      * @throws BlackMoveFinderException
      */
-    public int chooseBlackKingMove(Chessboard board, int strategy)
-	    throws ChessboardException, BlackMoveFinderException {
-	int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
-	this.log.fine("V polpotezi " + (board.getNumberOfMovesMade() + 1)
-		+ " je èrni izbral potezo "
-		+ Utils.singleMoveNumberToString(rez).toLowerCase());
-	return rez;
+    public int chooseBlackKingMove(Chessboard board,
+            BlackMoveFinderStrategy strategy) throws ChessboardException,
+            BlackMoveFinderException {
+        int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
+        this.log.fine("V polpotezi " + (board.getNumberOfMovesMade() + 1)
+                + " je èrni izbral potezo "
+                + Utils.singleMoveNumberToString(rez).toLowerCase());
+        return rez;
     }
 
 }

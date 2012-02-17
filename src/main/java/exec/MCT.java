@@ -5,8 +5,10 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import moveChoosers.BlackMoveChooser;
+import moveChoosers.WhiteChooserStrategy;
 import moveChoosers.WhiteMoveChooser;
 import moveFinders.BlackMoveFinder;
+import moveFinders.BlackMoveFinderStrategy;
 import moveFinders.WhiteMoveFinder;
 import utils.MCTUtils;
 import chessboard.Chessboard;
@@ -322,10 +324,10 @@ public class MCT {
      * @throws ChessboardException
      * @throws MCTUtilsException
      */
-    public int chooseAPlyNumber(int whiteChoosingStrategy,
-            int blackChoosingStrategy) throws WhiteMoveChooserException,
-            UtilsException, ChessboardException, BlackMoveFinderException,
-            MCTUtilsException {
+    public int chooseAPlyNumber(WhiteChooserStrategy whiteChoosingStrategy,
+            BlackMoveFinderStrategy blackChoosingStrategy)
+            throws WhiteMoveChooserException, UtilsException,
+            ChessboardException, BlackMoveFinderException, MCTUtilsException {
         int rez = -1;
 
         if (Utils.isWhitesTurn(this.root)) {

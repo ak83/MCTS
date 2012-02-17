@@ -36,17 +36,17 @@ public class WhiteMoveChooser {
      * @throws UtilsException
      * @throws MCTUtilsException
      */
-    public int chooseAMove(MCTNode node, int choosingStrategy, int rankingMethod)
+    public int chooseAMove(MCTNode node, WhiteChooserStrategy strategy, int rankingMethod)
             throws WhiteMoveChooserException, UtilsException, MCTUtilsException {
         int rez = -1;
-        switch (choosingStrategy) {
-        case 0:
+        switch (strategy) {
+        case RANDOM:
             rez = this.chooseRandomMove(node);
             break;
-        case 1:
+        case VISIT_COUNT:
             rez = this.chooseMaxVisitCountMove(node);
             break;
-        case 2:
+        case RATING:
             rez = this.chooseMaxRatingMove(node, rankingMethod);
             break;
         default:

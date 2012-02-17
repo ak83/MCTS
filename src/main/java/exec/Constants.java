@@ -7,82 +7,86 @@ import java.util.logging.Level;
 
 import javax.management.RuntimeErrorException;
 
+import moveChoosers.WhiteChooserStrategy;
+import moveFinders.BlackMoveFinderStrategy;
+import moveFinders.WhiteMoveFinderStrategy;
+
 public class Constants {
 
     private Constants() {};
 
     // public final static long RANDOM_SEED = 765768;
-    public static int          NUMBER_OF_GAMES_PLAYED;
-    public static String       PGN_FILENAME                                                                    = "test.pgn";
-    public static String       LOG_FILENAME                                                                    = "test.log";
-    public static String       CONFIG_FILENAME                                                                 = "MCTS.conf";
-    public static String       FRUIT_FILEPATH                                                                  = "Fruit-2-3-1.exe";
-    public static String       EMD_DIR                                                                         = System.getProperty("user.dir");
+    public static int                     NUMBER_OF_GAMES_PLAYED;
+    public static String                  PGN_FILENAME                                                                    = "test.pgn";
+    public static String                  LOG_FILENAME                                                                    = "test.log";
+    public static String                  CONFIG_FILENAME                                                                 = "MCTS.conf";
+    public static String                  FRUIT_FILEPATH                                                                  = "Fruit-2-3-1.exe";
+    public static String                  EMD_DIR                                                                         = System.getProperty("user.dir");
     /**
      * maximum tree depth ( maximum ply count)
      */
-    public static int          MAX_DEPTH                                                                       = 100;
-    public static double       C;
-    public static int          GOBAN;
-    public static int          NUMBER_OF_SIMULATIONS_PER_EVALUATION;
-    public static int          BLACK_SIMULATION_STRATEGY                                                       = 2;
-    public static int          WHITE_SIMULATION_STRATEGY;
-    public static int          NUMBER_OF_INITAL_STEPS;
-    public static int          NUMBER_OF_RUNNING_STEPS;
-    public static int          WHITE_MOVE_CHOOSER_STRATEGY                                                     = 1;
-    public static int          BLACK_MOVE_CHOOSER_STRATEGY                                                     = 2;
-    public static boolean      SELECTION_EVALUATES_CHESSBOARD                                                  = false;
-    public static boolean      SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING                               = false;                                                  ;
-    public static String       ENDING;
-    public static boolean      WRITE_INDIVIDUAL_GAMES                                                          = true;
-    public static Level        FILE_LOG_LEVEL                                                                  = Level.ALL;
-    public static Level        CONSOLE_LOG_LEVEL                                                               = Level.OFF;
+    public static int                     MAX_DEPTH                                                                       = 100;
+    public static double                  C;
+    public static int                     GOBAN;
+    public static int                     NUMBER_OF_SIMULATIONS_PER_EVALUATION;
+    public static BlackMoveFinderStrategy BLACK_SIMULATION_STRATEGY                                                       = BlackMoveFinderStrategy.GOOD;
+    public static WhiteMoveFinderStrategy WHITE_SIMULATION_STRATEGY;
+    public static int                     NUMBER_OF_INITAL_STEPS;
+    public static int                     NUMBER_OF_RUNNING_STEPS;
+    public static WhiteChooserStrategy    WHITE_MOVE_CHOOSER_STRATEGY                                                     = WhiteChooserStrategy.VISIT_COUNT;
+    public static BlackMoveFinderStrategy BLACK_MOVE_CHOOSER_STRATEGY                                                     = BlackMoveFinderStrategy.GOOD;
+    public static boolean                 SELECTION_EVALUATES_CHESSBOARD                                                  = false;
+    public static boolean                 SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING                               = false;                                                  ;
+    public static String                  ENDING;
+    public static boolean                 WRITE_INDIVIDUAL_GAMES                                                          = true;
+    public static Level                   FILE_LOG_LEVEL                                                                  = Level.ALL;
+    public static Level                   CONSOLE_LOG_LEVEL                                                               = Level.OFF;
 
-    public static boolean      KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition                         = false;
-    public static boolean      KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals                = false;
+    public static boolean                 KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition                         = false;
+    public static boolean                 KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals                = false;
 
-    public static boolean      HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
-    public static boolean      HEURISTICS_white_KING_only_moves_coser_to_black_king                            = false;
-    public static boolean      HEURISTICS_check_for_urgent_moves                                               = false;
-    public static boolean      HEURISTICS_only_safe_moves                                                      = false;
-    public static boolean      HEURISTICS_avoid_move_repetition                                                = false;
+    public static boolean                 HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
+    public static boolean                 HEURISTICS_white_KING_only_moves_coser_to_black_king                            = false;
+    public static boolean                 HEURISTICS_check_for_urgent_moves                                               = false;
+    public static boolean                 HEURISTICS_only_safe_moves                                                      = false;
+    public static boolean                 HEURISTICS_avoid_move_repetition                                                = false;
 
-    public static boolean[]    file_mandatory_parameters                                                       = {
-            false, false, false, false, false, false, false, false                                            };
+    public static boolean[]               file_mandatory_parameters                                                       = {
+            false, false, false, false, false, false, false, false                                                       };
 
-    public static final String HELP                                                                            = "Uporaba: \r\n"
-                                                                                                                       + "java -jar MCTS.jar [OPT]"
-                                                                                                                       + "\r\n\r\n"
-                                                                                                                       + "OPT - opcijski argumenti"
-                                                                                                                       + "\r\n\t --ig"
-                                                                                                                       + "\r\n\t\t ne zapisuj posameznih iger v pgn-je"
-                                                                                                                       + "\r\n\t --emd [EMD_DIR]"
-                                                                                                                       + "\r\n\t\t nastavi emd direktorij na [EMD_DIR] (privzeto je v trenutne direktoriju)"
-                                                                                                                       + "\r\n\t --conf [CONF_FILE]"
-                                                                                                                       + "\r\n\t\t za konfiguracijsko datoteko uporabi CONF_FILE"
-                                                                                                                       + "\r\n\t --pgn [PGN_FILE]"
-                                                                                                                       + "\r\n\t\t shrani partijo v PGN_FILE (privzeto je test.pgn)"
-                                                                                                                       + "\r\n\t --log [LOG_FILE]"
-                                                                                                                       + "\r\n\t\t nastavi pot za log datoteko (privzeto je test.log)"
-                                                                                                                       + "\r\n\t --fruit [FRUIT]"
-                                                                                                                       + "\r\n\t\t nastavi pot do fruit programa (privzeto je Fruit-2-3-1.exe)"
-                                                                                                                       + "\r\n\t --help"
-                                                                                                                       + "\r\n\t\t program izpise to pomoc in se konca";
+    public static final String            HELP                                                                            = "Uporaba: \r\n"
+                                                                                                                                  + "java -jar MCTS.jar [OPT]"
+                                                                                                                                  + "\r\n\r\n"
+                                                                                                                                  + "OPT - opcijski argumenti"
+                                                                                                                                  + "\r\n\t --ig"
+                                                                                                                                  + "\r\n\t\t ne zapisuj posameznih iger v pgn-je"
+                                                                                                                                  + "\r\n\t --emd [EMD_DIR]"
+                                                                                                                                  + "\r\n\t\t nastavi emd direktorij na [EMD_DIR] (privzeto je v trenutne direktoriju)"
+                                                                                                                                  + "\r\n\t --conf [CONF_FILE]"
+                                                                                                                                  + "\r\n\t\t za konfiguracijsko datoteko uporabi CONF_FILE"
+                                                                                                                                  + "\r\n\t --pgn [PGN_FILE]"
+                                                                                                                                  + "\r\n\t\t shrani partijo v PGN_FILE (privzeto je test.pgn)"
+                                                                                                                                  + "\r\n\t --log [LOG_FILE]"
+                                                                                                                                  + "\r\n\t\t nastavi pot za log datoteko (privzeto je test.log)"
+                                                                                                                                  + "\r\n\t --fruit [FRUIT]"
+                                                                                                                                  + "\r\n\t\t nastavi pot do fruit programa (privzeto je Fruit-2-3-1.exe)"
+                                                                                                                                  + "\r\n\t --help"
+                                                                                                                                  + "\r\n\t\t program izpise to pomoc in se konca";
 
 
     public static void initConstants(String[] param) {
 
         if (Constants.ENDING.equalsIgnoreCase("KRRK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = 1;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KRRK_ENDING;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KQK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = 2;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KQK_ENDING;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KRK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = 3;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KRK_ENDING;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KBBK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = 4;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KBBK_ENDING;
         }
 
         // Otional arguments
@@ -142,16 +146,16 @@ public class Constants {
         rez += "BLACK_SIMULATION_STRATEGY "
                 + Constants.BLACK_SIMULATION_STRATEGY;
         switch (Constants.BLACK_SIMULATION_STRATEGY) {
-            case 0:
+            case RANDOM:
                 rez += " (black doesn' use heuristics).\r\n";
                 break;
-            case 1:
+            case CENTER:
                 rez += " (black king tries to move towards center).\r\n";
                 break;
-            case 2:
+            case GOOD:
                 rez += " (black king tries to move towards center, but if it's possible eats white figure and evades king opposition).\r\n";
                 break;
-            case 3:
+            case PERFECT:
                 rez += " (black king playes with perfect information).\r\n";
                 break;
         }
@@ -159,7 +163,7 @@ public class Constants {
         rez += "WHITE_SIMULATION_STRATEGY "
                 + Constants.WHITE_SIMULATION_STRATEGY;
         switch (Constants.WHITE_SIMULATION_STRATEGY) {
-            case 0:
+            case RANDOM:
                 rez += " (white is using random strategy - it doesn't use heuristics)\r\n";
                 break;
 
@@ -177,13 +181,13 @@ public class Constants {
                 + Constants.WHITE_MOVE_CHOOSER_STRATEGY
                 + " (white draws moves by selecting child node of root -";
         switch (Constants.WHITE_MOVE_CHOOSER_STRATEGY) {
-            case 0:
+            case RANDOM:
                 rez += " chooses random node).\r\n";
                 break;
-            case 1:
+            case VISIT_COUNT:
                 rez += " chooses node with maximum visit count).\r\n";
                 break;
-            case 2:
+            case RATING:
                 rez += " choose with maximum rating).\r\n";
                 break;
         }
@@ -191,16 +195,16 @@ public class Constants {
         rez += "BLACK_MOVE_CHOOSER_STRATEGY "
                 + Constants.BLACK_MOVE_CHOOSER_STRATEGY;
         switch (Constants.BLACK_MOVE_CHOOSER_STRATEGY) {
-            case 0:
+            case RANDOM:
                 rez += " (black doesn' use heuristics).\r\n";
                 break;
-            case 1:
+            case CENTER:
                 rez += " (black king tries to move towards center).\r\n";
                 break;
-            case 2:
+            case GOOD:
                 rez += " (black king tries to move towards center, but if it's possible eats white figure and evades king opposition).\r\n";
                 break;
-            case 3:
+            case PERFECT:
                 rez += " (black king playes with perfect information).\r\n";
                 break;
         }
@@ -458,13 +462,13 @@ public class Constants {
                     }
 
                     if (visitCount) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = 1;
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
                     }
                     else if (rating) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = 2;
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
                     }
                     else if (random) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = 0;
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
                     }
 
                     Constants.file_mandatory_parameters[7] = true;
@@ -619,17 +623,17 @@ public class Constants {
                     }
 
                     if (words[1].equalsIgnoreCase("random")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = 0;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.RANDOM;
                     }
                     else if (words[1].equalsIgnoreCase("center")
                             || words[1].equalsIgnoreCase("centre")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = 1;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.CENTER;
                     }
                     else if (words[1].equalsIgnoreCase("normal")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = 2;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.GOOD;
                     }
                     else if (words[1].equalsIgnoreCase("perfect")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = 3;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.PERFECT;
                     }
                     else {
                         System.err.println(words[1]
@@ -646,15 +650,15 @@ public class Constants {
                         System.exit(1);
                     }
                     if (words[1].equalsIgnoreCase("random")) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = 0;
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
                     }
                     else if (words[1].equalsIgnoreCase("vc")
                             || words[1].equalsIgnoreCase("visit_count")
                             || words[1].equalsIgnoreCase("visitCount")) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = 1;
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
                     }
                     else if (words[1].equalsIgnoreCase("rating")) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = 2;
+                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
                     }
                     else {
                         System.err.println(words[1]
@@ -682,7 +686,7 @@ public class Constants {
                     Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = false;
                     Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = false;
 
-                    Constants.WHITE_SIMULATION_STRATEGY = 0;
+                    Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.RANDOM;
                 }
                 else if (Constants.doesStringMatchValidEnding(words[0])) {
                     // we do nothing here, because, if token is valid ending,

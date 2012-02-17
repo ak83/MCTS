@@ -164,9 +164,8 @@ public class ChessGame {
                 + logString4
                 + "\r\n###########################################################################################\r\n###########################################################################################\r\n");
 
-        String whiteStrat = Utils.whiteStrategyToString(
-                Constants.WHITE_MOVE_CHOOSER_STRATEGY,
-                Constants.WHITE_SIMULATION_STRATEGY);
+        String whiteStrat = Utils
+                .whiteStrategyToString(Constants.WHITE_MOVE_CHOOSER_STRATEGY);
 
         String blackStrat = Utils
                 .blackStrategyToString(Constants.BLACK_MOVE_CHOOSER_STRATEGY);

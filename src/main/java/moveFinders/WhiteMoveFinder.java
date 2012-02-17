@@ -23,17 +23,6 @@ public class WhiteMoveFinder {
 
 
     /**
-     * inicializira random
-     * 
-     * @param seed
-     *            seme random
-     */
-    public static void initRandom(long seed) {
-        WhiteMoveFinder.random = new Random(seed);
-    }
-
-
-    /**
      * @param board
      *            postavitev za katero iscemo naslednje poteze
      * @param strategy
@@ -41,19 +30,20 @@ public class WhiteMoveFinder {
      *            ending, 4 - KBBK ending
      * @return movenumber
      */
-    public static int findWhiteMove(Chessboard board, int strategy)
-            throws ChessboardException, WhiteMoveFinderException {
+    public static int findWhiteMove(Chessboard board,
+            WhiteMoveFinderStrategy strategy) throws ChessboardException,
+            WhiteMoveFinderException {
         switch (strategy) {
-            case 0:
+            case RANDOM:
                 return WhiteMoveFinder.findRandomWhiteMove(board
                         .getAllLegalWhiteMoves());
-            case 1:
+            case KRRK_ENDING:
                 return WhiteMoveFinder.findKRRKWhiteMove(board);
-            case 2:
+            case KQK_ENDING:
                 return WhiteMoveFinder.findKQKWhiteMove(board);
-            case 3:
+            case KRK_ENDING:
                 return WhiteMoveFinder.findKRKWhiteMove(board);
-            case 4:
+            case KBBK_ENDING:
                 return WhiteMoveFinder.findKBBKWhiteMove(board);
             default:
                 throw new WhiteMoveFinderException("strategija je neustrezna: "
@@ -124,13 +114,6 @@ public class WhiteMoveFinder {
         return WhiteMoveFinder.getRandomMoveNumberFromArrayList(rez);
     }
 
-
-    /* *****************************************************************************
-     * **************************POMOZNE
-     * FUNKCIJE***********************************
-     * ******************************
-     * ***********************************************
-     */
 
     private static int getRandomMoveNumberFromArrayList(ArrayList<Move> moves) {
         int index = WhiteMoveFinder.random.nextInt(moves.size());
