@@ -1,6 +1,5 @@
 package chessboard;
 
-import exec.Piece;
 import exec.Utils;
 
 /**
@@ -73,53 +72,6 @@ public class ChessboardUtils {
         }
         else {
             return false;
-        }
-    }
-
-
-    /**
-     * Converts number that represents piece to Piece. It doesn't warn if
-     * pieceNumber is invalid.
-     * 
-     * @param pieceNumber
-     * @return Piece
-     */
-    public static Piece pieceNumberToPiece(int pieceNumber) {
-        switch (pieceNumber) {
-            case 0:
-            case 7:
-                return Piece.WHITE_ROOK;
-            case 1:
-            case 6:
-                return Piece.WHITE_KNIGHT;
-            case 2:
-            case 5:
-                return Piece.WHITE_BISHOP;
-            case 3:
-                return Piece.WHITE_QUEEN;
-            case 4:
-                return Piece.WHITE_KING;
-            case 24:
-            case 31:
-                return Piece.BLACK_ROOK;
-            case 25:
-            case 30:
-                return Piece.BLACK_KNIGHT;
-            case 26:
-            case 29:
-                return Piece.BLACK_BISHOP;
-            case 27:
-                return Piece.BLACK_QUEEN;
-            case 28:
-                return Piece.BLACK_KING;
-            default: {
-                if (pieceNumber < 16) {
-                    return Piece.WHITE_PAWN;
-                }
-                else {
-                    return Piece.BLACK_PAWN;
-                }
-            }
         }
     }
 }
