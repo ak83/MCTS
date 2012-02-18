@@ -7,7 +7,7 @@ import chessboard.Chessboard;
 import moveFinders.BlackMoveFinder;
 import moveFinders.BlackMoveFinderStrategy;
 import moveFinders.WhiteMoveFinder;
-import moveFinders.WhiteMoveFinderStrategy;
+import moveFinders.WhiteFinderStrategy;
 
 import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
@@ -28,17 +28,18 @@ public class MCTUtils {
      * @return node rating
      * @throws MCTUtilsException
      */
-    public static double computeNodeRating(MCTNode node, int methodOfComputing)
+    public static double computeNodeRating(MCTNode node)
             throws MCTUtilsException {
         if (node.visitCount == 0 || node.parent.visitCount == 0) { throw new MCTUtilsException(); }
-        if (methodOfComputing == 1) {
+
+        if (!node.isWhitesMove) {
             // poteze belega
             double value = (double) node.numberOfMatsInNode
                     / (double) node.visitCount;
             double temp = Math.log(node.parent.visitCount) / node.visitCount;
             return value + node.c * Math.sqrt(temp);
         }
-        else if (methodOfComputing == 2) {
+        else {
             // poteze crnega
             double value = (double) node.numberOfMatsInNode
                     / (double) node.visitCount;
@@ -46,8 +47,6 @@ public class MCTUtils {
             return (1 - value) + node.c * Math.sqrt(temp);
         }
 
-        throw new MCTUtilsException("neveljavna methoda of computing: "
-                + methodOfComputing);
     }
 
 
@@ -77,14 +76,7 @@ public class MCTUtils {
         double currRating = -Double.MAX_VALUE;
 
         for (int x = 0; x < node.nextMoves.size(); x++) {
-            if (node.isWhitesMove) {
-                currRating = MCTUtils.computeNodeRating(node.nextMoves.get(x),
-                        whiteRankingMethod);
-            }
-            else {
-                currRating = MCTUtils.computeNodeRating(node.nextMoves.get(x),
-                        blackRankingMethod);
-            }
+            currRating = MCTUtils.computeNodeRating(node.nextMoves.get(x));
 
             if (currRating > maxRating) {
                 maxRating = currRating;
@@ -117,7 +109,7 @@ public class MCTUtils {
 
 
     public static int findNextMove(MCTNode node,
-            WhiteMoveFinderStrategy whiteSimuationStrategy,
+            WhiteFinderStrategy whiteSimuationStrategy,
             BlackMoveFinderStrategy blackSimulationStrategy)
             throws ChessboardException, WhiteMoveFinderException,
             BlackMoveFinderException {

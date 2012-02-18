@@ -31,7 +31,7 @@ public class WhiteMoveFinder {
      * @return movenumber
      */
     public static int findWhiteMove(Chessboard board,
-            WhiteMoveFinderStrategy strategy) throws ChessboardException,
+            WhiteFinderStrategy strategy) throws ChessboardException,
             WhiteMoveFinderException {
         switch (strategy) {
             case RANDOM:

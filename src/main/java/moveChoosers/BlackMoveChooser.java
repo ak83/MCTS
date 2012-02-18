@@ -13,33 +13,29 @@ import exec.Utils;
 
 public class BlackMoveChooser {
 
-    private Logger log = Logger.getLogger("MCTS.BlackMoveChooser");
+    private static Logger log = Logger.getLogger("MCTS.BlackMoveChooser");
 
 
-    public BlackMoveChooser() {
-        BlackMoveFinder.initRandom();
-    }
-
-
-    public BlackMoveChooser(long randomSeed) {
-        BlackMoveFinder.initRandom(randomSeed);
-    }
+    private BlackMoveChooser() {}
 
 
     /**
+     * Find a move number based on strategy.
+     * 
      * @param board
-     *            plosca na kateri iscemo potezo
+     *            board on which we look for move number
      * @param strategy
-     *            0 - random strategija, 1 - kralj tezi k centru
-     * @return stevilko izbrane poteze
+     *            Black king strategy
+     * @return selected move number
      * @throws ChessboardException
      * @throws BlackMoveFinderException
      */
-    public int chooseBlackKingMove(Chessboard board,
+    public static int chooseBlackKingMove(Chessboard board,
             BlackMoveFinderStrategy strategy) throws ChessboardException,
             BlackMoveFinderException {
         int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
-        this.log.fine("V polpotezi " + (board.getNumberOfMovesMade() + 1)
+        BlackMoveChooser.log.fine("V polpotezi "
+                + (board.getNumberOfMovesMade() + 1)
                 + " je èrni izbral potezo "
                 + Utils.singleMoveNumberToString(rez).toLowerCase());
         return rez;

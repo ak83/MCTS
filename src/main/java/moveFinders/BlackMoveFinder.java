@@ -22,20 +22,10 @@ import exec.Utils;
  */
 public class BlackMoveFinder {
 
-    private static Random random;
+    private static Random random = new Random();
 
 
     private BlackMoveFinder() {}
-
-
-    public static void initRandom() {
-        BlackMoveFinder.random = new Random();
-    }
-
-
-    public static void initRandom(long seed) {
-        BlackMoveFinder.random = new Random(seed);
-    }
 
 
     /**

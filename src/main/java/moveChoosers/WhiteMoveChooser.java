@@ -13,50 +13,46 @@ import exec.MCTNode;
 
 public class WhiteMoveChooser {
 
-    private Random r;
-    private Logger log = Logger.getLogger("MCTS.WhiteMoveChooser");
+    private static Random random = new Random();
+    private static Logger log    = Logger.getLogger("MCTS.WhiteMoveChooser");
 
 
-    public WhiteMoveChooser() {
-        this.r = new Random();
-    }
-
-
-    public WhiteMoveChooser(long seed) {
-        this.r = new Random(seed);
-    }
+    public WhiteMoveChooser() {}
 
 
     /**
-     * @param list
-     * @param choosingStrategy
-     *            strategija izbiranja potez 0 - max visit count 1- max rating
-     * @return index poteze, ki je najboljsa za trenutno strategija
+     * Chooses black move from {@link MCTNode}
+     * 
+     * @param node
+     *            root node
+     * @param strategy
+     *            strategy on which we choose move
+     * @return chosen index of nodes child
      * @throws WhiteMoveChooserException
      * @throws UtilsException
      * @throws MCTUtilsException
      */
-    public int chooseAMove(MCTNode node, WhiteChooserStrategy strategy, int rankingMethod)
+    public static int chooseAMove(MCTNode node, WhiteChooserStrategy strategy)
             throws WhiteMoveChooserException, UtilsException, MCTUtilsException {
         int rez = -1;
         switch (strategy) {
-        case RANDOM:
-            rez = this.chooseRandomMove(node);
-            break;
-        case VISIT_COUNT:
-            rez = this.chooseMaxVisitCountMove(node);
-            break;
-        case RATING:
-            rez = this.chooseMaxRatingMove(node, rankingMethod);
-            break;
-        default:
-            throw new WhiteMoveChooserException("neveljavna strategija");
+            case RANDOM:
+                rez = WhiteMoveChooser.chooseRandomMove(node);
+                break;
+            case VISIT_COUNT:
+                rez = WhiteMoveChooser.chooseMaxVisitCountMove(node);
+                break;
+            case RATING:
+                rez = WhiteMoveChooser.chooseMaxRatingMove(node);
+                break;
+            default:
+                throw new WhiteMoveChooserException("neveljavna strategija");
         }
         String logString = "V polpotezi " + (node.plyDepth + 1)
                 + " je beli izbiral med potezami :\r\n"
                 + node.nexMovesToString() + "Izbral si pa je potezo "
                 + (rez + 1);
-        this.log.fine(logString);
+        WhiteMoveChooser.log.fine(logString);
 
         return rez;
     }
@@ -67,7 +63,7 @@ public class WhiteMoveChooser {
      *            stars sinov od katerih izbiramo poteze
      * @return
      */
-    private int chooseMaxVisitCountMove(MCTNode node) {
+    private static int chooseMaxVisitCountMove(MCTNode node) {
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
 
         int maxVC = 0;
@@ -82,22 +78,21 @@ public class WhiteMoveChooser {
             }
         }
 
-        int chosenMove = this.r.nextInt(rezCand.size());
+        int chosenMove = WhiteMoveChooser.random.nextInt(rezCand.size());
         chosenMove = rezCand.get(chosenMove);
 
         return chosenMove;
     }
 
 
-    private int chooseMaxRatingMove(MCTNode node, int methodOfRating)
-            throws UtilsException, MCTUtilsException {
+    private static int chooseMaxRatingMove(MCTNode node) throws UtilsException,
+            MCTUtilsException {
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
-        double maxRating = MCTUtils.computeNodeRating(node.nextMoves.get(0),
-                methodOfRating);
+        double maxRating = -Double.MAX_VALUE;
 
         for (int x = 0; x < node.nextMoves.size(); x++) {
-            double currRating = MCTUtils.computeNodeRating(
-                    node.nextMoves.get(x), methodOfRating);
+            double currRating = MCTUtils.computeNodeRating(node.nextMoves
+                    .get(x));
             if (currRating > maxRating) {
                 rezCand = new ArrayList<Integer>();
                 maxRating = currRating;
@@ -108,15 +103,15 @@ public class WhiteMoveChooser {
             }
         }
 
-        int chosenMove = this.r.nextInt(rezCand.size());
+        int chosenMove = WhiteMoveChooser.random.nextInt(rezCand.size());
         chosenMove = rezCand.get(chosenMove);
 
         return chosenMove;
     }
 
 
-    private int chooseRandomMove(MCTNode node) {
-        int rez = this.r.nextInt(node.nextMoves.size());
+    private static int chooseRandomMove(MCTNode node) {
+        int rez = WhiteMoveChooser.random.nextInt(node.nextMoves.size());
         return rez;
     }
 

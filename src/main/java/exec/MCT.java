@@ -27,22 +27,16 @@ public class MCT {
      * root predstavlja, koren MCT drevesa in je edino vozlisce s stevilko
      * poteze 0
      */
-    private MCTNode          root;
+    private MCTNode    root;
 
-    private Chessboard       mainChessboard;
-    private Chessboard       simulationChessboard;
+    private Chessboard mainChessboard;
+    private Chessboard simulationChessboard;
 
-    private int              whiteNodeRatingComputationMethod = 1;
-    private int              blackNodeRatingComputationMethod = 2;
+    private Random     r               = new Random();
 
-    private Random           r                                = new Random();
-
-    private WhiteMoveChooser whiteMoveChooser                 = new WhiteMoveChooser();
-    private BlackMoveChooser blackMoveChooser                 = new BlackMoveChooser();
-
-    private MCTStats         stats                            = new MCTStats();
-    private Logger           log                              = Logger.getLogger("MCTS.MCT");
-    private int              currentTreeSize                  = 0;
+    private MCTStats   stats           = new MCTStats();
+    private Logger     log             = Logger.getLogger("MCTS.MCT");
+    private int        currentTreeSize = 0;
 
 
     public MCT() {
@@ -64,9 +58,7 @@ public class MCT {
                 || node.nextMoves.size() == 0) { return node; }
 
         ArrayList<Integer> maxRatingIndexes = MCTUtils
-                .getInedexesWithMaxRating(node,
-                        this.whiteNodeRatingComputationMethod,
-                        this.blackNodeRatingComputationMethod);
+                .getInedexesWithMaxRating(node, 1, 2);
 
         int selectedIndex = this.r.nextInt(maxRatingIndexes.size());
         selectedIndex = maxRatingIndexes.get(selectedIndex);
@@ -330,16 +322,18 @@ public class MCT {
             ChessboardException, BlackMoveFinderException, MCTUtilsException {
         int rez = -1;
 
-        if (Utils.isWhitesTurn(this.root)) {
+        if (this.root.isWhitesMove) {
             this.stats.whiteMoveChoices.add(this.root.nexMovesToString());
-            rez = this.whiteMoveChooser.chooseAMove(this.root,
-                    whiteChoosingStrategy, 1);
+
+            rez = WhiteMoveChooser
+                    .chooseAMove(this.root, whiteChoosingStrategy);
+
             this.stats.whiteMovesChosen.add(rez);
             rez = this.root.nextMoves.get(rez).moveNumber;
         }
         else {
-            rez = this.blackMoveChooser.chooseBlackKingMove(
-                    this.mainChessboard, blackChoosingStrategy);
+            rez = BlackMoveChooser.chooseBlackKingMove(this.mainChessboard,
+                    blackChoosingStrategy);
         }
 
         return rez;

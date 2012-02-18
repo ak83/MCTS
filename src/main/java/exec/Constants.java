@@ -9,7 +9,7 @@ import javax.management.RuntimeErrorException;
 
 import moveChoosers.WhiteChooserStrategy;
 import moveFinders.BlackMoveFinderStrategy;
-import moveFinders.WhiteMoveFinderStrategy;
+import moveFinders.WhiteFinderStrategy;
 
 public class Constants {
 
@@ -30,7 +30,7 @@ public class Constants {
     public static int                     GOBAN;
     public static int                     NUMBER_OF_SIMULATIONS_PER_EVALUATION;
     public static BlackMoveFinderStrategy BLACK_SIMULATION_STRATEGY                                                       = BlackMoveFinderStrategy.GOOD;
-    public static WhiteMoveFinderStrategy WHITE_SIMULATION_STRATEGY;
+    public static WhiteFinderStrategy WHITE_SIMULATION_STRATEGY;
     public static int                     NUMBER_OF_INITAL_STEPS;
     public static int                     NUMBER_OF_RUNNING_STEPS;
     public static WhiteChooserStrategy    WHITE_MOVE_CHOOSER_STRATEGY                                                     = WhiteChooserStrategy.VISIT_COUNT;
@@ -77,16 +77,16 @@ public class Constants {
     public static void initConstants(String[] param) {
 
         if (Constants.ENDING.equalsIgnoreCase("KRRK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KRRK_ENDING;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KRRK_ENDING;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KQK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KQK_ENDING;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KQK_ENDING;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KRK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KRK_ENDING;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KRK_ENDING;
         }
         else if (Constants.ENDING.equalsIgnoreCase("KBBK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.KBBK_ENDING;
+            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KBBK_ENDING;
         }
 
         // Otional arguments
@@ -686,7 +686,7 @@ public class Constants {
                     Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = false;
                     Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = false;
 
-                    Constants.WHITE_SIMULATION_STRATEGY = WhiteMoveFinderStrategy.RANDOM;
+                    Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.RANDOM;
                 }
                 else if (Constants.doesStringMatchValidEnding(words[0])) {
                     // we do nothing here, because, if token is valid ending,
