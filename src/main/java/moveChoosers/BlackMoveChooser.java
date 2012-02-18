@@ -27,14 +27,13 @@ public class BlackMoveChooser {
      *            Black king strategy
      * @return selected move number
      * @throws ChessboardException
-     * @throws BlackMoveFinderException
      */
     public static int chooseBlackKingMove(Chessboard board,
             BlackMoveFinderStrategy strategy) throws ChessboardException
             {
         int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
         BlackMoveChooser.log.fine("V polpotezi "
-                + (board.getNumberOfMovesMade() + 1)
+                + (board.getNumberOfPliesMade() + 1)
                 + " je èrni izbral potezo "
                 + Utils.singleMoveNumberToString(rez).toLowerCase());
         return rez;

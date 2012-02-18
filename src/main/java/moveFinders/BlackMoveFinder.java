@@ -134,7 +134,7 @@ public class BlackMoveFinder {
             }
             input.close();
             h = h.substring(9, 13);
-            return board.constructMoveNumberFromString(h);
+            return board.constructPlyNumberFromString(h);
         }
         catch (Exception e) {
             e.printStackTrace();

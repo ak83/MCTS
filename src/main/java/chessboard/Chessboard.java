@@ -14,19 +14,27 @@ import exec.Utils;
 
 public class Chessboard implements Cloneable {
 
+    /**
+     * used for optimization purposes. Sets number of plys to check for state
+     * repetition for pat.
+     */
     private static final int          NUMBER_OF_PREVIOUS_MOVES_WE_CHECK_FOR_REPEATED_STATE_PAT = 20;
 
-    /*
-     * board hrani stevilko figure, ki je na doloceni lokaciji
+    /**
+     * Holds piece number for board location.
      */
     private int[]                     board;
-    /*
-     * piecePosition shrani lokacijo vsake figure na plosci
+    /**
+     * Holds position of every piece.
      */
     private int[]                     piecePosition;
 
+    /**
+     * Tells if it currently whites move.
+     */
     private boolean                   isWhitesTurn                                             = true;
-    private int                       numberOfMovesMade                                        = 0;
+
+    private int                       numberOfPliesMade                                        = 0;
     /**
      * This is used for keeping track how many times some chess board state has
      * occurred. Key is hash code of chess board and values is how may times
@@ -35,10 +43,24 @@ public class Chessboard implements Cloneable {
     private HashMap<Integer, Integer> numberOfTimesBoardStateHasOccured                        = new HashMap<Integer, Integer>(
                                                                                                        Chessboard.NUMBER_OF_PREVIOUS_MOVES_WE_CHECK_FOR_REPEATED_STATE_PAT + 1);
 
+    /**
+     * Chess board name.
+     */
     private String                    name;
+
+    /**
+     * flag that tells us if chess board state has appeared three times.
+     */
     private boolean                   wasBoardStateRepeatedThreeTimes                          = false;
+
+    /**
+     * List of chess board hashes that have already occured.
+     */
     private ArrayList<Integer>        previousHashes                                           = new ArrayList<Integer>();
 
+    /**
+     * Logger
+     */
     private Logger                    log                                                      = Logger.getLogger("MCTS.Chessboard");
 
 
@@ -55,7 +77,7 @@ public class Chessboard implements Cloneable {
     public Chessboard(String name) {
         this.name = name;
         this.isWhitesTurn = true;
-        this.numberOfMovesMade = 0;
+        this.numberOfPliesMade = 0;
 
         this.board = new int[128];
         for (int x = 0; x < 128; x++) {
@@ -107,7 +129,7 @@ public class Chessboard implements Cloneable {
      * @param name
      *            name which chess board will have
      * @param node
-     *            node from which we get chess board state
+     *            node which we transform into chess board
      */
     public Chessboard(String name, MCTNode node) {
 
@@ -115,7 +137,7 @@ public class Chessboard implements Cloneable {
         this.board = node.chessboard.cloneBoard();
         this.isWhitesTurn = node.chessboard.isWhitesTurn;
         this.log = node.chessboard.log;
-        this.numberOfMovesMade = node.chessboard.numberOfMovesMade;
+        this.numberOfPliesMade = node.chessboard.numberOfPliesMade;
         this.numberOfTimesBoardStateHasOccured = node.chessboard
                 .cloneNumberOfTimesBoardStateHasOccured();
         this.piecePosition = node.chessboard.clonePiecePosition();
@@ -136,7 +158,7 @@ public class Chessboard implements Cloneable {
         this.name = name;
         this.isWhitesTurn = cb.getIsWhitesTurn();
         this.board = cb.cloneBoard();
-        this.numberOfMovesMade = cb.getNumberOfMovesMade();
+        this.numberOfPliesMade = cb.getNumberOfPliesMade();
         this.numberOfTimesBoardStateHasOccured = cb
                 .cloneNumberOfTimesBoardStateHasOccured();
         this.previousHashes = cb.clonePreviousHashes();
@@ -175,12 +197,8 @@ public class Chessboard implements Cloneable {
     }
 
 
-    /* ************************************************************************
-     * ***************************JAVNE FUNKCIJE*******************************
-     */
-
     /**
-     * Gets current board states fen notation.
+     * Gets fen notation for chess board.
      * 
      * @return fen representation of current board state
      */
@@ -213,10 +231,10 @@ public class Chessboard implements Cloneable {
             }
             else {
                 if (this.isWhitesTurn) {
-                    sb.append(" w - - 0 " + (this.numberOfMovesMade / 2));
+                    sb.append(" w - - 0 " + (this.numberOfPliesMade / 2));
                 }
                 else {
-                    sb.append(" b - - 0 " + (this.numberOfMovesMade / 2));
+                    sb.append(" b - - 0 " + (this.numberOfPliesMade / 2));
                 }
             }
         }
@@ -225,6 +243,11 @@ public class Chessboard implements Cloneable {
     }
 
 
+    /**
+     * Converts chess board to string.
+     * 
+     * @return chess board string repesentation
+     */
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(50);
@@ -275,7 +298,9 @@ public class Chessboard implements Cloneable {
 
 
     /**
-     * @return int[] ki predstavlja plosco v X88 obliki
+     * Gets array that holds piece for specific position.
+     * 
+     * @return array that holds pieces for positions
      */
     public int[] cloneBoard() {
         return this.board.clone();
@@ -283,6 +308,8 @@ public class Chessboard implements Cloneable {
 
 
     /**
+     * Gets array that holds postion of specific piece.
+     * 
      * @return clone of piecePosition
      */
     public int[] clonePiecePosition() {
@@ -290,12 +317,23 @@ public class Chessboard implements Cloneable {
     }
 
 
+    /**
+     * Gets clone of list that holds previous hashes.
+     * 
+     * @return list of hashes that have already occured
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<Integer> clonePreviousHashes() {
         return (ArrayList<Integer>) this.previousHashes.clone();
     }
 
 
+    /**
+     * Gets clone of map that map hashed to number of their occureances.
+     * 
+     * @return map which for every hash (key) tells how many times that hash has
+     *         occured.
+     */
     @SuppressWarnings("unchecked")
     public HashMap<Integer, Integer> cloneNumberOfTimesBoardStateHasOccured() {
         return (HashMap<Integer, Integer>) this.numberOfTimesBoardStateHasOccured
@@ -304,21 +342,23 @@ public class Chessboard implements Cloneable {
 
 
     /**
-     * @return polje int[] v katerem je v x elementu shranjena pozicija za
-     *         figuro x
+     * Tells if white is currently on the move.
+     * 
+     * @return <code>true</code> if this is whites turn, otherwise
+     *         <code>false</code>.
      */
-    public int[] clonePiecesPosition() {
-        return this.piecePosition.clone();
-    }
-
-
     public boolean getIsWhitesTurn() {
         return this.isWhitesTurn;
     }
 
 
-    public int getNumberOfMovesMade() {
-        return this.numberOfMovesMade;
+    /**
+     * Gets number of plies that were already made.
+     * 
+     * @return number of plies that were already made.
+     */
+    public int getNumberOfPliesMade() {
+        return this.numberOfPliesMade;
     }
 
 
@@ -326,7 +366,16 @@ public class Chessboard implements Cloneable {
      * zgradi �tevilko poteze vhod je oblike xnxn (naprimer a2a5 - premik iz
      * a2 na a5)
      */
-    public int constructMoveNumberFromString(String move) {
+
+    /**
+     * Builds ply number from string.
+     * 
+     * @param move
+     *            must have format of xnym (ie. a2b3), where x,y are files and
+     *            2,3 are ranks.
+     * @return ply number
+     */
+    public int constructPlyNumberFromString(String move) {
         String fromS = move.substring(0, 2);
         String toS = move.substring(2);
         int from = Utils.positionFromString(fromS);
@@ -336,392 +385,17 @@ public class Chessboard implements Cloneable {
 
 
     /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeWhitePawnMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece < 8 || piece > 15)
-            throw new ChessboardException("na from je figura" + piece);
-        if (!this.isWhitePawnMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeBlackPawnMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece < 16 || piece > 23)
-            throw new ChessboardException("na from je figura" + piece);
-        if (!this.isBlackPawnMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeWhiteRookMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 0 && piece != 7)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteRookMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeBlackRookMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 24 && piece != 31)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackRookMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeWhiteKnightMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 1 && piece != 6)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteKnightMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeBlackKnightMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 25 && piece != 30)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackKnightMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeWhiteBishopMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 2 && piece != 5)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteBishopMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeBlackBishopMove(int from, int to)
-            throws ChessboardException {
-
-        int piece = this.board[from];
-        int targetPiece = this.board[to];
-
-        if (piece != 26 && piece != 29)
-            throw new ChessboardException("na from je figura " + piece);
-
-        if (!this.isBlackBishopMoveLegal(from, to)) { return false; }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeWhiteQueenMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 3)
-            throw new ChessboardException("na from je figura " + piece);
-
-        if (!this.isWhiteQueenMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeBlackQueenMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 27)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackQueenMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeWhiteKingMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 4)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isWhiteKingMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * ce je poteza mozna naredi potezo
-     * 
-     * @param from
-     *            pozicija iz katere premikamo
-     * @param to
-     *            pozicija na katero premikamo
-     * @return true ce je bila poteza narejena, drugace vrne false
-     */
-    public boolean makeBlackKingMove(int from, int to)
-            throws ChessboardException {
-        int piece = this.board[from];
-
-        if (piece != 28)
-            throw new ChessboardException("na from je figura " + piece);
-        if (!this.isBlackKingMoveLegal(from, to)) { return false; }
-
-        int targetPiece = this.board[to];
-        if (targetPiece != -1) {
-            this.piecePosition[targetPiece] = -1;
-        }
-
-        this.board[from] = -1;
-        this.board[to] = piece;
-        this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
-
-        return true;
-    }
-
-
-    /**
-     * This move is only used from Chessboard.makeAMove(int). It moves poiece
+     * This move is only used from Chessboard.makeAMove(int). It moves piece
      * from <code>from</code> position to <code>to</code> position. It also
-     * fills numberOfTimesBoardStateHasOccured.
+     * fills numberOfTimesBoardStateHasOccured. And sets flag if this chess
+     * board state has occurred at least three times.
      * 
      * @param from
-     *            pozicija iz katere premikamo
+     *            chess board position from which piece will be moved
      * @param to
-     *            pozicija na katero premikamo
+     *            chess board position to which piece will be moved
      */
-    @Deprecated
-    public void makeAMove(int from, int to) throws ChessboardException {
+    public void makeAPly(int from, int to) throws ChessboardException {
         this.isWhitesTurn = !this.isWhitesTurn;
         int piece = this.board[from];
 
@@ -733,12 +407,12 @@ public class Chessboard implements Cloneable {
         this.board[from] = -1;
         this.board[to] = piece;
         this.piecePosition[piece] = to;
-        this.numberOfMovesMade++;
+        this.numberOfPliesMade++;
 
         int hash = this.hashCode();
         this.previousHashes.add(hash);
 
-        // for optimization purpouses we litmit number od states that we check
+        // for optimization purposes we limit number of states that we check
         if (this.previousHashes.size() > Chessboard.NUMBER_OF_PREVIOUS_MOVES_WE_CHECK_FOR_REPEATED_STATE_PAT) {
             this.numberOfTimesBoardStateHasOccured.remove(this.previousHashes
                     .get(0));
@@ -791,7 +465,7 @@ public class Chessboard implements Cloneable {
         else if (targetPiece == -1 && this.board[to] != -1) { throw new ChessboardException(
                 "Pozijia to: " + to + " ni prazna"); }
 
-        this.makeAMove(from, to);
+        this.makeAPly(from, to);
     }
 
 
@@ -1203,7 +877,7 @@ public class Chessboard implements Cloneable {
         if (this.isBlackKingMated()) { return 1; }
         if (this.isBlackKingPatted()) { return -1; }
         if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return -1; }
-        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return -1; }
+        if (this.numberOfPliesMade > Constants.MAX_DEPTH) { return -1; }
         if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
 
         return 0;
@@ -1221,7 +895,7 @@ public class Chessboard implements Cloneable {
 
         if (this.isBlackKingPatted()) { return -1; }
         if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
-        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return -1; }
+        if (this.numberOfPliesMade > Constants.MAX_DEPTH) { return -1; }
 
         return 0;
     }
@@ -3190,9 +2864,9 @@ public class Chessboard implements Cloneable {
         result.name = this.name + " clone";
         result.board = this.board.clone();
         result.isWhitesTurn = this.isWhitesTurn;
-        result.numberOfMovesMade = this.numberOfMovesMade;
+        result.numberOfPliesMade = this.numberOfPliesMade;
         result.numberOfTimesBoardStateHasOccured = new HashMap<Integer, Integer>(
-                this.numberOfMovesMade);
+                this.numberOfPliesMade);
         result.piecePosition = this.piecePosition.clone();
         result.previousHashes = (ArrayList<Integer>) this.previousHashes
                 .clone();
