@@ -9,10 +9,7 @@ import moveFinders.BlackMoveFinderStrategy;
 import moveFinders.WhiteMoveFinder;
 import moveFinders.WhiteFinderStrategy;
 
-import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
-import exceptions.MCTUtilsException;
-import exceptions.WhiteMoveFinderException;
 import exec.Constants;
 import exec.MCTNode;
 
@@ -26,11 +23,8 @@ public class MCTUtils {
      * @param methodOfComputing
      *            which UCT we'll use
      * @return node rating
-     * @throws MCTUtilsException
      */
-    public static double computeNodeRating(MCTNode node)
-            throws MCTUtilsException {
-        if (node.visitCount == 0 || node.parent.visitCount == 0) { throw new MCTUtilsException(); }
+    public static double computeNodeRating(MCTNode node) {
 
         if (!node.isWhitesMove) {
             // poteze belega
@@ -64,12 +58,9 @@ public class MCTUtils {
      * @throws MCTUtilsException
      */
     public static ArrayList<Integer> getInedexesWithMaxRating(MCTNode node,
-            int whiteRankingMethod, int blackRankingMethod)
-            throws MCTUtilsException {
+            int whiteRankingMethod, int blackRankingMethod) {
         ArrayList<Integer> rez = new ArrayList<Integer>();
 
-        if (node.nextMoves == null) { throw new MCTUtilsException(
-                "node nima razvitih naslednikov"); }
         if (node.nextMoves.size() == 0) { return rez; }
 
         double maxRating = -Double.MAX_VALUE;
@@ -111,8 +102,7 @@ public class MCTUtils {
     public static int findNextMove(MCTNode node,
             WhiteFinderStrategy whiteSimuationStrategy,
             BlackMoveFinderStrategy blackSimulationStrategy)
-            throws ChessboardException, WhiteMoveFinderException,
-            BlackMoveFinderException {
+            throws ChessboardException {
         if (node.isWhitesMove) {
             Chessboard temp = new Chessboard("temp", node);
             return WhiteMoveFinder.findWhiteMove(temp, whiteSimuationStrategy);

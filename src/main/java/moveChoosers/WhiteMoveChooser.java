@@ -6,9 +6,6 @@ import java.util.logging.Logger;
 
 import utils.MCTUtils;
 
-import exceptions.MCTUtilsException;
-import exceptions.UtilsException;
-import exceptions.WhiteMoveChooserException;
 import exec.MCTNode;
 
 public class WhiteMoveChooser {
@@ -28,12 +25,8 @@ public class WhiteMoveChooser {
      * @param strategy
      *            strategy on which we choose move
      * @return chosen index of nodes child
-     * @throws WhiteMoveChooserException
-     * @throws UtilsException
-     * @throws MCTUtilsException
      */
-    public static int chooseAMove(MCTNode node, WhiteChooserStrategy strategy)
-            throws WhiteMoveChooserException, UtilsException, MCTUtilsException {
+    public static int chooseAMove(MCTNode node, WhiteChooserStrategy strategy) {
         int rez = -1;
         switch (strategy) {
             case RANDOM:
@@ -45,8 +38,6 @@ public class WhiteMoveChooser {
             case RATING:
                 rez = WhiteMoveChooser.chooseMaxRatingMove(node);
                 break;
-            default:
-                throw new WhiteMoveChooserException("neveljavna strategija");
         }
         String logString = "V polpotezi " + (node.plyDepth + 1)
                 + " je beli izbiral med potezami :\r\n"
@@ -85,8 +76,7 @@ public class WhiteMoveChooser {
     }
 
 
-    private static int chooseMaxRatingMove(MCTNode node) throws UtilsException,
-            MCTUtilsException {
+    private static int chooseMaxRatingMove(MCTNode node) {
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
         double maxRating = -Double.MAX_VALUE;
 

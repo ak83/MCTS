@@ -6,7 +6,6 @@ import javax.management.RuntimeErrorException;
 
 import chessboard.Chessboard;
 import exceptions.ChessboardException;
-import exceptions.MCTNodeException;
 
 public class MCTNode {
 
@@ -153,16 +152,9 @@ public class MCTNode {
      */// //////////////////////JAVNE FUKNCIJE/////////////////////////////////
        // ////////////////////////////////////////////////////////////////////////*/
 
-    public void addNextMove(int moveNumber, boolean checkIfTheMoveisInNextMoves)
-            throws MCTNodeException, ChessboardException {
+    public void addNextMove(int moveNumber) throws ChessboardException {
         if (this.nextMoves == null) {
             this.nextMoves = new ArrayList<MCTNode>();
-        }
-
-        if (checkIfTheMoveisInNextMoves) {
-            int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this);
-            if (index != -1)
-                throw new MCTNodeException("podvojena poteza");
         }
 
         this.nextMoves.add(new MCTNode(this, moveNumber));

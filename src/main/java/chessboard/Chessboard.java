@@ -6,10 +6,7 @@ import java.util.Random;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
-import javax.management.RuntimeErrorException;
-
 import exceptions.ChessboardException;
-import exceptions.UtilsException;
 import exec.Constants;
 import exec.MCTNode;
 import exec.Move;
@@ -183,10 +180,11 @@ public class Chessboard implements Cloneable {
      */
 
     /**
-     * @return fen representation of board
-     * @throws UtilsException
+     * Gets current board states fen notation.
+     * 
+     * @return fen representation of current board state
      */
-    public String boardToFen() throws UtilsException {
+    public String boardToFen() {
         StringBuffer sb = new StringBuffer();
         for (int x = 112; x >= 0; x = x - 16) {
             int counter = 0;
@@ -256,12 +254,7 @@ public class Chessboard implements Cloneable {
                     sb.append("*00");
                 }
                 else {
-                    try {
-                        sb.append("*" + Utils.pieceNumberToString(t));
-                    }
-                    catch (UtilsException e) {
-                        throw new RuntimeErrorException(new Error(e));
-                    }
+                    sb.append("*" + Utils.pieceNumberToString(t));
                 }
             }
             sb.append("*\n");
@@ -333,7 +326,7 @@ public class Chessboard implements Cloneable {
      * zgradi �tevilko poteze vhod je oblike xnxn (naprimer a2a5 - premik iz
      * a2 na a5)
      */
-    public int constructMoveNumberFromString(String move) throws UtilsException {
+    public int constructMoveNumberFromString(String move) {
         String fromS = move.substring(0, 2);
         String toS = move.substring(2);
         int from = Utils.positionFromString(fromS);

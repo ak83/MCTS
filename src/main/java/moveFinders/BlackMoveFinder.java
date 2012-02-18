@@ -8,7 +8,6 @@ import java.util.Random;
 
 import chessboard.Chessboard;
 
-import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
 import exec.Constants;
 import exec.Move;
@@ -36,8 +35,7 @@ public class BlackMoveFinder {
      * @return
      */
     public static int findBlackKingMove(Chessboard board,
-            BlackMoveFinderStrategy strategy) throws ChessboardException,
-            BlackMoveFinderException {
+            BlackMoveFinderStrategy strategy) throws ChessboardException {
         ArrayList<Move> moves = board.getAllLegalBlackKingMoves();
 
         if (moves.size() == 0) { return -1; }
@@ -73,8 +71,7 @@ public class BlackMoveFinder {
                 }
             }
             default:
-                throw new BlackMoveFinderException("strategija je neustrezna: "
-                        + strategy);
+                return -1;
         }
 
     }

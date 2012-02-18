@@ -12,14 +12,7 @@ import moveFinders.BlackMoveFinderStrategy;
 import moveFinders.WhiteMoveFinder;
 import utils.MCTUtils;
 import chessboard.Chessboard;
-import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
-import exceptions.MCTException;
-import exceptions.MCTNodeException;
-import exceptions.MCTUtilsException;
-import exceptions.UtilsException;
-import exceptions.WhiteMoveChooserException;
-import exceptions.WhiteMoveFinderException;
 
 public class MCT {
 
@@ -44,8 +37,7 @@ public class MCT {
     }
 
 
-    public MCTNode selection(MCTNode node) throws UtilsException,
-            ChessboardException, MCTUtilsException {
+    public MCTNode selection(MCTNode node) throws ChessboardException {
         if (Constants.SELECTION_EVALUATES_CHESSBOARD) {
             if (node.getEvalFromWhitesPerspective() != 0) { return node; }
         }
@@ -114,8 +106,7 @@ public class MCT {
      * @throws MCTNodeException
      */
     public MCTNode simulationAddsOneNode(MCTNode node)
-            throws ChessboardException, WhiteMoveFinderException,
-            BlackMoveFinderException, MCTException, MCTNodeException {
+            throws ChessboardException {
         MCTNode currNode = node;
 
         if (node.nextMoves == null) {
@@ -127,7 +118,7 @@ public class MCT {
 
             this.currentTreeSize++;
             this.simulationChessboard.makeAMove(moveNo);
-            node.addNextMove(moveNo, false);
+            node.addNextMove(moveNo);
 
             return node.nextMoves.get(0);
         }
@@ -164,7 +155,7 @@ public class MCT {
 
             if (moveIndex == -1) {
                 this.currentTreeSize++;
-                currNode.addNextMove(moveNo, false);
+                currNode.addNextMove(moveNo);
                 this.simulationChessboard.makeAMove(moveNo);
 
                 int temp = currNode.nextMoves.size() - 1;
@@ -191,8 +182,7 @@ public class MCT {
      * @throws WhiteMoveFinderException
      * @throws BlackMoveFinderException
      */
-    public int simulation(MCTNode node) throws ChessboardException,
-            WhiteMoveFinderException, BlackMoveFinderException, MCTException {
+    public int simulation(MCTNode node) throws ChessboardException {
         int rez = 0;
         Chessboard temp = new Chessboard("resetBoard", node);
 
@@ -218,8 +208,6 @@ public class MCT {
                         int moveNo = WhiteMoveFinder.findWhiteMove(
                                 this.simulationChessboard,
                                 Constants.WHITE_SIMULATION_STRATEGY);
-                        if (moveNo == -1)
-                            throw new MCTException("to se ne bi smelo zgoditi");
                         this.simulationChessboard.makeAMove(moveNo);
                         itsWhitesTurn = !itsWhitesTurn;
                     }
@@ -227,8 +215,6 @@ public class MCT {
                         int moveNo = BlackMoveFinder.findBlackKingMove(
                                 this.simulationChessboard,
                                 Constants.BLACK_SIMULATION_STRATEGY);
-                        if (moveNo == -1)
-                            throw new MCTException("to se ne bio smelo zgoditi");
                         this.simulationChessboard.makeAMove(moveNo);
                         itsWhitesTurn = !itsWhitesTurn;
                     }
@@ -255,9 +241,7 @@ public class MCT {
     // /////////////////////////////////////////////////////////////
 
     // ni stesitrana
-    public void oneMCTStep() throws ChessboardException, MCTException,
-            WhiteMoveFinderException, BlackMoveFinderException, UtilsException,
-            MCTUtilsException, MCTNodeException {
+    public void oneMCTStep() throws ChessboardException {
         this.resetSimulationChessboard();
 
         MCTNode node = this.selection(this.root);
@@ -310,16 +294,11 @@ public class MCT {
      * @param blackChoosingStrategy
      *            strategija po kateri crni izbira poteze
      * @return stevilko izbrane poteze
-     * @throws WhiteMoveChooserException
-     * @throws UtilsException
-     * @throws BlackMoveFinderException
      * @throws ChessboardException
-     * @throws MCTUtilsException
      */
     public int chooseAPlyNumber(WhiteChooserStrategy whiteChoosingStrategy,
             BlackMoveFinderStrategy blackChoosingStrategy)
-            throws WhiteMoveChooserException, UtilsException,
-            ChessboardException, BlackMoveFinderException, MCTUtilsException {
+            throws ChessboardException {
         int rez = -1;
 
         if (this.root.isWhitesMove) {
@@ -346,7 +325,7 @@ public class MCT {
     }
 
 
-    public String getFEN() throws UtilsException {
+    public String getFEN() {
         return this.mainChessboard.boardToFen();
     }
 

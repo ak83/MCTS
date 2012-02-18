@@ -7,7 +7,6 @@ import chessboard.Chessboard;
 import moveFinders.BlackMoveFinder;
 import moveFinders.BlackMoveFinderStrategy;
 
-import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
 import exec.Utils;
 
@@ -31,8 +30,8 @@ public class BlackMoveChooser {
      * @throws BlackMoveFinderException
      */
     public static int chooseBlackKingMove(Chessboard board,
-            BlackMoveFinderStrategy strategy) throws ChessboardException,
-            BlackMoveFinderException {
+            BlackMoveFinderStrategy strategy) throws ChessboardException
+            {
         int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
         BlackMoveChooser.log.fine("V polpotezi "
                 + (board.getNumberOfMovesMade() + 1)

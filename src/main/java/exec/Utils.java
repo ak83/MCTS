@@ -8,13 +8,19 @@ import java.util.Scanner;
 import moveChoosers.WhiteChooserStrategy;
 import moveFinders.BlackMoveFinderStrategy;
 
-import exceptions.UtilsException;
-
 public class Utils {
 
     private Utils() {}
 
 
+    /**
+     * Checks if position is on board or not.
+     * 
+     * @param a
+     *            position
+     * @return <code>true</code> if position is on board, otherwise
+     *         <code>false</code>
+     */
     public static boolean isPositionLegal(int a) {
         if ((a & 0x88) != 0)
             return false;
@@ -34,10 +40,16 @@ public class Utils {
     }
 
 
-    public static boolean isPieceWhite(int pieceNumber) throws UtilsException {
+    /**
+     * Checks if piece is white or black.
+     * 
+     * @param pieceNumber
+     *            piece number
+     * @return <code>true</code> if piece is white, <code>false</code> otherwise
+     * @throws UtilsException
+     */
+    public static boolean isPieceWhite(int pieceNumber) {
         // ce vrne true, je figure bela, drugace je crna
-        if (pieceNumber < 0 || pieceNumber > 31)
-            throw new UtilsException("piecenumber = " + pieceNumber);
         if (pieceNumber >= 0 && pieceNumber < 16)
             return true;
         else
@@ -45,8 +57,14 @@ public class Utils {
     }
 
 
-    public static String pieceNumberToString(int pieceNumber)
-            throws UtilsException {
+    /**
+     * Transforms piece to string. This method is used to print out chessboard.
+     * 
+     * @param pieceNumber
+     *            piece number
+     * @return string representation of piece
+     */
+    public static String pieceNumberToString(int pieceNumber) {
         if (pieceNumber > 7 && pieceNumber < 16)
             return "WP";
         if (pieceNumber > 15 && pieceNumber < 24)
@@ -87,7 +105,7 @@ public class Utils {
                 return "BR";
 
             default:
-                throw new UtilsException("pieceNumber = " + pieceNumber);
+                return "XX";
         }
     }
 
@@ -315,9 +333,15 @@ public class Utils {
     }
 
 
-    public static String positionToString(int position) throws UtilsException {
-        if (!Utils.isPositionLegal(position)) { throw new UtilsException(
-                "Neveljavna pozicija."); }
+    /**
+     * Transforms position to human readable format (ie. 0 -> A1).
+     * 
+     * @param position
+     *            position desired position
+     * @return human readable position representation
+     * @throws UtilsException
+     */
+    public static String positionToString(int position) {
 
         int file = (byte) Utils.getFileFromPosition(position);
         int znak = 96 + file;
@@ -328,7 +352,16 @@ public class Utils {
     }
 
 
-    public static String pieceToChar(int piece) throws UtilsException {
+    /**
+     * Transforms piece nmber to cha representation (ie. 4 -> K).
+     * 
+     * @param piece
+     *            piece number
+     * @return char representation of piece
+     * @throws UtilsException
+     */
+    public static String pieceToChar(int piece) {
+        // white pieces
         if (piece == 0 || piece == 7)
             return "R";
         if (piece == 1 || piece == 6)
@@ -342,6 +375,7 @@ public class Utils {
         if (piece > 7 && piece < 16)
             return "";
 
+        // black pieces
         if (piece > 15 && piece < 24)
             return "";
         if (piece == 24 || piece == 31)
@@ -355,11 +389,18 @@ public class Utils {
         if (piece == 28)
             return "K";
 
-        throw new UtilsException("Neveljavna mo�nost: " + piece);
+        return null;
     }
 
 
-    public static String pieceToCharFEN(int piece) throws UtilsException {
+    /**
+     * Returns single letter that represents piece.
+     * 
+     * @param piece
+     *            piece number
+     * @return single letter piece representation
+     */
+    public static String pieceToCharFEN(int piece) {
         if (piece == 0 || piece == 7)
             return "R";
         if (piece == 1 || piece == 6)
@@ -386,12 +427,12 @@ public class Utils {
         if (piece == 28)
             return "k";
 
-        throw new UtilsException("Neveljavna mo�nost");
+        return null;
     }
 
 
     public static String moveNumberToString(int moveNumber1, int moveNumber2,
-            int depth) throws UtilsException {
+            int depth) {
         int from1 = Utils.getFromFromMoveNumber(moveNumber1);
         int to1 = Utils.getToFromMoveNumber(moveNumber1);
         int movedPiece1 = Utils.getMovedPieceFromMoveNumber(moveNumber1);
@@ -404,8 +445,6 @@ public class Utils {
         String m2 = Utils.pieceToChar(movedPiece2)
                 + Utils.positionToString(from2) + Utils.positionToString(to2);
 
-        // println("moNumberToString mN1: " + moveNumber1);
-        // println("moNumberToString mN2: " + moveNumber2);
         return depth + ". " + m1 + " " + m2;
 
     }
@@ -423,23 +462,24 @@ public class Utils {
         int from = Utils.getFromFromMoveNumber(moveNumber);
         int to = Utils.getToFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
-        try {
-            return Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
-                    + "-" + Utils.positionToString(to);
-        }
-        catch (UtilsException e) {
-            e.printStackTrace();
-        }
-        System.exit(-1);
-        return "this should not happpen";
+        return Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
+                + "-" + Utils.positionToString(to);
     }
 
 
-    public static String moveNumberToString(int moveNumber, int depth)
-            throws UtilsException {
-        int from = Utils.getFromFromMoveNumber(moveNumber);
-        int to = Utils.getToFromMoveNumber(moveNumber);
-        int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
+    /**
+     * Converts mover number to string. This method is used for fen notation.
+     * 
+     * @param plyNumber
+     *            ply number
+     * @param depth
+     *            which consequential move is this in match.
+     * @return string of ply
+     */
+    public static String moveNumberToString(int plyNumber, int depth) {
+        int from = Utils.getFromFromMoveNumber(plyNumber);
+        int to = Utils.getToFromMoveNumber(plyNumber);
+        int movedPiece = Utils.getMovedPieceFromMoveNumber(plyNumber);
 
         String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
                 + Utils.positionToString(to);
@@ -554,9 +594,7 @@ public class Utils {
     /*
      * pos ima chara prvi predstavlja file, drugi pa rank
      */
-    public static int positionFromString(String pos) throws UtilsException {
-        if (pos.length() != 2)
-            throw new UtilsException("Neustrezen pos: " + pos);
+    public static int positionFromString(String pos) {
         int file = Utils.charToIntFile(pos.charAt(0));
         int rank = Integer.parseInt(pos.substring(1));
         return Utils.positionFromRankAndFile(file, rank);
@@ -568,12 +606,16 @@ public class Utils {
     }
 
 
-    public static int positionFromRankAndFile(int file, int rank)
-            throws UtilsException {
-        if (rank > 8 || rank < 1)
-            throw new UtilsException("Neprimeren rank: " + rank);
-        if (file < 1 || file > 8)
-            throw new UtilsException("Neprimeren file: " + file);
+    /**
+     * Calculates position from given rank and file.
+     * 
+     * @param file
+     *            file
+     * @param rank
+     *            rank
+     * @return position that is on given rank and file
+     */
+    public static int positionFromRankAndFile(int file, int rank) {
         return (rank - 1) * 16 + (file - 1);
     }
 
@@ -588,8 +630,14 @@ public class Utils {
     }
 
 
-    public static String whiteStrategyToString(WhiteChooserStrategy chooserStrat)
-            throws UtilsException {
+    /**
+     * Converts white chooser strategy to string.
+     * 
+     * @param chooserStrat
+     *            white chooser strategy
+     * @return string representation of white chooser strategy
+     */
+    public static String whiteStrategyToString(WhiteChooserStrategy chooserStrat) {
         String chooser = "izbiranje: ";
         switch (chooserStrat) {
             case RANDOM:
@@ -601,16 +649,19 @@ public class Utils {
             case RATING:
                 chooser += "max Rating";
                 break;
-            default:
-                throw new UtilsException("neveljavna strategija izbiranja: "
-                        + chooserStrat);
         }
         return chooser;
     }
 
 
-    public static String blackStrategyToString(BlackMoveFinderStrategy strategy)
-            throws UtilsException {
+    /**
+     * Converts black finder strategy to string.
+     * 
+     * @param strategy
+     *            black finder strategy
+     * @return string representation of black finder strategy
+     */
+    public static String blackStrategyToString(BlackMoveFinderStrategy strategy) {
         String str = "izbiranje in simulacija: ";
         switch (strategy) {
             case RANDOM:
@@ -625,8 +676,6 @@ public class Utils {
             case PERFECT:
                 str += "igra s popolno informacijo";
                 break;
-            default:
-                throw new UtilsException("neveljavna strategija: " + strategy);
         }
         return str;
     }

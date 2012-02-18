@@ -7,7 +7,6 @@ import javax.management.RuntimeErrorException;
 
 import chessboard.Chessboard;
 import exceptions.ChessboardException;
-import exceptions.WhiteMoveFinderException;
 import exec.Constants;
 import exec.Move;
 
@@ -31,8 +30,8 @@ public class WhiteMoveFinder {
      * @return movenumber
      */
     public static int findWhiteMove(Chessboard board,
-            WhiteFinderStrategy strategy) throws ChessboardException,
-            WhiteMoveFinderException {
+            WhiteFinderStrategy strategy) throws ChessboardException
+             {
         switch (strategy) {
             case RANDOM:
                 return WhiteMoveFinder.findRandomWhiteMove(board
@@ -46,8 +45,7 @@ public class WhiteMoveFinder {
             case KBBK_ENDING:
                 return WhiteMoveFinder.findKBBKWhiteMove(board);
             default:
-                throw new WhiteMoveFinderException("strategija je neustrezna: "
-                        + strategy);
+                return -1;
         }
     }
 

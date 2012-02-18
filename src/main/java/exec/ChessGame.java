@@ -5,14 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import exceptions.BlackMoveFinderException;
 import exceptions.ChessboardException;
-import exceptions.MCTException;
-import exceptions.MCTNodeException;
-import exceptions.MCTUtilsException;
-import exceptions.UtilsException;
-import exceptions.WhiteMoveChooserException;
-import exceptions.WhiteMoveFinderException;
 
 public class ChessGame {
 
@@ -54,10 +47,7 @@ public class ChessGame {
      * @throws MCTUtilsException
      * @throws MCTNodeException
      */
-    public String playGame(int round) throws ChessboardException, MCTException,
-            WhiteMoveFinderException, BlackMoveFinderException,
-            WhiteMoveChooserException, UtilsException, IOException,
-            MCTUtilsException, MCTNodeException {
+    public String playGame(int round) throws ChessboardException, IOException {
 
         this.log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n");
 
