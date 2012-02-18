@@ -35,12 +35,6 @@ public class TestChessBoard {
         TestChessBoard.cbKRKAllMoves = TestChessBoard.cbKRK
                 .getAllLegalWhiteMoves();
 
-        int x = 0;
-        for (Move move : TestChessBoard.cbKRKAllMoves) {
-            System.out.println(x + ": " + move);
-            x++;
-        }
-
         Constants.ENDING = "KRRK";
         TreeMap<Integer, Integer> initialCbKRRKState = new TreeMap<Integer, Integer>();
         initialCbKRRKState.put(52, 4);
@@ -50,15 +44,9 @@ public class TestChessBoard {
 
         TestChessBoard.cbKRRK = new Chessboard("test KRRK board",
                 initialCbKRRKState);
-        System.out.println(TestChessBoard.cbKRRK);
 
         TestChessBoard.cbKRRKALLMoves = TestChessBoard.cbKRRK
                 .getAllLegalWhiteMoves();
-        x = 0;
-        for (Move move : TestChessBoard.cbKRRKALLMoves) {
-            System.out.println(x + ": " + move);
-            x++;
-        }
 
     }
 
@@ -82,13 +70,13 @@ public class TestChessBoard {
         ArrayList<Move> returned = TestChessBoard.cbKRK
                 .KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(TestChessBoard.cbKRK
                         .getAllLegalWhiteMoves());
+        
 
         // there are 2 possible moves where white checks
-        Assert.assertEquals(2, returned.size());
+        Assert.assertEquals(1, returned.size());
 
         // we check if returned moves are correct
-        Assert.assertEquals(1111687423, returned.get(0).moveNumber);
-        Assert.assertEquals(1112670463, returned.get(1).moveNumber);
+        Assert.assertEquals(1112670463, returned.get(0).moveNumber);
     }
 
 
@@ -175,13 +163,14 @@ public class TestChessBoard {
     @Test
     public void testHashCode() throws Exception {
         Assert.assertEquals(5452610, TestChessBoard.cbKRK.hashCode());
-        
-        for(Move move : TestChessBoard.cbKRKAllMoves) {
+
+        for (Move move : TestChessBoard.cbKRKAllMoves) {
             Chessboard temp = new Chessboard(TestChessBoard.cbKRK, "clone");
             temp.makeAMove(move.moveNumber);
-            Assert.assertNotSame(TestChessBoard.cbKRK.hashCode(), temp.hashCode());
+            Assert.assertNotSame(TestChessBoard.cbKRK.hashCode(), temp
+                    .hashCode());
         }
-        
+
     }
 
 }
