@@ -7,11 +7,23 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * Class that holds and configures loggers.
+ * 
+ * @author Andraz
+ */
 public class Logs {
 
     private static Logger fileLogger;
 
 
+    /**
+     * Configures loggers so that levels for file and console logging can be set
+     * separately.
+     * 
+     * @throws SecurityException
+     * @throws IOException
+     */
     public static void initLoggers() throws SecurityException, IOException {
         Logger rootLogger = Logger.getLogger("");
         rootLogger.removeHandler(rootLogger.getHandlers()[0]);
