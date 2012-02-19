@@ -50,7 +50,7 @@ public class MCT {
                 || node.nextMoves.size() == 0) { return node; }
 
         ArrayList<Integer> maxRatingIndexes = MCTUtils
-                .getInedexesWithMaxRating(node, 1, 2);
+                .getInedexesWithMaxRating(node);
 
         int selectedIndex = this.r.nextInt(maxRatingIndexes.size());
         selectedIndex = maxRatingIndexes.get(selectedIndex);
@@ -304,8 +304,7 @@ public class MCT {
         if (this.root.isWhitesMove) {
             this.stats.whiteMoveChoices.add(this.root.nexMovesToString());
 
-            rez = WhiteMoveChooser
-                    .chooseAPly(this.root, whiteChoosingStrategy);
+            rez = WhiteMoveChooser.chooseAPly(this.root, whiteChoosingStrategy);
 
             this.stats.whiteMovesChosen.add(rez);
             rez = this.root.nextMoves.get(rez).moveNumber;

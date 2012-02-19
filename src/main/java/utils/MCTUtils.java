@@ -13,6 +13,11 @@ import exceptions.ChessboardException;
 import exec.Constants;
 import exec.MCTNode;
 
+/**
+ * Class that holds method that are needed by Monte Carlo Tree.
+ * 
+ * @author Andraz Kohne
+ */
 public class MCTUtils {
 
     /**
@@ -20,8 +25,6 @@ public class MCTUtils {
      * 
      * @param node
      *            node of which we want to compute rating of
-     * @param methodOfComputing
-     *            which UCT we'll use
      * @return node rating
      */
     public static double computeNodeRating(MCTNode node) {
@@ -48,17 +51,11 @@ public class MCTUtils {
      * Searches children of current node and returns those with highest rating.
      * 
      * @param node
-     *            parent of children we computing rating.
-     * @param whiteRankingMethod
-     *            rank computing method for white player.
-     * @param blackRankingMethod
-     *            rank computing method for black player.
+     *            parent of children we computing ratings from.
      * @return list of indexes, which tell us which children have highest
      *         rating.
-     * @throws MCTUtilsException
      */
-    public static ArrayList<Integer> getInedexesWithMaxRating(MCTNode node,
-            int whiteRankingMethod, int blackRankingMethod) {
+    public static ArrayList<Integer> getInedexesWithMaxRating(MCTNode node) {
         ArrayList<Integer> rez = new ArrayList<Integer>();
 
         if (node.nextMoves.size() == 0) { return rez; }
@@ -99,6 +96,18 @@ public class MCTUtils {
     }
 
 
+    /**
+     * Chooses next ply for given strategy.
+     * 
+     * @param node
+     *            node from where we search for next ply number
+     * @param whiteSimuationStrategy
+     *            white simulation strategy
+     * @param blackSimulationStrategy
+     *            black simulation strategy
+     * @return choose ply number for given strategies
+     * @throws ChessboardException
+     */
     public static int findNextMove(MCTNode node,
             WhiteFinderStrategy whiteSimuationStrategy,
             BlackMoveFinderStrategy blackSimulationStrategy)
@@ -113,5 +122,8 @@ public class MCTUtils {
                     blackSimulationStrategy);
         }
     }
+
+
+    private MCTUtils() {}
 
 }
