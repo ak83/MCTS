@@ -221,8 +221,8 @@ public class Utils {
 
     // ni stestirana
     public static boolean isMoveInNextMovesOfNode(int moveNumber, MCTNode node) {
-        for (int x = 0; x < node.nextMoves.size(); x++) {
-            if (moveNumber == node.nextMoves.get(x).moveNumber) { return true; }
+        for (int x = 0; x < node.nextPlies.size(); x++) {
+            if (moveNumber == node.nextPlies.get(x).plyNumber) { return true; }
         }
         return false;
     }
@@ -232,8 +232,8 @@ public class Utils {
     public static int indexOfMoveInNextMovesInNode(Ply move, MCTNode node) {
         int rez = -1;
 
-        for (int x = 0; x < node.nextMoves.size(); x++) {
-            if (move.plyNumber == node.nextMoves.get(x).moveNumber) {
+        for (int x = 0; x < node.nextPlies.size(); x++) {
+            if (move.plyNumber == node.nextPlies.get(x).plyNumber) {
                 rez = x;
             }
         }
@@ -244,8 +244,8 @@ public class Utils {
 
     // ni steastirana
     public static int indexOfMoveNumberInNextMoves(int movenumber, MCTNode node) {
-        for (int x = 0; x < node.nextMoves.size(); x++) {
-            if (movenumber == node.nextMoves.get(x).moveNumber) { return x; }
+        for (int x = 0; x < node.nextPlies.size(); x++) {
+            if (movenumber == node.nextPlies.get(x).plyNumber) { return x; }
         }
 
         return -1;
