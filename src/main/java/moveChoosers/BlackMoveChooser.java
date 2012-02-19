@@ -10,16 +10,23 @@ import moveFinders.BlackMoveFinderStrategy;
 import exceptions.ChessboardException;
 import exec.Utils;
 
+/**
+ * Class that handles blacks choosing of moves.
+ * 
+ * @author Andraz
+ */
 public class BlackMoveChooser {
 
+    /** Logger */
     private static Logger log = Logger.getLogger("MCTS.BlackMoveChooser");
 
 
+    /** This is static class. */
     private BlackMoveChooser() {}
 
 
     /**
-     * Find a move number based on strategy.
+     * Finds a move number based on strategy.
      * 
      * @param board
      *            board on which we look for move number
@@ -29,8 +36,7 @@ public class BlackMoveChooser {
      * @throws ChessboardException
      */
     public static int chooseBlackKingMove(Chessboard board,
-            BlackMoveFinderStrategy strategy) throws ChessboardException
-            {
+            BlackMoveFinderStrategy strategy) throws ChessboardException {
         int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
         BlackMoveChooser.log.fine("V polpotezi "
                 + (board.getNumberOfPliesMade() + 1)
