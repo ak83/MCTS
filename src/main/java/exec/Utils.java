@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Scanner;
 
 import moveChoosers.WhiteChooserStrategy;
-import moveFinders.BlackMoveFinderStrategy;
+import moveFinders.BlackFinderStrategy;
 
 public class Utils {
 
@@ -661,7 +661,7 @@ public class Utils {
      *            black finder strategy
      * @return string representation of black finder strategy
      */
-    public static String blackStrategyToString(BlackMoveFinderStrategy strategy) {
+    public static String blackStrategyToString(BlackFinderStrategy strategy) {
         String str = "izbiranje in simulacija: ";
         switch (strategy) {
             case RANDOM:

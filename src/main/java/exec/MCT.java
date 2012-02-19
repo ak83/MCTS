@@ -8,7 +8,7 @@ import moveChoosers.BlackMoveChooser;
 import moveChoosers.WhiteChooserStrategy;
 import moveChoosers.WhiteMoveChooser;
 import moveFinders.BlackMoveFinder;
-import moveFinders.BlackMoveFinderStrategy;
+import moveFinders.BlackFinderStrategy;
 import moveFinders.WhitePlyFinder;
 import utils.MCTUtils;
 import chessboard.Chessboard;
@@ -297,7 +297,7 @@ public class MCT {
      * @throws ChessboardException
      */
     public int chooseAPlyNumber(WhiteChooserStrategy whiteChoosingStrategy,
-            BlackMoveFinderStrategy blackChoosingStrategy)
+            BlackFinderStrategy blackChoosingStrategy)
             throws ChessboardException {
         int rez = -1;
 

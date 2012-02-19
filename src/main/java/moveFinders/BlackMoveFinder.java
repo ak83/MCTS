@@ -38,7 +38,7 @@ public class BlackMoveFinder {
      * @throws ChessboardException
      */
     public static int findBlackKingMove(Chessboard board,
-            BlackMoveFinderStrategy strategy) throws ChessboardException {
+            BlackFinderStrategy strategy) throws ChessboardException {
         ArrayList<Ply> moves = board.getAllLegalBlackKingMoves();
 
         if (moves.size() == 0) { return -1; }

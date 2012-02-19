@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import javax.management.RuntimeErrorException;
 
 import moveChoosers.WhiteChooserStrategy;
-import moveFinders.BlackMoveFinderStrategy;
+import moveFinders.BlackFinderStrategy;
 import moveFinders.WhiteFinderStrategy;
 
 public class Constants {
@@ -29,12 +29,12 @@ public class Constants {
     public static double                  C;
     public static int                     GOBAN;
     public static int                     NUMBER_OF_SIMULATIONS_PER_EVALUATION;
-    public static BlackMoveFinderStrategy BLACK_SIMULATION_STRATEGY                                                       = BlackMoveFinderStrategy.GOOD;
+    public static BlackFinderStrategy BLACK_SIMULATION_STRATEGY                                                       = BlackFinderStrategy.GOOD;
     public static WhiteFinderStrategy WHITE_SIMULATION_STRATEGY;
     public static int                     NUMBER_OF_INITAL_STEPS;
     public static int                     NUMBER_OF_RUNNING_STEPS;
     public static WhiteChooserStrategy    WHITE_MOVE_CHOOSER_STRATEGY                                                     = WhiteChooserStrategy.VISIT_COUNT;
-    public static BlackMoveFinderStrategy BLACK_MOVE_CHOOSER_STRATEGY                                                     = BlackMoveFinderStrategy.GOOD;
+    public static BlackFinderStrategy BLACK_MOVE_CHOOSER_STRATEGY                                                     = BlackFinderStrategy.GOOD;
     public static boolean                 SELECTION_EVALUATES_CHESSBOARD                                                  = false;
     public static boolean                 SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING                               = false;                                                  ;
     public static String                  ENDING;
@@ -623,17 +623,17 @@ public class Constants {
                     }
 
                     if (words[1].equalsIgnoreCase("random")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.RANDOM;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.RANDOM;
                     }
                     else if (words[1].equalsIgnoreCase("center")
                             || words[1].equalsIgnoreCase("centre")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.CENTER;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.CENTER;
                     }
                     else if (words[1].equalsIgnoreCase("normal")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.GOOD;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.GOOD;
                     }
                     else if (words[1].equalsIgnoreCase("perfect")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackMoveFinderStrategy.PERFECT;
+                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.PERFECT;
                     }
                     else {
                         System.err.println(words[1]

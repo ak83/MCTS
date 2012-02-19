@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import chessboard.Chessboard;
 
 import moveFinders.BlackMoveFinder;
-import moveFinders.BlackMoveFinderStrategy;
+import moveFinders.BlackFinderStrategy;
 import moveFinders.WhitePlyFinder;
 import moveFinders.WhiteFinderStrategy;
 
@@ -110,7 +110,7 @@ public class MCTUtils {
      */
     public static int findNextMove(MCTNode node,
             WhiteFinderStrategy whiteSimuationStrategy,
-            BlackMoveFinderStrategy blackSimulationStrategy)
+            BlackFinderStrategy blackSimulationStrategy)
             throws ChessboardException {
         if (node.isWhitesMove) {
             Chessboard temp = new Chessboard("temp", node);

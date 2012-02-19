@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import chessboard.Chessboard;
 
 import moveFinders.BlackMoveFinder;
-import moveFinders.BlackMoveFinderStrategy;
+import moveFinders.BlackFinderStrategy;
 
 import exceptions.ChessboardException;
 import exec.Utils;
@@ -36,7 +36,7 @@ public class BlackMoveChooser {
      * @throws ChessboardException
      */
     public static int chooseBlackKingMove(Chessboard board,
-            BlackMoveFinderStrategy strategy) throws ChessboardException {
+            BlackFinderStrategy strategy) throws ChessboardException {
         int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
         BlackMoveChooser.log.fine("V polpotezi "
                 + (board.getNumberOfPliesMade() + 1)
