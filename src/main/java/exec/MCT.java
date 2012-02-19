@@ -9,7 +9,7 @@ import moveChoosers.WhiteChooserStrategy;
 import moveChoosers.WhiteMoveChooser;
 import moveFinders.BlackMoveFinder;
 import moveFinders.BlackMoveFinderStrategy;
-import moveFinders.WhiteMoveFinder;
+import moveFinders.WhitePlyFinder;
 import utils.MCTUtils;
 import chessboard.Chessboard;
 import exceptions.ChessboardException;
@@ -205,7 +205,7 @@ public class MCT {
                 }
                 else {
                     if (itsWhitesTurn) {
-                        int moveNo = WhiteMoveFinder.findWhiteMove(
+                        int moveNo = WhitePlyFinder.findWhiteMove(
                                 this.simulationChessboard,
                                 Constants.WHITE_SIMULATION_STRATEGY);
                         this.simulationChessboard.makeAMove(moveNo);

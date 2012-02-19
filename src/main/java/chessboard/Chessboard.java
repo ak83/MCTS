@@ -475,7 +475,7 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih belih potez
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhiteMoves() throws ChessboardException {
+    public ArrayList<Ply> getAllLegalWhitePlies() throws ChessboardException {
 
         ArrayList<Ply> rez = new ArrayList<Ply>();
         for (int x = 0; x < 16; x++) {
@@ -2354,7 +2354,7 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteKingMovesCloserOrEqualToBlackKind(
+    public ArrayList<Ply> pliesWhereWhiteKingMovesCloserOrEqualToBlackKind(
             ArrayList<Ply> posMoves) {
         int distance = this.distanceBewteenKings();
         int blackKingPosition = this.piecePosition[28];
@@ -2494,7 +2494,7 @@ public class Chessboard implements Cloneable {
      *            list of moves to filter
      * @return list of moves that white must do to avoid loosing a piece
      */
-    public ArrayList<Ply> whiteUrgentMoves(ArrayList<Ply> allWhiteMoves) {
+    public ArrayList<Ply> whiteUrgentPlies(ArrayList<Ply> allWhiteMoves) {
         ArrayList<Ply> rez = new ArrayList<Ply>();
 
         // if black king isn't near any pieces, it can't eat them
@@ -2540,7 +2540,7 @@ public class Chessboard implements Cloneable {
      * @param allWhiteMoves
      * @return list of safe moves
      */
-    public ArrayList<Ply> whiteSafeMoves(ArrayList<Ply> allWhiteMoves) {
+    public ArrayList<Ply> whiteSafePlies(ArrayList<Ply> allWhiteMoves) {
         ArrayList<Ply> rez = new ArrayList<Ply>();
 
         for (Ply currMove : allWhiteMoves) {

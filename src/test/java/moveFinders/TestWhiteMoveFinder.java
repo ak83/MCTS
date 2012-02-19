@@ -41,7 +41,7 @@ public class TestWhiteMoveFinder {
 	System.out.println(TestWhiteMoveFinder.cbKRK);
 
 	TestWhiteMoveFinder.allCbKRKMoves = TestWhiteMoveFinder.cbKRK
-		.getAllLegalWhiteMoves();
+		.getAllLegalWhitePlies();
 	int x = 0;
 	for (Ply move : TestWhiteMoveFinder.allCbKRKMoves) {
 	    System.out.println(x + ": " + move);
@@ -65,7 +65,7 @@ public class TestWhiteMoveFinder {
 
     @Test
     public void testGeneralHeuristics() {
-	ArrayList<Ply> returned = WhiteMoveFinder
+	ArrayList<Ply> returned = WhitePlyFinder
 		.generalHeuristics(TestWhiteMoveFinder.cbKRK);
 
 	Integer[] indexesNotInAllMoves = { 10, 11, 14, 15, 16, 17, 18 };

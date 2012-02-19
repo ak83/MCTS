@@ -33,7 +33,7 @@ public class TestChessBoard {
         TestChessBoard.cbKRK = new Chessboard("test board", initialCbKRKState);
         System.out.println(TestChessBoard.cbKRK);
         TestChessBoard.cbKRKAllMoves = TestChessBoard.cbKRK
-                .getAllLegalWhiteMoves();
+                .getAllLegalWhitePlies();
 
         Constants.ENDING = "KRRK";
         TreeMap<Integer, Integer> initialCbKRRKState = new TreeMap<Integer, Integer>();
@@ -46,7 +46,7 @@ public class TestChessBoard {
                 initialCbKRRKState);
 
         TestChessBoard.cbKRRKALLMoves = TestChessBoard.cbKRRK
-                .getAllLegalWhiteMoves();
+                .getAllLegalWhitePlies();
 
     }
 
@@ -69,7 +69,7 @@ public class TestChessBoard {
 
         ArrayList<Ply> returned = TestChessBoard.cbKRK
                 .KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(TestChessBoard.cbKRK
-                        .getAllLegalWhiteMoves());
+                        .getAllLegalWhitePlies());
         
 
         // there are 2 possible moves where white checks
@@ -105,7 +105,7 @@ public class TestChessBoard {
     @Test
     public void testKRKWhiteSafeMoves() throws Exception {
         ArrayList<Ply> returned = TestChessBoard.cbKRK
-                .whiteSafeMoves(TestChessBoard.cbKRK.getAllLegalWhiteMoves());
+                .whiteSafePlies(TestChessBoard.cbKRK.getAllLegalWhitePlies());
 
         for (int x = 0; x < TestChessBoard.cbKRKAllMoves.size(); x++) {
             if ((x < 14 && x != 11 && x != 12) || x == 17) {
@@ -124,11 +124,11 @@ public class TestChessBoard {
     @Test
     public void testWhiteUrgentMoves() throws Exception {
         ArrayList<Ply> returned = TestChessBoard.cbKRK
-                .whiteUrgentMoves(TestChessBoard.cbKRK.getAllLegalWhiteMoves());
+                .whiteUrgentPlies(TestChessBoard.cbKRK.getAllLegalWhitePlies());
         Assert.assertEquals(0, returned.size());
 
         returned = TestChessBoard.cbKRRK
-                .whiteUrgentMoves(TestChessBoard.cbKRRKALLMoves);
+                .whiteUrgentPlies(TestChessBoard.cbKRRKALLMoves);
         Integer[] expectedIndexesOfNotUrgentMoves = { 0, 7, 13, 14, 16, 18, 19,
                 20, 27, 28 };
         ArrayList<Integer> listOfexpectedIndexesOfNotUrgentMoves = new ArrayList<Integer>(

@@ -6,7 +6,7 @@ import chessboard.Chessboard;
 
 import moveFinders.BlackMoveFinder;
 import moveFinders.BlackMoveFinderStrategy;
-import moveFinders.WhiteMoveFinder;
+import moveFinders.WhitePlyFinder;
 import moveFinders.WhiteFinderStrategy;
 
 import exceptions.ChessboardException;
@@ -114,7 +114,7 @@ public class MCTUtils {
             throws ChessboardException {
         if (node.isWhitesMove) {
             Chessboard temp = new Chessboard("temp", node);
-            return WhiteMoveFinder.findWhiteMove(temp, whiteSimuationStrategy);
+            return WhitePlyFinder.findWhiteMove(temp, whiteSimuationStrategy);
         }
         else {
             Chessboard temp = new Chessboard("temp", node);
