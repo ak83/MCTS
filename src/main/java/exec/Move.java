@@ -5,7 +5,7 @@ package exec;
  * 
  * @author Andraz Kohne
  */
-public class Ply {
+public class Move {
 
     /**
      * Ply number.
@@ -19,7 +19,7 @@ public class Ply {
      * @param plyNumber
      *            ply number
      */
-    public Ply(int plyNumber) {
+    public Move(int plyNumber) {
         this.plyNumber = plyNumber;
     }
 
@@ -51,8 +51,8 @@ public class Ply {
     @Override
     public boolean equals(Object m1) {
 
-        if (m1 instanceof Ply) {
-            return this.plyNumber == ((Ply) m1).plyNumber;
+        if (m1 instanceof Move) {
+            return this.plyNumber == ((Move) m1).plyNumber;
         }
         else {
             return false;

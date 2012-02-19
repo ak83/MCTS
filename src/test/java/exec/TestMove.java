@@ -29,7 +29,7 @@ public class TestMove {
     @Test
     public void testToString() {
         int moveNumber = Utils.constructMoveNumber(0, 7, 0, -1);
-        Ply move = new Ply(moveNumber);
+        Move move = new Move(moveNumber);
         assertEquals(
                 "move: Ra1-h1\tfrom: 0\tto: 7\tmovedPiece: 0\ttargetPiece: -1",
                 move.toString());

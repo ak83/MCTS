@@ -10,7 +10,7 @@ import chessboard.Chessboard;
 
 import exceptions.ChessboardException;
 import exec.Constants;
-import exec.Ply;
+import exec.Move;
 import exec.Utils;
 
 /**
@@ -39,7 +39,7 @@ public class BlackMoveFinder {
      */
     public static int findBlackKingMove(Chessboard board,
             BlackFinderStrategy strategy) throws ChessboardException {
-        ArrayList<Ply> moves = board.getAllLegalBlackKingMoves();
+        ArrayList<Move> moves = board.getAllLegalBlackKingMoves();
 
         if (moves.size() == 0) { return -1; }
 
@@ -53,11 +53,11 @@ public class BlackMoveFinder {
             case GOOD: { // crni tezi proti centru, toda ce je mozno pa poje
                          // belo
                 // figuro, poleg tega se pa tudi izgiba opoziciji kraljev
-                ArrayList<Ply> blackEats = board
+                ArrayList<Move> blackEats = board
                         .movesWhereBlackKingEatsWhite();
                 if (blackEats.size() == 0) {
                     if (true) {
-                        ArrayList<Ply> avoidsOpp = board
+                        ArrayList<Move> avoidsOpp = board
                                 .movesWhereBlackKingEvadesOposition(moves);
                         if (avoidsOpp.size() == 0) {
                             return BlackMoveFinder
@@ -88,10 +88,10 @@ public class BlackMoveFinder {
      *            plies from which we get those who go towards center.
      * @return ply number for center black king strategy
      */
-    private static int findBlackKingCenterMove(ArrayList<Ply> plies) {
+    private static int findBlackKingCenterMove(ArrayList<Move> plies) {
         int minDist = BlackMoveFinder
                 .findMinimumDistanceFromCenterFromPlies(plies);
-        ArrayList<Ply> rezMoves = new ArrayList<Ply>();
+        ArrayList<Move> rezMoves = new ArrayList<Move>();
 
         for (int x = 0; x < plies.size(); x++) {
             int dist = BlackMoveFinder
@@ -113,7 +113,7 @@ public class BlackMoveFinder {
      *            plies
      * @return random ply from <code>moves</code>.
      */
-    private static int findBlackKingRandomMove(ArrayList<Ply> plies) {
+    private static int findBlackKingRandomMove(ArrayList<Move> plies) {
         int rez = BlackMoveFinder.randomIntUpTo(plies.size());
         return plies.get(rez).plyNumber;
     }
@@ -247,7 +247,7 @@ public class BlackMoveFinder {
      * @return minimum distance of ply target position from chess board center
      */
     private static int findMinimumDistanceFromCenterFromPlies(
-            ArrayList<Ply> plies) {
+            ArrayList<Move> plies) {
         int minDist = -1;
         for (int x = 0; x < plies.size(); x++) {
             int moveNumber = plies.get(x).plyNumber;
@@ -281,7 +281,7 @@ public class BlackMoveFinder {
      *            plies
      * @return random ply number from list of plies
      */
-    private static int selectRandomMoveNumber(ArrayList<Ply> plies) {
+    private static int selectRandomMoveNumber(ArrayList<Move> plies) {
         int index = BlackMoveFinder.randomIntUpTo(plies.size());
         return plies.get(index).plyNumber;
     }

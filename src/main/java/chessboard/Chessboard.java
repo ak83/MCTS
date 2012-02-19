@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import exceptions.ChessboardException;
 import exec.Constants;
 import exec.MCTNode;
-import exec.Ply;
+import exec.Move;
 import exec.Utils;
 
 public class Chessboard implements Cloneable {
@@ -475,9 +475,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih belih potez
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhitePlies() throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhitePlies() throws ChessboardException {
 
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < 16; x++) {
             int from = this.piecePosition[x];
 
@@ -488,7 +488,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -504,8 +504,8 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih crnih potez
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalBlackMoves() throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> getAllLegalBlackMoves() throws ChessboardException {
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 16; x < 32; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
@@ -515,7 +515,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -531,9 +531,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih kmetov
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhitePawnMoves()
+    public ArrayList<Move> getAllLegalWhitePawnMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 8; x < 16; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
@@ -543,7 +543,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhitePawnMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -558,9 +558,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih kmetov
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalBlackPawnMoves()
+    public ArrayList<Move> getAllLegalBlackPawnMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 16; x < 24; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
@@ -570,7 +570,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackPawnMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -585,9 +585,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih trdnjav
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhiteRookMoves()
+    public ArrayList<Move> getAllLegalWhiteRookMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int[] rooks = { 0, 7 };
 
         for (int x : rooks) {
@@ -599,7 +599,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteRookMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -614,9 +614,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih trdnjav
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalBlackRookMoves()
+    public ArrayList<Move> getAllLegalBlackRookMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int[] rooks = { 24, 31 };
 
         for (int x : rooks) {
@@ -628,7 +628,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackRookMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -643,9 +643,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih konjev
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhiteKnightMoves()
+    public ArrayList<Move> getAllLegalWhiteKnightMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int[] knights = { 1, 6 };
 
         for (int x : knights) {
@@ -658,7 +658,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteKnightMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -673,9 +673,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih konjev
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalBlackKnightMoves()
+    public ArrayList<Move> getAllLegalBlackKnightMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int[] knights = { 25, 30 };
 
         for (int x : knights) {
@@ -688,7 +688,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackKnightMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -703,9 +703,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih tekacev
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhiteBishopMoves()
+    public ArrayList<Move> getAllLegalWhiteBishopMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int[] bishops = { 2, 5 };
 
         for (int x : bishops) {
@@ -718,7 +718,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteBishopMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -733,9 +733,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih tekacev
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalBlackBishopMoves()
+    public ArrayList<Move> getAllLegalBlackBishopMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int[] bishops = { 26, 29 };
 
         for (int x : bishops) {
@@ -748,7 +748,7 @@ public class Chessboard implements Cloneable {
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackBishopMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
-                        rez.add(new Ply(t));
+                        rez.add(new Move(t));
                     }
                 }
             }
@@ -763,9 +763,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez bele kravljice
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhiteQueenMoves()
+    public ArrayList<Move> getAllLegalWhiteQueenMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[3];
 
         if (from != -1) {
@@ -776,7 +776,7 @@ public class Chessboard implements Cloneable {
             for (int y = 0; y < 128; y++) {
                 if (this.isWhiteQueenMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
-                    rez.add(new Ply(t));
+                    rez.add(new Move(t));
                 }
             }
         }
@@ -790,9 +790,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crne kravljice
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalBlackQueenMoves()
+    public ArrayList<Move> getAllLegalBlackQueenMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[27];
 
         if (from != -1) {
@@ -803,7 +803,7 @@ public class Chessboard implements Cloneable {
             for (int y = 0; y < 128; y++) {
                 if (this.isBlackQueenMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
-                    rez.add(new Ply(t));
+                    rez.add(new Move(t));
                 }
             }
         }
@@ -817,9 +817,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belega kralja
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalWhiteKingMoves()
+    public ArrayList<Move> getAllLegalWhiteKingMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[4];
 
         if (from != -1) {
@@ -830,7 +830,7 @@ public class Chessboard implements Cloneable {
             for (int y = 0; y < 128; y++) {
                 if (this.isWhiteKingMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
-                    rez.add(new Ply(t));
+                    rez.add(new Move(t));
                 }
             }
         }
@@ -844,9 +844,9 @@ public class Chessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnega kralja
      * @throws ChessboardException
      */
-    public ArrayList<Ply> getAllLegalBlackKingMoves()
+    public ArrayList<Move> getAllLegalBlackKingMoves()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[28];
 
         if (from != -1) {
@@ -857,7 +857,7 @@ public class Chessboard implements Cloneable {
             for (int y = 0; y < 128; y++) {
                 if (this.isBlackKingMoveLegal(from, y)) {
                     int t = this.constructMoveNumber(from, y);
-                    rez.add(new Ply(t));
+                    rez.add(new Move(t));
                 }
             }
         }
@@ -2107,9 +2107,9 @@ public class Chessboard implements Cloneable {
      * *********************************************************************
      */
 
-    public ArrayList<Ply> movesWhereBlackKingEatsWhite()
+    public ArrayList<Move> movesWhereBlackKingEatsWhite()
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < 16; x++) {
             int piecePosition = this.piecePosition[x];
             if (piecePosition != -1
@@ -2119,7 +2119,7 @@ public class Chessboard implements Cloneable {
                 if (this.isBlackKingMoveLegal(from, to)) {
                     int movedPiece = 28;
                     int targetPiece = x;
-                    Ply add = new Ply(Utils.constructMoveNumber(from, to,
+                    Move add = new Move(Utils.constructMoveNumber(from, to,
                             movedPiece, targetPiece));
                     rez.add(add);
                 }
@@ -2129,14 +2129,14 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereBlackKingEvadesOposition(
-            ArrayList<Ply> blackKingPossibleMoves) throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWhereBlackKingEvadesOposition(
+            ArrayList<Move> blackKingPossibleMoves) throws ChessboardException {
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < blackKingPossibleMoves.size(); x++) {
             int to = Utils
                     .getToFromMoveNumber(blackKingPossibleMoves.get(x).plyNumber);
             if (!this.willBlackKingBeInOppositionIfItMovesTo(to)) {
-                Ply copyMove = new Ply(
+                Move copyMove = new Move(
                         blackKingPossibleMoves.get(x).plyNumber);
                 rez.add(copyMove);
             }
@@ -2145,9 +2145,9 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereBlackKingTriesToEatRook(
-            ArrayList<Ply> possibleBlakKingMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWhereBlackKingTriesToEatRook(
+            ArrayList<Move> possibleBlakKingMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
         int distance = 17;
         int rookPosition = -1;
         if (this.piecePosition[0] != -1 && this.piecePosition[7] != -1) {
@@ -2187,7 +2187,7 @@ public class Chessboard implements Cloneable {
             int currDistance = Utils.distanceBetweenPositions(from,
                     rookPosition);
             if (currDistance < distance) {
-                rez = new ArrayList<Ply>();
+                rez = new ArrayList<Move>();
                 distance = currDistance;
             }
             if (currDistance == distance) {
@@ -2198,25 +2198,25 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteIsntNearBlackKing(
-            ArrayList<Ply> moves) throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWhereWhiteIsntNearBlackKing(
+            ArrayList<Move> moves) throws ChessboardException {
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
             int to = Utils.getToFromMoveNumber(moves.get(x).plyNumber);
             if (!this.isPositionAdjacentToBlackKing(to)) {
-                rez.add(new Ply(moves.get(x).plyNumber));
+                rez.add(new Move(moves.get(x).plyNumber));
             }
         }
         return rez;
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteRooksArentPlaceOnSameLine(
-            ArrayList<Ply> possibleRookMoves) throws ChessboardException {
+    public ArrayList<Move> movesWhereWhiteRooksArentPlaceOnSameLine(
+            ArrayList<Move> possibleRookMoves) throws ChessboardException {
         int rook0Pos = this.piecePosition[0];
         int rook7Pos = this.piecePosition[7];
         if (rook0Pos == -1 || rook7Pos == -1) { return possibleRookMoves; }
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < possibleRookMoves.size(); x++) {
             int from = Utils
                     .getFromFromMoveNumber(possibleRookMoves.get(x).plyNumber);
@@ -2245,8 +2245,8 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWherePieceIsNotInCorner(ArrayList<Ply> moves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWherePieceIsNotInCorner(ArrayList<Move> moves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
             int to = Utils.getToFromMoveNumber(moves.get(x).plyNumber);
             if (to != 0 && to != 7 && to != 112 && to != 119) {
@@ -2257,15 +2257,15 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteRookTryToStayOnNearestLines(
-            ArrayList<Ply> possibleRookMoves) throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWhereWhiteRookTryToStayOnNearestLines(
+            ArrayList<Move> possibleRookMoves) throws ChessboardException {
+        ArrayList<Move> rez = new ArrayList<Move>();
         int rook0Pos = this.piecePosition[0];
         int rook7Pos = this.piecePosition[7];
         if (rook0Pos == -1 || rook7Pos == -1) { return possibleRookMoves; }
         int minDistance = 20;
         for (int x = 0; x < possibleRookMoves.size(); x++) {
-            Ply currMove = possibleRookMoves.get(x);
+            Move currMove = possibleRookMoves.get(x);
             int from = Utils.getFromFromMoveNumber(currMove.plyNumber);
             int to = Utils.getToFromMoveNumber(currMove.plyNumber);
             int targetPosition = -1;
@@ -2282,7 +2282,7 @@ public class Chessboard implements Cloneable {
                     targetPosition);
             if (currDistance < minDistance) {
                 minDistance = currDistance;
-                rez = new ArrayList<Ply>();
+                rez = new ArrayList<Move>();
             }
             if (currDistance == minDistance) {
                 rez.add(currMove);
@@ -2292,9 +2292,9 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteAvoidBeingEatenByBlackKing(
-            ArrayList<Ply> moves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWhereWhiteAvoidBeingEatenByBlackKing(
+            ArrayList<Move> moves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
             int from = Utils.getFromFromMoveNumber(moves.get(x).plyNumber);
             int to = Utils.getToFromMoveNumber(moves.get(x).plyNumber);
@@ -2315,11 +2315,11 @@ public class Chessboard implements Cloneable {
      * @return filtered moves.
      * @throws Exception
      */
-    public ArrayList<Ply> movesWhereWhiteAvoidsMoveRepetition(
-            ArrayList<Ply> whiteMoves) throws Exception {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWhereWhiteAvoidsMoveRepetition(
+            ArrayList<Move> whiteMoves) throws Exception {
+        ArrayList<Move> rez = new ArrayList<Move>();
 
-        for (Ply move : whiteMoves) {
+        for (Move move : whiteMoves) {
 
             Chessboard temp = (Chessboard) this.clone();
             temp.makeAMove(move.plyNumber);
@@ -2333,18 +2333,18 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteKingMovesCloserToBlackKind(
-            ArrayList<Ply> posKingMoves) {
+    public ArrayList<Move> movesWhereWhiteKingMovesCloserToBlackKind(
+            ArrayList<Move> posKingMoves) {
         int distance = this.distanceBewteenKings();
         int blackKingPosition = this.piecePosition[28];
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < posKingMoves.size(); x++) {
             int to = Utils.getToFromMoveNumber(posKingMoves.get(x).plyNumber);
             int currDistance = Utils.distanceBetweenPositions(to,
                     blackKingPosition);
             if (currDistance < distance) {
                 distance = currDistance;
-                rez = new ArrayList<Ply>();
+                rez = new ArrayList<Move>();
             }
             if (currDistance == distance) {
                 rez.add(posKingMoves.get(x));
@@ -2354,11 +2354,11 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> pliesWhereWhiteKingMovesCloserOrEqualToBlackKind(
-            ArrayList<Ply> posMoves) {
+    public ArrayList<Move> pliesWhereWhiteKingMovesCloserOrEqualToBlackKind(
+            ArrayList<Move> posMoves) {
         int distance = this.distanceBewteenKings();
         int blackKingPosition = this.piecePosition[28];
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < posMoves.size(); x++) {
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(posMoves.get(x).plyNumber);
@@ -2379,12 +2379,12 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteRookLikePieceBoundsBlackKing(
-            ArrayList<Ply> posQueenMoves) {
+    public ArrayList<Move> movesWhereWhiteRookLikePieceBoundsBlackKing(
+            ArrayList<Move> posQueenMoves) {
         int blackKingPosition = this.piecePosition[28];
         int blackKingRank = Utils.getRankFromPosition(blackKingPosition);
         int blackKingFile = Utils.getFileFromPosition(blackKingPosition);
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < posQueenMoves.size(); x++) {
             int to = Utils.getToFromMoveNumber(posQueenMoves.get(x).plyNumber);
             int currRank = Utils.getRankFromPosition(to);
@@ -2399,9 +2399,9 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> movesWhereWhiteKQKIsSafe(ArrayList<Ply> moves)
+    public ArrayList<Move> movesWhereWhiteKQKIsSafe(ArrayList<Move> moves)
             throws ChessboardException {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+        ArrayList<Move> rez = new ArrayList<Move>();
         int queenPosition = this.piecePosition[3];
         if (this.isPositionAdjacentToBlackKing(queenPosition)) {
             for (int x = 0; x < moves.size(); x++) {
@@ -2460,11 +2460,11 @@ public class Chessboard implements Cloneable {
      * ne preverja �e je dejansko ena figura, gleda pa samo bli�ino kraljev,
      * tako da �e je ve� figur, lahko odre�e kak�no potezo preve�
      */
-    public ArrayList<Ply> movesWhereWhiteOnePieceEndingIsSafe(
-            ArrayList<Ply> moves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> movesWhereWhiteOnePieceEndingIsSafe(
+            ArrayList<Move> moves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
-            Ply temp = moves.get(x);
+            Move temp = moves.get(x);
             int to = Utils.getToFromMoveNumber(temp.plyNumber);
             int movedPiece = Utils.getMovedPieceFromMoveNumber(temp.plyNumber);
             if (movedPiece != 4) {
@@ -2494,13 +2494,13 @@ public class Chessboard implements Cloneable {
      *            list of moves to filter
      * @return list of moves that white must do to avoid loosing a piece
      */
-    public ArrayList<Ply> whiteUrgentPlies(ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> whiteUrgentPlies(ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
 
         // if black king isn't near any pieces, it can't eat them
         if (this.piecesNearPosition(this.piecePosition[28]).size() == 0) { return rez; }
 
-        for (Ply currMove : allWhiteMoves) {
+        for (Move currMove : allWhiteMoves) {
             int from = Utils.getFromFromMoveNumber(currMove.plyNumber);
             int to = Utils.getToFromMoveNumber(currMove.plyNumber);
             int movedPiece = Utils
@@ -2540,10 +2540,10 @@ public class Chessboard implements Cloneable {
      * @param allWhiteMoves
      * @return list of safe moves
      */
-    public ArrayList<Ply> whiteSafePlies(ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> whiteSafePlies(ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
 
-        for (Ply currMove : allWhiteMoves) {
+        for (Move currMove : allWhiteMoves) {
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.plyNumber);
             int to = Utils.getToFromMoveNumber(currMove.plyNumber);
@@ -2580,9 +2580,9 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(
-            ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(
+            ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
         int blackKingPos = this.piecePosition[28];
 
         // there are two rooks and only one should be on board
@@ -2597,7 +2597,7 @@ public class Chessboard implements Cloneable {
             int blackKingRank = Utils.getRankFromPosition(blackKingPos);
             int blackKingFile = Utils.getFileFromPosition(blackKingPos);
 
-            for (Ply currMove : allWhiteMoves) {
+            for (Move currMove : allWhiteMoves) {
                 int movedPiece = Utils
                         .getMovedPieceFromMoveNumber(currMove.plyNumber);
                 int to = Utils.getToFromMoveNumber(currMove.plyNumber);
@@ -2616,7 +2616,7 @@ public class Chessboard implements Cloneable {
                                             blackKingPos, to) || ChessboardUtils
                                     .isPositionBetweenPositionsOnLine(to,
                                             this.piecePosition[4], blackKingPos))) {
-                        rez.add(new Ply(currMove.plyNumber));
+                        rez.add(new Move(currMove.plyNumber));
                     }
                 }
                 else {
@@ -2635,13 +2635,13 @@ public class Chessboard implements Cloneable {
                     if (areRanksSame) {
                         int rank = Utils.getRankFromPosition(to);
                         if (rank != whiteKingRank) {
-                            rez.add(new Ply(currMove.plyNumber));
+                            rez.add(new Move(currMove.plyNumber));
                         }
                     }
                     if (areFilesSame) {
                         int file = Utils.getFileFromPosition(to);
                         if (file != whiteKingFile) {
-                            rez.add(new Ply(currMove.plyNumber));
+                            rez.add(new Move(currMove.plyNumber));
                         }
                     }
                 }
@@ -2654,8 +2654,8 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> KBBKWhiteUrgentMoves(ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public ArrayList<Move> KBBKWhiteUrgentMoves(ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
         int bishop2Position = this.piecePosition[2];
         int bishop5Position = this.piecePosition[5];
         boolean isBishop2NearBlackKing = false;
@@ -2670,7 +2670,7 @@ public class Chessboard implements Cloneable {
         }
         if (!isBishop2NearBlackKing && !isBishop5NearBlackKing) { return rez; }
 
-        for (Ply currMove : allWhiteMoves) {
+        for (Move currMove : allWhiteMoves) {
             int to = Utils.getToFromMoveNumber(currMove.plyNumber);
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.plyNumber);
@@ -2678,13 +2678,13 @@ public class Chessboard implements Cloneable {
                 if (isBishop2NearBlackKing) {
                     if (this.isPositionProtectedByKingIfKingIsMovedTo(
                             bishop2Position, to)) {
-                        rez.add(new Ply(currMove.plyNumber));
+                        rez.add(new Move(currMove.plyNumber));
                     }
                 }
                 if (isBishop5NearBlackKing) {
                     if (this.isPositionProtectedByKingIfKingIsMovedTo(
                             bishop5Position, to)) {
-                        rez.add(new Ply(currMove.plyNumber));
+                        rez.add(new Move(currMove.plyNumber));
                     }
                 }
             }
@@ -2692,12 +2692,12 @@ public class Chessboard implements Cloneable {
                 if (isBishop2NearBlackKing && movedPiece == 2
                         && !this.isPositionAdjacentToBlackKing(to)
                         && !this.isPositionAdjacentToWhiteKing(bishop2Position)) {
-                    rez.add(new Ply(currMove.plyNumber));
+                    rez.add(new Move(currMove.plyNumber));
                 }
                 else if (isBishop5NearBlackKing && movedPiece == 5
                         && !this.isPositionAdjacentToBlackKing(to)
                         && !this.isPositionAdjacentToWhiteKing(to)) {
-                    rez.add(new Ply(currMove.plyNumber));
+                    rez.add(new Move(currMove.plyNumber));
                 }
             }
         }
@@ -2706,22 +2706,22 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> KBBKWhiteSafeMoves(ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
-        for (Ply currMove : allWhiteMoves) {
+    public ArrayList<Move> KBBKWhiteSafeMoves(ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
+        for (Move currMove : allWhiteMoves) {
             int to = Utils.getToFromMoveNumber(currMove.plyNumber);
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.plyNumber);
             if (movedPiece == 4) {
-                rez.add(new Ply(currMove.plyNumber));
+                rez.add(new Move(currMove.plyNumber));
             }
             else {
                 if (!this.isPositionAdjacentToBlackKing(to)) {
-                    rez.add(new Ply(currMove.plyNumber));
+                    rez.add(new Move(currMove.plyNumber));
                 }
                 if (this.isPositionAdjacentToBlackKing(to)
                         && this.isPositionAdjacentToWhiteKing(to)) {
-                    rez.add(new Ply(currMove.plyNumber));
+                    rez.add(new Move(currMove.plyNumber));
                 }
             }
         }
@@ -2729,14 +2729,14 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> KBBKWhiteMovesWhereBishopsAreOnAdjacentDiagonals(
-            ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
-        for (Ply currMove : allWhiteMoves) {
+    public ArrayList<Move> KBBKWhiteMovesWhereBishopsAreOnAdjacentDiagonals(
+            ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
+        for (Move currMove : allWhiteMoves) {
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.plyNumber);
             if (movedPiece == 4) {
-                rez.add(new Ply(currMove.plyNumber));
+                rez.add(new Move(currMove.plyNumber));
             }
             else {
                 int otherBishop = movedPiece == 2 ? 5 : 2;
@@ -2745,7 +2745,7 @@ public class Chessboard implements Cloneable {
                 if (otherBishopPosition != -1
                         && Utils.arePsotionsDiagonallyAdjacent(to,
                                 otherBishopPosition)) {
-                    rez.add(new Ply(currMove.plyNumber));
+                    rez.add(new Move(currMove.plyNumber));
                 }
             }
         }
@@ -2753,42 +2753,42 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Ply> filterMovesToWhiteKingMoves(
-            ArrayList<Ply> allwhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
-        for (Ply currMove : allwhiteMoves) {
+    public ArrayList<Move> filterMovesToWhiteKingMoves(
+            ArrayList<Move> allwhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
+        for (Move currMove : allwhiteMoves) {
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.plyNumber);
             if (movedPiece == 4) {
-                rez.add(new Ply(currMove.plyNumber));
+                rez.add(new Move(currMove.plyNumber));
             }
         }
         return rez;
     }
 
 
-    public ArrayList<Ply> filterMovesToWhiteRookMoves(
-            ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
-        for (Ply currMove : allWhiteMoves) {
+    public ArrayList<Move> filterMovesToWhiteRookMoves(
+            ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
+        for (Move currMove : allWhiteMoves) {
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.plyNumber);
             if (movedPiece == 0 || movedPiece == 7) {
-                rez.add(new Ply(currMove.plyNumber));
+                rez.add(new Move(currMove.plyNumber));
             }
         }
         return rez;
     }
 
 
-    public ArrayList<Ply> filterMovesToWhiteBishopMoves(
-            ArrayList<Ply> allWhiteMoves) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
-        for (Ply currMove : allWhiteMoves) {
+    public ArrayList<Move> filterMovesToWhiteBishopMoves(
+            ArrayList<Move> allWhiteMoves) {
+        ArrayList<Move> rez = new ArrayList<Move>();
+        for (Move currMove : allWhiteMoves) {
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.plyNumber);
             if (movedPiece == 2 || movedPiece == 5) {
-                rez.add(new Ply(currMove.plyNumber));
+                rez.add(new Move(currMove.plyNumber));
             }
         }
         return rez;

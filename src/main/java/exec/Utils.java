@@ -110,7 +110,7 @@ public class Utils {
     }
 
 
-    public static int getFromFromMove(Ply a) {
+    public static int getFromFromMove(Move a) {
         int rez = a.plyNumber >>> 24;
 
         if (rez == 255) {
@@ -134,7 +134,7 @@ public class Utils {
     }
 
 
-    public static int getToFromMove(Ply a) {
+    public static int getToFromMove(Move a) {
         int rez = (a.plyNumber >>> 16) & 0xFF;
 
         if (rez == 255) {
@@ -159,7 +159,7 @@ public class Utils {
     }
 
 
-    public static int getMovedPieceFromMove(Ply a) {
+    public static int getMovedPieceFromMove(Move a) {
         int rez = (a.plyNumber >>> 8) & 0xFF;
 
         if (rez == 255) {
@@ -183,7 +183,7 @@ public class Utils {
     }
 
 
-    public static int getTargetPieceFromMove(Ply a) {
+    public static int getTargetPieceFromMove(Move a) {
         return Utils.getTargetPieceFromMoveNumber(a.plyNumber);
     }
 
@@ -229,7 +229,7 @@ public class Utils {
 
 
     // ni stestirana
-    public static int indexOfMoveInNextMovesInNode(Ply move, MCTNode node) {
+    public static int indexOfMoveInNextMovesInNode(Move move, MCTNode node) {
         int rez = -1;
 
         for (int x = 0; x < node.nextPlies.size(); x++) {
@@ -320,7 +320,7 @@ public class Utils {
     }
 
 
-    public static void printMoveNumbersArray(ArrayList<Ply> array) {
+    public static void printMoveNumbersArray(ArrayList<Move> array) {
         System.out.print("printMovesArray: ");
         for (int x = 0; x < array.size(); x++) {
             int temp = array.get(x).plyNumber;
@@ -564,9 +564,9 @@ public class Utils {
     }
 
 
-    public static ArrayList<Ply> mergeMoveArrayLists(ArrayList<Ply> list1,
-            ArrayList<Ply> list2) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
+    public static ArrayList<Move> mergeMoveArrayLists(ArrayList<Move> list1,
+            ArrayList<Move> list2) {
+        ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < list1.size(); x++) {
             rez.add(list1.get(x));
         }
@@ -681,10 +681,10 @@ public class Utils {
     }
 
 
-    public static ArrayList<Ply> copyMoveArrayList(ArrayList<Ply> copy) {
-        ArrayList<Ply> rez = new ArrayList<Ply>();
-        for (Ply currMove : copy) {
-            rez.add(new Ply(currMove.plyNumber));
+    public static ArrayList<Move> copyMoveArrayList(ArrayList<Move> copy) {
+        ArrayList<Move> rez = new ArrayList<Move>();
+        for (Move currMove : copy) {
+            rez.add(new Move(currMove.plyNumber));
         }
         return rez;
     }

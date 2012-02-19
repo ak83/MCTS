@@ -11,69 +11,208 @@ import moveChoosers.WhiteChooserStrategy;
 import moveFinders.BlackFinderStrategy;
 import moveFinders.WhiteFinderStrategy;
 
+/**
+ * Class that controls the parameters of MCT algorithm. Also handles help
+ * output.
+ * 
+ * @author Andraz Kohne
+ */
 public class Constants {
 
     private Constants() {};
 
-    // public final static long RANDOM_SEED = 765768;
-    public static int                     NUMBER_OF_GAMES_PLAYED;
-    public static String                  PGN_FILENAME                                                                    = "test.pgn";
-    public static String                  LOG_FILENAME                                                                    = "test.log";
-    public static String                  CONFIG_FILENAME                                                                 = "MCTS.conf";
-    public static String                  FRUIT_FILEPATH                                                                  = "Fruit-2-3-1.exe";
-    public static String                  EMD_DIR                                                                         = System.getProperty("user.dir");
     /**
-     * maximum tree depth ( maximum ply count)
+     * Number of match that will be played.
      */
-    public static int                     MAX_DEPTH                                                                       = 100;
-    public static double                  C;
-    public static int                     GOBAN;
-    public static int                     NUMBER_OF_SIMULATIONS_PER_EVALUATION;
-    public static BlackFinderStrategy BLACK_SIMULATION_STRATEGY                                                       = BlackFinderStrategy.GOOD;
-    public static WhiteFinderStrategy WHITE_SIMULATION_STRATEGY;
-    public static int                     NUMBER_OF_INITAL_STEPS;
-    public static int                     NUMBER_OF_RUNNING_STEPS;
-    public static WhiteChooserStrategy    WHITE_MOVE_CHOOSER_STRATEGY                                                     = WhiteChooserStrategy.VISIT_COUNT;
-    public static BlackFinderStrategy BLACK_MOVE_CHOOSER_STRATEGY                                                     = BlackFinderStrategy.GOOD;
-    public static boolean                 SELECTION_EVALUATES_CHESSBOARD                                                  = false;
-    public static boolean                 SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING                               = false;                                                  ;
-    public static String                  ENDING;
-    public static boolean                 WRITE_INDIVIDUAL_GAMES                                                          = true;
-    public static Level                   FILE_LOG_LEVEL                                                                  = Level.ALL;
-    public static Level                   CONSOLE_LOG_LEVEL                                                               = Level.OFF;
+    public static int                  NUMBER_OF_GAMES_PLAYED;
 
-    public static boolean                 KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition                         = false;
-    public static boolean                 KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals                = false;
+    /**
+     * File to which ogn output will be saved.
+     */
+    public static String               PGN_FILENAME                                                                    = "test.pgn";
 
-    public static boolean                 HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
-    public static boolean                 HEURISTICS_white_KING_only_moves_coser_to_black_king                            = false;
-    public static boolean                 HEURISTICS_check_for_urgent_moves                                               = false;
-    public static boolean                 HEURISTICS_only_safe_moves                                                      = false;
-    public static boolean                 HEURISTICS_avoid_move_repetition                                                = false;
+    /**
+     * File to which mathes will be logged.
+     */
+    public static String               LOG_FILENAME                                                                    = "test.log";
 
-    public static boolean[]               file_mandatory_parameters                                                       = {
-            false, false, false, false, false, false, false, false                                                       };
+    /**
+     * Config file from which parameters are read.
+     */
+    public static String               CONFIG_FILENAME                                                                 = "MCTS.conf";
 
-    public static final String            HELP                                                                            = "Uporaba: \r\n"
-                                                                                                                                  + "java -jar MCTS.jar [OPT]"
-                                                                                                                                  + "\r\n\r\n"
-                                                                                                                                  + "OPT - opcijski argumenti"
-                                                                                                                                  + "\r\n\t --ig"
-                                                                                                                                  + "\r\n\t\t ne zapisuj posameznih iger v pgn-je"
-                                                                                                                                  + "\r\n\t --emd [EMD_DIR]"
-                                                                                                                                  + "\r\n\t\t nastavi emd direktorij na [EMD_DIR] (privzeto je v trenutne direktoriju)"
-                                                                                                                                  + "\r\n\t --conf [CONF_FILE]"
-                                                                                                                                  + "\r\n\t\t za konfiguracijsko datoteko uporabi CONF_FILE"
-                                                                                                                                  + "\r\n\t --pgn [PGN_FILE]"
-                                                                                                                                  + "\r\n\t\t shrani partijo v PGN_FILE (privzeto je test.pgn)"
-                                                                                                                                  + "\r\n\t --log [LOG_FILE]"
-                                                                                                                                  + "\r\n\t\t nastavi pot za log datoteko (privzeto je test.log)"
-                                                                                                                                  + "\r\n\t --fruit [FRUIT]"
-                                                                                                                                  + "\r\n\t\t nastavi pot do fruit programa (privzeto je Fruit-2-3-1.exe)"
-                                                                                                                                  + "\r\n\t --help"
-                                                                                                                                  + "\r\n\t\t program izpise to pomoc in se konca";
+    /**
+     * Fruit executable file path. Required only if black plays with perfect
+     * information.
+     */
+    public static String               FRUIT_FILEPATH                                                                  = "Fruit-2-3-1.exe";
+
+    /**
+     * Directory where emd files are stored.
+     */
+    public static String               EMD_DIR                                                                         = System.getProperty("user.dir");
+
+    /**
+     * maximum tree depth ( maximum ply count for single match).
+     */
+    public static int                  MAX_DEPTH                                                                       = 100;
+
+    /**
+     * C constant to be used by MCT nodes.
+     */
+    public static double               C;
+
+    /**
+     * Goban value to be used by MCT algorithm.
+     */
+    public static int                  GOBAN;
+
+    /**
+     * How many simulations is run on node that is newly added to MC tree.
+     */
+    public static int                  NUMBER_OF_SIMULATIONS_PER_EVALUATION;
+
+    /**
+     * Black simulation strategy that will be used by algorithm.
+     */
+    public static BlackFinderStrategy  BLACK_SIMULATION_STRATEGY                                                       = BlackFinderStrategy.GOOD;
+
+    /**
+     * White simulation strategy that will be used by algorithm.
+     */
+    public static WhiteFinderStrategy  WHITE_SIMULATION_STRATEGY;
+
+    /**
+     * Number of MCT steps run before the beggining of the match.
+     */
+    public static int                  NUMBER_OF_INITAL_STEPS;
+
+    /**
+     * Number of MCT steps run before every whites ply.
+     */
+    public static int                  NUMBER_OF_RUNNING_STEPS;
+
+    /**
+     * White chooser strategy used by application.
+     */
+    public static WhiteChooserStrategy WHITE_MOVE_CHOOSER_STRATEGY                                                     = WhiteChooserStrategy.VISIT_COUNT;
+
+    /**
+     * Black chooser strategy used by application.
+     */
+    public static BlackFinderStrategy  BLACK_MOVE_CHOOSER_STRATEGY                                                     = BlackFinderStrategy.GOOD;
+
+    /**
+     * If <code>true</code>, selection stops at nodes that don't represent
+     * vanilla chess board state.
+     */
+    public static boolean              SELECTION_EVALUATES_CHESSBOARD                                                  = false;
+
+    /**
+     * If <code>true</code> selection doesn't just choose node with highest
+     * rating. But it takes from nodes with highest rating nodes with highest
+     * visit count.
+     */
+    public static boolean              SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING                               = false;
+
+    /**
+     * Which ending will be played by application.
+     */
+    public static String               ENDING;
+
+    /**
+     * If <code>true</code> application will also write pgns of individual
+     * matches played in sgames directory.
+     */
+    public static boolean              WRITE_INDIVIDUAL_GAMES                                                          = true;
+
+    /**
+     * Filters which information will be logged to log file.
+     */
+    public static Level                FILE_LOG_LEVEL                                                                  = Level.ALL;
+
+    /**
+     * Filters which information will be logged to console.
+     */
+    public static Level                CONSOLE_LOG_LEVEL                                                               = Level.OFF;
+
+    /**
+     * If <code>true</code> white will try to check black king when they are in
+     * opposition. Only applicable in KRK ending.
+     */
+    public static boolean              KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition                         = false;
+
+    /**
+     * If <code>true</code> white will to put bishops on adjacent diagonals.
+     * Only applicable in KRK ending.
+     */
+    public static boolean              KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals                = false;
+
+    /**
+     * If <code>true</code> and distance between kings is more than 3 white will
+     * try to move king closer or equal distance to black king.
+     */
+    public static boolean              HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
+
+    /**
+     * If <code>true</code> white will when moving king try to never to move
+     * king further away from black king.
+     */
+    public static boolean              HEURISTICS_white_KING_only_moves_coser_to_black_king                            = false;
+
+    /**
+     * If <code>true</code> white check for urgent move (moves that need to be
+     * made so white doesn't loose a piece) and if such move is found white
+     * makes it.
+     */
+    public static boolean              HEURISTICS_check_for_urgent_moves                                               = false;
+
+    /**
+     * If <code>true</code> white doesn't put pieces where they could be eaten
+     * by black king.
+     */
+    public static boolean              HEURISTICS_only_safe_moves                                                      = false;
+
+    /**
+     * If <code>true</code> white tries to avoid moves that would lead same
+     * chess board state that already appeared.
+     */
+    public static boolean              HEURISTICS_avoid_move_repetition                                                = false;
+
+    /** Command line help */
+    public static final String         HELP                                                                            = "Uporaba: \r\n"
+                                                                                                                               + "java -jar MCTS.jar [OPT]"
+                                                                                                                               + "\r\n\r\n"
+                                                                                                                               + "OPT - opcijski argumenti"
+                                                                                                                               + "\r\n\t --ig"
+                                                                                                                               + "\r\n\t\t ne zapisuj posameznih iger v pgn-je"
+                                                                                                                               + "\r\n\t --emd [EMD_DIR]"
+                                                                                                                               + "\r\n\t\t nastavi emd direktorij na [EMD_DIR] (privzeto je v trenutne direktoriju)"
+                                                                                                                               + "\r\n\t --conf [CONF_FILE]"
+                                                                                                                               + "\r\n\t\t za konfiguracijsko datoteko uporabi CONF_FILE"
+                                                                                                                               + "\r\n\t --pgn [PGN_FILE]"
+                                                                                                                               + "\r\n\t\t shrani partijo v PGN_FILE (privzeto je test.pgn)"
+                                                                                                                               + "\r\n\t --log [LOG_FILE]"
+                                                                                                                               + "\r\n\t\t nastavi pot za log datoteko (privzeto je test.log)"
+                                                                                                                               + "\r\n\t --fruit [FRUIT]"
+                                                                                                                               + "\r\n\t\t nastavi pot do fruit programa (privzeto je Fruit-2-3-1.exe)"
+                                                                                                                               + "\r\n\t --help"
+                                                                                                                               + "\r\n\t\t program izpise to pomoc in se konca";
+
+    /**
+     * Used for checking if all mandatory parameters have been set in cofig
+     * file.
+     */
+    private static boolean[]           FILE_MANDATORY_PARAMETERS                                                       = {
+            false, false, false, false, false, false, false, false                                                    };
 
 
+    /**
+     * Sets parameters gotten from command line
+     * 
+     * @param param
+     *            command line input.
+     */
     public static void initConstants(String[] param) {
 
         if (Constants.ENDING.equalsIgnoreCase("KRRK")) {
@@ -126,6 +265,11 @@ public class Constants {
     }
 
 
+    /**
+     * Returns string representation of currently set parameters.
+     * 
+     * @return parameters converted to string.
+     */
     public static String constantsString() {
         String rez = "NUMBER_OF_GAMES_PLAYED "
                 + Constants.NUMBER_OF_GAMES_PLAYED + "\r\n";
@@ -256,7 +400,7 @@ public class Constants {
 
 
     /**
-     * set MCT parameters from configuration file
+     * Sets MCT parameters from configuration file.
      */
     public static void readConfigFile() {
         int currentLine = 0;
@@ -296,7 +440,7 @@ public class Constants {
                         System.exit(1);
                     }
                     Constants.NUMBER_OF_GAMES_PLAYED = numOfGames;
-                    Constants.file_mandatory_parameters[0] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[0] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("c")) {
@@ -318,7 +462,7 @@ public class Constants {
                     }
 
                     Constants.C = c;
-                    Constants.file_mandatory_parameters[1] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[1] = true;
                 }
                 else if (words[0].equalsIgnoreCase("goban")) {
                     if (words.length != 2) {
@@ -340,7 +484,7 @@ public class Constants {
                     }
 
                     Constants.GOBAN = goban;
-                    Constants.file_mandatory_parameters[2] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[2] = true;
 
                 }
                 else if (words[0]
@@ -364,7 +508,7 @@ public class Constants {
                     }
 
                     Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION = numOfSim;
-                    Constants.file_mandatory_parameters[3] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[3] = true;
                 }
                 else if (words[0].equalsIgnoreCase("number_of_inital_steps")
                         || words[0].equalsIgnoreCase("initial_steps")) {
@@ -387,7 +531,7 @@ public class Constants {
                     }
 
                     Constants.NUMBER_OF_INITAL_STEPS = numOfSteps;
-                    Constants.file_mandatory_parameters[4] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[4] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("number_of_running_steps")
@@ -411,7 +555,7 @@ public class Constants {
                     }
 
                     Constants.NUMBER_OF_RUNNING_STEPS = numOfSteps;
-                    Constants.file_mandatory_parameters[5] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[5] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("ending")) {
@@ -435,7 +579,7 @@ public class Constants {
                     }
 
                     Constants.ENDING = words[1];
-                    Constants.file_mandatory_parameters[6] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[6] = true;
                 }
                 else if (words[0]
                         .equalsIgnoreCase("white_move_chooser_strategy")
@@ -471,7 +615,7 @@ public class Constants {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
                     }
 
-                    Constants.file_mandatory_parameters[7] = true;
+                    Constants.FILE_MANDATORY_PARAMETERS[7] = true;
                 }
 
                 /*
@@ -707,8 +851,8 @@ public class Constants {
 
         StringBuffer sb = new StringBuffer(300);
         boolean missing = false;
-        for (int x = 0; x < Constants.file_mandatory_parameters.length; x++) {
-            if (!Constants.file_mandatory_parameters[x]) {
+        for (int x = 0; x < Constants.FILE_MANDATORY_PARAMETERS.length; x++) {
+            if (!Constants.FILE_MANDATORY_PARAMETERS[x]) {
                 missing = true;
                 switch (x) {
                     case 0:
