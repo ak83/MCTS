@@ -7,14 +7,16 @@ package moveFinders;
  */
 public enum BlackFinderStrategy {
     /** random behavior */
-    RANDOM, /**
-     * black tries to move towards center of the chess board no matter
-     * what
+    RANDOM,
+    /**
+     * black tries to move towards center of the chess board no matter what
      */
-    CENTER, /**
-     * black tries to move towards center of the chess board and if it
-     * has a chance eats whites piece
+    CENTER,
+    /**
+     * black tries to move towards center of the chess board and if it has a
+     * chance eats whites piece
      */
-    GOOD, /** black plays with perfect information */
+    GOOD,
+    /** black plays with perfect information */
     PERFECT
 }
