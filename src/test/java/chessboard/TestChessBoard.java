@@ -12,14 +12,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import exec.Constants;
-import exec.Move;
+import exec.Ply;
 
 public class TestChessBoard {
 
     private static Chessboard      cbKRK;
     private static Chessboard      cbKRRK;
-    private static ArrayList<Move> cbKRKAllMoves;
-    private static ArrayList<Move> cbKRRKALLMoves;
+    private static ArrayList<Ply> cbKRKAllMoves;
+    private static ArrayList<Ply> cbKRRKALLMoves;
 
 
     @BeforeClass
@@ -67,7 +67,7 @@ public class TestChessBoard {
     public void testKRKWhiteMovesWhereRookChecksIfKingsAreInOpposition()
             throws Exception {
 
-        ArrayList<Move> returned = TestChessBoard.cbKRK
+        ArrayList<Ply> returned = TestChessBoard.cbKRK
                 .KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(TestChessBoard.cbKRK
                         .getAllLegalWhiteMoves());
         
@@ -76,7 +76,7 @@ public class TestChessBoard {
         Assert.assertEquals(1, returned.size());
 
         // we check if returned moves are correct
-        Assert.assertEquals(1112670463, returned.get(0).moveNumber);
+        Assert.assertEquals(1112670463, returned.get(0).plyNumber);
     }
 
 
@@ -104,7 +104,7 @@ public class TestChessBoard {
 
     @Test
     public void testKRKWhiteSafeMoves() throws Exception {
-        ArrayList<Move> returned = TestChessBoard.cbKRK
+        ArrayList<Ply> returned = TestChessBoard.cbKRK
                 .whiteSafeMoves(TestChessBoard.cbKRK.getAllLegalWhiteMoves());
 
         for (int x = 0; x < TestChessBoard.cbKRKAllMoves.size(); x++) {
@@ -123,7 +123,7 @@ public class TestChessBoard {
 
     @Test
     public void testWhiteUrgentMoves() throws Exception {
-        ArrayList<Move> returned = TestChessBoard.cbKRK
+        ArrayList<Ply> returned = TestChessBoard.cbKRK
                 .whiteUrgentMoves(TestChessBoard.cbKRK.getAllLegalWhiteMoves());
         Assert.assertEquals(0, returned.size());
 
@@ -164,9 +164,9 @@ public class TestChessBoard {
     public void testHashCode() throws Exception {
         Assert.assertEquals(5452610, TestChessBoard.cbKRK.hashCode());
 
-        for (Move move : TestChessBoard.cbKRKAllMoves) {
+        for (Ply move : TestChessBoard.cbKRKAllMoves) {
             Chessboard temp = new Chessboard(TestChessBoard.cbKRK, "clone");
-            temp.makeAMove(move.moveNumber);
+            temp.makeAMove(move.plyNumber);
             Assert.assertNotSame(TestChessBoard.cbKRK.hashCode(), temp
                     .hashCode());
         }

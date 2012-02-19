@@ -110,8 +110,8 @@ public class Utils {
     }
 
 
-    public static int getFromFromMove(Move a) {
-        int rez = a.moveNumber >>> 24;
+    public static int getFromFromMove(Ply a) {
+        int rez = a.plyNumber >>> 24;
 
         if (rez == 255) {
             return -1;
@@ -134,8 +134,8 @@ public class Utils {
     }
 
 
-    public static int getToFromMove(Move a) {
-        int rez = (a.moveNumber >>> 16) & 0xFF;
+    public static int getToFromMove(Ply a) {
+        int rez = (a.plyNumber >>> 16) & 0xFF;
 
         if (rez == 255) {
             return -1;
@@ -159,8 +159,8 @@ public class Utils {
     }
 
 
-    public static int getMovedPieceFromMove(Move a) {
-        int rez = (a.moveNumber >>> 8) & 0xFF;
+    public static int getMovedPieceFromMove(Ply a) {
+        int rez = (a.plyNumber >>> 8) & 0xFF;
 
         if (rez == 255) {
             return -1;
@@ -183,8 +183,8 @@ public class Utils {
     }
 
 
-    public static int getTargetPieceFromMove(Move a) {
-        return Utils.getTargetPieceFromMoveNumber(a.moveNumber);
+    public static int getTargetPieceFromMove(Ply a) {
+        return Utils.getTargetPieceFromMoveNumber(a.plyNumber);
     }
 
 
@@ -229,11 +229,11 @@ public class Utils {
 
 
     // ni stestirana
-    public static int indexOfMoveInNextMovesInNode(Move move, MCTNode node) {
+    public static int indexOfMoveInNextMovesInNode(Ply move, MCTNode node) {
         int rez = -1;
 
         for (int x = 0; x < node.nextMoves.size(); x++) {
-            if (move.moveNumber == node.nextMoves.get(x).moveNumber) {
+            if (move.plyNumber == node.nextMoves.get(x).moveNumber) {
                 rez = x;
             }
         }
@@ -320,10 +320,10 @@ public class Utils {
     }
 
 
-    public static void printMoveNumbersArray(ArrayList<Move> array) {
+    public static void printMoveNumbersArray(ArrayList<Ply> array) {
         System.out.print("printMovesArray: ");
         for (int x = 0; x < array.size(); x++) {
-            int temp = array.get(x).moveNumber;
+            int temp = array.get(x).plyNumber;
             int from = Utils.getFromFromMoveNumber(temp);
             int to = Utils.getToFromMoveNumber(temp);
 
@@ -564,9 +564,9 @@ public class Utils {
     }
 
 
-    public static ArrayList<Move> mergeMoveArrayLists(ArrayList<Move> list1,
-            ArrayList<Move> list2) {
-        ArrayList<Move> rez = new ArrayList<Move>();
+    public static ArrayList<Ply> mergeMoveArrayLists(ArrayList<Ply> list1,
+            ArrayList<Ply> list2) {
+        ArrayList<Ply> rez = new ArrayList<Ply>();
         for (int x = 0; x < list1.size(); x++) {
             rez.add(list1.get(x));
         }
@@ -681,10 +681,10 @@ public class Utils {
     }
 
 
-    public static ArrayList<Move> copyMoveArrayList(ArrayList<Move> copy) {
-        ArrayList<Move> rez = new ArrayList<Move>();
-        for (Move currMove : copy) {
-            rez.add(new Move(currMove.moveNumber));
+    public static ArrayList<Ply> copyMoveArrayList(ArrayList<Ply> copy) {
+        ArrayList<Ply> rez = new ArrayList<Ply>();
+        for (Ply currMove : copy) {
+            rez.add(new Ply(currMove.plyNumber));
         }
         return rez;
     }

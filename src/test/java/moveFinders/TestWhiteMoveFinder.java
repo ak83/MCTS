@@ -16,12 +16,12 @@ import org.junit.Test;
 import chessboard.Chessboard;
 
 import exec.Constants;
-import exec.Move;
+import exec.Ply;
 
 public class TestWhiteMoveFinder {
 
     private static Chessboard      cbKRK;
-    private static ArrayList<Move> allCbKRKMoves;
+    private static ArrayList<Ply> allCbKRKMoves;
 
 
     @BeforeClass
@@ -43,7 +43,7 @@ public class TestWhiteMoveFinder {
 	TestWhiteMoveFinder.allCbKRKMoves = TestWhiteMoveFinder.cbKRK
 		.getAllLegalWhiteMoves();
 	int x = 0;
-	for (Move move : TestWhiteMoveFinder.allCbKRKMoves) {
+	for (Ply move : TestWhiteMoveFinder.allCbKRKMoves) {
 	    System.out.println(x + ": " + move);
 	    x++;
 	}
@@ -65,7 +65,7 @@ public class TestWhiteMoveFinder {
 
     @Test
     public void testGeneralHeuristics() {
-	ArrayList<Move> returned = WhiteMoveFinder
+	ArrayList<Ply> returned = WhiteMoveFinder
 		.generalHeuristics(TestWhiteMoveFinder.cbKRK);
 
 	Integer[] indexesNotInAllMoves = { 10, 11, 14, 15, 16, 17, 18 };
