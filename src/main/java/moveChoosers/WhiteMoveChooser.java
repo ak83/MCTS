@@ -8,9 +8,16 @@ import utils.MCTUtils;
 
 import exec.MCTNode;
 
+/**
+ * Class that handles choosing moves for white from MC Tree.
+ * 
+ * @author Andraz
+ */
 public class WhiteMoveChooser {
 
+    /** Random used by this class */
     private static Random random = new Random();
+    /** Logger */
     private static Logger log    = Logger.getLogger("MCTS.WhiteMoveChooser");
 
 
@@ -18,15 +25,15 @@ public class WhiteMoveChooser {
 
 
     /**
-     * Chooses black move from {@link MCTNode}
+     * Chooses black ply from {@link MCTNode}
      * 
      * @param node
      *            root node
      * @param strategy
-     *            strategy on which we choose move
+     *            strategy on which we choose ply move
      * @return chosen index of nodes child
      */
-    public static int chooseAMove(MCTNode node, WhiteChooserStrategy strategy) {
+    public static int chooseAPly(MCTNode node, WhiteChooserStrategy strategy) {
         int rez = -1;
         switch (strategy) {
             case RANDOM:
@@ -50,9 +57,11 @@ public class WhiteMoveChooser {
 
 
     /**
+     * Gets son nodes with higheset visit count from <code>node</code>.
+     * 
      * @param node
-     *            stars sinov od katerih izbiramo poteze
-     * @return
+     *            parent of node from which we choose
+     * @return indexes of son nodes with highest visit count
      */
     private static int chooseMaxVisitCountMove(MCTNode node) {
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
@@ -76,6 +85,13 @@ public class WhiteMoveChooser {
     }
 
 
+    /**
+     * Return index of one of nodes with highest rating
+     * 
+     * @param node
+     *            parent of nodes from which we choose
+     * @return ply number
+     */
     private static int chooseMaxRatingMove(MCTNode node) {
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
         double maxRating = -Double.MAX_VALUE;
@@ -100,6 +116,13 @@ public class WhiteMoveChooser {
     }
 
 
+    /**
+     * Return index of random son node
+     * 
+     * @param node
+     *            parent of nodes from which we choose
+     * @return ply number that belongs to one of nodes childer, chosen of random
+     */
     private static int chooseRandomMove(MCTNode node) {
         int rez = WhiteMoveChooser.random.nextInt(node.nextMoves.size());
         return rez;

@@ -305,7 +305,7 @@ public class MCT {
             this.stats.whiteMoveChoices.add(this.root.nexMovesToString());
 
             rez = WhiteMoveChooser
-                    .chooseAMove(this.root, whiteChoosingStrategy);
+                    .chooseAPly(this.root, whiteChoosingStrategy);
 
             this.stats.whiteMovesChosen.add(rez);
             rez = this.root.nextMoves.get(rez).moveNumber;
