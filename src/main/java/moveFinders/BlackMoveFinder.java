@@ -14,13 +14,13 @@ import exec.Move;
 import exec.Utils;
 
 /**
- * za nekatere funkcije je pred samo funkcijo potrebno vsaj enkrat klicati
- * initRandom
+ * Class handles searching for black player moves in simulations.
  * 
- * @author Administrator
+ * @author Andraz Kohne
  */
 public class BlackMoveFinder {
 
+    /** Random used by this class */
     private static Random random = new Random();
 
 
@@ -28,11 +28,14 @@ public class BlackMoveFinder {
 
 
     /**
+     * Finds blacks black ply number for given strategy.
+     * 
      * @param board
-     *            postavitev za katero najdemo naslednjo potezo
+     *            board on which we look for ply number
      * @param strategy
-     *            0 za random strategijo, 1 kralj te�i k centru
-     * @return
+     *            desired black king strategy
+     * @return ply number for given strategy
+     * @throws ChessboardException
      */
     public static int findBlackKingMove(Chessboard board,
             BlackMoveFinderStrategy strategy) throws ChessboardException {
@@ -77,16 +80,24 @@ public class BlackMoveFinder {
     }
 
 
-    private static int findBlackKingCenterMove(ArrayList<Move> moves) {
+    /**
+     * Finds black king ply number where black king tries to move toward center
+     * of the board.
+     * 
+     * @param plies
+     *            plies from which we get those who go towards center.
+     * @return ply number for center black king strategy
+     */
+    private static int findBlackKingCenterMove(ArrayList<Move> plies) {
         int minDist = BlackMoveFinder
-                .findMinimumDistanceFromCenterFromMoves(moves);
+                .findMinimumDistanceFromCenterFromPlies(plies);
         ArrayList<Move> rezMoves = new ArrayList<Move>();
 
-        for (int x = 0; x < moves.size(); x++) {
+        for (int x = 0; x < plies.size(); x++) {
             int dist = BlackMoveFinder
-                    .distanceOfMoveFromCenter(moves.get(x).moveNumber);
+                    .distanceOfMoveFromCenter(plies.get(x).moveNumber);
             if (dist == minDist) {
-                rezMoves.add(moves.get(x));
+                rezMoves.add(plies.get(x));
             }
         }
 
@@ -95,12 +106,26 @@ public class BlackMoveFinder {
     }
 
 
-    private static int findBlackKingRandomMove(ArrayList<Move> moves) {
-        int rez = BlackMoveFinder.randomIntUpTo(moves.size());
-        return moves.get(rez).moveNumber;
+    /**
+     * Returns a random ply from a list of plies
+     * 
+     * @param plies
+     *            plies
+     * @return random ply from <code>moves</code>.
+     */
+    private static int findBlackKingRandomMove(ArrayList<Move> plies) {
+        int rez = BlackMoveFinder.randomIntUpTo(plies.size());
+        return plies.get(rez).moveNumber;
     }
 
 
+    /**
+     * Finds an optimal ply number for black king.
+     * 
+     * @param board
+     *            board on which we search for ply
+     * @return ply number for black king that uses perfect strategy
+     */
     private static int findBlackPerfectMove(Chessboard board) {
         try {
             Runtime rt = Runtime.getRuntime();
@@ -143,22 +168,31 @@ public class BlackMoveFinder {
     }
 
 
-    /**************************************************************************************************************************
-     * + POMOZNE
-     * FUNKCIJE********************************************************
-     * ****************************************
-     ****************************************************************************************************************************/
-
-    private static int distanceOfMoveFromCenter(int moveNumber) {
-        int fileDiff = BlackMoveFinder.rankDistanceOfMoveFromCenter(moveNumber);
-        int rankDiff = BlackMoveFinder.fileDistanceOfMoveFromCenter(moveNumber);
+    /**
+     * Calculates distance between chess board center and target position of
+     * ply.
+     * 
+     * @param plyNumber
+     *            ply number
+     * @return distance between chess board center and target position of ply
+     */
+    private static int distanceOfMoveFromCenter(int plyNumber) {
+        int fileDiff = BlackMoveFinder.rankDistanceOfMoveFromCenter(plyNumber);
+        int rankDiff = BlackMoveFinder.fileDistanceOfMoveFromCenter(plyNumber);
 
         return fileDiff + rankDiff;
     }
 
 
-    private static int rankDistanceOfMoveFromCenter(int moveNumber) {
-        int to = Utils.getToFromMoveNumber(moveNumber);
+    /**
+     * Calculates distance between chess board center and target rank of ply.
+     * 
+     * @param plyNumber
+     *            ply number
+     * @return distance between chess board center and target rank of ply
+     */
+    private static int rankDistanceOfMoveFromCenter(int plyNumber) {
+        int to = Utils.getToFromMoveNumber(plyNumber);
         int toRank = Utils.getRankFromPosition(to);
 
         int rankDiff = -1;
@@ -177,8 +211,15 @@ public class BlackMoveFinder {
     }
 
 
-    private static int fileDistanceOfMoveFromCenter(int moveNumber) {
-        int to = Utils.getToFromMoveNumber(moveNumber);
+    /**
+     * Calculates distance between chess board center and target file of ply.
+     * 
+     * @param plyNumber
+     *            ply number
+     * @return distance between chess board center and target file of ply
+     */
+    private static int fileDistanceOfMoveFromCenter(int plyNumber) {
+        int to = Utils.getToFromMoveNumber(plyNumber);
         int toFile = Utils.getFileFromPosition(to);
 
         int fileDiff = -1;
@@ -197,11 +238,19 @@ public class BlackMoveFinder {
     }
 
 
-    private static int findMinimumDistanceFromCenterFromMoves(
-            ArrayList<Move> moves) {
+    /**
+     * Finds minimum distance of target positions of plies from chess board
+     * center.
+     * 
+     * @param plies
+     *            plies
+     * @return minimum distance of ply target position from chess board center
+     */
+    private static int findMinimumDistanceFromCenterFromPlies(
+            ArrayList<Move> plies) {
         int minDist = -1;
-        for (int x = 0; x < moves.size(); x++) {
-            int moveNumber = moves.get(x).moveNumber;
+        for (int x = 0; x < plies.size(); x++) {
+            int moveNumber = plies.get(x).moveNumber;
             int dist = BlackMoveFinder.distanceOfMoveFromCenter(moveNumber);
 
             if (dist < minDist || minDist == -1) {
@@ -213,17 +262,40 @@ public class BlackMoveFinder {
     }
 
 
+    /**
+     * Gets random integer from 0 to n
+     * 
+     * @param n
+     *            n
+     * @return random integer
+     */
     private static int randomIntUpTo(int n) {
         return BlackMoveFinder.random.nextInt(n);
     }
 
 
-    private static int selectRandomMoveNumber(ArrayList<Move> moves) {
-        int index = BlackMoveFinder.randomIntUpTo(moves.size());
-        return moves.get(index).moveNumber;
+    /**
+     * Select random ply from a list of plies
+     * 
+     * @param plies
+     *            plies
+     * @return random ply number from list of plies
+     */
+    private static int selectRandomMoveNumber(ArrayList<Move> plies) {
+        int index = BlackMoveFinder.randomIntUpTo(plies.size());
+        return plies.get(index).moveNumber;
     }
 
 
+    /**
+     * Inputs string to external process.
+     * 
+     * @param process
+     *            process
+     * @param msg
+     *            input message
+     * @throws IOException
+     */
     private static void writeToProcess(Process process, String msg)
             throws IOException {
         char[] chars = (msg + "\n").toCharArray();
@@ -235,6 +307,12 @@ public class BlackMoveFinder {
     }
 
 
+    /**
+     * Checks if external program fruit is ready.
+     * 
+     * @return <code>true</code> if fruit is ready, othwerwise
+     *         <code>false</code>.
+     */
     public static boolean isFruitReady() {
         String h = null;
         try {
