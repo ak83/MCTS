@@ -7,16 +7,43 @@ import java.util.logging.Logger;
 
 import exceptions.ChessboardException;
 
+/**
+ * Class that handles playing a match logic.
+ * 
+ * @author Andraz Kohne
+ */
 public class ChessGame {
 
+    /**
+     * Which turn currently is.
+     */
     private int    depth  = 1;
+
+    /**
+     * This matches fen.
+     */
     private String fen    = "";
+
+    /**
+     * File path where this match will be saved if sacing invidiual games is
+     * enabled.
+     */
     private String pgnFileName;
+
+    /**
+     * File where this match will be saved if sacing invidiual games is enabled.
+     */
     File           file;
+
+    /**
+     * File writer used to write pgn file.
+     */
     FileWriter     fw;
 
+    /** MC tree */
     private MCT    MCTree = new MCT();
 
+    /** Logger */
     private Logger log    = Logger.getLogger("MCTS.ChessGame"); ;
 
 
@@ -32,20 +59,13 @@ public class ChessGame {
 
 
     /**
-     * Plays one game
+     * Plays a match.
      * 
      * @param round
      *            which which round is played, needed for logging purposes
      * @return
      * @throws ChessboardException
-     * @throws MCTException
-     * @throws WhiteMoveFinderException
-     * @throws BlackMoveFinderException
-     * @throws WhiteMoveChooserException
-     * @throws UtilsException
      * @throws IOException
-     * @throws MCTUtilsException
-     * @throws MCTNodeException
      */
     public String playGame(int round) throws ChessboardException, IOException {
 
@@ -174,6 +194,9 @@ public class ChessGame {
     }
 
 
+    /**
+     * Writes a pgn file for this match.
+     */
     private void writePGN() {
         try {
             this.file = new File(this.pgnFileName);
