@@ -365,17 +365,12 @@ public class Chessboard implements Cloneable {
 
 
     /**
-     * zgradi �tevilko poteze vhod je oblike xnxn (naprimer a2a5 - premik iz
-     * a2 na a5)
-     */
-
-    /**
-     * Builds ply number from string.
+     * Builds move number from string.
      * 
      * @param move
      *            must have format of xnym (ie. a2b3), where x,y are files and
      *            2,3 are ranks.
-     * @return ply number
+     * @return move number
      */
     public int constructMoveNumberFromString(String move) {
         String fromS = move.substring(0, 2);
@@ -2136,7 +2131,8 @@ public class Chessboard implements Cloneable {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < blackKingPossibleMoves.size(); x++) {
             int to = Utils
-                    .getTargetPositionFromMoveNumber(blackKingPossibleMoves.get(x).moveNumber);
+                    .getTargetPositionFromMoveNumber(blackKingPossibleMoves
+                            .get(x).moveNumber);
             if (!this.willBlackKingBeInOppositionIfItMovesTo(to)) {
                 Move copyMove = new Move(
                         blackKingPossibleMoves.get(x).moveNumber);
@@ -2185,7 +2181,8 @@ public class Chessboard implements Cloneable {
         }
         for (int x = 0; x < possibleBlakKingMoves.size(); x++) {
             int from = Utils
-                    .getTargetPositionFromMoveNumber(possibleBlakKingMoves.get(x).moveNumber);
+                    .getTargetPositionFromMoveNumber(possibleBlakKingMoves
+                            .get(x).moveNumber);
             int currDistance = Utils.distanceBetweenPositions(from,
                     rookPosition);
             if (currDistance < distance) {
@@ -2204,7 +2201,8 @@ public class Chessboard implements Cloneable {
             ArrayList<Move> moves) throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
-            int to = Utils.getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
+            int to = Utils
+                    .getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
             if (!this.isPositionAdjacentToBlackKing(to)) {
                 rez.add(new Move(moves.get(x).moveNumber));
             }
@@ -2235,8 +2233,8 @@ public class Chessboard implements Cloneable {
             else {
                 throw new ChessboardException("poteza ne pripada trdnjavi");
             }
-            int to = Utils
-                    .getTargetPositionFromMoveNumber(possibleRookMoves.get(x).moveNumber);
+            int to = Utils.getTargetPositionFromMoveNumber(possibleRookMoves
+                    .get(x).moveNumber);
             int currRank = Utils.getRankFromPosition(to);
             int currFile = Utils.getFileFromPosition(to);
             if (currFile != badFile && currRank != badRank) {
@@ -2250,7 +2248,8 @@ public class Chessboard implements Cloneable {
     public ArrayList<Move> movesWherePieceIsNotInCorner(ArrayList<Move> moves) {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
-            int to = Utils.getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
+            int to = Utils
+                    .getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
             if (to != 0 && to != 7 && to != 112 && to != 119) {
                 rez.add(moves.get(x));
             }
@@ -2268,7 +2267,8 @@ public class Chessboard implements Cloneable {
         int minDistance = 20;
         for (int x = 0; x < possibleRookMoves.size(); x++) {
             Move currMove = possibleRookMoves.get(x);
-            int from = Utils.getStartingPositionFromMoveNumber(currMove.moveNumber);
+            int from = Utils
+                    .getStartingPositionFromMoveNumber(currMove.moveNumber);
             int to = Utils.getTargetPositionFromMoveNumber(currMove.moveNumber);
             int targetPosition = -1;
             if (from == rook0Pos) {
@@ -2298,8 +2298,10 @@ public class Chessboard implements Cloneable {
             ArrayList<Move> moves) {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < moves.size(); x++) {
-            int from = Utils.getStartingPositionFromMoveNumber(moves.get(x).moveNumber);
-            int to = Utils.getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
+            int from = Utils
+                    .getStartingPositionFromMoveNumber(moves.get(x).moveNumber);
+            int to = Utils
+                    .getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
             if (this.isPositionAdjacentToBlackKing(from)
                     && !this.isPositionAdjacentToBlackKing(to)) {
                 rez.add(moves.get(x));
@@ -2341,7 +2343,8 @@ public class Chessboard implements Cloneable {
         int blackKingPosition = this.piecePosition[28];
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < posKingMoves.size(); x++) {
-            int to = Utils.getTargetPositionFromMoveNumber(posKingMoves.get(x).moveNumber);
+            int to = Utils
+                    .getTargetPositionFromMoveNumber(posKingMoves.get(x).moveNumber);
             int currDistance = Utils.distanceBetweenPositions(to,
                     blackKingPosition);
             if (currDistance < distance) {
@@ -2366,7 +2369,8 @@ public class Chessboard implements Cloneable {
                     .getMovedPieceFromMoveNumber(posMoves.get(x).moveNumber);
 
             if (movedPiece == 4) {
-                int to = Utils.getTargetPositionFromMoveNumber(posMoves.get(x).moveNumber);
+                int to = Utils
+                        .getTargetPositionFromMoveNumber(posMoves.get(x).moveNumber);
                 int currDistance = Utils.distanceBetweenPositions(to,
                         blackKingPosition);
                 if (currDistance < distance) {
@@ -2388,7 +2392,8 @@ public class Chessboard implements Cloneable {
         int blackKingFile = Utils.getFileFromPosition(blackKingPosition);
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < posQueenMoves.size(); x++) {
-            int to = Utils.getTargetPositionFromMoveNumber(posQueenMoves.get(x).moveNumber);
+            int to = Utils
+                    .getTargetPositionFromMoveNumber(posQueenMoves.get(x).moveNumber);
             int currRank = Utils.getRankFromPosition(to);
             int currFile = Utils.getFileFromPosition(to);
             int rankDiff = Math.abs(currRank - blackKingRank);
@@ -2409,7 +2414,8 @@ public class Chessboard implements Cloneable {
             for (int x = 0; x < moves.size(); x++) {
                 int movedPiece = Utils
                         .getMovedPieceFromMoveNumber(moves.get(x).moveNumber);
-                int to = Utils.getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
+                int to = Utils
+                        .getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
                 if (movedPiece == 3) {
                     if (!this.isPositionAdjacentToBlackKing(to)) {
                         rez.add(moves.get(x));
@@ -2438,7 +2444,8 @@ public class Chessboard implements Cloneable {
                     rez.add(moves.get(x));
                 }
                 else if (movedPiece == 3) {
-                    int to = Utils.getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
+                    int to = Utils
+                            .getTargetPositionFromMoveNumber(moves.get(x).moveNumber);
                     if (this.isPositionAdjacentToBlackKing(to)) {
                         if (this.isPositionAdjacentToWhiteKing(to)) {
                             rez.add(moves.get(x));
@@ -2503,7 +2510,8 @@ public class Chessboard implements Cloneable {
         if (this.piecesNearPosition(this.piecePosition[28]).size() == 0) { return rez; }
 
         for (Move currMove : allWhiteMoves) {
-            int from = Utils.getStartingPositionFromMoveNumber(currMove.moveNumber);
+            int from = Utils
+                    .getStartingPositionFromMoveNumber(currMove.moveNumber);
             int to = Utils.getTargetPositionFromMoveNumber(currMove.moveNumber);
             int movedPiece = Utils
                     .getMovedPieceFromMoveNumber(currMove.moveNumber);
@@ -2602,7 +2610,8 @@ public class Chessboard implements Cloneable {
             for (Move currMove : allWhiteMoves) {
                 int movedPiece = Utils
                         .getMovedPieceFromMoveNumber(currMove.moveNumber);
-                int to = Utils.getTargetPositionFromMoveNumber(currMove.moveNumber);
+                int to = Utils
+                        .getTargetPositionFromMoveNumber(currMove.moveNumber);
 
                 if (movedPiece == 0 || movedPiece == 7) {
                     // poteze trdnjave
@@ -2743,7 +2752,8 @@ public class Chessboard implements Cloneable {
             else {
                 int otherBishop = movedPiece == 2 ? 5 : 2;
                 int otherBishopPosition = this.piecePosition[otherBishop];
-                int to = Utils.getTargetPositionFromMoveNumber(currMove.moveNumber);
+                int to = Utils
+                        .getTargetPositionFromMoveNumber(currMove.moveNumber);
                 if (otherBishopPosition != -1
                         && Utils.arePsotionsDiagonallyAdjacent(to,
                                 otherBishopPosition)) {

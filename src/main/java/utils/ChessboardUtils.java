@@ -1,19 +1,17 @@
 package utils;
 
-
 /**
- * Class that hold utils methods for Chessboard (some older methods are in
+ * Class that hold util methods for Chessboard (some older methods are in
  * exec.Utils.java).
  * 
  * @author Andraz
  */
 public class ChessboardUtils {
 
-    // only static methods allowed
-    private ChessboardUtils() {}
-
-
     /**
+     * Check if <code>positionX</code> is between <code>positionA</code> and
+     * <code>positionB</code>.
+     * 
      * @param positionX
      *            position that we want to check if it's between other positions
      * @param positionA
@@ -55,7 +53,7 @@ public class ChessboardUtils {
 
 
     /**
-     * Checks if one position is near some other position
+     * Checks if one position is adjacent some other position
      * 
      * @param positionA
      *            position on chess board
@@ -73,4 +71,8 @@ public class ChessboardUtils {
             return false;
         }
     }
+
+
+    // only static methods allowed
+    private ChessboardUtils() {}
 }
