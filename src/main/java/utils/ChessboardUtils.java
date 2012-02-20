@@ -1,6 +1,5 @@
-package chessboard;
+package utils;
 
-import exec.Utils;
 
 /**
  * Class that hold utils methods for Chessboard (some older methods are in

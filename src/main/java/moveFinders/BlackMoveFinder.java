@@ -6,12 +6,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
+import utils.Utils;
+
 import chessboard.Chessboard;
 
 import exceptions.ChessboardException;
 import exec.Constants;
 import exec.Move;
-import exec.Utils;
 
 /**
  * Class handles searching for black player moves in simulations.
@@ -95,14 +96,14 @@ public class BlackMoveFinder {
 
         for (int x = 0; x < plies.size(); x++) {
             int dist = BlackMoveFinder
-                    .distanceOfMoveFromCenter(plies.get(x).plyNumber);
+                    .distanceOfMoveFromCenter(plies.get(x).moveNumber);
             if (dist == minDist) {
                 rezMoves.add(plies.get(x));
             }
         }
 
         int rez = BlackMoveFinder.randomIntUpTo(rezMoves.size());
-        return rezMoves.get(rez).plyNumber;
+        return rezMoves.get(rez).moveNumber;
     }
 
 
@@ -115,7 +116,7 @@ public class BlackMoveFinder {
      */
     private static int findBlackKingRandomMove(ArrayList<Move> plies) {
         int rez = BlackMoveFinder.randomIntUpTo(plies.size());
-        return plies.get(rez).plyNumber;
+        return plies.get(rez).moveNumber;
     }
 
 
@@ -159,7 +160,7 @@ public class BlackMoveFinder {
             }
             input.close();
             h = h.substring(9, 13);
-            return board.constructPlyNumberFromString(h);
+            return board.constructMoveNumberFromString(h);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -192,7 +193,7 @@ public class BlackMoveFinder {
      * @return distance between chess board center and target rank of ply
      */
     private static int rankDistanceOfMoveFromCenter(int plyNumber) {
-        int to = Utils.getToFromMoveNumber(plyNumber);
+        int to = Utils.getTargetPositionFromMoveNumber(plyNumber);
         int toRank = Utils.getRankFromPosition(to);
 
         int rankDiff = -1;
@@ -219,7 +220,7 @@ public class BlackMoveFinder {
      * @return distance between chess board center and target file of ply
      */
     private static int fileDistanceOfMoveFromCenter(int plyNumber) {
-        int to = Utils.getToFromMoveNumber(plyNumber);
+        int to = Utils.getTargetPositionFromMoveNumber(plyNumber);
         int toFile = Utils.getFileFromPosition(to);
 
         int fileDiff = -1;
@@ -250,7 +251,7 @@ public class BlackMoveFinder {
             ArrayList<Move> plies) {
         int minDist = -1;
         for (int x = 0; x < plies.size(); x++) {
-            int moveNumber = plies.get(x).plyNumber;
+            int moveNumber = plies.get(x).moveNumber;
             int dist = BlackMoveFinder.distanceOfMoveFromCenter(moveNumber);
 
             if (dist < minDist || minDist == -1) {
@@ -283,7 +284,7 @@ public class BlackMoveFinder {
      */
     private static int selectRandomMoveNumber(ArrayList<Move> plies) {
         int index = BlackMoveFinder.randomIntUpTo(plies.size());
-        return plies.get(index).plyNumber;
+        return plies.get(index).moveNumber;
     }
 
 

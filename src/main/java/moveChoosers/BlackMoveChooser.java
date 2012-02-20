@@ -2,13 +2,14 @@ package moveChoosers;
 
 import java.util.logging.Logger;
 
+import utils.Utils;
+
 import chessboard.Chessboard;
 
 import moveFinders.BlackMoveFinder;
 import moveFinders.BlackFinderStrategy;
 
 import exceptions.ChessboardException;
-import exec.Utils;
 
 /**
  * Class that handles blacks choosing of moves.

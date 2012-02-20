@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.management.RuntimeErrorException;
 
+import utils.Utils;
+
 import chessboard.Chessboard;
 import exceptions.ChessboardException;
 

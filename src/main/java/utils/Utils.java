@@ -1,17 +1,16 @@
-package exec;
+package utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Scanner;
+
+import exec.MCTNode;
 
 import moveChoosers.WhiteChooserStrategy;
 import moveFinders.BlackFinderStrategy;
 
+/** Class holds various utils methods */
 public class Utils {
-
-    private Utils() {}
-
 
     /**
      * Checks if position is on board or not.
@@ -29,7 +28,19 @@ public class Utils {
     }
 
 
-    // from,to,movedPiece,tagetPiece
+    /**
+     * Construct move number.
+     * 
+     * @param from
+     *            position from piece is moved
+     * @param to
+     *            position to which piece is moved
+     * @param movedPiece
+     *            piece that is moved
+     * @param targetPiece
+     *            piece on target position
+     * @return move number
+     */
     public static int constructMoveNumber(int from, int to, int movedPiece,
             int targetPiece) {
         int rez = targetPiece & 0xFF;
@@ -58,7 +69,7 @@ public class Utils {
 
 
     /**
-     * Transforms piece to string. This method is used to print out chessboard.
+     * Transforms piece to string. This method is used to print out chess board.
      * 
      * @param pieceNumber
      *            piece number
@@ -110,19 +121,14 @@ public class Utils {
     }
 
 
-    public static int getFromFromMove(Move a) {
-        int rez = a.plyNumber >>> 24;
-
-        if (rez == 255) {
-            return -1;
-        }
-        else {
-            return rez;
-        }
-    }
-
-
-    public static int getFromFromMoveNumber(int moveNumber) {
+    /**
+     * Gets starting position from move number.
+     * 
+     * @param moveNumber
+     *            move number
+     * @return starting position
+     */
+    public static int getStartingPositionFromMoveNumber(int moveNumber) {
         int rez = moveNumber >>> 24;
 
         if (rez == 255) {
@@ -134,19 +140,14 @@ public class Utils {
     }
 
 
-    public static int getToFromMove(Move a) {
-        int rez = (a.plyNumber >>> 16) & 0xFF;
-
-        if (rez == 255) {
-            return -1;
-        }
-        else {
-            return rez;
-        }
-    }
-
-
-    public static int getToFromMoveNumber(int moveNumber) {
+    /**
+     * Gets target position from move number.
+     * 
+     * @param moveNumber
+     *            move number
+     * @return target position
+     */
+    public static int getTargetPositionFromMoveNumber(int moveNumber) {
         int rez = (moveNumber >>> 16);
         rez &= 0xFF;
 
@@ -159,18 +160,13 @@ public class Utils {
     }
 
 
-    public static int getMovedPieceFromMove(Move a) {
-        int rez = (a.plyNumber >>> 8) & 0xFF;
-
-        if (rez == 255) {
-            return -1;
-        }
-        else {
-            return rez;
-        }
-    }
-
-
+    /**
+     * Gets piece that is moved from move number.
+     * 
+     * @param moveNumber
+     *            move number
+     * @return moved piece
+     */
     public static int getMovedPieceFromMoveNumber(int moveNumber) {
         int rez = (moveNumber >>> 8) & 0xFF;
 
@@ -183,11 +179,13 @@ public class Utils {
     }
 
 
-    public static int getTargetPieceFromMove(Move a) {
-        return Utils.getTargetPieceFromMoveNumber(a.plyNumber);
-    }
-
-
+    /**
+     * Get piece that is on target position from move number.
+     * 
+     * @param moveNumber
+     *            move number
+     * @return target piece
+     */
     public static int getTargetPieceFromMoveNumber(int moveNumber) {
         int rez = moveNumber & 0xFF;
 
@@ -200,16 +198,38 @@ public class Utils {
     }
 
 
+    /**
+     * Gets rank of position.
+     * 
+     * @param position
+     *            position
+     * @return rank of selected position
+     */
     public static int getRankFromPosition(int position) {
         return (position / 16) + 1;
     }
 
 
+    /**
+     * Gets file of position.
+     * 
+     * @param position
+     *            position on board
+     * @return file of selected position
+     */
     public static int getFileFromPosition(int position) {
         return (position % 16) + 1;
     }
 
 
+    /**
+     * Calculates if its whites turn from node depth.
+     * 
+     * @param node
+     *            node
+     * @return <code>true</code> if it is whites turn, <code>false</code>
+     *         otherwise
+     */
     public static boolean isWhitesTurn(MCTNode node) {
         if (node.plyDepth % 2 == 0) {
             return true;
@@ -219,117 +239,22 @@ public class Utils {
     }
 
 
-    // ni stestirana
-    public static boolean isMoveInNextMovesOfNode(int moveNumber, MCTNode node) {
-        for (int x = 0; x < node.nextPlies.size(); x++) {
-            if (moveNumber == node.nextPlies.get(x).plyNumber) { return true; }
-        }
-        return false;
-    }
-
-
-    // ni stestirana
-    public static int indexOfMoveInNextMovesInNode(Move move, MCTNode node) {
-        int rez = -1;
-
-        for (int x = 0; x < node.nextPlies.size(); x++) {
-            if (move.plyNumber == node.nextPlies.get(x).plyNumber) {
-                rez = x;
-            }
-        }
-
-        return rez;
-    }
-
-
-    // ni steastirana
+    /**
+     * Returns index of nodes children that has selected move number.
+     * 
+     * @param movenumber
+     *            move number
+     * @param node
+     *            node which children will be checked
+     * @return index of nodes children that has selected move number or -1 if
+     *         such child doesn't exist
+     */
     public static int indexOfMoveNumberInNextMoves(int movenumber, MCTNode node) {
         for (int x = 0; x < node.nextPlies.size(); x++) {
             if (movenumber == node.nextPlies.get(x).plyNumber) { return x; }
         }
 
         return -1;
-    }
-
-
-    public static void printIntegerArrayList(ArrayList<Integer> list) {
-        for (int x = 0; x < list.size() - 1; x++) {
-            System.out.print(list.get(x) + ", ");
-        }
-        System.out.println(list.get(list.size() - 1));
-    }
-
-
-    public static void printMoveNmber(int moveNumber) {
-        System.out.print("moveNumber: " + moveNumber);
-        System.out.print("\tfrom: " + Utils.getFromFromMoveNumber(moveNumber));
-        System.out.print("\tto: " + Utils.getToFromMoveNumber(moveNumber));
-        System.out.print("\tmovedPiece: "
-                + Utils.getMovedPieceFromMoveNumber(moveNumber));
-        System.out.println("\ttargetPiece: "
-                + Utils.getTargetPieceFromMoveNumber(moveNumber));
-    }
-
-
-    public static String moveNumberToString(int moveNumber) {
-        String rez = "";
-        rez += "moveNumber: " + moveNumber;
-        rez += "\tfrom: " + Utils.getFromFromMoveNumber(moveNumber);
-        rez += "\tto: " + Utils.getToFromMoveNumber(moveNumber);
-        rez += "\tmovedPiece: " + Utils.getMovedPieceFromMoveNumber(moveNumber);
-        rez += "\ttargetPiece: "
-                + Utils.getTargetPieceFromMoveNumber(moveNumber);
-        return rez;
-    }
-
-
-    public static void readLn() {
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
-    }
-
-
-    public static void delay(long delayMillis) {
-        try {
-            Thread.sleep(delayMillis);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-
-
-    public static void printIntArray(int[] array) {
-        System.out.print("Mesto: vrednost.\t");
-        for (int x = 0; x < array.length; x++) {
-            System.out.print(x + ": " + array[x] + ", ");
-        }
-        System.out.println();
-    }
-
-
-    public static void printBoardArray(int[] array) {
-        System.out.print("Mesto: vrednost.\t");
-        for (int x = 0; x < array.length; x++) {
-            if (Utils.isPositionLegal(x)) {
-                System.out.print(x + ": " + array[x] + ", ");
-            }
-        }
-        System.out.println();
-    }
-
-
-    public static void printMoveNumbersArray(ArrayList<Move> array) {
-        System.out.print("printMovesArray: ");
-        for (int x = 0; x < array.size(); x++) {
-            int temp = array.get(x).plyNumber;
-            int from = Utils.getFromFromMoveNumber(temp);
-            int to = Utils.getToFromMoveNumber(temp);
-
-            System.out.print("from: " + from + " to: " + to + ", ");
-        }
-        System.out.println();
     }
 
 
@@ -431,16 +356,27 @@ public class Utils {
     }
 
 
+    /**
+     * Gets string representation of turn which will be used in fen.
+     * 
+     * @param moveNumber1
+     *            whites move number
+     * @param moveNumber2
+     *            blacks move number
+     * @param depth
+     *            which turn it is
+     * @return string turn representation
+     */
     public static String moveNumberToString(int moveNumber1, int moveNumber2,
             int depth) {
-        int from1 = Utils.getFromFromMoveNumber(moveNumber1);
-        int to1 = Utils.getToFromMoveNumber(moveNumber1);
+        int from1 = Utils.getStartingPositionFromMoveNumber(moveNumber1);
+        int to1 = Utils.getTargetPositionFromMoveNumber(moveNumber1);
         int movedPiece1 = Utils.getMovedPieceFromMoveNumber(moveNumber1);
         String m1 = Utils.pieceToChar(movedPiece1)
                 + Utils.positionToString(from1) + Utils.positionToString(to1);
 
-        int from2 = Utils.getFromFromMoveNumber(moveNumber2);
-        int to2 = Utils.getToFromMoveNumber(moveNumber2);
+        int from2 = Utils.getStartingPositionFromMoveNumber(moveNumber2);
+        int to2 = Utils.getTargetPositionFromMoveNumber(moveNumber2);
         int movedPiece2 = Utils.getMovedPieceFromMoveNumber(moveNumber2);
         String m2 = Utils.pieceToChar(movedPiece2)
                 + Utils.positionToString(from2) + Utils.positionToString(to2);
@@ -455,12 +391,11 @@ public class Utils {
      * 
      * @param moveNumber
      *            number we wish to convert to readable form
-     * @return readable form of moveNumber eg. "Ke1f2"
-     * @throws UtilsException
+     * @return readable form of moveNumber ie. "Ke1f2"
      */
     public static String singleMoveNumberToString(int moveNumber) {
-        int from = Utils.getFromFromMoveNumber(moveNumber);
-        int to = Utils.getToFromMoveNumber(moveNumber);
+        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
         return Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
                 + "-" + Utils.positionToString(to);
@@ -470,16 +405,16 @@ public class Utils {
     /**
      * Converts mover number to string. This method is used for fen notation.
      * 
-     * @param plyNumber
-     *            ply number
+     * @param moveNumber
+     *            move number
      * @param depth
      *            which consequential move is this in match.
-     * @return string of ply
+     * @return string representation of move number
      */
-    public static String moveNumberToString(int plyNumber, int depth) {
-        int from = Utils.getFromFromMoveNumber(plyNumber);
-        int to = Utils.getToFromMoveNumber(plyNumber);
-        int movedPiece = Utils.getMovedPieceFromMoveNumber(plyNumber);
+    public static String moveNumberToString(int moveNumber, int depth) {
+        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
+        int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
 
         String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
                 + Utils.positionToString(to);
@@ -489,6 +424,14 @@ public class Utils {
     }
 
 
+    /**
+     * Checks if it is whites turn on selected depth.
+     * 
+     * @param depth
+     *            depth
+     * @return <code>true</code> if it is whites turn, <code>false</code>
+     *         otherwise
+     */
     public static boolean isWhitesMoveAtDepth(int depth) {
         if (depth % 2 == 0) {
             return true;
@@ -499,17 +442,15 @@ public class Utils {
     }
 
 
-    public static boolean areIntArraysEqual(int[] a, int[] b) {
-        if (a.length != b.length) { return false; }
-
-        for (int x = 0; x < a.length; x++) {
-            if (a[x] != b[x]) { return false; }
-        }
-
-        return true;
-    }
-
-
+    /**
+     * Calculate distance between chess board positions.
+     * 
+     * @param positionA
+     *            position
+     * @param positionB
+     *            position
+     * @return distance between two positions
+     */
     public static int distanceBetweenPositions(int positionA, int positionB) {
         int rankA = Utils.getRankFromPosition(positionA);
         int rankB = Utils.getRankFromPosition(positionB);
@@ -522,12 +463,43 @@ public class Utils {
     }
 
 
+    /**
+     * Gets todays date.
+     * 
+     * @return todays date
+     */
     public static String today() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         return dateFormat.format(Calendar.getInstance().getTime());
     }
 
 
+    /**
+     * Constructs fen preable from set parameters and match statistics.
+     * 
+     * @param whiteStrategy
+     *            white chooser strategy
+     * @param blackStrategy
+     *            black chooser strategy
+     * @param c
+     *            c constant
+     * @param goban
+     *            goban
+     * @param didWhiteWin
+     *            <code>true</code> if white won the match, <code>false</code>
+     *            otherwise
+     * @param whatRound
+     *            which match was currently played
+     * @param numberOfMovesMade
+     *            number of turns made in match
+     * @param numberOfInitialMCTSteps
+     *            number of MCT steps before match
+     * @param numberOfRunningMCTSteps
+     *            number of MCT steps made before whites moves
+     * @param numberOfSimulationsPerEvaluation
+     *            number of simulation run per evaluation of a node
+     * @return fen preamble
+     */
     public static String constructPreamble(String whiteStrategy,
             String blackStrategy, double c, int goban, boolean didWhiteWin,
             int whatRound, int numberOfMovesMade, int numberOfInitialMCTSteps,
@@ -554,6 +526,13 @@ public class Utils {
     }
 
 
+    /**
+     * Gets time in normal human readable format from milliseconds.
+     * 
+     * @param millis
+     *            number of milliseconds
+     * @return time in format "[hours]h[minutes]min[seconds]sec
+     */
     public static String timeMillisToString(long millis) {
         millis /= 1000;
         long hours = millis / 3600;
@@ -564,19 +543,16 @@ public class Utils {
     }
 
 
-    public static ArrayList<Move> mergeMoveArrayLists(ArrayList<Move> list1,
-            ArrayList<Move> list2) {
-        ArrayList<Move> rez = new ArrayList<Move>();
-        for (int x = 0; x < list1.size(); x++) {
-            rez.add(list1.get(x));
-        }
-        for (int x = 0; x < list2.size(); x++) {
-            rez.add(list2.get(x));
-        }
-        return rez;
-    }
-
-
+    /**
+     * Checks if two chess board positions are adjacent.
+     * 
+     * @param positionA
+     *            position
+     * @param positionB
+     *            position
+     * @return <code>true</code> if positions are adjacent, <code>false</code>
+     *         otherwise
+     */
     public static boolean arePositionsAdjacent(int positionA, int positionB) {
         if (!Utils.isPositionLegal(positionA)
                 || !Utils.isPositionLegal(positionB)) { return false; }
@@ -591,8 +567,12 @@ public class Utils {
     }
 
 
-    /*
-     * pos ima chara prvi predstavlja file, drugi pa rank
+    /**
+     * Gets numerical position from string position representation.
+     * 
+     * @param pos
+     *            must be in format [file][rank] (ie. A1)
+     * @return position on X88 format
      */
     public static int positionFromString(String pos) {
         int file = Utils.charToIntFile(pos.charAt(0));
@@ -601,6 +581,13 @@ public class Utils {
     }
 
 
+    /**
+     * Converts character to number corresponding to alphabet (ie. a-> 0).
+     * 
+     * @param ch
+     *            character
+     * @return characters number in alphabet, starting with 0
+     */
     public static int charToIntFile(char ch) {
         return (byte) ch - 96;
     }
@@ -620,6 +607,13 @@ public class Utils {
     }
 
 
+    /**
+     * Converts list of integers to string, similar to pythons join metod.
+     * 
+     * @param list
+     *            integer list
+     * @return string representation of integer list
+     */
     public static String intArrayListToString(ArrayList<Integer> list) {
         StringBuffer sb = new StringBuffer(50);
         for (int x = 0; x < list.size() - 1; x++) {
@@ -681,15 +675,14 @@ public class Utils {
     }
 
 
-    public static ArrayList<Move> copyMoveArrayList(ArrayList<Move> copy) {
-        ArrayList<Move> rez = new ArrayList<Move>();
-        for (Move currMove : copy) {
-            rez.add(new Move(currMove.plyNumber));
-        }
-        return rez;
-    }
-
-
+    /**
+     * Projects selected position to edge position with positive diagonal
+     * (positive diagonal travels from SW to NE). Returns gotten edge position.
+     * 
+     * @param position
+     *            position to be projected
+     * @return edge position
+     */
     public static int getPositiveEdgePositionFromPosition(int position) {
         int file = Utils.getFileFromPosition(position);
         int rank = Utils.getRankFromPosition(position);
@@ -699,6 +692,14 @@ public class Utils {
     }
 
 
+    /**
+     * Projects selected position to edge position with negative diagonal
+     * (negative diagonal travels from NW to SE). Returns gotten edge position.
+     * 
+     * @param position
+     *            position to be projected
+     * @return edge position
+     */
     public static int getNegativeEdgePositionFromPosition(int position) {
         int multi1 = Utils.getRankFromPosition(position);
         int multi2 = 9 - Utils.getFileFromPosition(position);
@@ -708,6 +709,16 @@ public class Utils {
     }
 
 
+    /**
+     * Checks if two chess board positions lie on adjacent diagonals.
+     * 
+     * @param position1
+     *            chess board position
+     * @param position2
+     *            chess board position
+     * @return <code>true</code> if positions lie on adjacent diagonals,
+     *         <code>false</code> otherwise
+     */
     public static boolean arePsotionsDiagonallyAdjacent(int position1,
             int position2) {
         int edgePos1 = Utils.getPositiveEdgePositionFromPosition(position1);
@@ -739,5 +750,8 @@ public class Utils {
 
         return false;
     }
+
+
+    private Utils() {}
 
 }

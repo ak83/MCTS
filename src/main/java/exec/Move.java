@@ -1,5 +1,7 @@
 package exec;
 
+import utils.Utils;
+
 /**
  * Represent a ply. Ply is uniquely identifiable by its ply number.
  * 
@@ -10,7 +12,7 @@ public class Move {
     /**
      * Ply number.
      */
-    public int plyNumber;
+    public int moveNumber;
 
 
     /**
@@ -20,7 +22,7 @@ public class Move {
      *            ply number
      */
     public Move(int plyNumber) {
-        this.plyNumber = plyNumber;
+        this.moveNumber = plyNumber;
     }
 
 
@@ -31,12 +33,12 @@ public class Move {
      */
     @Override
     public String toString() {
-        int from = Utils.getFromFromMoveNumber(this.plyNumber);
-        int to = Utils.getToFromMoveNumber(this.plyNumber);
-        int movedPiece = Utils.getMovedPieceFromMoveNumber(this.plyNumber);
-        int targetPiece = Utils.getTargetPieceFromMoveNumber(this.plyNumber);
+        int from = Utils.getStartingPositionFromMoveNumber(this.moveNumber);
+        int to = Utils.getTargetPositionFromMoveNumber(this.moveNumber);
+        int movedPiece = Utils.getMovedPieceFromMoveNumber(this.moveNumber);
+        int targetPiece = Utils.getTargetPieceFromMoveNumber(this.moveNumber);
 
-        return "move: " + Utils.singleMoveNumberToString(this.plyNumber)
+        return "move: " + Utils.singleMoveNumberToString(this.moveNumber)
                 + "\tfrom: " + from + "\tto: " + to + "\tmovedPiece: "
                 + movedPiece + "\ttargetPiece: " + targetPiece;
     }
@@ -52,7 +54,7 @@ public class Move {
     public boolean equals(Object m1) {
 
         if (m1 instanceof Move) {
-            return this.plyNumber == ((Move) m1).plyNumber;
+            return this.moveNumber == ((Move) m1).moveNumber;
         }
         else {
             return false;
@@ -67,7 +69,7 @@ public class Move {
      */
     @Override
     public int hashCode() {
-        return this.plyNumber;
+        return this.moveNumber;
     }
 
 }

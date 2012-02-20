@@ -76,7 +76,7 @@ public class TestChessBoard {
         Assert.assertEquals(1, returned.size());
 
         // we check if returned moves are correct
-        Assert.assertEquals(1112670463, returned.get(0).plyNumber);
+        Assert.assertEquals(1112670463, returned.get(0).moveNumber);
     }
 
 
@@ -166,7 +166,7 @@ public class TestChessBoard {
 
         for (Move move : TestChessBoard.cbKRKAllMoves) {
             Chessboard temp = new Chessboard(TestChessBoard.cbKRK, "clone");
-            temp.makeAMove(move.plyNumber);
+            temp.makeAMove(move.moveNumber);
             Assert.assertNotSame(TestChessBoard.cbKRK.hashCode(), temp
                     .hashCode());
         }

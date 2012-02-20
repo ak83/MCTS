@@ -132,7 +132,7 @@ public class WhitePlyFinder {
      */
     private static int getRandomPlyNumberFromArrayList(ArrayList<Move> plies) {
         int index = WhitePlyFinder.random.nextInt(plies.size());
-        return plies.get(index).plyNumber;
+        return plies.get(index).moveNumber;
     }
 
 
@@ -216,7 +216,7 @@ public class WhitePlyFinder {
      */
     private static int findRandomWhiteMove(ArrayList<Move> plies) {
         int rez = WhitePlyFinder.random.nextInt(plies.size());
-        return plies.get(rez).plyNumber;
+        return plies.get(rez).moveNumber;
     }
 
 

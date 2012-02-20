@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import utils.Utils;
+
 import exceptions.ChessboardException;
 
 /**
