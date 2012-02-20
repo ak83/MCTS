@@ -36,7 +36,9 @@ public class Chessboard implements Cloneable {
      */
     private boolean                   isWhitesTurn                                             = true;
 
-    private int                       numberOfPliesMade                                        = 0;
+    /** Number of moves that were made */
+    private int                       numberOfMovesMade                                        = 0;
+
     /**
      * This is used for keeping track how many times some chess board state has
      * occurred. Key is hash code of chess board and values is how may times
@@ -79,7 +81,7 @@ public class Chessboard implements Cloneable {
     public Chessboard(String name) {
         this.name = name;
         this.isWhitesTurn = true;
-        this.numberOfPliesMade = 0;
+        this.numberOfMovesMade = 0;
 
         this.board = new int[128];
         for (int x = 0; x < 128; x++) {
@@ -139,7 +141,7 @@ public class Chessboard implements Cloneable {
         this.board = node.chessboard.cloneBoard();
         this.isWhitesTurn = node.chessboard.isWhitesTurn;
         this.log = node.chessboard.log;
-        this.numberOfPliesMade = node.chessboard.numberOfPliesMade;
+        this.numberOfMovesMade = node.chessboard.numberOfMovesMade;
         this.numberOfTimesBoardStateHasOccured = node.chessboard
                 .cloneNumberOfTimesBoardStateHasOccured();
         this.piecePosition = node.chessboard.clonePiecePosition();
@@ -160,7 +162,7 @@ public class Chessboard implements Cloneable {
         this.name = name;
         this.isWhitesTurn = cb.getIsWhitesTurn();
         this.board = cb.cloneBoard();
-        this.numberOfPliesMade = cb.getNumberOfPliesMade();
+        this.numberOfMovesMade = cb.getNumberOfPliesMade();
         this.numberOfTimesBoardStateHasOccured = cb
                 .cloneNumberOfTimesBoardStateHasOccured();
         this.previousHashes = cb.clonePreviousHashes();
@@ -233,10 +235,10 @@ public class Chessboard implements Cloneable {
             }
             else {
                 if (this.isWhitesTurn) {
-                    sb.append(" w - - 0 " + (this.numberOfPliesMade / 2));
+                    sb.append(" w - - 0 " + (this.numberOfMovesMade / 2));
                 }
                 else {
-                    sb.append(" b - - 0 " + (this.numberOfPliesMade / 2));
+                    sb.append(" b - - 0 " + (this.numberOfMovesMade / 2));
                 }
             }
         }
@@ -360,7 +362,7 @@ public class Chessboard implements Cloneable {
      * @return number of plies that were already made.
      */
     public int getNumberOfPliesMade() {
-        return this.numberOfPliesMade;
+        return this.numberOfMovesMade;
     }
 
 
@@ -404,7 +406,7 @@ public class Chessboard implements Cloneable {
         this.board[from] = -1;
         this.board[to] = piece;
         this.piecePosition[piece] = to;
-        this.numberOfPliesMade++;
+        this.numberOfMovesMade++;
 
         int hash = this.hashCode();
         this.previousHashes.add(hash);
@@ -864,37 +866,36 @@ public class Chessboard implements Cloneable {
 
 
     /**
-     * pomozna funkcija za simulacijo,
+     * Return chess board evaluation that is that white player is interested in.
      * 
-     * @return ce je kak�na bela figura napadena ali ce je pat vrne -1, ce je
-     *         crni kralj matiran vrne 1, drugace pa vrne 0.
+     * @return evaluation of chess board state
      */
-    public int evaluateChessboardFromWhitesPerpective()
+    public ChessboardEvalState evaluateChessboardFromWhitesPerpective()
             throws ChessboardException {
-        if (this.isBlackKingMated()) { return 1; }
-        if (this.isBlackKingPatted()) { return -1; }
-        if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return -1; }
-        if (this.numberOfPliesMade > Constants.MAX_DEPTH) { return -1; }
-        if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
+        if (this.isBlackKingMated()) { return ChessboardEvalState.BLACK_KING_MATED; }
+        if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
+        if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return ChessboardEvalState.WHITE_PIECE_IN_DANGER; }
+        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
+        if (this.wasBoardStateRepeatedThreeTimes) { return ChessboardEvalState.DRAW; }
 
-        return 0;
+        return ChessboardEvalState.NORMAl;
     }
 
 
     /**
-     * pomozna funkcija za Chessgame
+     * Evaluates chess board state.
      * 
-     * @return vrednost trenutne pozicije
+     * @return evaluation of current chess board state
      * @throws ChessboardException
      */
-    public int evaluateChessboard() throws ChessboardException {
-        if (this.isBlackKingMated()) { return 1; }
+    public ChessboardEvalState evaluateChessboard() throws ChessboardException {
+        if (this.isBlackKingMated()) { return ChessboardEvalState.BLACK_KING_MATED; }
 
-        if (this.isBlackKingPatted()) { return -1; }
-        if (this.wasBoardStateRepeatedThreeTimes) { return -1; }
-        if (this.numberOfPliesMade > Constants.MAX_DEPTH) { return -1; }
+        if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
+        if (this.wasBoardStateRepeatedThreeTimes) { return ChessboardEvalState.DRAW; }
+        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
 
-        return 0;
+        return ChessboardEvalState.NORMAl;
     }
 
 
@@ -2876,9 +2877,9 @@ public class Chessboard implements Cloneable {
         result.name = this.name + " clone";
         result.board = this.board.clone();
         result.isWhitesTurn = this.isWhitesTurn;
-        result.numberOfPliesMade = this.numberOfPliesMade;
+        result.numberOfMovesMade = this.numberOfMovesMade;
         result.numberOfTimesBoardStateHasOccured = new HashMap<Integer, Integer>(
-                this.numberOfPliesMade);
+                this.numberOfMovesMade);
         result.piecePosition = this.piecePosition.clone();
         result.previousHashes = (ArrayList<Integer>) this.previousHashes
                 .clone();

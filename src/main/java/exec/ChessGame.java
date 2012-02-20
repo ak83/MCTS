@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import chessboard.ChessboardEvalState;
+
 import utils.Utils;
 
 import exceptions.ChessboardException;
@@ -85,14 +87,15 @@ public class ChessGame {
         int mW = -1;
         int mB = -1;
         while (true) {
-            int eval = this.MCTree.evaluateMainChessBoardState();
-            if (eval > 0) {
+            ChessboardEvalState eval = this.MCTree
+                    .evaluateMainChessBoardState();
+            if (eval == ChessboardEvalState.BLACK_KING_MATED) {
                 // ZMAGA BELEGA
                 didWhiteWin = true;
                 this.fen += Utils.moveNumberToString(mW, this.depth);
                 break;
             }
-            if (eval < 0) {
+            else if (eval != ChessboardEvalState.NORMAl) {
                 // ZMAGA ÈRNEGA
                 didWhiteWin = false;
                 if (!whitesTurn) {
@@ -102,7 +105,7 @@ public class ChessGame {
                 break;
             }
 
-            int plyNumber = -1;
+            int moveNumber = -1;
 
             if (whitesTurn) {
 
@@ -110,16 +113,16 @@ public class ChessGame {
                     this.MCTree.oneMCTStep();
                 }
 
-                plyNumber = this.MCTree.chooseAMoveNumber(
+                moveNumber = this.MCTree.chooseAMoveNumber(
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
-                mW = plyNumber;
+                mW = moveNumber;
             }
             else {
-                plyNumber = this.MCTree.chooseAMoveNumber(
+                moveNumber = this.MCTree.chooseAMoveNumber(
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
-                mB = plyNumber;
+                mB = moveNumber;
 
                 this.fen += Utils.moveNumberToString(mW, mB, this.depth) + " ";
                 this.depth++;
@@ -129,7 +132,7 @@ public class ChessGame {
 
             this.log.fine("Velikost drevesa je "
                     + this.MCTree.getCurrentTreeSize());
-            this.MCTree.makeMCPly(plyNumber);
+            this.MCTree.makeMCPly(moveNumber);
 
         }
 

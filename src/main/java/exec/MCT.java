@@ -13,6 +13,7 @@ import moveFinders.WhitePlyFinder;
 import utils.MCTUtils;
 import utils.Utils;
 import chessboard.Chessboard;
+import chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
 
 /**
@@ -60,10 +61,10 @@ public class MCT {
      */
     public MCTNode selection(MCTNode node) throws ChessboardException {
         if (Constants.SELECTION_EVALUATES_CHESSBOARD) {
-            if (node.getEvalFromWhitesPerspective() != 0) { return node; }
+            if (node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) { return node; }
         }
 
-        boolean maxDepthReached = node.plyDepth > Constants.MAX_DEPTH;
+        boolean maxDepthReached = node.moveDepth > Constants.MAX_DEPTH;
         boolean gobanStrategy = node.visitCount < Constants.GOBAN;
         boolean nerazvitiNasledniki = node.nextPlies == null;
 
@@ -147,8 +148,8 @@ public class MCT {
 
         while (true) {
 
-            if (currNode.getEvalFromWhitesPerspective() != 0) {
-                if (currNode.getEvalFromWhitesPerspective() == 1) {
+            if (currNode.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) {
+                if (currNode.getEvalFromWhitesPerspective() == ChessboardEvalState.BLACK_KING_MATED) {
                     this.stats.numberOfMatsInSimAddsOneNode++;
                 }
                 return node;
@@ -189,7 +190,7 @@ public class MCT {
                 currNode = currNode.nextPlies.get(moveIndex);
             }
 
-            if (currNode.plyDepth > Constants.MAX_DEPTH) { return currNode; }
+            if (currNode.moveDepth > Constants.MAX_DEPTH) { return currNode; }
         }
     }
 
@@ -207,17 +208,17 @@ public class MCT {
         Chessboard temp = new Chessboard("resetBoard", node);
 
         for (int x = 0; x < Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION; x++) {
-            int currDepth = node.plyDepth;
+            int currDepth = node.moveDepth;
             boolean itsWhitesTurn = Utils.isWhitesTurn(node);
             this.simulationChessboard = new Chessboard(temp,
                     "simulation Chessboard");
 
             while (true) {
-                int eval = this.simulationChessboard
+                ChessboardEvalState eval = this.simulationChessboard
                         .evaluateChessboardFromWhitesPerpective();
 
-                if (eval != 0) {
-                    if (eval == 1) {
+                if (eval != ChessboardEvalState.NORMAl) {
+                    if (eval == ChessboardEvalState.BLACK_KING_MATED) {
                         this.stats.numberOfMatsInSimulation++;
                         rez++;
                     }
@@ -267,7 +268,7 @@ public class MCT {
 
         Chessboard newCB = new Chessboard("temp eval", node);
 
-        boolean nodeIsMat = newCB.evaluateChessboard() == 1;
+        boolean nodeIsMat = newCB.evaluateChessboard() == ChessboardEvalState.BLACK_KING_MATED;
 
         this.backPropagation(node, diff,
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION, node.mcDepth,
@@ -281,12 +282,12 @@ public class MCT {
         int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this.root);
 
         if (index == -1) {
-            this.log.fine("V polpotezi " + (this.root.plyDepth + 1)
+            this.log.fine("V polpotezi " + (this.root.moveDepth + 1)
                     + " je prišlo do zrušitve drevesa");
             this.stats.numberOfMCTreeColapses++;
-            this.stats.movesWhereMCTreeCollapsed.add(this.root.plyDepth + 1);
+            this.stats.movesWhereMCTreeCollapsed.add(this.root.moveDepth + 1);
             this.stats.sizeOfTreeBeforeCollapses.add(this.currentTreeSize);
-            this.root = new MCTNode(moveNumber, this.root.plyDepth + 1,
+            this.root = new MCTNode(moveNumber, this.root.moveDepth + 1,
                     this.mainChessboard);
             this.currentTreeSize = 0;
         }
@@ -341,8 +342,8 @@ public class MCT {
      * @return main chess board evaluation value
      * @throws ChessboardException
      */
-    public int evaluateMainChessBoardState() throws ChessboardException {
-        if (this.root.plyDepth > Constants.MAX_DEPTH) { return -1; }
+    public ChessboardEvalState evaluateMainChessBoardState() throws ChessboardException {
+        if (this.root.moveDepth > Constants.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
         return this.mainChessboard.evaluateChessboard();
     }
 

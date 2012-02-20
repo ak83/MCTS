@@ -7,6 +7,7 @@ import javax.management.RuntimeErrorException;
 import utils.Utils;
 
 import chessboard.Chessboard;
+import chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
 
 /**
@@ -17,59 +18,59 @@ import exceptions.ChessboardException;
 public class MCTNode {
 
     /** Parent of current node */
-    public MCTNode            parent;
+    public MCTNode              parent;
 
     /** This nodes descendants */
-    public ArrayList<MCTNode> nextPlies;
+    public ArrayList<MCTNode>   nextPlies;
 
     /**
      * consecutive ply number of node (consecutive ply made in chess game).
      */
-    public int                plyDepth;
+    public int                  moveDepth;
 
     /** Nodes depth in MCT tree. */
-    public int                mcDepth                                       = 1;
+    public int                  mcDepth                                       = 1;
 
     /** Ply number. */
-    public int                plyNumber;
+    public int                  plyNumber;
 
     /** How many times has this node been visited. */
-    public int                visitCount;
+    public int                  visitCount;
 
     /**
      * Number of times check mate has been achieved when NCT algorithm visited
      * this node
      */
-    public int                numberOfMatsInNode                            = 0;
+    public int                  numberOfMatsInNode                            = 0;
 
     /**
      * C constant in MCT algorithm. Represents exploration/exploitation ration.
      * Higher that C value is more it favors exploration, lower the C value is
      * more it favors exploitation.
      */
-    public double             c;
+    public double               c;
 
     /** Tells if its whites turn in current ply */
-    public boolean            isWhitesMove;
+    public boolean              isWhitesMove;
 
     /** Chess board state belonging to this ply */
-    public Chessboard         chessboard;
+    public Chessboard           chessboard;
 
     /**
      * Tells depth difference between this node and it's deepest descendant.
      */
-    public int                maximumSubTreeDepth                           = -1;
+    public int                  maximumSubTreeDepth                           = -1;
     /**
      * Tells depth difference between this node and it's highest descendant that
      * represents check mate.
      */
-    public int                minimumDepthOfDescendadWhoRepresentsCheckMate = Integer.MAX_VALUE;
+    public int                  minimumDepthOfDescendadWhoRepresentsCheckMate = Integer.MAX_VALUE;
 
     /**
      * Value of evaluateChessboardFromWhitesPerspective from chess board that is
      * represented with this node
      */
-    private int               evalFromWhitesPerspective;
+    private ChessboardEvalState evalFromWhitesPerspective;
 
 
     /**
@@ -80,7 +81,7 @@ public class MCTNode {
      */
     public MCTNode(Chessboard board) {
         this.parent = null;
-        this.plyDepth = 0;
+        this.moveDepth = 0;
         this.plyNumber = 0;
         this.visitCount = 1;
         this.c = Constants.C;
@@ -107,7 +108,7 @@ public class MCTNode {
      */
     public MCTNode(MCTNode parent, int plyNumber) throws ChessboardException {
         this.parent = parent;
-        this.plyDepth = this.parent.plyDepth + 1;
+        this.moveDepth = this.parent.moveDepth + 1;
         this.plyNumber = plyNumber;
         this.visitCount = 0;
         this.c = Constants.C;
@@ -137,7 +138,7 @@ public class MCTNode {
     public MCTNode(int plyNumber, int depth, Chessboard boardState)
             throws ChessboardException {
         this.parent = null;
-        this.plyDepth = depth;
+        this.moveDepth = depth;
         this.plyNumber = plyNumber;
         this.visitCount = 1;
         this.c = Constants.C;
@@ -174,7 +175,7 @@ public class MCTNode {
      * @Override
      */
     public String toString() {
-        String s = "Globina: " + this.plyDepth + ", poteza: "
+        String s = "Globina: " + this.moveDepth + ", poteza: "
                 + Utils.singleMoveNumberToString(this.plyNumber)
                 + ", stevilo matov: " + this.numberOfMatsInNode
                 + ", visitCount: " + this.visitCount + ", isWhitesMove: "
@@ -206,7 +207,7 @@ public class MCTNode {
                 sb.append("\t"
                         + (x + 1)
                         + ",\t"
-                        + n.plyDepth
+                        + n.moveDepth
                         + ",\t"
                         + Utils.singleMoveNumberToString(n.plyNumber)
                         + ",\t"
@@ -227,8 +228,12 @@ public class MCTNode {
     }
 
 
-    /** Gets this nodes evaluation value from white perspective */
-    public int getEvalFromWhitesPerspective() {
+    /**
+     * Gets this nodes chess board state evaluation from white perspective
+     * 
+     * @return evaluation of chess board state represented by this node
+     */
+    public ChessboardEvalState getEvalFromWhitesPerspective() {
         return this.evalFromWhitesPerspective;
     }
 
