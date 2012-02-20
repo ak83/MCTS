@@ -14,29 +14,49 @@ import utils.MCTUtils;
 import chessboard.Chessboard;
 import exceptions.ChessboardException;
 
+/**
+ * Monte Carlo tree search implementation.
+ * 
+ * @author Andraz Kohne
+ */
 public class MCT {
 
-    /*
-     * root predstavlja, koren MCT drevesa in je edino vozlisce s stevilko
-     * poteze 0
-     */
+    /** MCT root node */
     private MCTNode    root;
 
+    /** Chess board on which match is played on */
     private Chessboard mainChessboard;
+
+    /** Chess board used for simulations */
     private Chessboard simulationChessboard;
 
-    private Random     r               = new Random();
+    /** random used by this class */
+    private Random     random          = new Random();
 
+    /** Statistics produced by MCT algortihm */
     private MCTStats   stats           = new MCTStats();
+
+    /** Logger */
     private Logger     log             = Logger.getLogger("MCTS.MCT");
+
+    /** Current MC tree size */
     private int        currentTreeSize = 0;
 
 
+    /** Consturctor */
     public MCT() {
         this.setParameters();
     }
 
 
+    /**
+     * Selection phase of MCT algorithm.
+     * 
+     * @param node
+     *            node to be evaluated
+     * @return last node where selection stopped
+     * @throws ChessboardException
+     */
     public MCTNode selection(MCTNode node) throws ChessboardException {
         if (Constants.SELECTION_EVALUATES_CHESSBOARD) {
             if (node.getEvalFromWhitesPerspective() != 0) { return node; }
@@ -52,7 +72,7 @@ public class MCT {
         ArrayList<Integer> maxRatingIndexes = MCTUtils
                 .getInedexesWithMaxRating(node);
 
-        int selectedIndex = this.r.nextInt(maxRatingIndexes.size());
+        int selectedIndex = this.random.nextInt(maxRatingIndexes.size());
         selectedIndex = maxRatingIndexes.get(selectedIndex);
 
         int moveNo = node.nextPlies.get(selectedIndex).plyNumber;
@@ -63,11 +83,14 @@ public class MCT {
 
 
     /**
-     * updates tree from end node to root
+     * Backpropagation phase of MCT algorithm
      * 
      * @param node
      *            node from which we start backpropagation
      * @param numberOfMats
+     *            number of check mates that in simulations evaluating node
+     * @param numberOfSimulationsPerNode
+     *            number of simulation used to evaluate node
      * @param addedNodeDepth
      *            depth of node from which backpropagation starts
      */
@@ -96,14 +119,12 @@ public class MCT {
 
 
     /**
-     * this method add one node to current true, with MCTS algorithm
+     * This method adds one node to current true, with MCTS algorithm.
      * 
      * @param node
      *            to which subtree we add node
      * @return added node or current node if no node was added
      * @throws ChessboardException
-     * @throws MCTException
-     * @throws MCTNodeException
      */
     public MCTNode simulationAddsOneNode(MCTNode node)
             throws ChessboardException {
@@ -173,14 +194,12 @@ public class MCT {
 
 
     /**
-     * runs simulations to evaluate node
+     * Runs simulations to evaluate node
      * 
      * @param node
      *            node from which we run simulations
      * @return number of mats that happened in simulations
      * @throws ChessboardException
-     * @throws WhiteMoveFinderException
-     * @throws BlackMoveFinderException
      */
     public int simulation(MCTNode node) throws ChessboardException {
         int rez = 0;
@@ -230,17 +249,12 @@ public class MCT {
     }
 
 
-    public void resetSimulationChessboard() {
-        this.simulationChessboard = new Chessboard(this.mainChessboard,
-                "Simulation board");
-    }
-
-
-    // //////////////////////////////////////////////////////////////////
-    // ////////////METODE ZA CHESSGAME/////////////////////////////
-    // /////////////////////////////////////////////////////////////
-
-    // ni stesitrana
+    /**
+     * Makes one step in MCT algorithm (selection, expansion, simulation,
+     * backpropagation ).
+     * 
+     * @throws ChessboardException
+     */
     public void oneMCTStep() throws ChessboardException {
         this.resetSimulationChessboard();
 
@@ -289,14 +303,16 @@ public class MCT {
 
 
     /**
+     * Finds move number fir given strategies.
+     * 
      * @param whiteChoosingStrategy
-     *            strategija po kateri beli izbira poteze
+     *            white move choosing strategy
      * @param blackChoosingStrategy
-     *            strategija po kateri crni izbira poteze
-     * @return stevilko izbrane poteze
+     *            black move choosing strategy
+     * @return move number
      * @throws ChessboardException
      */
-    public int chooseAPlyNumber(WhiteChooserStrategy whiteChoosingStrategy,
+    public int chooseAMoveNumber(WhiteChooserStrategy whiteChoosingStrategy,
             BlackFinderStrategy blackChoosingStrategy)
             throws ChessboardException {
         int rez = -1;
@@ -318,28 +334,52 @@ public class MCT {
     }
 
 
+    /**
+     * Evaluates main chess board.
+     * 
+     * @return main chess board evaluation value
+     * @throws ChessboardException
+     */
     public int evaluateMainChessBoardState() throws ChessboardException {
         if (this.root.plyDepth > Constants.MAX_DEPTH) { return -1; }
         return this.mainChessboard.evaluateChessboard();
     }
 
 
+    /**
+     * Get current matches fen.
+     * 
+     * @return fen
+     */
     public String getFEN() {
         return this.mainChessboard.boardToFen();
     }
 
 
+    /**
+     * Gets current matches statistics.
+     * 
+     * @return statistics
+     */
     public MCTStats getMCTStatistics() {
         MCTStats rez = new MCTStats(this.stats);
         return rez;
     }
 
 
+    /**
+     * Gets current MC tree size.
+     * 
+     * @return MC tree size
+     */
     public int getCurrentTreeSize() {
         return this.currentTreeSize;
     }
 
 
+    /**
+     * Initializes everything necessary.
+     */
     private void setParameters() {
         this.mainChessboard = new Chessboard("Main board");
         this.simulationChessboard = new Chessboard(this.mainChessboard,
@@ -347,6 +387,13 @@ public class MCT {
 
         this.root = new MCTNode(this.mainChessboard);
 
+    }
+
+
+    /** Sets simulation chess board state to main chess board state */
+    private void resetSimulationChessboard() {
+        this.simulationChessboard = new Chessboard(this.mainChessboard,
+                "Simulation board");
     }
 
 }

@@ -108,13 +108,13 @@ public class ChessGame {
                     this.MCTree.oneMCTStep();
                 }
 
-                plyNumber = this.MCTree.chooseAPlyNumber(
+                plyNumber = this.MCTree.chooseAMoveNumber(
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mW = plyNumber;
             }
             else {
-                plyNumber = this.MCTree.chooseAPlyNumber(
+                plyNumber = this.MCTree.chooseAMoveNumber(
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mB = plyNumber;
