@@ -22,32 +22,32 @@ import exceptions.ChessboardException;
  */
 public class MCT {
 
-    /** MCT root node */
-    private MCTNode    root;
-
     /** Chess board on which match is played on */
-    private Chessboard mainChessboard;
+    private Chessboard mainChessboard       = new Chessboard("Main board");
 
     /** Chess board used for simulations */
-    private Chessboard simulationChessboard;
+    private Chessboard simulationChessboard = new Chessboard(
+                                                    this.mainChessboard,
+                                                    "Simulation board");
+
+    /** MCT root node */
+    private MCTNode    root                 = new MCTNode(this.mainChessboard);
 
     /** random used by this class */
-    private Random     random          = new Random();
+    private Random     random               = new Random();
 
     /** Statistics produced by MCT algortihm */
-    private MCTStats   stats           = new MCTStats();
+    private MCTStats   stats                = new MCTStats();
 
     /** Logger */
-    private Logger     log             = Logger.getLogger("MCTS.MCT");
+    private Logger     log                  = Logger.getLogger("MCTS.MCT");
 
     /** Current MC tree size */
-    private int        currentTreeSize = 0;
+    private int        currentTreeSize      = 0;
 
 
     /** Consturctor */
-    public MCT() {
-        this.setParameters();
-    }
+    public MCT() {}
 
 
     /**
@@ -375,19 +375,6 @@ public class MCT {
      */
     public int getCurrentTreeSize() {
         return this.currentTreeSize;
-    }
-
-
-    /**
-     * Initializes everything necessary.
-     */
-    private void setParameters() {
-        this.mainChessboard = new Chessboard("Main board");
-        this.simulationChessboard = new Chessboard(this.mainChessboard,
-                "Simulation board");
-
-        this.root = new MCTNode(this.mainChessboard);
-
     }
 
 
