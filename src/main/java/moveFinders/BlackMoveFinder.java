@@ -25,17 +25,14 @@ public class BlackMoveFinder {
     private static Random random = new Random();
 
 
-    private BlackMoveFinder() {}
-
-
     /**
-     * Finds blacks black ply number for given strategy.
+     * Finds blacks black move number for given strategy.
      * 
      * @param board
      *            board on which we look for ply number
      * @param strategy
      *            desired black king strategy
-     * @return ply number for given strategy
+     * @return move number for given strategy
      * @throws ChessboardException
      */
     public static int findBlackKingMove(Chessboard board,
@@ -71,7 +68,7 @@ public class BlackMoveFinder {
                     }
                 }
                 else {
-                    return BlackMoveFinder.selectRandomMoveNumber(blackEats);
+                    return BlackMoveFinder.findBlackKingRandomMove(blackEats);
                 }
             }
             default:
@@ -85,38 +82,37 @@ public class BlackMoveFinder {
      * Finds black king ply number where black king tries to move toward center
      * of the board.
      * 
-     * @param plies
-     *            plies from which we get those who go towards center.
-     * @return ply number for center black king strategy
+     * @param moves
+     *            moves from which we get those who go towards center.
+     * @return move number for center black king strategy
      */
-    private static int findBlackKingCenterMove(ArrayList<Move> plies) {
+    private static int findBlackKingCenterMove(ArrayList<Move> moves) {
         int minDist = BlackMoveFinder
-                .findMinimumDistanceFromCenterFromPlies(plies);
+                .findMinimumDistanceFromCenterFromPlies(moves);
         ArrayList<Move> rezMoves = new ArrayList<Move>();
 
-        for (int x = 0; x < plies.size(); x++) {
+        for (int x = 0; x < moves.size(); x++) {
             int dist = BlackMoveFinder
-                    .distanceOfMoveFromCenter(plies.get(x).moveNumber);
+                    .distanceOfMoveFromCenter(moves.get(x).moveNumber);
             if (dist == minDist) {
-                rezMoves.add(plies.get(x));
+                rezMoves.add(moves.get(x));
             }
         }
 
-        int rez = BlackMoveFinder.randomIntUpTo(rezMoves.size());
-        return rezMoves.get(rez).moveNumber;
+        return BlackMoveFinder.findBlackKingRandomMove(rezMoves);
     }
 
 
     /**
-     * Returns a random ply from a list of plies
+     * Returns a random move from a list of plies
      * 
-     * @param plies
-     *            plies
-     * @return random ply from <code>moves</code>.
+     * @param moves
+     *            list of moves
+     * @return random move from <code>moves</code>.
      */
-    private static int findBlackKingRandomMove(ArrayList<Move> plies) {
-        int rez = BlackMoveFinder.randomIntUpTo(plies.size());
-        return plies.get(rez).moveNumber;
+    private static int findBlackKingRandomMove(ArrayList<Move> moves) {
+        int rez = BlackMoveFinder.random.nextInt(moves.size());
+        return moves.get(rez).moveNumber;
     }
 
 
@@ -264,31 +260,6 @@ public class BlackMoveFinder {
 
 
     /**
-     * Gets random integer from 0 to n
-     * 
-     * @param n
-     *            n
-     * @return random integer
-     */
-    private static int randomIntUpTo(int n) {
-        return BlackMoveFinder.random.nextInt(n);
-    }
-
-
-    /**
-     * Select random ply from a list of plies
-     * 
-     * @param plies
-     *            plies
-     * @return random ply number from list of plies
-     */
-    private static int selectRandomMoveNumber(ArrayList<Move> plies) {
-        int index = BlackMoveFinder.randomIntUpTo(plies.size());
-        return plies.get(index).moveNumber;
-    }
-
-
-    /**
      * Inputs string to external process.
      * 
      * @param process
@@ -314,7 +285,8 @@ public class BlackMoveFinder {
      * @return <code>true</code> if fruit is ready, othwerwise
      *         <code>false</code>.
      */
-    public static boolean isFruitReady() {
+    @SuppressWarnings("unused")
+    private static boolean isFruitReady() {
         String h = null;
         try {
             Runtime rt = Runtime.getRuntime();
@@ -336,5 +308,8 @@ public class BlackMoveFinder {
         }
         return h.equals("readyok");
     }
+
+
+    private BlackMoveFinder() {}
 
 }
