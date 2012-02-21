@@ -9,7 +9,7 @@ import moveChoosers.WhiteChooserStrategy;
 import moveChoosers.WhiteMoveChooser;
 import moveFinders.BlackMoveFinder;
 import moveFinders.BlackFinderStrategy;
-import moveFinders.WhitePlyFinder;
+import moveFinders.WhiteMoveFinder;
 import utils.MCTUtils;
 import utils.Utils;
 import chessboard.Chessboard;
@@ -77,7 +77,7 @@ public class MCT {
         int selectedIndex = this.random.nextInt(maxRatingIndexes.size());
         selectedIndex = maxRatingIndexes.get(selectedIndex);
 
-        int moveNo = node.nextPlies.get(selectedIndex).plyNumber;
+        int moveNo = node.nextPlies.get(selectedIndex).moveNumber;
 
         this.simulationChessboard.makeAMove(moveNo);
         return this.selection(node.nextPlies.get(selectedIndex));
@@ -226,7 +226,7 @@ public class MCT {
                 }
                 else {
                     if (itsWhitesTurn) {
-                        int moveNo = WhitePlyFinder.findWhiteMove(
+                        int moveNo = WhiteMoveFinder.findWhiteMove(
                                 this.simulationChessboard,
                                 Constants.WHITE_SIMULATION_STRATEGY);
                         this.simulationChessboard.makeAMove(moveNo);
@@ -327,7 +327,7 @@ public class MCT {
 
             rez = WhiteMoveChooser.chooseAPly(this.root, whiteChoosingStrategy);
 
-            rez = this.root.nextPlies.get(rez).plyNumber;
+            rez = this.root.nextPlies.get(rez).moveNumber;
         }
         else {
             rez = BlackMoveChooser.chooseBlackKingMove(this.mainChessboard,

@@ -253,7 +253,7 @@ public class Utils {
      */
     public static int indexOfMoveNumberInNextMoves(int movenumber, MCTNode node) {
         for (int x = 0; x < node.nextPlies.size(); x++) {
-            if (movenumber == node.nextPlies.get(x).plyNumber) { return x; }
+            if (movenumber == node.nextPlies.get(x).moveNumber) { return x; }
         }
 
         return -1;

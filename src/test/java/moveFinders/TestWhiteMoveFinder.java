@@ -65,7 +65,7 @@ public class TestWhiteMoveFinder {
 
     @Test
     public void testGeneralHeuristics() {
-	ArrayList<Move> returned = WhitePlyFinder
+	ArrayList<Move> returned = WhiteMoveFinder
 		.generalHeuristics(TestWhiteMoveFinder.cbKRK);
 
 	Integer[] indexesNotInAllMoves = { 10, 11, 14, 15, 16, 17, 18 };

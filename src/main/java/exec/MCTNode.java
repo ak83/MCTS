@@ -32,7 +32,7 @@ public class MCTNode {
     public int                  mcDepth                                       = 1;
 
     /** Ply number. */
-    public int                  plyNumber;
+    public int                  moveNumber;
 
     /** How many times has this node been visited. */
     public int                  visitCount;
@@ -82,7 +82,7 @@ public class MCTNode {
     public MCTNode(Chessboard board) {
         this.parent = null;
         this.moveDepth = 0;
-        this.plyNumber = 0;
+        this.moveNumber = 0;
         this.visitCount = 1;
         this.c = Constants.C;
         this.isWhitesMove = true;
@@ -109,7 +109,7 @@ public class MCTNode {
     public MCTNode(MCTNode parent, int plyNumber) throws ChessboardException {
         this.parent = parent;
         this.moveDepth = this.parent.moveDepth + 1;
-        this.plyNumber = plyNumber;
+        this.moveNumber = plyNumber;
         this.visitCount = 0;
         this.c = Constants.C;
         this.isWhitesMove = !parent.isWhitesMove;
@@ -139,7 +139,7 @@ public class MCTNode {
             throws ChessboardException {
         this.parent = null;
         this.moveDepth = depth;
-        this.plyNumber = plyNumber;
+        this.moveNumber = plyNumber;
         this.visitCount = 1;
         this.c = Constants.C;
         this.isWhitesMove = Utils.isWhitesMoveAtDepth(depth);
@@ -176,7 +176,7 @@ public class MCTNode {
      */
     public String toString() {
         String s = "Globina: " + this.moveDepth + ", poteza: "
-                + Utils.singleMoveNumberToString(this.plyNumber)
+                + Utils.singleMoveNumberToString(this.moveNumber)
                 + ", stevilo matov: " + this.numberOfMatsInNode
                 + ", visitCount: " + this.visitCount + ", isWhitesMove: "
                 + this.isWhitesMove + ", maximumSubTreeDepth: "
@@ -209,7 +209,7 @@ public class MCTNode {
                         + ",\t"
                         + n.moveDepth
                         + ",\t"
-                        + Utils.singleMoveNumberToString(n.plyNumber)
+                        + Utils.singleMoveNumberToString(n.moveNumber)
                         + ",\t"
                         + n.numberOfMatsInNode
                         + ",\t"
