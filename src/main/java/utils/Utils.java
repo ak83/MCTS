@@ -1,5 +1,7 @@
 package utils;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -753,5 +755,26 @@ public class Utils {
 
 
     private Utils() {}
+
+
+    /**
+     * Writes string into file
+     * 
+     * @param fileName
+     *            file in which string will be written
+     * @param input
+     *            string to be written in file
+     */
+    public static void writePGN(String fileName, String input) {
+        try {
+    
+            FileWriter fw = new FileWriter(new File(fileName));
+            fw.write(input);
+            fw.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

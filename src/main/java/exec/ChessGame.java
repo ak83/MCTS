@@ -1,14 +1,10 @@
 package exec;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import chessboard.ChessboardEvalState;
-
 import utils.Utils;
-
+import chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
 
 /**
@@ -33,16 +29,6 @@ public class ChessGame {
      * enabled.
      */
     private String pgnFileName;
-
-    /**
-     * File where this match will be saved if sacing invidiual games is enabled.
-     */
-    File           file;
-
-    /**
-     * File writer used to write pgn file.
-     */
-    FileWriter     fw;
 
     /** MC tree */
     private MCT    MCTree = new MCT();
@@ -193,25 +179,8 @@ public class ChessGame {
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
         if (Constants.WRITE_INDIVIDUAL_GAMES) {
-            this.writePGN();
+            Utils.writePGN(this.pgnFileName, this.fen);
         }
         return this.fen;
     }
-
-
-    /**
-     * Writes a pgn file for this match.
-     */
-    private void writePGN() {
-        try {
-            this.file = new File(this.pgnFileName);
-            this.fw = new FileWriter(this.file);
-            this.fw.write(this.fen);
-            this.fw.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }
