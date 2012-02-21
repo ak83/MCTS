@@ -276,8 +276,14 @@ public class MCT {
     }
 
 
-    // ni stestirana
-    public void makeMCPly(int moveNumber) throws ChessboardException {
+    /**
+     * Makes a move update on MC tree.
+     * 
+     * @param moveNumber
+     *            move that will be made
+     * @throws ChessboardException
+     */
+    public void makeMCMove(int moveNumber) throws ChessboardException {
 
         int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this.root);
 
@@ -285,8 +291,6 @@ public class MCT {
             this.log.fine("V polpotezi " + (this.root.moveDepth + 1)
                     + " je prišlo do zrušitve drevesa");
             this.stats.numberOfMCTreeColapses++;
-            this.stats.movesWhereMCTreeCollapsed.add(this.root.moveDepth + 1);
-            this.stats.sizeOfTreeBeforeCollapses.add(this.currentTreeSize);
             this.root = new MCTNode(moveNumber, this.root.moveDepth + 1,
                     this.mainChessboard);
             this.currentTreeSize = 0;
@@ -320,11 +324,9 @@ public class MCT {
         int rez = -1;
 
         if (this.root.isWhitesMove) {
-            this.stats.whiteMoveChoices.add(this.root.descendantsToString());
 
             rez = WhiteMoveChooser.chooseAPly(this.root, whiteChoosingStrategy);
 
-            this.stats.whiteMovesChosen.add(rez);
             rez = this.root.nextPlies.get(rez).plyNumber;
         }
         else {
@@ -342,7 +344,8 @@ public class MCT {
      * @return main chess board evaluation value
      * @throws ChessboardException
      */
-    public ChessboardEvalState evaluateMainChessBoardState() throws ChessboardException {
+    public ChessboardEvalState evaluateMainChessBoardState()
+            throws ChessboardException {
         if (this.root.moveDepth > Constants.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
         return this.mainChessboard.evaluateChessboard();
     }

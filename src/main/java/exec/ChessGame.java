@@ -118,7 +118,7 @@ public class ChessGame {
 
             this.log.fine("Velikost drevesa je "
                     + this.MCTree.getCurrentTreeSize());
-            this.MCTree.makeMCPly(moveNumber);
+            this.MCTree.makeMCMove(moveNumber);
 
         }
 
@@ -145,12 +145,6 @@ public class ChessGame {
 
         String logString4 = "Crni je " + stats.numberOfMCTreeColapses
                 + "-krat izbral potezo, ki je ni v drevesu";
-        if (stats.numberOfMCTreeColapses > 0) {
-            logString4 += ", te poteze crnega so se zgodile v potezah "
-                    + Utils.intArrayListToString(stats.movesWhereMCTreeCollapsed);
-            logString4 += ".\r\n Pred temi potezami je bilo drevo veliko: "
-                    + Utils.intArrayListToString(stats.sizeOfTreeBeforeCollapses);
-        }
         logString4 += ".\r\n Pred koncem igre pa je bila velikost drevesa "
                 + this.MCTree.getCurrentTreeSize();
 
