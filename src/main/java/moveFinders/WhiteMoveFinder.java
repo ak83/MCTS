@@ -163,7 +163,7 @@ public class WhiteMoveFinder {
 
         if (Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king) {
             ArrayList<Move> kingCloser = board
-                    .pliesWhereWhiteKingMovesCloserOrEqualToBlackKind(rez);
+                    .movesWhereWhiteKingMovesCloserOrEqualToBlackKind(rez);
             if (kingCloser.size() > 0) {
                 rez = kingCloser;
             }
@@ -174,7 +174,7 @@ public class WhiteMoveFinder {
                 ArrayList<Move> kingMoves = board
                         .filterMovesToWhiteKingMoves(rez);
                 kingMoves = board
-                        .pliesWhereWhiteKingMovesCloserOrEqualToBlackKind(kingMoves);
+                        .movesWhereWhiteKingMovesCloserOrEqualToBlackKind(kingMoves);
                 if (kingMoves.size() != 0) {
                     rez = kingMoves;
                 }

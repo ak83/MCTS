@@ -2318,7 +2318,7 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Move> pliesWhereWhiteKingMovesCloserOrEqualToBlackKind(
+    public ArrayList<Move> movesWhereWhiteKingMovesCloserOrEqualToBlackKind(
             ArrayList<Move> posMoves) {
         int distance = this.distanceBewteenKings();
         int blackKingPosition = this.piecePosition[28];
@@ -2738,32 +2738,6 @@ public class Chessboard implements Cloneable {
     }
 
 
-    public ArrayList<Move> filterMovesToWhiteRookMoves(
-            ArrayList<Move> allWhiteMoves) {
-        ArrayList<Move> rez = new ArrayList<Move>();
-        for (Move currMove : allWhiteMoves) {
-            int movedPiece = Utils
-                    .getMovedPieceFromMoveNumber(currMove.moveNumber);
-            if (movedPiece == 0 || movedPiece == 7) {
-                rez.add(new Move(currMove.moveNumber));
-            }
-        }
-        return rez;
-    }
-
-
-    public ArrayList<Move> filterMovesToWhiteBishopMoves(
-            ArrayList<Move> allWhiteMoves) {
-        ArrayList<Move> rez = new ArrayList<Move>();
-        for (Move currMove : allWhiteMoves) {
-            int movedPiece = Utils
-                    .getMovedPieceFromMoveNumber(currMove.moveNumber);
-            if (movedPiece == 2 || movedPiece == 5) {
-                rez.add(new Move(currMove.moveNumber));
-            }
-        }
-        return rez;
-    }
 
 
     /**
