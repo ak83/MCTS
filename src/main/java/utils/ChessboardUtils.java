@@ -1,5 +1,6 @@
 package utils;
 
+
 /**
  * Class that hold util methods for Chessboard (some older methods are in
  * exec.Utils.java).
@@ -73,6 +74,55 @@ public class ChessboardUtils {
     }
 
 
+    /**
+     * Checks if position is on board or not.
+     * 
+     * @param position
+     *            position
+     * @return <code>true</code> if position is on board, otherwise
+     *         <code>false</code>
+     */
+    public static boolean isPositionLegal(int position) {
+        if (position < 0 || position > 127)
+            return false;
+        if ((position & 0x88) != 0)
+            return false;
+        else
+            return true;
+    }
+
+
+    /**
+     * Checks if piece is black
+     * 
+     * @param pieceNumber
+     *            piece
+     * @return <code>true</code> if piece is black, <code>false</code> otherwise
+     */
+    public static boolean isPieceBlack(int pieceNumber) {
+        if (pieceNumber > 15 && pieceNumber < 32)
+            return true;
+        else
+            return false;
+    }
+
+
+    /**
+     * Checks if piece is white
+     * 
+     * @param pieceNumber
+     *            piece
+     * @return <code>true</code> if piece is white, <code>false</code> otherwise
+     */
+    public static boolean isPieceWhite(int pieceNumber) {
+        if (pieceNumber >= 0 && pieceNumber < 16)
+            return true;
+        else
+            return false;
+    }
+
+
     // only static methods allowed
     private ChessboardUtils() {}
+
 }

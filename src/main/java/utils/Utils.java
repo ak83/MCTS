@@ -15,22 +15,6 @@ import moveFinders.BlackFinderStrategy;
 public class Utils {
 
     /**
-     * Checks if position is on board or not.
-     * 
-     * @param a
-     *            position
-     * @return <code>true</code> if position is on board, otherwise
-     *         <code>false</code>
-     */
-    public static boolean isPositionLegal(int a) {
-        if ((a & 0x88) != 0)
-            return false;
-        else
-            return true;
-    }
-
-
-    /**
      * Construct move number.
      * 
      * @param from
@@ -53,21 +37,6 @@ public class Utils {
     }
 
 
-    /**
-     * Checks if piece is white or black.
-     * 
-     * @param pieceNumber
-     *            piece number
-     * @return <code>true</code> if piece is white, <code>false</code> otherwise
-     * @throws UtilsException
-     */
-    public static boolean isPieceWhite(int pieceNumber) {
-        // ce vrne true, je figure bela, drugace je crna
-        if (pieceNumber >= 0 && pieceNumber < 16)
-            return true;
-        else
-            return false;
-    }
 
 
     /**
@@ -556,8 +525,8 @@ public class Utils {
      *         otherwise
      */
     public static boolean arePositionsAdjacent(int positionA, int positionB) {
-        if (!Utils.isPositionLegal(positionA)
-                || !Utils.isPositionLegal(positionB)) { return false; }
+        if (!ChessboardUtils.isPositionLegal(positionA)
+                || !ChessboardUtils.isPositionLegal(positionB)) { return false; }
 
         int diff = Math.abs(positionB - positionA);
         if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
@@ -767,7 +736,7 @@ public class Utils {
      */
     public static void writePGN(String fileName, String input) {
         try {
-    
+
             FileWriter fw = new FileWriter(new File(fileName));
             fw.write(input);
             fw.close();

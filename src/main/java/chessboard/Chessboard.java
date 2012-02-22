@@ -481,7 +481,7 @@ public class Chessboard implements Cloneable {
             int from = this.piecePosition[x];
 
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
@@ -508,7 +508,7 @@ public class Chessboard implements Cloneable {
         for (int x = 16; x < 32; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
@@ -536,7 +536,7 @@ public class Chessboard implements Cloneable {
         for (int x = 8; x < 16; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
@@ -563,7 +563,7 @@ public class Chessboard implements Cloneable {
         for (int x = 16; x < 24; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
@@ -592,7 +592,7 @@ public class Chessboard implements Cloneable {
         for (int x : rooks) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
@@ -621,7 +621,7 @@ public class Chessboard implements Cloneable {
         for (int x : rooks) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
@@ -650,7 +650,7 @@ public class Chessboard implements Cloneable {
         for (int x : knights) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
@@ -680,7 +680,7 @@ public class Chessboard implements Cloneable {
         for (int x : knights) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
@@ -710,7 +710,7 @@ public class Chessboard implements Cloneable {
         for (int x : bishops) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
@@ -740,7 +740,7 @@ public class Chessboard implements Cloneable {
         for (int x : bishops) {
             int from = this.piecePosition[x];
             if (from != -1) {
-                if (!Chessboard.isPositionLegal(from))
+                if (!ChessboardUtils.isPositionLegal(from))
                     throw new ChessboardException("figura " + x
                             + " je na poziciji " + from);
 
@@ -768,7 +768,7 @@ public class Chessboard implements Cloneable {
         int from = this.piecePosition[3];
 
         if (from != -1) {
-            if (!Chessboard.isPositionLegal(from))
+            if (!ChessboardUtils.isPositionLegal(from))
                 throw new ChessboardException("figura " + 3
                         + " je na poziciji " + from);
 
@@ -795,7 +795,7 @@ public class Chessboard implements Cloneable {
         int from = this.piecePosition[27];
 
         if (from != -1) {
-            if (!Chessboard.isPositionLegal(from))
+            if (!ChessboardUtils.isPositionLegal(from))
                 throw new ChessboardException("figura " + 27
                         + " je na poziciji " + from);
 
@@ -822,7 +822,7 @@ public class Chessboard implements Cloneable {
         int from = this.piecePosition[4];
 
         if (from != -1) {
-            if (!Chessboard.isPositionLegal(from))
+            if (!ChessboardUtils.isPositionLegal(from))
                 throw new ChessboardException("figura " + 4
                         + " je na poziciji " + from);
 
@@ -849,7 +849,7 @@ public class Chessboard implements Cloneable {
         int from = this.piecePosition[28];
 
         if (from != -1) {
-            if (!Chessboard.isPositionLegal(from))
+            if (!ChessboardUtils.isPositionLegal(from))
                 throw new ChessboardException("figura " + 28
                         + " je na poziciji " + from);
 
@@ -973,7 +973,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -982,7 +982,8 @@ public class Chessboard implements Cloneable {
         if (diff == 16 && this.board[to] == -1)
             return true;
         if (diff == 15 || diff == 17) {
-            if (this.board[to] != -1 && !this.isPieceWhite(this.board[to]))
+            if (this.board[to] != -1
+                    && !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
         }
         return false;
@@ -997,7 +998,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1022,7 +1023,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1031,7 +1032,7 @@ public class Chessboard implements Cloneable {
         if (diff == -16 && this.board[to] == -1)
             return true;
         if (diff == -15 || diff == -17) {
-            if (this.board[to] != -1 && this.isPieceWhite(this.board[to]))
+            if (this.board[to] != -1 && ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
         }
         return false;
@@ -1047,7 +1048,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1071,13 +1072,12 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (Chessboard.getRankFromPosition(from) == Chessboard
-                .getRankFromPosition(to)) {
+        if (Utils.getRankFromPosition(from) == Utils.getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1092,13 +1092,13 @@ public class Chessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1 || !this.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1
+                    || !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
-            if (this.isPieceWhite(this.board[to]))
+            if (ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
         }
-        if (Chessboard.getFileFromPosition(from) == Chessboard
-                .getFileFromPosition(to)) {
+        if (Utils.getFileFromPosition(from) == Utils.getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1112,9 +1112,10 @@ public class Chessboard implements Cloneable {
                     return false;
                 temp += diff;
             }
-            if (this.board[to] == -1 || !this.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1
+                    || !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
-            if (this.isPieceWhite(this.board[to]))
+            if (ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
         }
 
@@ -1130,13 +1131,12 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (Chessboard.getRankFromPosition(from) == Chessboard
-                .getRankFromPosition(to)) {
+        if (Utils.getRankFromPosition(from) == Utils.getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1153,8 +1153,7 @@ public class Chessboard implements Cloneable {
 
             return true;
         }
-        if (Chessboard.getFileFromPosition(from) == Chessboard
-                .getFileFromPosition(to)) {
+        if (Utils.getFileFromPosition(from) == Utils.getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1183,13 +1182,12 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (Chessboard.getRankFromPosition(from) == Chessboard
-                .getRankFromPosition(to)) {
+        if (Utils.getRankFromPosition(from) == Utils.getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1204,13 +1202,12 @@ public class Chessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1 || this.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
-            if (!this.isPieceWhite(this.board[to]))
+            if (!ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
         }
-        if (Chessboard.getFileFromPosition(from) == Chessboard
-                .getFileFromPosition(to)) {
+        if (Utils.getFileFromPosition(from) == Utils.getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1224,9 +1221,9 @@ public class Chessboard implements Cloneable {
                     return false;
                 temp += diff;
             }
-            if (this.board[to] == -1 || this.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
-            if (!this.isPieceWhite(this.board[to]))
+            if (!ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
         }
 
@@ -1242,13 +1239,12 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (Chessboard.getRankFromPosition(from) == Chessboard
-                .getRankFromPosition(to)) {
+        if (Utils.getRankFromPosition(from) == Utils.getRankFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1265,8 +1261,7 @@ public class Chessboard implements Cloneable {
 
             return true;
         }
-        if (Chessboard.getFileFromPosition(from) == Chessboard
-                .getFileFromPosition(to)) {
+        if (Utils.getFileFromPosition(from) == Utils.getFileFromPosition(to)) {
             int diff = to - from;
 
             if (diff < 0)
@@ -1295,7 +1290,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1322,7 +1317,8 @@ public class Chessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1 || !this.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1
+                    || !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             else
                 return false;
@@ -1339,7 +1335,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1380,7 +1376,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1421,7 +1417,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1448,7 +1444,7 @@ public class Chessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1 || this.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             else
                 return false;
@@ -1465,12 +1461,12 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (this.board[to] == -1 || !this.isPieceWhite(this.board[to])) {
+        if (this.board[to] == -1 || !ChessboardUtils.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
                 case 14:
@@ -1495,7 +1491,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1525,12 +1521,12 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
 
-        if (this.board[to] == -1 || this.isPieceWhite(this.board[to])) {
+        if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
                 case 14:
@@ -1555,7 +1551,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1641,7 +1637,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1649,7 +1645,7 @@ public class Chessboard implements Cloneable {
         if (this.isPositionAdjacentToBlackKing(to)) { return false; }
 
         int targetPiece = this.board[to];
-        if (targetPiece != -1 && this.isPieceWhite(targetPiece)) { return false; }
+        if (targetPiece != -1 && ChessboardUtils.isPieceWhite(targetPiece)) { return false; }
 
         int whiteKingPos = this.piecePosition[4];
         this.piecePosition[4] = -1;
@@ -1682,7 +1678,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to))
+        if (!ChessboardUtils.isPositionLegal(to))
             return false;
         if (from == to)
             return false;
@@ -1720,7 +1716,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to)) { return false; }
+        if (!ChessboardUtils.isPositionLegal(to)) { return false; }
         if (from == to)
             return false;
 
@@ -1728,7 +1724,7 @@ public class Chessboard implements Cloneable {
 
         int targetPiece = this.board[to];
 
-        if (targetPiece != -1 && this.isPieceBlack(targetPiece)) { return false; }
+        if (targetPiece != -1 && ChessboardUtils.isPieceBlack(targetPiece)) { return false; }
 
         int blackKingPos = this.piecePosition[28];
         this.piecePosition[28] = -1;
@@ -1762,7 +1758,7 @@ public class Chessboard implements Cloneable {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
-        if (!Chessboard.isPositionLegal(to)) { return false; }
+        if (!ChessboardUtils.isPositionLegal(to)) { return false; }
         if (from == to)
             return false;
 
@@ -1878,47 +1874,9 @@ public class Chessboard implements Cloneable {
     }
 
 
-    private static boolean isPositionLegal(int position) {
-        if (position < 0 || position > 127)
-            return false;
-        if ((position & 0x88) != 0)
-            return false;
-        else
-            return true;
-    }
-
-
-    private static int getRankFromPosition(int position) {
-        return (position / 16) + 1;
-    }
-
-
-    private static int getFileFromPosition(int position) {
-        return (position % 16) + 1;
-    }
-
-
-    private boolean isPieceWhite(int pieceNumber) throws ChessboardException {
-        // ce vrne true, je figure bela, drugace je crna
-        if (pieceNumber < 0 || pieceNumber > 31)
-            throw new ChessboardException("piecenumber = " + pieceNumber);
-        if (pieceNumber >= 0 && pieceNumber < 16)
-            return true;
-        else
-            return false;
-    }
-
-
-    private boolean isPieceBlack(int pieceNumber) throws ChessboardException {
-        if (pieceNumber < 0 || pieceNumber > 31)
-            throw new ChessboardException("piecenumber = " + pieceNumber);
-        if (pieceNumber > 15 && pieceNumber < 32)
-            return true;
-        else
-            return false;
-    }
-
-
+    /**
+     * Construct correct piecePosition field from board filed.
+     */
     private void constructPiecePositionFromBoard() {
         this.piecePosition = new int[32];
         for (int x = 0; x < this.piecePosition.length; x++) {
@@ -1964,7 +1922,7 @@ public class Chessboard implements Cloneable {
      */
     public boolean isPositionUnderAttackByBlack(int position,
             boolean ignoreBlackKing) throws ChessboardException {
-        if (!Chessboard.isPositionLegal(position))
+        if (!ChessboardUtils.isPositionLegal(position))
             return true;
 
         for (int x = 16; x < 32; x++) {
@@ -2012,7 +1970,7 @@ public class Chessboard implements Cloneable {
         if (position < 0 || position > 127)
             throw new ChessboardException("position = " + position);
 
-        if (!Chessboard.isPositionLegal(position))
+        if (!ChessboardUtils.isPositionLegal(position))
             return true;
 
         for (int x = 0; x < 8; x++) {
@@ -2504,7 +2462,7 @@ public class Chessboard implements Cloneable {
      *            list of moves to filter
      * @return list of moves that white must do to avoid loosing a piece
      */
-    public ArrayList<Move> whiteUrgentPlies(ArrayList<Move> allWhiteMoves) {
+    public ArrayList<Move> whiteUrgentMoves(ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
 
         // if black king isn't near any pieces, it can't eat them
@@ -2551,7 +2509,7 @@ public class Chessboard implements Cloneable {
      * @param allWhiteMoves
      * @return list of safe moves
      */
-    public ArrayList<Move> whiteSafePlies(ArrayList<Move> allWhiteMoves) {
+    public ArrayList<Move> whiteSafeMoves(ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
 
         for (Move currMove : allWhiteMoves) {
@@ -2822,12 +2780,12 @@ public class Chessboard implements Cloneable {
         for (int off : diff) {
             int currPlusPosition = position + off;
             int currMinusPosition = position - off;
-            if (Utils.isPositionLegal(currPlusPosition)
+            if (ChessboardUtils.isPositionLegal(currPlusPosition)
                     && this.board[currPlusPosition] != -1) {
                 rez.add(this.board[currPlusPosition]);
             }
 
-            if (Utils.isPositionLegal(currMinusPosition)
+            if (ChessboardUtils.isPositionLegal(currMinusPosition)
                     && this.board[currMinusPosition] != -1) {
                 rez.add(this.board[currMinusPosition]);
             }

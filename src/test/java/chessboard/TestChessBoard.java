@@ -105,7 +105,7 @@ public class TestChessBoard {
     @Test
     public void testKRKWhiteSafeMoves() throws Exception {
         ArrayList<Move> returned = TestChessBoard.cbKRK
-                .whiteSafePlies(TestChessBoard.cbKRK.getAllLegalWhitePlies());
+                .whiteSafeMoves(TestChessBoard.cbKRK.getAllLegalWhitePlies());
 
         for (int x = 0; x < TestChessBoard.cbKRKAllMoves.size(); x++) {
             if ((x < 14 && x != 11 && x != 12) || x == 17) {
@@ -124,11 +124,11 @@ public class TestChessBoard {
     @Test
     public void testWhiteUrgentMoves() throws Exception {
         ArrayList<Move> returned = TestChessBoard.cbKRK
-                .whiteUrgentPlies(TestChessBoard.cbKRK.getAllLegalWhitePlies());
+                .whiteUrgentMoves(TestChessBoard.cbKRK.getAllLegalWhitePlies());
         Assert.assertEquals(0, returned.size());
 
         returned = TestChessBoard.cbKRRK
-                .whiteUrgentPlies(TestChessBoard.cbKRRKALLMoves);
+                .whiteUrgentMoves(TestChessBoard.cbKRRKALLMoves);
         Integer[] expectedIndexesOfNotUrgentMoves = { 0, 7, 13, 14, 16, 18, 19,
                 20, 27, 28 };
         ArrayList<Integer> listOfexpectedIndexesOfNotUrgentMoves = new ArrayList<Integer>(

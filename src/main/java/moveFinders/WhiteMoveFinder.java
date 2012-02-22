@@ -131,14 +131,14 @@ public class WhiteMoveFinder {
         }
 
         if (Constants.HEURISTICS_check_for_urgent_moves) {
-            ArrayList<Move> urgent = board.whiteUrgentPlies(rez);
+            ArrayList<Move> urgent = board.whiteUrgentMoves(rez);
             if (urgent.size() > 0) {
                 rez = urgent;
             }
         }
 
         if (Constants.HEURISTICS_only_safe_moves) {
-            ArrayList<Move> safe = board.whiteSafePlies(rez);
+            ArrayList<Move> safe = board.whiteSafeMoves(rez);
             if (safe.size() != 0) {
                 rez = safe;
             }
