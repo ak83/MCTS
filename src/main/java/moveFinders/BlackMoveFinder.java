@@ -9,6 +9,7 @@ import java.util.Random;
 import utils.Utils;
 
 import chessboard.Chessboard;
+import chessboard.SimpleChessboard;
 
 import exceptions.ChessboardException;
 import exec.Constants;
@@ -123,7 +124,7 @@ public class BlackMoveFinder {
      *            board on which we search for ply
      * @return ply number for black king that uses perfect strategy
      */
-    private static int findBlackPerfectMove(Chessboard board) {
+    private static int findBlackPerfectMove(SimpleChessboard board) {
         try {
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(Constants.FRUIT_FILEPATH);

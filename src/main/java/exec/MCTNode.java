@@ -8,6 +8,7 @@ import utils.Utils;
 
 import chessboard.Chessboard;
 import chessboard.ChessboardEvalState;
+import chessboard.SimpleChessboard;
 import exceptions.ChessboardException;
 
 /**
@@ -54,7 +55,7 @@ public class MCTNode {
     public boolean              isWhitesMove;
 
     /** Chess board state belonging to this ply */
-    public Chessboard           chessboard;
+    public SimpleChessboard           chessboard;
 
     /**
      * Tells depth difference between this node and it's deepest descendant.
@@ -79,14 +80,14 @@ public class MCTNode {
      * @param board
      *            chess board representation from which we get chess board state
      */
-    public MCTNode(Chessboard board) {
+    public MCTNode(SimpleChessboard board) {
         this.parent = null;
         this.moveDepth = 0;
         this.moveNumber = 0;
         this.visitCount = 1;
         this.c = Constants.C;
         this.isWhitesMove = true;
-        this.chessboard = (Chessboard) board.clone();
+        this.chessboard = (SimpleChessboard) board.clone();
         try {
             this.evalFromWhitesPerspective = board
                     .evaluateChessboardFromWhitesPerpective();
@@ -115,7 +116,7 @@ public class MCTNode {
         this.isWhitesMove = !parent.isWhitesMove;
         this.mcDepth = parent.mcDepth + 1;
 
-        Chessboard temp = new Chessboard("temp", parent);
+        SimpleChessboard temp = new Chessboard("temp", parent);
         temp.makeAMove(plyNumber);
         this.chessboard = temp;
         this.evalFromWhitesPerspective = temp
@@ -135,7 +136,7 @@ public class MCTNode {
      *            chessboard that belong to this node
      * @throws ChessboardException
      */
-    public MCTNode(int plyNumber, int depth, Chessboard boardState)
+    public MCTNode(int plyNumber, int depth, SimpleChessboard boardState)
             throws ChessboardException {
         this.parent = null;
         this.moveDepth = depth;
@@ -144,7 +145,7 @@ public class MCTNode {
         this.c = Constants.C;
         this.isWhitesMove = Utils.isWhitesMoveAtDepth(depth);
 
-        Chessboard temp = new Chessboard(boardState, "temp");
+        SimpleChessboard temp = new Chessboard(boardState, "temp");
         temp.makeAMove(plyNumber);
         this.chessboard = temp;
         this.evalFromWhitesPerspective = temp

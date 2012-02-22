@@ -88,7 +88,7 @@ public class TestChessBoard {
         initialBoardState.put(115, 4);
         initialBoardState.put(99, 19);
 
-        Chessboard testBoard = new Chessboard("temp board", initialBoardState);
+        SimpleChessboard testBoard = new Chessboard("temp board", initialBoardState);
 
         for (int x = 0; x < 128; x++) {
             if (initialBoardState.containsKey(x)) {
@@ -165,7 +165,7 @@ public class TestChessBoard {
         Assert.assertEquals(5452610, TestChessBoard.cbKRK.hashCode());
 
         for (Move move : TestChessBoard.cbKRKAllMoves) {
-            Chessboard temp = new Chessboard(TestChessBoard.cbKRK, "clone");
+            SimpleChessboard temp = new Chessboard(TestChessBoard.cbKRK, "clone");
             temp.makeAMove(move.moveNumber);
             Assert.assertNotSame(TestChessBoard.cbKRK.hashCode(), temp
                     .hashCode());

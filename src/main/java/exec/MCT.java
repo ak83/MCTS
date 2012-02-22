@@ -14,6 +14,7 @@ import utils.MCTUtils;
 import utils.Utils;
 import chessboard.Chessboard;
 import chessboard.ChessboardEvalState;
+import chessboard.SimpleChessboard;
 import exceptions.ChessboardException;
 
 /**
@@ -205,7 +206,7 @@ public class MCT {
      */
     public int simulation(MCTNode node) throws ChessboardException {
         int rez = 0;
-        Chessboard temp = new Chessboard("resetBoard", node);
+        SimpleChessboard temp = new Chessboard("resetBoard", node);
 
         for (int x = 0; x < Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION; x++) {
             int currDepth = node.moveDepth;
@@ -266,7 +267,7 @@ public class MCT {
 
         int diff = this.simulation(node);
 
-        Chessboard newCB = new Chessboard("temp eval", node);
+        SimpleChessboard newCB = new Chessboard("temp eval", node);
 
         boolean nodeIsMat = newCB.evaluateChessboard() == ChessboardEvalState.BLACK_KING_MATED;
 
