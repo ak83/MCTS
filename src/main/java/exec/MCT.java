@@ -67,10 +67,10 @@ public class MCT {
 
         boolean maxDepthReached = node.moveDepth > Constants.MAX_DEPTH;
         boolean gobanStrategy = node.visitCount < Constants.GOBAN;
-        boolean nerazvitiNasledniki = node.nextPlies == null;
+        boolean nerazvitiNasledniki = node.nextMoves == null;
 
         if (maxDepthReached || gobanStrategy || nerazvitiNasledniki
-                || node.nextPlies.size() == 0) { return node; }
+                || node.nextMoves.size() == 0) { return node; }
 
         ArrayList<Integer> maxRatingIndexes = MCTUtils
                 .getInedexesWithMaxRating(node);
@@ -78,10 +78,10 @@ public class MCT {
         int selectedIndex = this.random.nextInt(maxRatingIndexes.size());
         selectedIndex = maxRatingIndexes.get(selectedIndex);
 
-        int moveNo = node.nextPlies.get(selectedIndex).moveNumber;
+        int moveNo = node.nextMoves.get(selectedIndex).moveNumber;
 
         this.simulationChessboard.makeAMove(moveNo);
-        return this.selection(node.nextPlies.get(selectedIndex));
+        return this.selection(node.nextMoves.get(selectedIndex));
     }
 
 
@@ -133,7 +133,7 @@ public class MCT {
             throws ChessboardException {
         MCTNode currNode = node;
 
-        if (node.nextPlies == null) {
+        if (node.nextMoves == null) {
             int moveNo = MCTUtils.findNextMove(currNode,
                     Constants.WHITE_SIMULATION_STRATEGY,
                     Constants.BLACK_SIMULATION_STRATEGY);
@@ -144,7 +144,7 @@ public class MCT {
             this.simulationChessboard.makeAMove(moveNo);
             node.addNextMove(moveNo);
 
-            return node.nextPlies.get(0);
+            return node.nextMoves.get(0);
         }
 
         while (true) {
@@ -165,13 +165,13 @@ public class MCT {
                 return currNode;
             }
 
-            if (currNode.nextPlies == null) {
+            if (currNode.nextMoves == null) {
                 this.currentTreeSize++;
-                currNode.nextPlies = new ArrayList<MCTNode>();
-                currNode.nextPlies.add(new MCTNode(currNode, moveNo));
+                currNode.nextMoves = new ArrayList<MCTNode>();
+                currNode.nextMoves.add(new MCTNode(currNode, moveNo));
                 this.simulationChessboard.makeAMove(moveNo);
 
-                return currNode.nextPlies.get(0);
+                return currNode.nextMoves.get(0);
             }
 
             int moveIndex = Utils
@@ -182,13 +182,13 @@ public class MCT {
                 currNode.addNextMove(moveNo);
                 this.simulationChessboard.makeAMove(moveNo);
 
-                int temp = currNode.nextPlies.size() - 1;
-                return currNode.nextPlies.get(temp);
+                int temp = currNode.nextMoves.size() - 1;
+                return currNode.nextMoves.get(temp);
             }
             else {
                 this.simulationChessboard.makeAMove(moveNo);
 
-                currNode = currNode.nextPlies.get(moveIndex);
+                currNode = currNode.nextMoves.get(moveIndex);
             }
 
             if (currNode.moveDepth > Constants.MAX_DEPTH) { return currNode; }
@@ -297,7 +297,7 @@ public class MCT {
             this.currentTreeSize = 0;
         }
         else {
-            this.root = this.root.nextPlies.get(index);
+            this.root = this.root.nextMoves.get(index);
         }
 
         this.mainChessboard.makeAMove(moveNumber);
@@ -328,7 +328,7 @@ public class MCT {
 
             rez = WhiteMoveChooser.chooseAPly(this.root, whiteChoosingStrategy);
 
-            rez = this.root.nextPlies.get(rez).moveNumber;
+            rez = this.root.nextMoves.get(rez).moveNumber;
         }
         else {
             rez = BlackMoveChooser.chooseBlackKingMove(this.mainChessboard,

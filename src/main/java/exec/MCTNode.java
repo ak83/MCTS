@@ -22,7 +22,7 @@ public class MCTNode {
     public MCTNode              parent;
 
     /** This nodes descendants */
-    public ArrayList<MCTNode>   nextPlies;
+    public ArrayList<MCTNode>   nextMoves;
 
     /**
      * consecutive ply number of node (consecutive ply made in chess game).
@@ -103,21 +103,21 @@ public class MCTNode {
      * 
      * @param parent
      *            node parent
-     * @param plyNumber
+     * @param moveNumber
      *            numerical ply representation
      * @throws ChessboardException
      */
-    public MCTNode(MCTNode parent, int plyNumber) throws ChessboardException {
+    public MCTNode(MCTNode parent, int moveNumber) throws ChessboardException {
         this.parent = parent;
         this.moveDepth = this.parent.moveDepth + 1;
-        this.moveNumber = plyNumber;
+        this.moveNumber = moveNumber;
         this.visitCount = 0;
         this.c = Constants.C;
         this.isWhitesMove = !parent.isWhitesMove;
         this.mcDepth = parent.mcDepth + 1;
 
         SimpleChessboard temp = new Chessboard("temp", parent);
-        temp.makeAMove(plyNumber);
+        temp.makeAMove(moveNumber);
         this.chessboard = temp;
         this.evalFromWhitesPerspective = temp
                 .evaluateChessboardFromWhitesPerpective();
@@ -128,25 +128,25 @@ public class MCTNode {
      * This constructor is used for setting up new root after MCT tree has
      * collapsed
      * 
-     * @param plyNumber
-     *            this nodes ply number
+     * @param moveNumber
+     *            this nodes move number
      * @param depth
      *            this nodes depth
      * @param boardState
      *            chessboard that belong to this node
      * @throws ChessboardException
      */
-    public MCTNode(int plyNumber, int depth, SimpleChessboard boardState)
+    public MCTNode(int moveNumber, int depth, SimpleChessboard boardState)
             throws ChessboardException {
         this.parent = null;
         this.moveDepth = depth;
-        this.moveNumber = plyNumber;
+        this.moveNumber = moveNumber;
         this.visitCount = 1;
         this.c = Constants.C;
         this.isWhitesMove = Utils.isWhitesMoveAtDepth(depth);
 
         SimpleChessboard temp = new Chessboard(boardState, "temp");
-        temp.makeAMove(plyNumber);
+        temp.makeAMove(moveNumber);
         this.chessboard = temp;
         this.evalFromWhitesPerspective = temp
                 .evaluateChessboardFromWhitesPerpective();
@@ -162,11 +162,11 @@ public class MCTNode {
      * @throws ChessboardException
      */
     public void addNextMove(int plyNumber) throws ChessboardException {
-        if (this.nextPlies == null) {
-            this.nextPlies = new ArrayList<MCTNode>();
+        if (this.nextMoves == null) {
+            this.nextMoves = new ArrayList<MCTNode>();
         }
 
-        this.nextPlies.add(new MCTNode(this, plyNumber));
+        this.nextMoves.add(new MCTNode(this, plyNumber));
     }
 
 
@@ -184,11 +184,11 @@ public class MCTNode {
                 + this.maximumSubTreeDepth
                 + ", minumumDepthOfDescendWhoRepresentsMat: "
                 + this.minimumDepthOfDescendadWhoRepresentsCheckMate;
-        if (this.nextPlies == null) {
+        if (this.nextMoves == null) {
             s = s + ", stevilo naslednikov: nerazvito";
         }
         else {
-            s = s + ", stevilo naslednikov: " + this.nextPlies.size();
+            s = s + ", stevilo naslednikov: " + this.nextMoves.size();
         }
         return s;
     }
@@ -202,9 +202,9 @@ public class MCTNode {
     public String descendantsToString() {
         StringBuffer sb = new StringBuffer(50);
         sb.append("\tid,\tdepth,\tmove,\tnumberOfCheckmates,\tvisitcount,\tmaximumSubTreeDepth,\tminimumDepthOfDescendadThatRepresentCheckmate\r\n");
-        if (this.nextPlies != null) {
-            for (int x = 0; x < this.nextPlies.size(); x++) {
-                MCTNode n = this.nextPlies.get(x);
+        if (this.nextMoves != null) {
+            for (int x = 0; x < this.nextMoves.size(); x++) {
+                MCTNode n = this.nextMoves.get(x);
                 sb.append("\t"
                         + (x + 1)
                         + ",\t"

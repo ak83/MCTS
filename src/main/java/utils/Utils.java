@@ -221,8 +221,8 @@ public class Utils {
      *         such child doesn't exist
      */
     public static int indexOfMoveNumberInNextMoves(int movenumber, MCTNode node) {
-        for (int x = 0; x < node.nextPlies.size(); x++) {
-            if (movenumber == node.nextPlies.get(x).moveNumber) { return x; }
+        for (int x = 0; x < node.nextMoves.size(); x++) {
+            if (movenumber == node.nextMoves.get(x).moveNumber) { return x; }
         }
 
         return -1;

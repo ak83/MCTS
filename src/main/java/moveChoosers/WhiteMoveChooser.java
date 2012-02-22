@@ -67,13 +67,13 @@ public class WhiteMoveChooser {
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
 
         int maxVC = 0;
-        for (int x = 0; x < node.nextPlies.size(); x++) {
-            if (node.nextPlies.get(x).visitCount > maxVC) {
-                maxVC = node.nextPlies.get(x).visitCount;
+        for (int x = 0; x < node.nextMoves.size(); x++) {
+            if (node.nextMoves.get(x).visitCount > maxVC) {
+                maxVC = node.nextMoves.get(x).visitCount;
                 rezCand = new ArrayList<Integer>();
             }
 
-            if (node.nextPlies.get(x).visitCount == maxVC) {
+            if (node.nextMoves.get(x).visitCount == maxVC) {
                 rezCand.add(x);
             }
         }
@@ -96,8 +96,8 @@ public class WhiteMoveChooser {
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
         double maxRating = -Double.MAX_VALUE;
 
-        for (int x = 0; x < node.nextPlies.size(); x++) {
-            double currRating = MCTUtils.computeNodeRating(node.nextPlies
+        for (int x = 0; x < node.nextMoves.size(); x++) {
+            double currRating = MCTUtils.computeNodeRating(node.nextMoves
                     .get(x));
             if (currRating > maxRating) {
                 rezCand = new ArrayList<Integer>();
@@ -124,7 +124,7 @@ public class WhiteMoveChooser {
      * @return ply number that belongs to one of nodes childer, chosen of random
      */
     private static int chooseRandomMove(MCTNode node) {
-        int rez = WhiteMoveChooser.random.nextInt(node.nextPlies.size());
+        int rez = WhiteMoveChooser.random.nextInt(node.nextMoves.size());
         return rez;
     }
 

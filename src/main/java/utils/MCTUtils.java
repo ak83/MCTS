@@ -58,13 +58,13 @@ public class MCTUtils {
     public static ArrayList<Integer> getInedexesWithMaxRating(MCTNode node) {
         ArrayList<Integer> rez = new ArrayList<Integer>();
 
-        if (node.nextPlies.size() == 0) { return rez; }
+        if (node.nextMoves.size() == 0) { return rez; }
 
         double maxRating = -Double.MAX_VALUE;
         double currRating = -Double.MAX_VALUE;
 
-        for (int x = 0; x < node.nextPlies.size(); x++) {
-            currRating = MCTUtils.computeNodeRating(node.nextPlies.get(x));
+        for (int x = 0; x < node.nextMoves.size(); x++) {
+            currRating = MCTUtils.computeNodeRating(node.nextMoves.get(x));
 
             if (currRating > maxRating) {
                 maxRating = currRating;
@@ -81,7 +81,7 @@ public class MCTUtils {
             int maxVisitCount = Integer.MIN_VALUE;
             ArrayList<Integer> filteredRez = new ArrayList<Integer>();
             for (Integer x : rez) {
-                MCTNode currNode = node.nextPlies.get(x);
+                MCTNode currNode = node.nextMoves.get(x);
                 if (currNode.visitCount > maxVisitCount) {
                     maxVisitCount = currNode.visitCount;
                     filteredRez = new ArrayList<Integer>();
