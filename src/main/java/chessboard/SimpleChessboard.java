@@ -222,7 +222,8 @@ public class SimpleChessboard {
 
 
     /**
-     * Builds move number from string.
+     * Builds move number from string. Used for getting move numbers for black
+     * player from fruit.
      * 
      * @param move
      *            must have format of xnym (ie. a2b3), where x,y are files and

@@ -3,6 +3,7 @@ package exec;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import utils.IOUtils;
 import utils.Utils;
 import chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
@@ -173,7 +174,7 @@ public class ChessGame {
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
         if (Constants.WRITE_INDIVIDUAL_GAMES) {
-            Utils.writePGN(this.pgnFileName, this.fen);
+            IOUtils.writePGN(this.pgnFileName, this.fen);
         }
         return this.fen;
     }

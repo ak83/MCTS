@@ -1,12 +1,12 @@
 package moveFinders;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
-import utils.Utils;
+import utils.IOUtils;
+import utils.MoveFindersUtils;
 
 import chessboard.Chessboard;
 import chessboard.SimpleChessboard;
@@ -88,12 +88,12 @@ public class BlackMoveFinder {
      * @return move number for center black king strategy
      */
     private static int findBlackKingCenterMove(ArrayList<Move> moves) {
-        int minDist = BlackMoveFinder
+        int minDist = MoveFindersUtils
                 .findMinimumDistanceFromCenterFromPlies(moves);
         ArrayList<Move> rezMoves = new ArrayList<Move>();
 
         for (int x = 0; x < moves.size(); x++) {
-            int dist = BlackMoveFinder
+            int dist = MoveFindersUtils
                     .distanceOfMoveFromCenter(moves.get(x).moveNumber);
             if (dist == minDist) {
                 rezMoves.add(moves.get(x));
@@ -128,23 +128,23 @@ public class BlackMoveFinder {
         try {
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-            BlackMoveFinder.writeToProcess(pr, "ucinewgame");
-            BlackMoveFinder.writeToProcess(pr, "setoption name Hash value 128");
-            BlackMoveFinder.writeToProcess(pr,
+            IOUtils.writeToProcess(pr, "ucinewgame");
+            IOUtils.writeToProcess(pr, "setoption name Hash value 128");
+            IOUtils.writeToProcess(pr,
                     "setoption name MultiPV value 100");
-            BlackMoveFinder.writeToProcess(pr,
+            IOUtils.writeToProcess(pr,
                     "setoption name NalimovPath value " + Constants.EMD_DIR);
-            BlackMoveFinder.writeToProcess(pr,
+            IOUtils.writeToProcess(pr,
                     "setoption name NalimovCache value 32");
-            BlackMoveFinder.writeToProcess(pr,
+            IOUtils.writeToProcess(pr,
                     "setoption name EGBB Path value " + Constants.EMD_DIR);
-            BlackMoveFinder.writeToProcess(pr,
+            IOUtils.writeToProcess(pr,
                     "setoption name EGBB Cache value 32");
             // writeToProcess(pr,
             // "position fen r7/8/5k2/8/8/8/R7/K7 w - - 0 1");
-            BlackMoveFinder.writeToProcess(pr, "position fen "
+            IOUtils.writeToProcess(pr, "position fen "
                     + board.boardToFen());
-            BlackMoveFinder.writeToProcess(pr, "go depth 2");
+            IOUtils.writeToProcess(pr, "go depth 2");
             pr.getOutputStream().close();
 
             BufferedReader input = new BufferedReader(new InputStreamReader(pr
@@ -167,120 +167,6 @@ public class BlackMoveFinder {
 
 
     /**
-     * Calculates distance between chess board center and target position of
-     * ply.
-     * 
-     * @param plyNumber
-     *            ply number
-     * @return distance between chess board center and target position of ply
-     */
-    private static int distanceOfMoveFromCenter(int plyNumber) {
-        int fileDiff = BlackMoveFinder.rankDistanceOfMoveFromCenter(plyNumber);
-        int rankDiff = BlackMoveFinder.fileDistanceOfMoveFromCenter(plyNumber);
-
-        return fileDiff + rankDiff;
-    }
-
-
-    /**
-     * Calculates distance between chess board center and target rank of ply.
-     * 
-     * @param plyNumber
-     *            ply number
-     * @return distance between chess board center and target rank of ply
-     */
-    private static int rankDistanceOfMoveFromCenter(int plyNumber) {
-        int to = Utils.getTargetPositionFromMoveNumber(plyNumber);
-        int toRank = Utils.getRankFromPosition(to);
-
-        int rankDiff = -1;
-
-        if (toRank > 5) {
-            rankDiff = Math.abs(toRank - 5);
-        }
-        else if (toRank < 4) {
-            rankDiff = Math.abs(4 - toRank);
-        }
-        else {
-            rankDiff = 0;
-        }
-
-        return rankDiff;
-    }
-
-
-    /**
-     * Calculates distance between chess board center and target file of ply.
-     * 
-     * @param plyNumber
-     *            ply number
-     * @return distance between chess board center and target file of ply
-     */
-    private static int fileDistanceOfMoveFromCenter(int plyNumber) {
-        int to = Utils.getTargetPositionFromMoveNumber(plyNumber);
-        int toFile = Utils.getFileFromPosition(to);
-
-        int fileDiff = -1;
-
-        if (toFile > 5) {
-            fileDiff = Math.abs(toFile - 5);
-        }
-        else if (toFile < 4) {
-            fileDiff = Math.abs(4 - toFile);
-        }
-        else {
-            fileDiff = 0;
-        }
-
-        return fileDiff;
-    }
-
-
-    /**
-     * Finds minimum distance of target positions of plies from chess board
-     * center.
-     * 
-     * @param plies
-     *            plies
-     * @return minimum distance of ply target position from chess board center
-     */
-    private static int findMinimumDistanceFromCenterFromPlies(
-            ArrayList<Move> plies) {
-        int minDist = -1;
-        for (int x = 0; x < plies.size(); x++) {
-            int moveNumber = plies.get(x).moveNumber;
-            int dist = BlackMoveFinder.distanceOfMoveFromCenter(moveNumber);
-
-            if (dist < minDist || minDist == -1) {
-                minDist = dist;
-            }
-        }
-
-        return minDist;
-    }
-
-
-    /**
-     * Inputs string to external process.
-     * 
-     * @param process
-     *            process
-     * @param msg
-     *            input message
-     * @throws IOException
-     */
-    private static void writeToProcess(Process process, String msg)
-            throws IOException {
-        char[] chars = (msg + "\n").toCharArray();
-        byte[] bytes = new byte[chars.length];
-        for (int x = 0; x < chars.length; x++) {
-            bytes[x] = (byte) chars[x];
-        }
-        process.getOutputStream().write(bytes);
-    }
-
-
-    /**
      * Checks if external program fruit is ready.
      * 
      * @return <code>true</code> if fruit is ready, othwerwise
@@ -292,7 +178,7 @@ public class BlackMoveFinder {
         try {
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-            BlackMoveFinder.writeToProcess(pr, "isready");
+            IOUtils.writeToProcess(pr, "isready");
 
             pr.getOutputStream().close();
             BufferedReader input = new BufferedReader(new InputStreamReader(pr
