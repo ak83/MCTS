@@ -166,37 +166,6 @@ public class BlackMoveFinder {
     }
 
 
-    /**
-     * Checks if external program fruit is ready.
-     * 
-     * @return <code>true</code> if fruit is ready, othwerwise
-     *         <code>false</code>.
-     */
-    @SuppressWarnings("unused")
-    private static boolean isFruitReady() {
-        String h = null;
-        try {
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-            IOUtils.writeToProcess(pr, "isready");
-
-            pr.getOutputStream().close();
-            BufferedReader input = new BufferedReader(new InputStreamReader(pr
-                    .getInputStream()));
-
-            String line = null;
-            while ((line = input.readLine()) != null) {
-                h = line;
-            }
-            input.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return h.equals("readyok");
-    }
-
-
     private BlackMoveFinder() {}
 
 }
