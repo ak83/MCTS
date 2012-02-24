@@ -156,6 +156,7 @@ public class BlackMoveFinder {
                 h = line;
             }
             input.close();
+            pr.destroy();
             h = h.substring(9, 13);
             return board.constructMoveNumberFromString(h);
         }

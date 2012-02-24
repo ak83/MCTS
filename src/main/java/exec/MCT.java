@@ -326,7 +326,7 @@ public class MCT {
 
         if (this.root.isWhitesMove) {
 
-            rez = WhiteMoveChooser.chooseAPly(this.root, whiteChoosingStrategy);
+            rez = WhiteMoveChooser.chooseAMove(this.root, whiteChoosingStrategy);
 
             rez = this.root.nextMoves.get(rez).moveNumber;
         }

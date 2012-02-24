@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import utils.IOUtils;
 import utils.MCTUtils;
 
 import exec.MCTNode;
@@ -25,7 +26,7 @@ public class WhiteMoveChooser {
 
 
     /**
-     * Chooses black ply from {@link MCTNode}
+     * Chooses black move from {@link MCTNode}
      * 
      * @param node
      *            root node
@@ -33,7 +34,7 @@ public class WhiteMoveChooser {
      *            strategy on which we choose ply move
      * @return chosen index of nodes child
      */
-    public static int chooseAPly(MCTNode node, WhiteChooserStrategy strategy) {
+    public static int chooseAMove(MCTNode node, WhiteChooserStrategy strategy) {
         int rez = -1;
         switch (strategy) {
             case RANDOM:
@@ -50,7 +51,11 @@ public class WhiteMoveChooser {
                 + " je beli izbiral med potezami :\r\n"
                 + node.descendantsToString() + "Izbral si pa je potezo "
                 + (rez + 1);
-        WhiteMoveChooser.log.fine(logString);
+
+        String perfectMove = "Optimalna poteza, ki bi jo lahko beli naredi je "
+                + IOUtils.getMoveFromFruit(node.chessboard.boardToFen());
+
+        WhiteMoveChooser.log.fine(logString + "\n" + perfectMove);
 
         return rez;
     }
