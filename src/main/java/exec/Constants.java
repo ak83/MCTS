@@ -45,7 +45,7 @@ public class Constants {
      * Fruit executable file path. Required only if black plays with perfect
      * information.
      */
-    public static String               FRUIT_FILEPATH                                                                  = "Fruit-2-3-1.exe";
+    public static String               FRUIT_FILEPATH                                                                  = Constants.class.getResource("/fruit/Fruit-2-3-1.exe").toString().substring(6).replaceAll("%20", " "); //"Fruit-2-3-1.exe";
 
     /**
      * Directory where emd files are stored.
