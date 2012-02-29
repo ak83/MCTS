@@ -79,14 +79,14 @@ public class ChessGame {
             if (eval == ChessboardEvalState.BLACK_KING_MATED) {
                 // ZMAGA BELEGA
                 didWhiteWin = true;
-                this.fen += Utils.moveNumberToString(mW, this.depth);
+                this.fen += Utils.whiteMoveNumberToFenString(mW, this.depth, "comment");
                 break;
             }
             else if (eval != ChessboardEvalState.NORMAl) {
                 // ZMAGA ÈRNEGA
                 didWhiteWin = false;
                 if (!whitesTurn) {
-                    this.fen += Utils.moveNumberToString(mW, this.depth);
+                    this.fen += Utils.whiteMoveNumberToFenString(mW, this.depth, "comment");
                 }
 
                 break;

@@ -380,7 +380,7 @@ public class Utils {
      *            which consequential move is this in match.
      * @return string representation of move number
      */
-    public static String moveNumberToString(int moveNumber, int depth) {
+    public static String whiteMoveNumberToFenString(int moveNumber, int depth, String comment) {
         int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
         int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
@@ -388,7 +388,7 @@ public class Utils {
         String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
                 + Utils.positionToString(to);
 
-        return depth + ". " + m;
+        return depth + ". " + m + "{ " + comment +" }";
 
     }
 
