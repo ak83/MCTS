@@ -113,15 +113,17 @@ public class ChessGame {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mB = moveNumber;
 
-//                this.fen += Utils.moveNumberToString(mW, mB, this.turnDepth) + " ";
                 this.fen += Utils.blackMoveNumberToFenString(mB, "black comment");
                 this.turnDepth++;
             }
 
             whitesTurn = !whitesTurn;
+            
+            String perfectMove = "Optimalna poteza, ki bi jo lahko naredi igralec je "
+                    + IOUtils.getMoveFromFruit(this.MCTree.getFEN());
 
             this.log.fine("Velikost drevesa je "
-                    + this.MCTree.getCurrentTreeSize());
+                    + this.MCTree.getCurrentTreeSize() + "\r\n" + perfectMove);
             this.MCTree.makeMCMove(moveNumber);
 
         }

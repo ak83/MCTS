@@ -116,10 +116,10 @@ public class SimpleChessboard {
         sb.append("\n");
 
         if (this.isWhitesTurn) {
-            sb.append("Beli je na potezi na plosci " + this.name + "\n");
+            sb.append("Beli je na potezi na plosci " + this.name + "\r\n");
         }
         else {
-            sb.append("crni je na potezi na plosci " + this.name + "\n");
+            sb.append("crni je na potezi na plosci " + this.name + "\r\n");
         }
 
         for (int x = 0; x < 25; x++) {
@@ -139,7 +139,7 @@ public class SimpleChessboard {
                     sb.append("*" + Utils.pieceNumberToString(t));
                 }
             }
-            sb.append("*\n");
+            sb.append("*\r\n");
         }
         for (int x = 0; x < 25; x++) {
             sb.append("*");

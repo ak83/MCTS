@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import utils.IOUtils;
 import utils.MCTUtils;
-
 import exec.MCTNode;
 
 /**
@@ -52,10 +50,7 @@ public class WhiteMoveChooser {
                 + node.descendantsToString() + "Izbral si pa je potezo "
                 + (rez + 1);
 
-        String perfectMove = "Optimalna poteza, ki bi jo lahko beli naredi je "
-                + IOUtils.getMoveFromFruit(node.chessboard.boardToFen());
-
-        WhiteMoveChooser.log.fine(logString + "\n" + perfectMove);
+        WhiteMoveChooser.log.fine(logString);
 
         return rez;
     }
