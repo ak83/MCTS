@@ -35,8 +35,6 @@ public class Utils {
     }
 
 
-
-
     /**
      * Transforms piece to string. This method is used to print out chess board.
      * 
@@ -356,11 +354,33 @@ public class Utils {
 
 
     /**
+     * Method used to get black move for pgn fen.
+     * 
+     * @param moveNumber
+     *            move number
+     * @param comment
+     *            comment for move
+     * @return fen for black part of turn
+     */
+    public static String blackMoveNumberToFenString(int moveNumber,
+            String comment) {
+        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
+        int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
+
+        String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
+                + Utils.positionToString(to);
+
+        return m + " { " + comment + " }";
+    }
+
+
+    /**
      * Converts moveNumber to human readable format
      * 
      * @param moveNumber
      *            number we wish to convert to readable form
-     * @return readable form of moveNumber ie. "Ke1f2"
+     * @return readable form of moveNumber ie. "Ke1-f2"
      */
     public static String singleMoveNumberToString(int moveNumber) {
         int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
@@ -380,7 +400,8 @@ public class Utils {
      *            which consequential move is this in match.
      * @return string representation of move number
      */
-    public static String whiteMoveNumberToFenString(int moveNumber, int depth, String comment) {
+    public static String whiteMoveNumberToFenString(int moveNumber, int depth,
+            String comment) {
         int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
         int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
@@ -388,7 +409,7 @@ public class Utils {
         String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
                 + Utils.positionToString(to);
 
-        return depth + ". " + m + "{ " + comment +" }";
+        return depth + ". " + m + "{ " + comment + " }";
 
     }
 

@@ -18,7 +18,7 @@ public class ChessGame {
     /**
      * Which turn currently is.
      */
-    private int    depth  = 1;
+    private int    turnDepth  = 1;
 
     /**
      * This matches fen.
@@ -79,14 +79,14 @@ public class ChessGame {
             if (eval == ChessboardEvalState.BLACK_KING_MATED) {
                 // ZMAGA BELEGA
                 didWhiteWin = true;
-                this.fen += Utils.whiteMoveNumberToFenString(mW, this.depth, "comment");
+                this.fen += Utils.whiteMoveNumberToFenString(mW, this.turnDepth, "comment");
                 break;
             }
             else if (eval != ChessboardEvalState.NORMAl) {
                 // ZMAGA ÈRNEGA
                 didWhiteWin = false;
                 if (!whitesTurn) {
-                    this.fen += Utils.whiteMoveNumberToFenString(mW, this.depth, "comment");
+                    this.fen += Utils.whiteMoveNumberToFenString(mW, this.turnDepth, "comment");
                 }
 
                 break;
@@ -104,6 +104,8 @@ public class ChessGame {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mW = moveNumber;
+                
+                this.fen += Utils.whiteMoveNumberToFenString(mW, this.turnDepth, "white turn") + " ";
             }
             else {
                 moveNumber = this.MCTree.chooseAMoveNumber(
@@ -111,8 +113,9 @@ public class ChessGame {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mB = moveNumber;
 
-                this.fen += Utils.moveNumberToString(mW, mB, this.depth) + " ";
-                this.depth++;
+//                this.fen += Utils.moveNumberToString(mW, mB, this.turnDepth) + " ";
+                this.fen += Utils.blackMoveNumberToFenString(mB, "black comment");
+                this.turnDepth++;
             }
 
             whitesTurn = !whitesTurn;
@@ -130,11 +133,11 @@ public class ChessGame {
                 + ". Igra je bila odigrana v "
                 + Utils.timeMillisToString(runTime);
         if (didWhiteWin) {
-            logString0 += "\r\nZmagal je BELI v " + (this.depth - 1)
+            logString0 += "\r\nZmagal je BELI v " + (this.turnDepth - 1)
                     + " potezah";
         }
         else {
-            logString0 += "\r\nZmagal je CRNI v " + (this.depth - 1)
+            logString0 += "\r\nZmagal je CRNI v " + (this.turnDepth - 1)
                     + " potezah";
         }
         String logString1 = "V igri je bilo:";
@@ -165,10 +168,10 @@ public class ChessGame {
 
         String blackStrat = Utils
                 .blackStrategyToString(Constants.BLACK_MOVE_CHOOSER_STRATEGY);
-        this.depth = (this.depth - 1) * 2;
+        this.turnDepth = (this.turnDepth - 1) * 2;
 
         String preamble = Utils.constructPreamble(whiteStrat, blackStrat,
-                Constants.C, Constants.GOBAN, didWhiteWin, round, this.depth,
+                Constants.C, Constants.GOBAN, didWhiteWin, round, this.turnDepth,
                 Constants.NUMBER_OF_INITAL_STEPS,
                 Constants.NUMBER_OF_RUNNING_STEPS,
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
