@@ -18,12 +18,12 @@ public class ChessGame {
     /**
      * Which turn currently is.
      */
-    private int    turnDepth  = 1;
+    private int    turnDepth = 1;
 
     /**
      * This matches fen.
      */
-    private String fen    = "";
+    private String fen       = "";
 
     /**
      * File path where this match will be saved if sacing invidiual games is
@@ -32,10 +32,10 @@ public class ChessGame {
     private String pgnFileName;
 
     /** MC tree */
-    private MCT    MCTree = new MCT();
+    private MCT    MCTree    = new MCT();
 
     /** Logger */
-    private Logger log    = Logger.getLogger("MCTS.ChessGame"); ;
+    private Logger log       = Logger.getLogger("MCTS.ChessGame"); ;
 
 
     /**
@@ -74,19 +74,24 @@ public class ChessGame {
         int mW = -1;
         int mB = -1;
         while (true) {
+
+            String perfectMove = IOUtils.getMoveFromFruit(this.MCTree.getFEN());
+
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();
             if (eval == ChessboardEvalState.BLACK_KING_MATED) {
                 // ZMAGA BELEGA
                 didWhiteWin = true;
-                this.fen += Utils.whiteMoveNumberToFenString(mW, this.turnDepth, "comment");
+                this.fen += Utils.whiteMoveNumberToFenString(mW,
+                        this.turnDepth, perfectMove);
                 break;
             }
             else if (eval != ChessboardEvalState.NORMAl) {
                 // ZMAGA ÈRNEGA
                 didWhiteWin = false;
                 if (!whitesTurn) {
-                    this.fen += Utils.whiteMoveNumberToFenString(mW, this.turnDepth, "comment");
+                    this.fen += Utils.whiteMoveNumberToFenString(mW,
+                            this.turnDepth, perfectMove);
                 }
 
                 break;
@@ -104,8 +109,10 @@ public class ChessGame {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mW = moveNumber;
-                
-                this.fen += Utils.whiteMoveNumberToFenString(mW, this.turnDepth, "white turn") + " ";
+
+                this.fen += Utils.whiteMoveNumberToFenString(mW,
+                        this.turnDepth, perfectMove)
+                        + " ";
             }
             else {
                 moveNumber = this.MCTree.chooseAMoveNumber(
@@ -113,17 +120,16 @@ public class ChessGame {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mB = moveNumber;
 
-                this.fen += Utils.blackMoveNumberToFenString(mB, "black comment");
+                this.fen += Utils.blackMoveNumberToFenString(mB, perfectMove);
                 this.turnDepth++;
             }
 
             whitesTurn = !whitesTurn;
-            
-            String perfectMove = "Optimalna poteza, ki bi jo lahko naredi igralec je "
-                    + IOUtils.getMoveFromFruit(this.MCTree.getFEN());
 
             this.log.fine("Velikost drevesa je "
-                    + this.MCTree.getCurrentTreeSize() + "\r\n" + perfectMove);
+                    + this.MCTree.getCurrentTreeSize() + "\r\n"
+                    + "Optimalna poteza, ki bi jo lahko naredi igralec je "
+                    + perfectMove);
             this.MCTree.makeMCMove(moveNumber);
 
         }
@@ -173,8 +179,8 @@ public class ChessGame {
         this.turnDepth = (this.turnDepth - 1) * 2;
 
         String preamble = Utils.constructPreamble(whiteStrat, blackStrat,
-                Constants.C, Constants.GOBAN, didWhiteWin, round, this.turnDepth,
-                Constants.NUMBER_OF_INITAL_STEPS,
+                Constants.C, Constants.GOBAN, didWhiteWin, round,
+                this.turnDepth, Constants.NUMBER_OF_INITAL_STEPS,
                 Constants.NUMBER_OF_RUNNING_STEPS,
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
