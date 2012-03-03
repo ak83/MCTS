@@ -113,7 +113,7 @@ public class SimpleChessboard {
         for (int x = 0; x < 25; x++) {
             sb.append("*");
         }
-        sb.append("\n");
+        sb.append("\r\n");
 
         if (this.isWhitesTurn) {
             sb.append("Beli je na potezi na plosci " + this.name + "\r\n");

@@ -302,10 +302,10 @@ public class MCT {
 
         this.mainChessboard.makeAMove(moveNumber);
 
-        this.log.fine("Stanje sahovnice je:\r\n" + this.mainChessboard
-                + "To stanje se je pojavilo "
-                + this.mainChessboard.howManyTimeHasCurrentStateAppeared()
-                + "-krat.\r\n");
+        // this.log.fine("Stanje sahovnice je:\r\n" + this.mainChessboard
+        // + "To stanje se je pojavilo "
+        // + this.mainChessboard.howManyTimeHasCurrentStateAppeared()
+        // + "-krat.\r\n");
     }
 
 
@@ -326,7 +326,8 @@ public class MCT {
 
         if (this.root.isWhitesMove) {
 
-            rez = WhiteMoveChooser.chooseAMove(this.root, whiteChoosingStrategy);
+            rez = WhiteMoveChooser
+                    .chooseAMove(this.root, whiteChoosingStrategy);
 
             rez = this.root.nextMoves.get(rez).moveNumber;
         }
@@ -380,6 +381,16 @@ public class MCT {
      */
     public int getCurrentTreeSize() {
         return this.currentTreeSize;
+    }
+
+
+    /**
+     * Gets main chess board.
+     * 
+     * @return main chess board
+     */
+    public Chessboard getMainChessboard() {
+        return this.mainChessboard;
     }
 
 

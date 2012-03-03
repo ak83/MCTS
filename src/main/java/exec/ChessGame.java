@@ -75,7 +75,16 @@ public class ChessGame {
         int mB = -1;
         while (true) {
 
-            String perfectMove = IOUtils.getMoveFromFruit(this.MCTree.getFEN());
+            this.log.fine("Stanje sahovnice je:\r\n"
+                    + this.MCTree.getMainChessboard()
+                    + "To stanje se je pojavilo "
+                    + this.MCTree.getMainChessboard()
+                            .howManyTimeHasCurrentStateAppeared()
+                    + "-krat.\r\n");
+
+            String fruitOutput = IOUtils.getOutputFromFruit(this.MCTree
+                    .getFEN());
+            String perfectMove = IOUtils.getMoveFromFruit(fruitOutput);
 
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();

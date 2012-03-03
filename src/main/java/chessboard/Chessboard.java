@@ -67,6 +67,8 @@ public class Chessboard extends SimpleChessboard implements Cloneable {
         // konec zacetne postavitve//
         // ////////////////////////////
         this.constructPiecePositionFromBoard();
+        
+        this.numberOfTimesBoardStateHasOccured.put(this.hashCode(), 1);
 
     }
 
@@ -144,21 +146,6 @@ public class Chessboard extends SimpleChessboard implements Cloneable {
 
     }
 
-
-    
-
-
-    /* *************************************************************************
-     * *******************POMOZNE FUNKCIJE**************************************
-     */
-
-    
-
-
-    /* ***********************************************************************************
-     * ***********************************************************************************
-     * ***********************************************************************************
-     */
 
     
 

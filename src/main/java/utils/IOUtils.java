@@ -36,6 +36,13 @@ public class IOUtils {
     }
 
 
+    /**
+     * Runs fruit and returns its output.
+     * 
+     * @param fen
+     *            fen for which fruit will be run
+     * @return fruits output
+     */
     public static String getOutputFromFruit(String fen) {
         String rez = null;
         try {
@@ -74,9 +81,13 @@ public class IOUtils {
     }
 
 
-    public static String getMoveFromFruit(String fen) {
-        String fruitOutput = IOUtils.getOutputFromFruit(fen);
-//        System.out.println(fruitOutput);
+    /**
+     * Gets best move from fruit output.
+     * 
+     * @param fruitOutput
+     * @return best move
+     */
+    public static String getMoveFromFruit(String fruitOutput) {
         String[] lines = fruitOutput.split("\n");
 
         return lines[lines.length - 1].substring(9, 13);
