@@ -1,40 +1,17 @@
 package utils;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import exec.Constants;
 
 /**
- * Class for stugg like file writing and getting output from fruit
+ * Class for fruit related methods
  * 
  * @author Andraz Kohne
  */
-public class IOUtils {
-
-    /**
-     * Writes string into file
-     * 
-     * @param fileName
-     *            file in which string will be written
-     * @param input
-     *            string to be written in file
-     */
-    public static void writePGN(String fileName, String input) {
-        try {
-
-            FileWriter fw = new FileWriter(new File(fileName));
-            fw.write(input);
-            fw.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+public class FruitUtils {
 
     /**
      * Runs fruit and returns its output.
@@ -48,17 +25,18 @@ public class IOUtils {
         try {
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-            IOUtils.writeToProcess(pr, "ucinewgame");
-            IOUtils.writeToProcess(pr, "setoption name Hash value 128");
-            IOUtils.writeToProcess(pr, "setoption name MultiPV value 100");
-            IOUtils.writeToProcess(pr, "setoption name NalimovPath value "
+            FruitUtils.writeToProcess(pr, "ucinewgame");
+            FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
+            FruitUtils.writeToProcess(pr, "setoption name MultiPV value 100");
+            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value "
                     + Constants.EMD_DIR);
-            IOUtils.writeToProcess(pr, "setoption name NalimovCache value 32");
-            IOUtils.writeToProcess(pr, "setoption name EGBB Path value "
+            FruitUtils.writeToProcess(pr,
+                    "setoption name NalimovCache value 32");
+            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value "
                     + Constants.EMD_DIR);
-            IOUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
-            IOUtils.writeToProcess(pr, "position fen " + fen);
-            IOUtils.writeToProcess(pr, "go depth 2");
+            FruitUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
+            FruitUtils.writeToProcess(pr, "position fen " + fen);
+            FruitUtils.writeToProcess(pr, "go depth 2");
             pr.getOutputStream().close();
 
             BufferedReader input = new BufferedReader(new InputStreamReader(pr
@@ -145,6 +123,31 @@ public class IOUtils {
     }
 
 
-    private IOUtils() {}
+    /**
+     * Gets DTM of move from fruit output
+     * 
+     * @param move
+     *            move in format such as c1c2
+     * @param fruitOutput
+     *            output of fruit
+     * @return DTM of move
+     */
+    public static int getDTMOfMoveFromFruitOutput(String move,
+            String fruitOutput) {
+        String[] lines = fruitOutput.split("\n");
+        String rez = null;
+        for (String line : lines) {
+            if (line.contains(move)) {
+                rez = line.split(" ")[7];
+
+                break;
+            }
+        }
+
+        return Integer.parseInt(rez);
+    }
+
+
+    private FruitUtils() {}
 
 }

@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
-import utils.IOUtils;
+import utils.FruitUtils;
 import utils.MoveFindersUtils;
 
 import chessboard.Chessboard;
@@ -128,23 +128,23 @@ public class BlackMoveFinder {
         try {
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-            IOUtils.writeToProcess(pr, "ucinewgame");
-            IOUtils.writeToProcess(pr, "setoption name Hash value 128");
-            IOUtils.writeToProcess(pr,
+            FruitUtils.writeToProcess(pr, "ucinewgame");
+            FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
+            FruitUtils.writeToProcess(pr,
                     "setoption name MultiPV value 100");
-            IOUtils.writeToProcess(pr,
+            FruitUtils.writeToProcess(pr,
                     "setoption name NalimovPath value " + Constants.EMD_DIR);
-            IOUtils.writeToProcess(pr,
+            FruitUtils.writeToProcess(pr,
                     "setoption name NalimovCache value 32");
-            IOUtils.writeToProcess(pr,
+            FruitUtils.writeToProcess(pr,
                     "setoption name EGBB Path value " + Constants.EMD_DIR);
-            IOUtils.writeToProcess(pr,
+            FruitUtils.writeToProcess(pr,
                     "setoption name EGBB Cache value 32");
             // writeToProcess(pr,
             // "position fen r7/8/5k2/8/8/8/R7/K7 w - - 0 1");
-            IOUtils.writeToProcess(pr, "position fen "
+            FruitUtils.writeToProcess(pr, "position fen "
                     + board.boardToFen());
-            IOUtils.writeToProcess(pr, "go depth 2");
+            FruitUtils.writeToProcess(pr, "go depth 2");
             pr.getOutputStream().close();
 
             BufferedReader input = new BufferedReader(new InputStreamReader(pr

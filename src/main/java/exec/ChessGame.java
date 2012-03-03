@@ -3,7 +3,7 @@ package exec;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import utils.IOUtils;
+import utils.FruitUtils;
 import utils.Utils;
 import chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
@@ -82,9 +82,12 @@ public class ChessGame {
                             .howManyTimeHasCurrentStateAppeared()
                     + "-krat.\r\n");
 
-            String fruitOutput = IOUtils.getOutputFromFruit(this.MCTree
+            String fruitOutput = FruitUtils.getOutputFromFruit(this.MCTree
                     .getFEN());
-            String perfectMove = IOUtils.getMoveFromFruit(fruitOutput);
+            System.out.println((fruitOutput));
+            String perfectMove = FruitUtils.getMoveFromFruit(fruitOutput);
+            System.out.println(FruitUtils.getDTMOfMoveFromFruitOutput(perfectMove, fruitOutput));
+            System.out.print(perfectMove);
 
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();
@@ -194,7 +197,7 @@ public class ChessGame {
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
         if (Constants.WRITE_INDIVIDUAL_GAMES) {
-            IOUtils.writePGN(this.pgnFileName, this.fen);
+            Utils.writePGN(this.pgnFileName, this.fen);
         }
         return this.fen;
     }
