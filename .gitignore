@@ -6,6 +6,9 @@ target
 *.ini
 *.lck
 *.class
+*.exe
+*.emd
 .classpath
 .settings
 .project
+
