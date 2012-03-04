@@ -8,6 +8,7 @@ target
 *.class
 *.exe
 *.emd
+*.patch
 .classpath
 .settings
 .project
