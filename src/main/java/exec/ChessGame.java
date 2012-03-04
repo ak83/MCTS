@@ -54,7 +54,7 @@ public class ChessGame {
      * 
      * @param round
      *            which which round is played, needed for logging purposes
-     * @return
+     * @return matches fen
      * @throws ChessboardException
      * @throws IOException
      */
@@ -84,13 +84,14 @@ public class ChessGame {
 
             String fruitOutput = FruitUtils.getOutputFromFruit(this.MCTree
                     .getFEN());
-            System.out.println((fruitOutput));
+
             String perfectMove = FruitUtils.getMoveFromFruit(fruitOutput);
-            System.out.println(FruitUtils.getDTMOfMoveFromFruitOutput(perfectMove, fruitOutput));
-            System.out.print(perfectMove);
+            int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
+                    perfectMove, fruitOutput);
 
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();
+
             if (eval == ChessboardEvalState.BLACK_KING_MATED) {
                 // ZMAGA BELEGA
                 didWhiteWin = true;
@@ -122,8 +123,12 @@ public class ChessGame {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mW = moveNumber;
 
+                int mwDTM = FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
+                        .moveNumberToFruitString(mW), fruitOutput)
+                        - perfectDTM;
+
                 this.fen += Utils.whiteMoveNumberToFenString(mW,
-                        this.turnDepth, perfectMove)
+                        this.turnDepth, perfectMove + ", diff=" + mwDTM)
                         + " ";
             }
             else {
@@ -132,7 +137,12 @@ public class ChessGame {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
                 mB = moveNumber;
 
-                this.fen += Utils.blackMoveNumberToFenString(mB, perfectMove);
+                int mBDTM = perfectDTM
+                        - FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
+                                .moveNumberToFruitString(mB), fruitOutput);
+
+                this.fen += Utils.blackMoveNumberToFenString(mB, perfectMove
+                        + ", diff=" + mBDTM);
                 this.turnDepth++;
             }
 
@@ -142,6 +152,7 @@ public class ChessGame {
                     + this.MCTree.getCurrentTreeSize() + "\r\n"
                     + "Optimalna poteza, ki bi jo lahko naredi igralec je "
                     + perfectMove);
+
             this.MCTree.makeMCMove(moveNumber);
 
         }

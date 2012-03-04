@@ -138,13 +138,34 @@ public class FruitUtils {
         String rez = null;
         for (String line : lines) {
             if (line.contains(move)) {
-                rez = line.split(" ")[7];
-
+                // FIXME: Workaround! try and catch must be here, because when
+                // white wins there are not outputted moves.
+                try {
+                    rez = line.split(" ")[7];
+                }
+                catch (ArrayIndexOutOfBoundsException e) {
+                    return 0;
+                }
                 break;
             }
         }
 
         return Integer.parseInt(rez);
+    }
+
+
+    /**
+     * Converts moveNumber to fruit format
+     * 
+     * @param moveNumber
+     *            move number
+     * @return fruit format of move number (ie. b1b2)
+     */
+    public static String moveNumberToFruitString(int moveNumber) {
+        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
+
+        return Utils.positionToString(from) + Utils.positionToString(to);
     }
 
 
