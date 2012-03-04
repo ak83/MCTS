@@ -86,8 +86,6 @@ public class ChessGame {
                     .getFEN());
 
             String perfectMove = FruitUtils.getMoveFromFruit(fruitOutput);
-            int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
-                    perfectMove, fruitOutput);
 
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();
@@ -111,6 +109,9 @@ public class ChessGame {
             }
 
             int moveNumber = -1;
+            
+            int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
+                    perfectMove, fruitOutput);
 
             if (whitesTurn) {
 

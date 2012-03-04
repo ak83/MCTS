@@ -118,11 +118,11 @@ public class BlackMoveFinder {
 
 
     /**
-     * Finds an optimal ply number for black king.
+     * Finds an optimal move number for black king.
      * 
      * @param board
-     *            board on which we search for ply
-     * @return ply number for black king that uses perfect strategy
+     *            board on which we search for move
+     * @return move number for black king that uses perfect strategy
      */
     private static int findBlackPerfectMove(SimpleChessboard board) {
         try {
@@ -130,20 +130,17 @@ public class BlackMoveFinder {
             Process pr = rt.exec(Constants.FRUIT_FILEPATH);
             FruitUtils.writeToProcess(pr, "ucinewgame");
             FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
-            FruitUtils.writeToProcess(pr,
-                    "setoption name MultiPV value 100");
-            FruitUtils.writeToProcess(pr,
-                    "setoption name NalimovPath value " + Constants.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name MultiPV value 100");
+            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value "
+                    + Constants.EMD_DIR);
             FruitUtils.writeToProcess(pr,
                     "setoption name NalimovCache value 32");
-            FruitUtils.writeToProcess(pr,
-                    "setoption name EGBB Path value " + Constants.EMD_DIR);
-            FruitUtils.writeToProcess(pr,
-                    "setoption name EGBB Cache value 32");
+            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value "
+                    + Constants.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
             // writeToProcess(pr,
             // "position fen r7/8/5k2/8/8/8/R7/K7 w - - 0 1");
-            FruitUtils.writeToProcess(pr, "position fen "
-                    + board.boardToFen());
+            FruitUtils.writeToProcess(pr, "position fen " + board.boardToFen());
             FruitUtils.writeToProcess(pr, "go depth 2");
             pr.getOutputStream().close();
 

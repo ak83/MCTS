@@ -138,14 +138,7 @@ public class FruitUtils {
         String rez = null;
         for (String line : lines) {
             if (line.contains(move)) {
-                // FIXME: Workaround! try and catch must be here, because when
-                // white wins there are not outputted moves.
-                try {
-                    rez = line.split(" ")[7];
-                }
-                catch (ArrayIndexOutOfBoundsException e) {
-                    return 0;
-                }
+                rez = line.split(" ")[7];
                 break;
             }
         }
