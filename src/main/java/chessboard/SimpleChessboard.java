@@ -128,7 +128,7 @@ public class SimpleChessboard {
 
         sb.append("*\r\n");
         for (int x = 7; x >= 0; x--) {
-            sb.append(8 - x);
+            sb.append(x + 1);
             int baza = x * 16;
             for (int y = 0; y < 8; y++) {
                 int t = this.board[baza + y];
