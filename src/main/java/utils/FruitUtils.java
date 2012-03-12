@@ -3,6 +3,7 @@ package utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Logger;
 
 import exec.Constants;
 
@@ -13,6 +14,9 @@ import exec.Constants;
  */
 public class FruitUtils {
 
+    private static Logger log = Logger.getLogger("MCTS.FruitUtils");
+
+
     /**
      * Runs fruit and returns its output.
      * 
@@ -21,41 +25,41 @@ public class FruitUtils {
      * @return fruits output
      */
     public static String getOutputFromFruit(String fen) {
-        String rez = null;
-        try {
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-            FruitUtils.writeToProcess(pr, "ucinewgame");
-            FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
-            FruitUtils.writeToProcess(pr, "setoption name MultiPV value 100");
-            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value "
-                    + Constants.EMD_DIR);
-            FruitUtils.writeToProcess(pr,
-                    "setoption name NalimovCache value 32");
-            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value "
-                    + Constants.EMD_DIR);
-            FruitUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
-            FruitUtils.writeToProcess(pr, "position fen " + fen);
-            FruitUtils.writeToProcess(pr, "go depth 2");
-            pr.getOutputStream().close();
+	String rez = null;
+	try {
+	    Runtime rt = Runtime.getRuntime();
+	    Process pr = rt.exec(Constants.FRUIT_FILEPATH);
+	    FruitUtils.writeToProcess(pr, "ucinewgame");
+	    FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
+	    FruitUtils.writeToProcess(pr, "setoption name MultiPV value 100");
+	    FruitUtils.writeToProcess(pr, "setoption name NalimovPath value "
+		    + Constants.EMD_DIR);
+	    FruitUtils.writeToProcess(pr,
+		    "setoption name NalimovCache value 32");
+	    FruitUtils.writeToProcess(pr, "setoption name EGBB Path value "
+		    + Constants.EMD_DIR);
+	    FruitUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
+	    FruitUtils.writeToProcess(pr, "position fen " + fen);
+	    FruitUtils.writeToProcess(pr, "go depth 2");
+	    pr.getOutputStream().close();
 
-            BufferedReader input = new BufferedReader(new InputStreamReader(pr
-                    .getInputStream()));
+	    BufferedReader input = new BufferedReader(new InputStreamReader(
+		    pr.getInputStream()));
 
-            String line = null;
+	    String line = null;
 
-            while ((line = input.readLine()) != null) {
-                rez += line + "\n";
-            }
+	    while ((line = input.readLine()) != null) {
+		rez += line + "\n";
+	    }
 
-            input.close();
-            pr.destroy();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        return rez;
+	    input.close();
+	    pr.destroy();
+	}
+	catch (IOException e) {
+	    e.printStackTrace();
+	    System.exit(1);
+	}
+	return rez;
     }
 
 
@@ -66,9 +70,22 @@ public class FruitUtils {
      * @return best move
      */
     public static String getMoveFromFruit(String fruitOutput) {
-        String[] lines = fruitOutput.split("\n");
+	String[] lines = fruitOutput.split("\n");
 
-        return lines[lines.length - 1].substring(9, 13);
+	// this try-catch is here because sometimes fruit output is not in
+	// expected format and program crashes
+	try {
+	    return lines[lines.length - 1].substring(9, 13);
+	}
+	catch (Exception e) {
+	    e.printStackTrace();
+	    FruitUtils.log
+		    .severe("There has been an error in program. Fruit output is:\r\n"
+			    + fruitOutput);
+	    System.exit(3);
+	}
+
+	return "THIS SHOULD NOT HAPPEN";
 
     }
 
@@ -83,13 +100,13 @@ public class FruitUtils {
      * @throws IOException
      */
     public static void writeToProcess(Process process, String msg)
-            throws IOException {
-        char[] chars = (msg + "\n").toCharArray();
-        byte[] bytes = new byte[chars.length];
-        for (int x = 0; x < chars.length; x++) {
-            bytes[x] = (byte) chars[x];
-        }
-        process.getOutputStream().write(bytes);
+	    throws IOException {
+	char[] chars = (msg + "\n").toCharArray();
+	byte[] bytes = new byte[chars.length];
+	for (int x = 0; x < chars.length; x++) {
+	    bytes[x] = (byte) chars[x];
+	}
+	process.getOutputStream().write(bytes);
     }
 
 
@@ -100,26 +117,26 @@ public class FruitUtils {
      *         .
      */
     public static boolean isFruitReady() {
-        String h = null;
-        try {
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(Constants.FRUIT_FILEPATH);
-            writeToProcess(pr, "isready");
+	String h = null;
+	try {
+	    Runtime rt = Runtime.getRuntime();
+	    Process pr = rt.exec(Constants.FRUIT_FILEPATH);
+	    writeToProcess(pr, "isready");
 
-            pr.getOutputStream().close();
-            BufferedReader input = new BufferedReader(new InputStreamReader(pr
-                    .getInputStream()));
+	    pr.getOutputStream().close();
+	    BufferedReader input = new BufferedReader(new InputStreamReader(
+		    pr.getInputStream()));
 
-            String line = null;
-            while ((line = input.readLine()) != null) {
-                h = line;
-            }
-            input.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return h.equals("readyok");
+	    String line = null;
+	    while ((line = input.readLine()) != null) {
+		h = line;
+	    }
+	    input.close();
+	}
+	catch (Exception e) {
+	    e.printStackTrace();
+	}
+	return h.equals("readyok");
     }
 
 
@@ -133,17 +150,17 @@ public class FruitUtils {
      * @return DTM of move
      */
     public static int getDTMOfMoveFromFruitOutput(String move,
-            String fruitOutput) {
-        String[] lines = fruitOutput.split("\n");
-        String rez = null;
-        for (String line : lines) {
-            if (line.contains(move)) {
-                rez = line.split(" ")[7];
-                break;
-            }
-        }
+	    String fruitOutput) {
+	String[] lines = fruitOutput.split("\n");
+	String rez = null;
+	for (String line : lines) {
+	    if (line.contains(move)) {
+		rez = line.split(" ")[7];
+		break;
+	    }
+	}
 
-        return Integer.parseInt(rez);
+	return Integer.parseInt(rez);
     }
 
 
@@ -155,10 +172,10 @@ public class FruitUtils {
      * @return fruit format of move number (ie. b1b2)
      */
     public static String moveNumberToFruitString(int moveNumber) {
-        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
-        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
+	int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+	int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
 
-        return Utils.positionToString(from) + Utils.positionToString(to);
+	return Utils.positionToString(from) + Utils.positionToString(to);
     }
 
 
