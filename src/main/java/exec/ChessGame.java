@@ -18,24 +18,27 @@ public class ChessGame {
     /**
      * Which turn currently is.
      */
-    private int    turnDepth = 1;
+    private int                 turnDepth  = 1;
 
     /**
      * This matches fen.
      */
-    private String fen       = "";
+    private String              fen        = "";
 
     /**
      * File path where this match will be saved if sacing invidiual games is
      * enabled.
      */
-    private String pgnFileName;
+    private String              pgnFileName;
 
     /** MC tree */
-    private MCT    MCTree    = new MCT();
+    private MCT                 MCTree     = new MCT();
 
     /** Logger */
-    private Logger log       = Logger.getLogger("MCTS.ChessGame"); ;
+    private Logger              log        = Logger.getLogger("MCTS.ChessGame");
+
+    /** For keeping this matches statistics */
+    private ChessGameStatistics matchStats = new ChessGameStatistics();
 
 
     /**
@@ -87,6 +90,9 @@ public class ChessGame {
 
             String perfectMove = FruitUtils.getMoveFromFruit(fruitOutput);
 
+            int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
+                    perfectMove, fruitOutput);
+
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();
 
@@ -95,6 +101,11 @@ public class ChessGame {
                 didWhiteWin = true;
                 this.fen += Utils.whiteMoveNumberToFenString(mW,
                         this.turnDepth, perfectMove);
+
+                this.fen += "{average white DTM diff = "
+                        + this.matchStats.getAverageWhitesDTMDiff()
+                        + ", average black DTM diff = "
+                        + this.matchStats.getAverageBlacksDTMDiff() + " }";
                 break;
             }
             else if (eval != ChessboardEvalState.NORMAl) {
@@ -103,15 +114,17 @@ public class ChessGame {
                 if (!whitesTurn) {
                     this.fen += Utils.whiteMoveNumberToFenString(mW,
                             this.turnDepth, perfectMove);
+
+                    this.fen += "{average white DTM diff = "
+                            + this.matchStats.getAverageWhitesDTMDiff()
+                            + ", average black DTM diff = "
+                            + this.matchStats.getAverageBlacksDTMDiff() + " }";
                 }
 
                 break;
             }
 
             int moveNumber = -1;
-            
-            int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
-                    perfectMove, fruitOutput);
 
             if (whitesTurn) {
 
@@ -128,6 +141,9 @@ public class ChessGame {
                         .moveNumberToFruitString(mW), fruitOutput)
                         - perfectDTM;
 
+                this.matchStats.whitesDiffFromOptimal
+                        .put(this.turnDepth, mwDTM);
+
                 this.fen += Utils.whiteMoveNumberToFenString(mW,
                         this.turnDepth, perfectMove + ", diff=" + mwDTM)
                         + " ";
@@ -141,6 +157,9 @@ public class ChessGame {
                 int mBDTM = perfectDTM
                         - FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
                                 .moveNumberToFruitString(mB), fruitOutput);
+
+                this.matchStats.blacksDiffFromOptimal
+                        .put(this.turnDepth, mBDTM);
 
                 this.fen += Utils.blackMoveNumberToFenString(mB, perfectMove
                         + ", diff=" + mBDTM);
@@ -158,6 +177,40 @@ public class ChessGame {
 
         }
 
+        this.logGameSummary(round, startTime, didWhiteWin);
+
+        String whiteStrat = Utils
+                .whiteStrategyToString(Constants.WHITE_MOVE_CHOOSER_STRATEGY);
+
+        String blackStrat = Utils
+                .blackStrategyToString(Constants.BLACK_MOVE_CHOOSER_STRATEGY);
+        this.turnDepth = (this.turnDepth - 1) * 2;
+
+        String preamble = Utils.constructPreamble(whiteStrat, blackStrat,
+                Constants.C, Constants.GOBAN, didWhiteWin, round,
+                this.turnDepth, Constants.NUMBER_OF_INITAL_STEPS,
+                Constants.NUMBER_OF_RUNNING_STEPS,
+                Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
+        this.fen = preamble + this.fen;
+        if (Constants.WRITE_INDIVIDUAL_GAMES) {
+            Utils.writePGN(this.pgnFileName, this.fen);
+        }
+        return this.fen;
+    }
+
+
+    /**
+     * Logs game summary.
+     * 
+     * @param round
+     *            which consecutive game match was played
+     * @param startTime
+     *            when did match start in milliseconds
+     * @param didWhiteWin
+     *            <code>true</code> if white won the match, <code>false</code>
+     *            otherwise
+     */
+    private void logGameSummary(int round, long startTime, boolean didWhiteWin) {
         long runTime = System.currentTimeMillis() - startTime;
         MCTStats stats = this.MCTree.getMCTStatistics();
         String logString0 = "\r\n##########################\r\n###########################\r\nPOVZETEK igre "
@@ -184,6 +237,12 @@ public class ChessGame {
         logString4 += ".\r\n Pred koncem igre pa je bila velikost drevesa "
                 + this.MCTree.getCurrentTreeSize();
 
+        // average difference from optimal moves
+        String whitesAverageDiff = "Average whites DTM difference from optimal move is "
+                + this.matchStats.getAverageWhitesDTMDiff();
+        String blacksAverageDiff = "Average black DTM difference from optimal move is "
+                + this.matchStats.getAverageBlacksDTMDiff();
+
         this.log.info(logString0
                 + "\r\n"
                 + logString1
@@ -193,24 +252,10 @@ public class ChessGame {
                 + logString3
                 + "\r\n"
                 + logString4
+                + "\r\n"
+                + whitesAverageDiff
+                + "\r\n"
+                + blacksAverageDiff
                 + "\r\n###########################################################################################\r\n###########################################################################################\r\n");
-
-        String whiteStrat = Utils
-                .whiteStrategyToString(Constants.WHITE_MOVE_CHOOSER_STRATEGY);
-
-        String blackStrat = Utils
-                .blackStrategyToString(Constants.BLACK_MOVE_CHOOSER_STRATEGY);
-        this.turnDepth = (this.turnDepth - 1) * 2;
-
-        String preamble = Utils.constructPreamble(whiteStrat, blackStrat,
-                Constants.C, Constants.GOBAN, didWhiteWin, round,
-                this.turnDepth, Constants.NUMBER_OF_INITAL_STEPS,
-                Constants.NUMBER_OF_RUNNING_STEPS,
-                Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
-        this.fen = preamble + this.fen;
-        if (Constants.WRITE_INDIVIDUAL_GAMES) {
-            Utils.writePGN(this.pgnFileName, this.fen);
-        }
-        return this.fen;
     }
 }
