@@ -74,8 +74,6 @@ public class ChessGame {
         }
 
         boolean whitesTurn = true;
-        int mW = -1;
-        int mB = -1;
         while (true) {
 
             this.log.fine("Stanje sahovnice je:\r\n"
@@ -85,41 +83,32 @@ public class ChessGame {
                             .howManyTimeHasCurrentStateAppeared()
                     + "-krat.\r\n");
 
+            // get best move and best move DTM from fruit
             String fruitOutput = FruitUtils.getOutputFromFruit(this.MCTree
                     .getFEN());
-
             String perfectMove = FruitUtils.getMoveFromFruit(fruitOutput);
-
             int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
                     perfectMove, fruitOutput);
 
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();
 
-            if (eval == ChessboardEvalState.BLACK_KING_MATED) {
-                // ZMAGA BELEGA
-                didWhiteWin = true;
-                this.fen += Utils.whiteMoveNumberToFenString(mW,
-                        this.turnDepth, perfectMove);
+            // has match ended
+            if (eval != ChessboardEvalState.NORMAl) {
+                // whites victory
+                if (eval == ChessboardEvalState.BLACK_KING_MATED) {
+                    didWhiteWin = true;
+
+                }
+                // blacks victory
+                else {
+                    didWhiteWin = false;
+                }
 
                 this.fen += "{average white DTM diff = "
                         + this.matchStats.getAverageWhitesDTMDiff()
                         + ", average black DTM diff = "
                         + this.matchStats.getAverageBlacksDTMDiff() + " }";
-                break;
-            }
-            else if (eval != ChessboardEvalState.NORMAl) {
-                // ZMAGA ÈRNEGA
-                didWhiteWin = false;
-                if (!whitesTurn) {
-                    this.fen += Utils.whiteMoveNumberToFenString(mW,
-                            this.turnDepth, perfectMove);
-
-                    this.fen += "{average white DTM diff = "
-                            + this.matchStats.getAverageWhitesDTMDiff()
-                            + ", average black DTM diff = "
-                            + this.matchStats.getAverageBlacksDTMDiff() + " }";
-                }
 
                 break;
             }
@@ -135,16 +124,15 @@ public class ChessGame {
                 moveNumber = this.MCTree.chooseAMoveNumber(
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
-                mW = moveNumber;
 
                 int mwDTM = FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
-                        .moveNumberToFruitString(mW), fruitOutput)
+                        .moveNumberToFruitString(moveNumber), fruitOutput)
                         - perfectDTM;
 
                 this.matchStats.whitesDiffFromOptimal
                         .put(this.turnDepth, mwDTM);
 
-                this.fen += Utils.whiteMoveNumberToFenString(mW,
+                this.fen += Utils.whiteMoveNumberToFenString(moveNumber,
                         this.turnDepth, perfectMove + ", diff=" + mwDTM)
                         + " ";
             }
@@ -152,17 +140,17 @@ public class ChessGame {
                 moveNumber = this.MCTree.chooseAMoveNumber(
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
-                mB = moveNumber;
 
                 int mBDTM = perfectDTM
                         - FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
-                                .moveNumberToFruitString(mB), fruitOutput);
+                                .moveNumberToFruitString(moveNumber),
+                                fruitOutput);
 
                 this.matchStats.blacksDiffFromOptimal
                         .put(this.turnDepth, mBDTM);
 
-                this.fen += Utils.blackMoveNumberToFenString(mB, perfectMove
-                        + ", diff=" + mBDTM);
+                this.fen += Utils.blackMoveNumberToFenString(moveNumber,
+                        perfectMove + ", diff=" + mBDTM);
                 this.turnDepth++;
             }
 

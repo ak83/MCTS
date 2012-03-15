@@ -53,9 +53,9 @@ public class Constants {
     public static String               EMD_DIR                                                                         = System.getProperty("user.dir");
 
     /**
-     * maximum tree depth ( maximum ply count for single match).
+     * maximum tree depth ( maximum ply count for single match) - 1.
      */
-    public static int                  MAX_DEPTH                                                                       = 100;
+    public static int                  MAX_DEPTH                                                                       = 99;
 
     /**
      * C constant to be used by MCT nodes.
