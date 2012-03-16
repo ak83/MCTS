@@ -6,9 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import mct.MCTNode;
 import moveChoosers.WhiteChooserStrategy;
 import moveFinders.BlackFinderStrategy;
-import exec.MCTNode;
 
 /** Class holds various utils methods */
 public class Utils {
@@ -180,7 +180,7 @@ public class Utils {
      *            otherwise
      * @param whatRound
      *            which match was currently played
-     * @param numberOfMovesMade
+     * @param numberOfPliesMade
      *            number of turns made in match
      * @param numberOfInitialMCTSteps
      *            number of MCT steps before match
@@ -192,7 +192,7 @@ public class Utils {
      */
     public static String constructPreamble(String whiteStrategy,
             String blackStrategy, double c, int goban, boolean didWhiteWin,
-            int whatRound, int numberOfMovesMade, int numberOfInitialMCTSteps,
+            int whatRound, int numberOfPliesMade, int numberOfInitialMCTSteps,
             int numberOfRunningMCTSteps, int numberOfSimulationsPerEvaluation) {
         String event = "[Event \"InitalMCTSteps: " + numberOfInitialMCTSteps
                 + ", RunningMCTSteps: " + numberOfRunningMCTSteps
@@ -203,7 +203,7 @@ public class Utils {
         String round = "[Round \"" + whatRound + "\"]\n";
         String white = "[White \"" + whiteStrategy + "\"]\n";
         String black = "[Black \"" + blackStrategy + "\"]\n";
-        String plyCount = "[PlyCount \"" + numberOfMovesMade + "\"]\n";
+        String plyCount = "[PlyCount \"" + numberOfPliesMade + "\"]\n";
         String result = "[Result \"";
         if (didWhiteWin) {
             result += "1-0";

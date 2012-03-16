@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import chessboard.Chessboard;
 
+import mct.MCTNode;
 import moveFinders.BlackMoveFinder;
 import moveFinders.BlackFinderStrategy;
 import moveFinders.WhiteMoveFinder;
@@ -11,7 +12,6 @@ import moveFinders.WhiteFinderStrategy;
 
 import exceptions.ChessboardException;
 import exec.Constants;
-import exec.MCTNode;
 
 /**
  * Class that holds method that are needed by Monte Carlo Tree.

@@ -3,11 +3,12 @@ package chessboard;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import mct.MCTNode;
+
 import utils.ChessboardUtils;
 import utils.Utils;
 import exceptions.ChessboardException;
 import exec.Constants;
-import exec.MCTNode;
 import exec.Move;
 
 public class Chessboard extends SimpleChessboard implements Cloneable {

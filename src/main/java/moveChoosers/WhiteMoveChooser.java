@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import mct.MCTNode;
+
 import utils.MCTUtils;
-import exec.MCTNode;
 
 /**
  * Class that handles choosing moves for white from MC Tree.

@@ -3,6 +3,9 @@ package exec;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import mct.MCT;
+import mct.MCTStats;
+
 import utils.FruitUtils;
 import utils.Utils;
 import chessboard.ChessboardEvalState;
@@ -18,7 +21,7 @@ public class ChessGame {
     /**
      * Which turn currently is.
      */
-    private int                 turnDepth  = 1;
+    // private int turnDepth = 1;
 
     /**
      * This matches fen.
@@ -74,6 +77,8 @@ public class ChessGame {
         }
 
         boolean whitesTurn = true;
+
+        int turnDepth = 1;
         while (true) {
 
             this.log.fine("Stanje sahovnice je:\r\n"
@@ -129,11 +134,10 @@ public class ChessGame {
                         .moveNumberToFruitString(moveNumber), fruitOutput)
                         - perfectDTM;
 
-                this.matchStats.whitesDiffFromOptimal
-                        .put(this.turnDepth, mwDTM);
+                this.matchStats.whitesDiffFromOptimal.put(turnDepth, mwDTM);
 
                 this.fen += Utils.whiteMoveNumberToFenString(moveNumber,
-                        this.turnDepth, perfectMove + ", diff=" + mwDTM)
+                        turnDepth, perfectMove + ", diff=" + mwDTM)
                         + " ";
             }
             else {
@@ -146,12 +150,12 @@ public class ChessGame {
                                 .moveNumberToFruitString(moveNumber),
                                 fruitOutput);
 
-                this.matchStats.blacksDiffFromOptimal
-                        .put(this.turnDepth, mBDTM);
+                this.matchStats.blacksDiffFromOptimal.put(turnDepth, mBDTM);
 
                 this.fen += Utils.blackMoveNumberToFenString(moveNumber,
                         perfectMove + ", diff=" + mBDTM);
-                this.turnDepth++;
+
+                turnDepth++;
             }
 
             whitesTurn = !whitesTurn;
@@ -165,18 +169,25 @@ public class ChessGame {
 
         }
 
-        this.logGameSummary(round, startTime, didWhiteWin);
+        if (!didWhiteWin) {
+            turnDepth--;
+        }
+
+        this.logGameSummary(round, startTime, didWhiteWin, turnDepth);
 
         String whiteStrat = Utils
                 .whiteStrategyToString(Constants.WHITE_MOVE_CHOOSER_STRATEGY);
 
         String blackStrat = Utils
                 .blackStrategyToString(Constants.BLACK_MOVE_CHOOSER_STRATEGY);
-        this.turnDepth = (this.turnDepth - 1) * 2;
 
+        // calculate number of plies made
+        int plyCount = didWhiteWin ? (turnDepth * 2 - 1) : (turnDepth * 2);
+
+        // construct, write and return this matches pgn
         String preamble = Utils.constructPreamble(whiteStrat, blackStrat,
-                Constants.C, Constants.GOBAN, didWhiteWin, round,
-                this.turnDepth, Constants.NUMBER_OF_INITAL_STEPS,
+                Constants.C, Constants.GOBAN, didWhiteWin, round, plyCount,
+                Constants.NUMBER_OF_INITAL_STEPS,
                 Constants.NUMBER_OF_RUNNING_STEPS,
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
@@ -198,7 +209,8 @@ public class ChessGame {
      *            <code>true</code> if white won the match, <code>false</code>
      *            otherwise
      */
-    private void logGameSummary(int round, long startTime, boolean didWhiteWin) {
+    private void logGameSummary(int round, long startTime, boolean didWhiteWin,
+            int turnsMade) {
         long runTime = System.currentTimeMillis() - startTime;
         MCTStats stats = this.MCTree.getMCTStatistics();
         String logString0 = "\r\n##########################\r\n###########################\r\nPOVZETEK igre "
@@ -206,12 +218,10 @@ public class ChessGame {
                 + ". Igra je bila odigrana v "
                 + Utils.timeMillisToString(runTime);
         if (didWhiteWin) {
-            logString0 += "\r\nZmagal je BELI v " + (this.turnDepth - 1)
-                    + " potezah";
+            logString0 += "\r\nZmagal je BELI v " + turnsMade + " potezah";
         }
         else {
-            logString0 += "\r\nZmagal je CRNI v " + (this.turnDepth - 1)
-                    + " potezah";
+            logString0 += "\r\nZmagal je CRNI v " + turnsMade + " potezah";
         }
         String logString1 = "V igri je bilo:";
         String logString2 = stats.numberOfMatsInSimAddsOneNode
