@@ -1,6 +1,5 @@
 package utils;
 
-
 /**
  * Class that hold util methods for Chessboard (some older methods are in
  * exec.Utils.java).

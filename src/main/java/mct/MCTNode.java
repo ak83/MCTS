@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.management.RuntimeErrorException;
 
 import utils.Utils;
-
 import chessboard.Chessboard;
 import chessboard.ChessboardEvalState;
 import chessboard.SimpleChessboard;
@@ -56,7 +55,7 @@ public class MCTNode {
     public boolean              isWhitesMove;
 
     /** Chess board state belonging to this ply */
-    public SimpleChessboard           chessboard;
+    public SimpleChessboard     chessboard;
 
     /**
      * Tells depth difference between this node and it's deepest descendant.

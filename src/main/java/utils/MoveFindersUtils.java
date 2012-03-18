@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import exec.Move;
 
-
-
 public class MoveFindersUtils {
 
     /**
@@ -18,9 +16,9 @@ public class MoveFindersUtils {
     public static int rankDistanceOfMoveFromCenter(int plyNumber) {
         int to = Utils.getTargetPositionFromMoveNumber(plyNumber);
         int toRank = Utils.getRankFromPosition(to);
-    
+
         int rankDiff = -1;
-    
+
         if (toRank > 5) {
             rankDiff = Math.abs(toRank - 5);
         }
@@ -30,9 +28,10 @@ public class MoveFindersUtils {
         else {
             rankDiff = 0;
         }
-    
+
         return rankDiff;
     }
+
 
     /**
      * Calculates distance between chess board center and target position of
@@ -44,10 +43,12 @@ public class MoveFindersUtils {
      */
     public static int distanceOfMoveFromCenter(int moveNumber) {
         int fileDiff = rankDistanceOfMoveFromCenter(moveNumber);
-        int rankDiff = MoveFindersUtils.fileDistanceOfMoveFromCenter(moveNumber);
-    
+        int rankDiff = MoveFindersUtils
+                .fileDistanceOfMoveFromCenter(moveNumber);
+
         return fileDiff + rankDiff;
     }
+
 
     /**
      * Calculates distance between chess board center and target file of move.
@@ -59,9 +60,9 @@ public class MoveFindersUtils {
     public static int fileDistanceOfMoveFromCenter(int moveNumber) {
         int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int toFile = Utils.getFileFromPosition(to);
-    
+
         int fileDiff = -1;
-    
+
         if (toFile > 5) {
             fileDiff = Math.abs(toFile - 5);
         }
@@ -71,9 +72,10 @@ public class MoveFindersUtils {
         else {
             fileDiff = 0;
         }
-    
+
         return fileDiff;
     }
+
 
     /**
      * Finds minimum distance of target positions of plies from chess board
@@ -89,15 +91,16 @@ public class MoveFindersUtils {
         for (int x = 0; x < plies.size(); x++) {
             int moveNumber = plies.get(x).moveNumber;
             int dist = distanceOfMoveFromCenter(moveNumber);
-    
+
             if (dist < minDist || minDist == -1) {
                 minDist = dist;
             }
         }
-    
+
         return minDist;
     }
-    
+
+
     private MoveFindersUtils() {}
 
 }

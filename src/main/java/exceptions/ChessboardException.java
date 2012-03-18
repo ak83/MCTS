@@ -4,12 +4,12 @@ package exceptions;
 public class ChessboardException extends Exception {
 
     public ChessboardException(String message) {
-	super(message);
+        super(message);
     }
 
 
     public ChessboardException() {
-	super();
+        super();
     }
 
 }

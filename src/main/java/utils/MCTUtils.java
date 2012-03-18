@@ -2,14 +2,12 @@ package utils;
 
 import java.util.ArrayList;
 
-import chessboard.Chessboard;
-
 import mct.MCTNode;
-import moveFinders.BlackMoveFinder;
 import moveFinders.BlackFinderStrategy;
-import moveFinders.WhiteMoveFinder;
+import moveFinders.BlackMoveFinder;
 import moveFinders.WhiteFinderStrategy;
-
+import moveFinders.WhiteMoveFinder;
+import chessboard.Chessboard;
 import exceptions.ChessboardException;
 import exec.Constants;
 

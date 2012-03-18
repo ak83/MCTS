@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import mct.MCT;
 import mct.MCTStats;
-
 import utils.FruitUtils;
 import utils.Utils;
 import chessboard.ChessboardEvalState;
@@ -64,7 +63,7 @@ public class ChessGame {
      * @throws ChessboardException
      * @throws IOException
      */
-    public String playGame(int round) throws ChessboardException, IOException {
+    public String playGame(int round) throws ChessboardException {
 
         this.log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n");
 
@@ -194,7 +193,7 @@ public class ChessGame {
         if (Constants.WRITE_INDIVIDUAL_GAMES) {
             Utils.writePGN(this.pgnFileName, this.fen);
         }
-        return this.fen;
+        return this.fen + "\n\n";
     }
 
 
@@ -214,7 +213,7 @@ public class ChessGame {
         long runTime = System.currentTimeMillis() - startTime;
         MCTStats stats = this.MCTree.getMCTStatistics();
         String logString0 = "\r\n##########################\r\n###########################\r\nPOVZETEK igre "
-                + (round + 1)
+                + this.pgnFileName
                 + ". Igra je bila odigrana v "
                 + Utils.timeMillisToString(runTime);
         if (didWhiteWin) {

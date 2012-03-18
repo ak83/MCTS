@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import mct.MCTNode;
-
 import utils.ChessboardUtils;
 import utils.Utils;
 import exceptions.ChessboardException;

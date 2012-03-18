@@ -3,6 +3,7 @@ package exec;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.logging.Level;
 
 import javax.management.RuntimeErrorException;
@@ -10,6 +11,8 @@ import javax.management.RuntimeErrorException;
 import moveChoosers.WhiteChooserStrategy;
 import moveFinders.BlackFinderStrategy;
 import moveFinders.WhiteFinderStrategy;
+import utils.ExperimentUtils;
+import experiment.MCTestParameter;
 
 /**
  * Class that controls the parameters of MCT algorithm. Also handles help
@@ -20,6 +23,18 @@ import moveFinders.WhiteFinderStrategy;
 public class Constants {
 
     private Constants() {};
+
+    /**
+     * directory name where output of individual games is saved in experiment
+     * directory
+     */
+    public static final String         INDIVIDUAL_GAMES_DIR_NAME                                                       = "sgames";
+
+    /** Parameter on which experiments will be performed */
+    public static MCTestParameter      testParameter;
+
+    /** Values for MC parameter under test */
+    public static Vector<Double>       testParameterValues;
 
     /**
      * Number of match that will be played.
@@ -416,6 +431,11 @@ public class Constants {
                 currentLine++;
                 String line = scan.nextLine();
                 if (line.equals("") || line.charAt(0) == '#') {
+                    continue;
+                }
+
+                if (currentLine == 1) {
+                    Constants.parseTestParameterAndValues(line);
                     continue;
                 }
 
@@ -905,4 +925,48 @@ public class Constants {
 
         return false;
     }
+
+
+    /**
+     * Parses tested parameter and its values from line
+     * 
+     * @param line
+     *            first line of configuration file
+     */
+    private static void parseTestParameterAndValues(String line) {
+        String[] lineArgs = line.split("[ \t]");
+
+        // check if keyword is correct
+        if (!lineArgs[0].equalsIgnoreCase("TP")
+                && !lineArgs[0].equalsIgnoreCase("TESTED_PARAMETER")) {
+            System.err
+                    .println("First line of configuration file must be tested parameter");
+            System.exit(1);
+        }
+
+        Constants.testParameter = ExperimentUtils
+                .mcTestParameterStringToEnum(lineArgs[1]);
+
+        if (Constants.testParameter == null) {
+            System.err.println("Invalid test parameter");
+        }
+
+        if (ExperimentUtils.MCTestParameterValueType(Constants.testParameter) == Double.class) {
+
+            Constants.testParameterValues = new Vector<Double>();
+        }
+
+        // check if and values are specified
+        if (lineArgs.length < 3) {
+            System.err
+                    .println("Configuration file does not contain any values for test parameter");
+        }
+
+        // fill test parameter values
+        for (int x = 2; x < lineArgs.length; x++) {
+            Constants.testParameterValues.add(Double.parseDouble(lineArgs[x]));
+        }
+
+    }
+
 }

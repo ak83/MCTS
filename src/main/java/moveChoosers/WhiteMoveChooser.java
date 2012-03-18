@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import mct.MCTNode;
-
 import utils.MCTUtils;
 
 /**
