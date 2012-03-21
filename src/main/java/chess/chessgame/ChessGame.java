@@ -1,4 +1,4 @@
-package exec;
+package chess.chessgame;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -7,8 +7,9 @@ import mct.MCT;
 import mct.MCTStats;
 import utils.FruitUtils;
 import utils.Utils;
-import chessboard.ChessboardEvalState;
+import chess.chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
+import exec.Constants;
 
 /**
  * Class that handles playing a match logic.
@@ -119,6 +120,9 @@ public class ChessGame {
 
             int moveNumber = -1;
 
+            // DTM difference of players move from optimal move
+            int dtmDiff = -1;
+
             if (whitesTurn) {
 
                 for (int x = 0; x < Constants.NUMBER_OF_RUNNING_STEPS; x++) {
@@ -129,14 +133,14 @@ public class ChessGame {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
 
-                int mwDTM = FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
+                dtmDiff = FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
                         .moveNumberToFruitString(moveNumber), fruitOutput)
                         - perfectDTM;
 
-                this.matchStats.whitesDiffFromOptimal.put(turnDepth, mwDTM);
+                this.matchStats.whitesDiffFromOptimal.put(turnDepth, dtmDiff);
 
                 this.fen += Utils.whiteMoveNumberToFenString(moveNumber,
-                        turnDepth, perfectMove + ", diff=" + mwDTM)
+                        turnDepth, perfectMove + ", diff=" + dtmDiff)
                         + " ";
             }
             else {
@@ -144,25 +148,25 @@ public class ChessGame {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY,
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY);
 
-                int mBDTM = perfectDTM
+                dtmDiff = perfectDTM
                         - FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils
                                 .moveNumberToFruitString(moveNumber),
                                 fruitOutput);
 
-                this.matchStats.blacksDiffFromOptimal.put(turnDepth, mBDTM);
+                this.matchStats.blacksDiffFromOptimal.put(turnDepth, dtmDiff);
 
                 this.fen += Utils.blackMoveNumberToFenString(moveNumber,
-                        perfectMove + ", diff=" + mBDTM);
+                        perfectMove + ", diff=" + dtmDiff);
 
                 turnDepth++;
             }
 
             whitesTurn = !whitesTurn;
 
-            this.log.fine("Velikost drevesa je "
-                    + this.MCTree.getCurrentTreeSize() + "\r\n"
-                    + "Optimalna poteza, ki bi jo lahko naredi igralec je "
-                    + perfectMove);
+            this.log.fine("Tree size is " + this.MCTree.getCurrentTreeSize()
+                    + "\r\n" + "Optimal move that could have been done is "
+                    + perfectMove + ", DTM difference from players move is "
+                    + dtmDiff);
 
             this.MCTree.makeMCMove(moveNumber);
 

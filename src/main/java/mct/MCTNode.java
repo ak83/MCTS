@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import javax.management.RuntimeErrorException;
 
 import utils.Utils;
-import chessboard.Chessboard;
-import chessboard.ChessboardEvalState;
-import chessboard.SimpleChessboard;
+import chess.chessboard.Chessboard;
+import chess.chessboard.ChessboardEvalState;
+import chess.chessboard.SimpleChessboard;
 import exceptions.ChessboardException;
 import exec.Constants;
 

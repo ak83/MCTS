@@ -1,8 +1,10 @@
-package chessboard;
+package chess.chessboard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import chess.Move;
 
 import utils.ChessboardUtils;
 import utils.Utils;

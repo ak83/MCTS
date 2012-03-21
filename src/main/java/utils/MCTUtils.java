@@ -7,7 +7,7 @@ import moveFinders.BlackFinderStrategy;
 import moveFinders.BlackMoveFinder;
 import moveFinders.WhiteFinderStrategy;
 import moveFinders.WhiteMoveFinder;
-import chessboard.Chessboard;
+import chess.chessboard.Chessboard;
 import exceptions.ChessboardException;
 import exec.Constants;
 

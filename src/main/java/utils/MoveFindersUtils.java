@@ -2,7 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 
-import chessboard.Move;
+import chess.Move;
 
 
 public class MoveFindersUtils {

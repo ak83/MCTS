@@ -1,7 +1,9 @@
-package chessboard;
+package chess.chessboard;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
+
+import chess.Move;
 
 import mct.MCTNode;
 import utils.ChessboardUtils;

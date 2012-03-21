@@ -7,9 +7,9 @@ import java.util.Random;
 
 import utils.FruitUtils;
 import utils.MoveFindersUtils;
-import chessboard.Chessboard;
-import chessboard.Move;
-import chessboard.SimpleChessboard;
+import chess.Move;
+import chess.chessboard.Chessboard;
+import chess.chessboard.SimpleChessboard;
 import exceptions.ChessboardException;
 import exec.Constants;
 

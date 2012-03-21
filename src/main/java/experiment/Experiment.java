@@ -5,9 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import chess.chessgame.ChessGame;
+
 import logging.Logs;
 import exceptions.ChessboardException;
-import exec.ChessGame;
 import exec.Constants;
 
 /**

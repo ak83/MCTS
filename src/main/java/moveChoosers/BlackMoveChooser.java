@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import moveFinders.BlackFinderStrategy;
 import moveFinders.BlackMoveFinder;
 import utils.Utils;
-import chessboard.Chessboard;
+import chess.chessboard.Chessboard;
 import exceptions.ChessboardException;
 
 /**

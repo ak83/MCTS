@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import chessboard.Chessboard;
-import chessboard.Move;
+import chess.Move;
+import chess.chessboard.Chessboard;
 import exec.Constants;
 
 public class TestWhiteMoveFinder {

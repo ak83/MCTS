@@ -1,4 +1,4 @@
-package chessboard;
+package chess;
 
 import utils.Utils;
 

@@ -5,8 +5,8 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
-import chessboard.Chessboard;
-import chessboard.Move;
+import chess.Move;
+import chess.chessboard.Chessboard;
 import exceptions.ChessboardException;
 import exec.Constants;
 
