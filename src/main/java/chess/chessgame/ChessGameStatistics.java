@@ -2,14 +2,19 @@ package chess.chessgame;
 
 import java.util.HashMap;
 
+/**
+ * Class for statistics that are to be logged.
+ * 
+ * @author Andraz
+ */
 public class ChessGameStatistics {
 
     /** Holds whites DTM difference from optimal move per turn. */
-    public HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(
+    HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(
                                                                    50);
 
     /** Holds blacks DTM difference from optimal move per turn. */
-    public HashMap<Integer, Integer> blacksDiffFromOptimal = new HashMap<Integer, Integer>(
+    HashMap<Integer, Integer> blacksDiffFromOptimal = new HashMap<Integer, Integer>(
                                                                    50);
 
 
@@ -40,6 +45,12 @@ public class ChessGameStatistics {
         }
 
         return (double) sum / (double) this.blacksDiffFromOptimal.size();
+    }
+
+
+    
+    public HashMap<Integer, Integer> getWhitesDiffFromOptimal() {
+        return this.whitesDiffFromOptimal;
     }
 
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import chess.chessgame.ChessGame;
+import chess.chessgame.ChessGameResults;
 
 import logging.Logs;
 import exceptions.ChessboardException;
@@ -22,11 +23,13 @@ public class Experiment {
      * Name of experiment, this is also the name of directory where this
      * experiments output will be saved
      */
-    private String name = "";
+    private String               name            = "";
 
-    private Logger log;
+    private Logger               log;
 
-    private String pgn  = "";
+    private String               pgn             = "";
+
+    private ExperimentStatistics experimentStats = new ExperimentStatistics();
 
 
     public Experiment(String name) {
@@ -48,11 +51,15 @@ public class Experiment {
 
         this.log.info(Constants.constantsString());
 
+        // run chess games
         for (int x = 0; x < Constants.NUMBER_OF_GAMES_PLAYED; x++) {
             ChessGame game = new ChessGame(individualGamesDirPath + "/game" + x
                     + ".pgn");
             try {
-                this.pgn += game.playGame(x);
+                ChessGameResults gameResult = game.playGame(x);
+                this.pgn += gameResult.getPgn();
+                this.experimentStats.addChessGameStatistics(gameResult
+                        .getStatistics());
             }
             catch (ChessboardException e) {
                 e.printStackTrace();
@@ -73,9 +80,18 @@ public class Experiment {
             System.exit(1);
         }
 
+        // write this experiments info to log file
+
+        this.log.info("××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××\r\n××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
+
+        String whiteAvgDTMDiff = "Whites average DTM difference from optimal move was "
+                + experimentStats.getWhitesAverageDTMDiff();
+        this.log.info("Experiment " + this.name + " summary:\r\n"
+                + whiteAvgDTMDiff);
         this.log.info("Chess games were written in " + pgnFilePath
                 + ", details of these matches are in " + this.name + "/"
                 + Constants.LOG_FILENAME + ".\r\n END OF EXPERIMENT");
+
     }
 
 }

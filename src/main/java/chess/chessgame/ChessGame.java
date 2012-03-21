@@ -64,7 +64,7 @@ public class ChessGame {
      * @throws ChessboardException
      * @throws IOException
      */
-    public String playGame(int round) throws ChessboardException {
+    public ChessGameResults playGame(int round) throws ChessboardException {
 
         this.log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n");
 
@@ -197,7 +197,8 @@ public class ChessGame {
         if (Constants.WRITE_INDIVIDUAL_GAMES) {
             Utils.writePGN(this.pgnFileName, this.fen);
         }
-        return this.fen + "\n\n";
+
+        return new ChessGameResults(this.fen + "\n\n", this.matchStats);
     }
 
 
