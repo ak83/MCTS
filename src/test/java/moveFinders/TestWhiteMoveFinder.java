@@ -14,8 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import chessboard.Chessboard;
+import chessboard.Move;
 import exec.Constants;
-import exec.Move;
 
 public class TestWhiteMoveFinder {
 

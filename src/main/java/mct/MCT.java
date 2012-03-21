@@ -45,9 +45,6 @@ public class MCT {
     /** Logger */
     private Logger     log                  = Logger.getLogger("MCTS.MCT");
 
-    /** Current MC tree size */
-    private int        currentTreeSize      = 0;
-
 
     /** Consturctor */
     public MCT() {}
@@ -101,6 +98,10 @@ public class MCT {
     public void backPropagation(MCTNode node, int numberOfMats,
             int numberOfSimulationsPerNode, int addedNodeDepth,
             boolean doesAddedNodeRepresentsMat) {
+
+        // update subtree size
+        node.updateNumberOfSuccessors();
+
         node.numberOfMatsInNode += numberOfMats;
         node.visitCount += numberOfSimulationsPerNode;
 
@@ -141,7 +142,6 @@ public class MCT {
 
             if (moveNo == -1) { return currNode; }
 
-            this.currentTreeSize++;
             this.simulationChessboard.makeAMove(moveNo);
             node.addNextMove(moveNo);
 
@@ -167,9 +167,7 @@ public class MCT {
             }
 
             if (currNode.nextMoves == null) {
-                this.currentTreeSize++;
-                currNode.nextMoves = new ArrayList<MCTNode>();
-                currNode.nextMoves.add(new MCTNode(currNode, moveNo));
+                currNode.addNextMove(moveNo);
                 this.simulationChessboard.makeAMove(moveNo);
 
                 return currNode.nextMoves.get(0);
@@ -179,7 +177,6 @@ public class MCT {
                     .indexOfMoveNumberInNextMoves(moveNo, currNode);
 
             if (moveIndex == -1) {
-                this.currentTreeSize++;
                 currNode.addNextMove(moveNo);
                 this.simulationChessboard.makeAMove(moveNo);
 
@@ -295,7 +292,6 @@ public class MCT {
             this.stats.numberOfMCTreeColapses++;
             this.root = new MCTNode(moveNumber, this.root.moveDepth + 1,
                     this.mainChessboard);
-            this.currentTreeSize = 0;
         }
         else {
             this.root = this.root.nextMoves.get(index);
@@ -303,10 +299,6 @@ public class MCT {
 
         this.mainChessboard.makeAMove(moveNumber);
 
-        // this.log.fine("Stanje sahovnice je:\r\n" + this.mainChessboard
-        // + "To stanje se je pojavilo "
-        // + this.mainChessboard.howManyTimeHasCurrentStateAppeared()
-        // + "-krat.\r\n");
     }
 
 
@@ -381,7 +373,9 @@ public class MCT {
      * @return MC tree size
      */
     public int getCurrentTreeSize() {
-        return this.currentTreeSize;
+
+        // return subtree size + 1 (root node)
+        return this.root.getNumberOfSuccessors() + 1;
     }
 
 

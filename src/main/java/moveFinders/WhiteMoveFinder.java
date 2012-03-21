@@ -6,9 +6,9 @@ import java.util.Random;
 import javax.management.RuntimeErrorException;
 
 import chessboard.Chessboard;
+import chessboard.Move;
 import exceptions.ChessboardException;
 import exec.Constants;
-import exec.Move;
 
 /**
  * Class that handles choosing white simulation ply number.

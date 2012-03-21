@@ -8,7 +8,6 @@ import utils.ChessboardUtils;
 import utils.Utils;
 import exceptions.ChessboardException;
 import exec.Constants;
-import exec.Move;
 
 public class Chessboard extends SimpleChessboard implements Cloneable {
 

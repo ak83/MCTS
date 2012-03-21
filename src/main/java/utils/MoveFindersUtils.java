@@ -2,7 +2,8 @@ package utils;
 
 import java.util.ArrayList;
 
-import exec.Move;
+import chessboard.Move;
+
 
 public class MoveFindersUtils {
 

@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import exec.Constants;
-import exec.Move;
 
 public class TestChessBoard {
 

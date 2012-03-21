@@ -73,6 +73,11 @@ public class MCTNode {
      */
     private ChessboardEvalState evalFromWhitesPerspective;
 
+    /**
+     * Number of nodes successors (subtree size)
+     */
+    private int                 numberOfSuccessors                            = 0;
+
 
     /**
      * Constructor that has receives board state from <code>board</code>.
@@ -155,18 +160,18 @@ public class MCTNode {
 
     /**
      * Creates child node that represents chess board state that we get by
-     * making a ply from current instances chess board state.
+     * making a move from current instances chess board state.
      * 
-     * @param plyNumber
-     *            ply number
+     * @param moveNumber
+     *            move number
      * @throws ChessboardException
      */
-    public void addNextMove(int plyNumber) throws ChessboardException {
+    public void addNextMove(int moveNumber) throws ChessboardException {
         if (this.nextMoves == null) {
             this.nextMoves = new ArrayList<MCTNode>();
         }
 
-        this.nextMoves.add(new MCTNode(this, plyNumber));
+        this.nextMoves.add(new MCTNode(this, moveNumber));
     }
 
 
@@ -236,6 +241,33 @@ public class MCTNode {
      */
     public ChessboardEvalState getEvalFromWhitesPerspective() {
         return this.evalFromWhitesPerspective;
+    }
+
+
+    /**
+     * Updates number of successor nodes. If the result is to be correct all
+     * successor nodes must also be updated.
+     */
+    public void updateNumberOfSuccessors() {
+        if (this.nextMoves != null) {
+            // initialize to number of child nodes
+            this.numberOfSuccessors = this.nextMoves.size();
+
+            // add number of child nodes successors
+            for (MCTNode subNode : this.nextMoves) {
+                this.numberOfSuccessors += subNode.getNumberOfSuccessors();
+            }
+        }
+    }
+
+
+    /**
+     * Return number of all successors in MC tree
+     * 
+     * @return number of all successors in MC tree
+     */
+    public int getNumberOfSuccessors() {
+        return this.numberOfSuccessors;
     }
 
 }

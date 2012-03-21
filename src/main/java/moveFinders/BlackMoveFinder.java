@@ -8,10 +8,10 @@ import java.util.Random;
 import utils.FruitUtils;
 import utils.MoveFindersUtils;
 import chessboard.Chessboard;
+import chessboard.Move;
 import chessboard.SimpleChessboard;
 import exceptions.ChessboardException;
 import exec.Constants;
-import exec.Move;
 
 /**
  * Class handles searching for black player moves in simulations.
