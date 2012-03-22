@@ -1,5 +1,7 @@
 package experiment;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Vector;
 
 import chess.chessgame.ChessGameStatistics;
@@ -43,6 +45,70 @@ public class ExperimentStatistics {
         }
 
         return totalDTMDiff / (double) moveCounter;
+    }
+
+
+    /**
+     * Writes average DTM difference to CSV file.
+     * 
+     * @param filePath
+     *            file to which DTM differences will be saved
+     */
+    public void writeAverageDTMDiffToCVS(String filePath) {
+        // names for columns in csv file (ChessGame1, ChessGame2,....)
+        StringBuffer sbColumnNames = new StringBuffer();
+
+        // data (only one row) for each column
+        StringBuffer sbRow = new StringBuffer();
+
+        int x = 1;
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            sbColumnNames.append("ChessGame" + x + "\t");
+            sbRow.append(stats.getAverageWhitesDTMDiff() + "\t");
+        }
+
+        try {
+            FileWriter fw = new FileWriter(new File(filePath));
+            fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
+            fw.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+    }
+
+
+    /**
+     * Writes average MC tree size to CSV file.
+     * 
+     * @param filePath
+     *            file to which DTM differences will be saved
+     */
+    public void writeAverageTreeSizeToCVS(String filePath) {
+        // names for columns in csv file (ChessGame1, ChessGame2,....)
+        StringBuffer sbColumnNames = new StringBuffer();
+
+        // data (only one row) for each column
+        StringBuffer sbRow = new StringBuffer();
+
+        int x = 1;
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            sbColumnNames.append("ChessGame" + x + "\t");
+            sbRow.append(stats.getAverageTreeSize() + "\t");
+        }
+
+        try {
+            FileWriter fw = new FileWriter(new File(filePath));
+            fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
+            fw.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
     }
 
 }

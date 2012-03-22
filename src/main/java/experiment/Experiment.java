@@ -67,6 +67,16 @@ public class Experiment {
             }
         }
 
+        // write DTM diff to cvs file
+        String whiteDTMDiffCSVFilePath = this.name + "/" + "whiteDTMDiff.csv";
+        this.experimentStats.writeAverageDTMDiffToCVS(whiteDTMDiffCSVFilePath);
+        
+        //write average tree size to cvs file
+        String treeSizeCSVFilePath = this.name + "/" + "treeSize.csv";
+        this.experimentStats.writeAverageTreeSizeToCVS(treeSizeCSVFilePath);
+        
+        
+
         String pgnFilePath = this.name + "/" + Constants.PGN_FILENAME;
         try {
 

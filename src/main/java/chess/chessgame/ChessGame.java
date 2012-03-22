@@ -168,6 +168,9 @@ public class ChessGame {
                     + perfectMove + ", DTM difference from players move is "
                     + dtmDiff);
 
+            this.matchStats.treeSize.put(turnDepth, this.MCTree
+                    .getCurrentTreeSize());
+
             this.MCTree.makeMCMove(moveNumber);
 
         }

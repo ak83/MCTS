@@ -11,11 +11,15 @@ public class ChessGameStatistics {
 
     /** Holds whites DTM difference from optimal move per turn. */
     HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(
-                                                                   50);
+                                                            50);
 
     /** Holds blacks DTM difference from optimal move per turn. */
     HashMap<Integer, Integer> blacksDiffFromOptimal = new HashMap<Integer, Integer>(
-                                                                   50);
+                                                            50);
+
+    /** Holds tree size per turn. */
+    HashMap<Integer, Integer> treeSize              = new HashMap<Integer, Integer>(
+                                                            50);
 
 
     /**
@@ -48,9 +52,29 @@ public class ChessGameStatistics {
     }
 
 
-    
+    /**
+     * Gets {@link HashMap} that contains DTM difference per turn for white
+     * player.
+     * 
+     * @return whites DTM differences
+     */
     public HashMap<Integer, Integer> getWhitesDiffFromOptimal() {
         return this.whitesDiffFromOptimal;
+    }
+
+
+    /**
+     * Gets average MC tree size.
+     * 
+     * @return average MC tree size
+     */
+    public double getAverageTreeSize() {
+        int totalTreeSize = 0;
+        for (Integer size : this.treeSize.values()) {
+            totalTreeSize += size;
+        }
+
+        return totalTreeSize / (double) this.treeSize.keySet().size();
     }
 
 }
