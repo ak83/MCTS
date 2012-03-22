@@ -111,4 +111,20 @@ public class ExperimentStatistics {
 
     }
 
+
+    /**
+     * Calculates average game length.
+     * 
+     * @return average game lenght
+     */
+    public double getAverageGameLength() {
+        int totalLength = 0;
+
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            totalLength += stats.getNumberOfPliesMade();
+        }
+
+        return (double) (totalLength / (double) this.chessGameStatistics.size()) / 2.0d;
+    }
+
 }

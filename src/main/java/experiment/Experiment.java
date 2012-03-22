@@ -70,12 +70,10 @@ public class Experiment {
         // write DTM diff to cvs file
         String whiteDTMDiffCSVFilePath = this.name + "/" + "whiteDTMDiff.csv";
         this.experimentStats.writeAverageDTMDiffToCVS(whiteDTMDiffCSVFilePath);
-        
-        //write average tree size to cvs file
+
+        // write average tree size to cvs file
         String treeSizeCSVFilePath = this.name + "/" + "treeSize.csv";
         this.experimentStats.writeAverageTreeSizeToCVS(treeSizeCSVFilePath);
-        
-        
 
         String pgnFilePath = this.name + "/" + Constants.PGN_FILENAME;
         try {
@@ -96,11 +94,19 @@ public class Experiment {
 
         String whiteAvgDTMDiff = "Whites average DTM difference from optimal move was "
                 + experimentStats.getWhitesAverageDTMDiff();
+        String averageGameLength = "Average game length (in turns) was: "
+                + this.experimentStats.getAverageGameLength();
+
         this.log.info("Experiment " + this.name + " summary:\r\n"
-                + whiteAvgDTMDiff);
-        this.log.info("Chess games were written in " + pgnFilePath
-                + ", details of these matches are in " + this.name + "/"
-                + Constants.LOG_FILENAME + ".\r\n END OF EXPERIMENT");
+                + whiteAvgDTMDiff + "\r\n" + averageGameLength);
+        this.log.info("Chess games were written in "
+                + pgnFilePath
+                + ", details of these matches are in "
+                + this.name
+                + "/"
+                + Constants.LOG_FILENAME
+                + ".\r\n END OF EXPERIMENT"
+                + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××\r\n××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
 
     }
 

@@ -9,6 +9,9 @@ import java.util.HashMap;
  */
 public class ChessGameStatistics {
 
+    /** Number of plies made in chess game */
+    int                       numberOfPliesMade     = 0;
+
     /** Holds whites DTM difference from optimal move per turn. */
     HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(
                                                             50);
@@ -75,6 +78,12 @@ public class ChessGameStatistics {
         }
 
         return totalTreeSize / (double) this.treeSize.keySet().size();
+    }
+
+
+    
+    public int getNumberOfPliesMade() {
+        return this.numberOfPliesMade;
     }
 
 }
