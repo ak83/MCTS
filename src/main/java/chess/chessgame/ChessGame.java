@@ -88,13 +88,6 @@ public class ChessGame {
                             .howManyTimeHasCurrentStateAppeared()
                     + "-krat.\r\n");
 
-            // get best move and best move DTM from fruit
-            String fruitOutput = FruitUtils.getOutputFromFruit(this.MCTree
-                    .getFEN());
-            String perfectMove = FruitUtils.getMoveFromFruit(fruitOutput);
-            int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
-                    perfectMove, fruitOutput);
-
             ChessboardEvalState eval = this.MCTree
                     .evaluateMainChessBoardState();
 
@@ -117,6 +110,13 @@ public class ChessGame {
 
                 break;
             }
+
+            // get best move and best move DTM from fruit
+            String fruitOutput = FruitUtils.getOutputFromFruit(this.MCTree
+                    .getFEN());
+            String perfectMove = FruitUtils.getMoveFromFruit(fruitOutput);
+            int perfectDTM = FruitUtils.getDTMOfMoveFromFruitOutput(
+                    perfectMove, fruitOutput);
 
             int moveNumber = -1;
 
