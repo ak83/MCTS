@@ -23,7 +23,7 @@ public class ExperimentStatistics {
      *            {@link ChessGameStatistics} to be added
      */
     public void addChessGameStatistics(ChessGameStatistics statistics) {
-        this.chessGameStatistics.add(statistics);
+	this.chessGameStatistics.add(statistics);
     }
 
 
@@ -34,17 +34,17 @@ public class ExperimentStatistics {
      * @return average DTM difference
      */
     public double getWhitesAverageDTMDiff() {
-        int moveCounter = 0;
-        int totalDTMDiff = 0;
+	int moveCounter = 0;
+	int totalDTMDiff = 0;
 
-        for (ChessGameStatistics stats : this.chessGameStatistics) {
-            for (Integer dtmDiff : stats.getWhitesDiffFromOptimal().values()) {
-                moveCounter++;
-                totalDTMDiff += dtmDiff;
-            }
-        }
+	for (ChessGameStatistics stats : this.chessGameStatistics) {
+	    for (Integer dtmDiff : stats.getWhitesDiffFromOptimal().values()) {
+		moveCounter++;
+		totalDTMDiff += dtmDiff;
+	    }
+	}
 
-        return totalDTMDiff / (double) moveCounter;
+	return totalDTMDiff / (double) moveCounter;
     }
 
 
@@ -55,27 +55,28 @@ public class ExperimentStatistics {
      *            file to which DTM differences will be saved
      */
     public void writeAverageDTMDiffToCVS(String filePath) {
-        // names for columns in csv file (ChessGame1, ChessGame2,....)
-        StringBuffer sbColumnNames = new StringBuffer();
+	// names for columns in csv file (ChessGame1, ChessGame2,....)
+	StringBuffer sbColumnNames = new StringBuffer();
 
-        // data (only one row) for each column
-        StringBuffer sbRow = new StringBuffer();
+	// data (only one row) for each column
+	StringBuffer sbRow = new StringBuffer();
 
-        int x = 1;
-        for (ChessGameStatistics stats : this.chessGameStatistics) {
-            sbColumnNames.append("ChessGame" + x + "\t");
-            sbRow.append(stats.getAverageWhitesDTMDiff() + "\t");
-        }
+	int x = 1;
+	for (ChessGameStatistics stats : this.chessGameStatistics) {
+	    sbColumnNames.append("ChessGame" + x + "\t");
+	    sbRow.append(stats.getAverageWhitesDTMDiff() + "\t");
+	    x++;
+	}
 
-        try {
-            FileWriter fw = new FileWriter(new File(filePath));
-            fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
-            fw.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+	try {
+	    FileWriter fw = new FileWriter(new File(filePath));
+	    fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
+	    fw.close();
+	}
+	catch (Exception e) {
+	    e.printStackTrace();
+	    System.exit(1);
+	}
 
     }
 
@@ -87,27 +88,28 @@ public class ExperimentStatistics {
      *            file to which DTM differences will be saved
      */
     public void writeAverageTreeSizeToCVS(String filePath) {
-        // names for columns in csv file (ChessGame1, ChessGame2,....)
-        StringBuffer sbColumnNames = new StringBuffer();
+	// names for columns in csv file (ChessGame1, ChessGame2,....)
+	StringBuffer sbColumnNames = new StringBuffer();
 
-        // data (only one row) for each column
-        StringBuffer sbRow = new StringBuffer();
+	// data (only one row) for each column
+	StringBuffer sbRow = new StringBuffer();
 
-        int x = 1;
-        for (ChessGameStatistics stats : this.chessGameStatistics) {
-            sbColumnNames.append("ChessGame" + x + "\t");
-            sbRow.append(stats.getAverageTreeSize() + "\t");
-        }
+	int x = 1;
+	for (ChessGameStatistics stats : this.chessGameStatistics) {
+	    sbColumnNames.append("ChessGame" + x + "\t");
+	    sbRow.append(stats.getAverageTreeSize() + "\t");
+	    x++;
+	}
 
-        try {
-            FileWriter fw = new FileWriter(new File(filePath));
-            fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
-            fw.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+	try {
+	    FileWriter fw = new FileWriter(new File(filePath));
+	    fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
+	    fw.close();
+	}
+	catch (Exception e) {
+	    e.printStackTrace();
+	    System.exit(1);
+	}
 
     }
 
@@ -118,13 +120,13 @@ public class ExperimentStatistics {
      * @return average game lenght
      */
     public double getAverageGameLength() {
-        int totalLength = 0;
+	int totalLength = 0;
 
-        for (ChessGameStatistics stats : this.chessGameStatistics) {
-            totalLength += stats.getNumberOfPliesMade();
-        }
+	for (ChessGameStatistics stats : this.chessGameStatistics) {
+	    totalLength += stats.getNumberOfPliesMade();
+	}
 
-        return (double) (totalLength / (double) this.chessGameStatistics.size()) / 2.0d;
+	return (double) (totalLength / (double) this.chessGameStatistics.size()) / 2.0d;
     }
 
 }
