@@ -24,16 +24,16 @@ public class Utils {
      *         otherwise
      */
     public static boolean arePositionsAdjacent(int positionA, int positionB) {
-        if (!ChessboardUtils.isPositionLegal(positionA)
-                || !ChessboardUtils.isPositionLegal(positionB)) { return false; }
+	if (!ChessboardUtils.isPositionLegal(positionA)
+		|| !ChessboardUtils.isPositionLegal(positionB)) { return false; }
 
-        int diff = Math.abs(positionB - positionA);
-        if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
-            return true;
-        }
-        else {
-            return false;
-        }
+	int diff = Math.abs(positionB - positionA);
+	if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
     }
 
 
@@ -48,35 +48,35 @@ public class Utils {
      *         <code>false</code> otherwise
      */
     public static boolean arePsotionsDiagonallyAdjacent(int position1,
-            int position2) {
-        int edgePos1 = Utils.getPositiveEdgePositionFromPosition(position1);
-        int edgePos2 = Utils.getPositiveEdgePositionFromPosition(position2);
-        if (edgePos1 < 8 && edgePos2 < 8) {
-            int file1 = Utils.getFileFromPosition(edgePos1);
-            int file2 = Utils.getFileFromPosition(edgePos2);
-            return Math.abs(file2 - file1) == 1;
-        }
-        else if ((edgePos1 > 7 || edgePos1 == 0)
-                && (edgePos2 > 7 || edgePos2 == 0)) {
-            int rank1 = Utils.getRankFromPosition(edgePos1);
-            int rank2 = Utils.getRankFromPosition(edgePos2);
-            return Math.abs(rank2 - rank1) == 1;
-        }
+	    int position2) {
+	int edgePos1 = Utils.getPositiveEdgePositionFromPosition(position1);
+	int edgePos2 = Utils.getPositiveEdgePositionFromPosition(position2);
+	if (edgePos1 < 8 && edgePos2 < 8) {
+	    int file1 = Utils.getFileFromPosition(edgePos1);
+	    int file2 = Utils.getFileFromPosition(edgePos2);
+	    return Math.abs(file2 - file1) == 1;
+	}
+	else if ((edgePos1 > 7 || edgePos1 == 0)
+		&& (edgePos2 > 7 || edgePos2 == 0)) {
+	    int rank1 = Utils.getRankFromPosition(edgePos1);
+	    int rank2 = Utils.getRankFromPosition(edgePos2);
+	    return Math.abs(rank2 - rank1) == 1;
+	}
 
-        edgePos1 = Utils.getNegativeEdgePositionFromPosition(position1);
-        edgePos2 = Utils.getNegativeEdgePositionFromPosition(position2);
-        if (edgePos1 < 8 && edgePos2 < 8) {
-            int file1 = Utils.getFileFromPosition(edgePos1);
-            int file2 = Utils.getFileFromPosition(edgePos2);
-            return Math.abs(file2 - file1) == 1;
-        }
-        else if (edgePos1 > 6 && edgePos2 > 6) {
-            int rank1 = Utils.getRankFromPosition(edgePos1);
-            int rank2 = Utils.getRankFromPosition(edgePos2);
-            return Math.abs(rank2 - rank1) == 1;
-        }
+	edgePos1 = Utils.getNegativeEdgePositionFromPosition(position1);
+	edgePos2 = Utils.getNegativeEdgePositionFromPosition(position2);
+	if (edgePos1 < 8 && edgePos2 < 8) {
+	    int file1 = Utils.getFileFromPosition(edgePos1);
+	    int file2 = Utils.getFileFromPosition(edgePos2);
+	    return Math.abs(file2 - file1) == 1;
+	}
+	else if (edgePos1 > 6 && edgePos2 > 6) {
+	    int rank1 = Utils.getRankFromPosition(edgePos1);
+	    int rank2 = Utils.getRankFromPosition(edgePos2);
+	    return Math.abs(rank2 - rank1) == 1;
+	}
 
-        return false;
+	return false;
     }
 
 
@@ -90,15 +90,15 @@ public class Utils {
      * @return fen for black part of turn
      */
     public static String blackMoveNumberToFenString(int moveNumber,
-            String comment) {
-        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
-        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
-        int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
+	    String comment) {
+	int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+	int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
+	int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
 
-        String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
-                + Utils.positionToString(to);
+	String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
+		+ Utils.positionToString(to);
 
-        return m + " { " + comment + " }";
+	return m + " { " + comment + " }";
     }
 
 
@@ -110,22 +110,22 @@ public class Utils {
      * @return string representation of black finder strategy
      */
     public static String blackStrategyToString(BlackFinderStrategy strategy) {
-        String str = "izbiranje in simulacija: ";
-        switch (strategy) {
-            case RANDOM:
-                str += "random";
-                break;
-            case CENTER:
-                str += "tezi k centru ne glede na belega";
-                break;
-            case GOOD:
-                str += "tezi k centru, ce je mozno poje belega";
-                break;
-            case PERFECT:
-                str += "igra s popolno informacijo";
-                break;
-        }
-        return str;
+	String str = "izbiranje in simulacija: ";
+	switch (strategy) {
+	case RANDOM:
+	    str += "random";
+	    break;
+	case CENTER:
+	    str += "tezi k centru ne glede na belega";
+	    break;
+	case GOOD:
+	    str += "tezi k centru, ce je mozno poje belega";
+	    break;
+	case PERFECT:
+	    str += "igra s popolno informacijo";
+	    break;
+	}
+	return str;
     }
 
 
@@ -137,7 +137,7 @@ public class Utils {
      * @return characters number in alphabet, starting with 0
      */
     public static int charToIntFile(char ch) {
-        return (byte) ch - 96;
+	return (byte) ch - 96;
     }
 
 
@@ -155,12 +155,12 @@ public class Utils {
      * @return move number
      */
     public static int constructMoveNumber(int from, int to, int movedPiece,
-            int targetPiece) {
-        int rez = targetPiece & 0xFF;
-        rez |= (movedPiece & 0xFF) << 8;
-        rez |= (to & 0xFF) << 16;
-        rez |= (from & 0xFF) << 24;
-        return rez;
+	    int targetPiece) {
+	int rez = targetPiece & 0xFF;
+	rez |= (movedPiece & 0xFF) << 8;
+	rez |= (to & 0xFF) << 16;
+	rez |= (from & 0xFF) << 24;
+	return rez;
     }
 
 
@@ -191,28 +191,28 @@ public class Utils {
      * @return fen preamble
      */
     public static String constructPreamble(String whiteStrategy,
-            String blackStrategy, double c, int goban, boolean didWhiteWin,
-            int whatRound, int numberOfPliesMade, int numberOfInitialMCTSteps,
-            int numberOfRunningMCTSteps, int numberOfSimulationsPerEvaluation) {
-        String event = "[Event \"InitalMCTSteps: " + numberOfInitialMCTSteps
-                + ", RunningMCTSteps: " + numberOfRunningMCTSteps
-                + ", number of simulations per evaluation: "
-                + numberOfSimulationsPerEvaluation + "\"]\n";
-        String site = "[Site \"C = " + c + ", goban = " + goban + "\"]\n";
-        String date = "[Date \"" + Utils.today() + "\"]\n";
-        String round = "[Round \"" + whatRound + "\"]\n";
-        String white = "[White \"" + whiteStrategy + "\"]\n";
-        String black = "[Black \"" + blackStrategy + "\"]\n";
-        String plyCount = "[PlyCount \"" + numberOfPliesMade + "\"]\n";
-        String result = "[Result \"";
-        if (didWhiteWin) {
-            result += "1-0";
-        }
-        else {
-            result += "0-1";
-        }
-        result += "\"]\n";
-        return event + site + date + round + white + black + plyCount + result;
+	    String blackStrategy, double c, int goban, boolean didWhiteWin,
+	    int whatRound, int numberOfPliesMade, int numberOfInitialMCTSteps,
+	    int numberOfRunningMCTSteps, int numberOfSimulationsPerEvaluation) {
+	String event = "[Event \"InitalMCTSteps: " + numberOfInitialMCTSteps
+		+ ", RunningMCTSteps: " + numberOfRunningMCTSteps
+		+ ", number of simulations per evaluation: "
+		+ numberOfSimulationsPerEvaluation + "\"]\n";
+	String site = "[Site \"C = " + c + ", goban = " + goban + "\"]\n";
+	String date = "[Date \"" + Utils.today() + "\"]\n";
+	String round = "[Round \"" + whatRound + "\"]\n";
+	String white = "[White \"" + whiteStrategy + "\"]\n";
+	String black = "[Black \"" + blackStrategy + "\"]\n";
+	String plyCount = "[PlyCount \"" + numberOfPliesMade + "\"]\n";
+	String result = "[Result \"";
+	if (didWhiteWin) {
+	    result += "1-0";
+	}
+	else {
+	    result += "0-1";
+	}
+	result += "\"]\n";
+	return event + site + date + round + white + black + plyCount + result;
     }
 
 
@@ -226,14 +226,14 @@ public class Utils {
      * @return distance between two positions
      */
     public static int distanceBetweenPositions(int positionA, int positionB) {
-        int rankA = Utils.getRankFromPosition(positionA);
-        int rankB = Utils.getRankFromPosition(positionB);
-        int fileA = Utils.getFileFromPosition(positionA);
-        int fileB = Utils.getFileFromPosition(positionB);
+	int rankA = Utils.getRankFromPosition(positionA);
+	int rankB = Utils.getRankFromPosition(positionB);
+	int fileA = Utils.getFileFromPosition(positionA);
+	int fileB = Utils.getFileFromPosition(positionB);
 
-        int rankDiff = Math.abs(rankA - rankB);
-        int fileDiff = Math.abs(fileA - fileB);
-        return rankDiff + fileDiff;
+	int rankDiff = Math.abs(rankA - rankB);
+	int fileDiff = Math.abs(fileA - fileB);
+	return rankDiff + fileDiff;
     }
 
 
@@ -245,7 +245,7 @@ public class Utils {
      * @return file of selected position
      */
     public static int getFileFromPosition(int position) {
-        return (position % 16) + 1;
+	return (position % 16) + 1;
     }
 
 
@@ -257,14 +257,14 @@ public class Utils {
      * @return moved piece
      */
     public static int getMovedPieceFromMoveNumber(int moveNumber) {
-        int rez = (moveNumber >>> 8) & 0xFF;
+	int rez = (moveNumber >>> 8) & 0xFF;
 
-        if (rez == 255) {
-            return -1;
-        }
-        else {
-            return rez;
-        }
+	if (rez == 255) {
+	    return -1;
+	}
+	else {
+	    return rez;
+	}
     }
 
 
@@ -277,11 +277,11 @@ public class Utils {
      * @return edge position
      */
     public static int getNegativeEdgePositionFromPosition(int position) {
-        int multi1 = Utils.getRankFromPosition(position);
-        int multi2 = 9 - Utils.getFileFromPosition(position);
-        int multiplier = Math.min(multi1, multi2) - 1;
-        int edgePosition = position - multiplier * 15;
-        return edgePosition;
+	int multi1 = Utils.getRankFromPosition(position);
+	int multi2 = 9 - Utils.getFileFromPosition(position);
+	int multiplier = Math.min(multi1, multi2) - 1;
+	int edgePosition = position - multiplier * 15;
+	return edgePosition;
     }
 
 
@@ -294,11 +294,11 @@ public class Utils {
      * @return edge position
      */
     public static int getPositiveEdgePositionFromPosition(int position) {
-        int file = Utils.getFileFromPosition(position);
-        int rank = Utils.getRankFromPosition(position);
-        int multiplyer = Math.min(file, rank) - 1;
-        int edgePosition = position - multiplyer * 17;
-        return edgePosition;
+	int file = Utils.getFileFromPosition(position);
+	int rank = Utils.getRankFromPosition(position);
+	int multiplyer = Math.min(file, rank) - 1;
+	int edgePosition = position - multiplyer * 17;
+	return edgePosition;
     }
 
 
@@ -310,7 +310,7 @@ public class Utils {
      * @return rank of selected position
      */
     public static int getRankFromPosition(int position) {
-        return (position / 16) + 1;
+	return (position / 16) + 1;
     }
 
 
@@ -322,14 +322,14 @@ public class Utils {
      * @return starting position
      */
     public static int getStartingPositionFromMoveNumber(int moveNumber) {
-        int rez = moveNumber >>> 24;
+	int rez = moveNumber >>> 24;
 
-        if (rez == 255) {
-            return -1;
-        }
-        else {
-            return rez;
-        }
+	if (rez == 255) {
+	    return -1;
+	}
+	else {
+	    return rez;
+	}
     }
 
 
@@ -341,14 +341,14 @@ public class Utils {
      * @return target piece
      */
     public static int getTargetPieceFromMoveNumber(int moveNumber) {
-        int rez = moveNumber & 0xFF;
+	int rez = moveNumber & 0xFF;
 
-        if (rez == 255) {
-            return -1;
-        }
-        else {
-            return rez;
-        }
+	if (rez == 255) {
+	    return -1;
+	}
+	else {
+	    return rez;
+	}
     }
 
 
@@ -360,15 +360,15 @@ public class Utils {
      * @return target position
      */
     public static int getTargetPositionFromMoveNumber(int moveNumber) {
-        int rez = (moveNumber >>> 16);
-        rez &= 0xFF;
+	int rez = (moveNumber >>> 16);
+	rez &= 0xFF;
 
-        if (rez == 255) {
-            return -1;
-        }
-        else {
-            return rez;
-        }
+	if (rez == 255) {
+	    return -1;
+	}
+	else {
+	    return rez;
+	}
     }
 
 
@@ -383,11 +383,11 @@ public class Utils {
      *         such child doesn't exist
      */
     public static int indexOfMoveNumberInNextMoves(int movenumber, MCTNode node) {
-        for (int x = 0; x < node.nextMoves.size(); x++) {
-            if (movenumber == node.nextMoves.get(x).moveNumber) { return x; }
-        }
+	for (int x = 0; x < node.nextMoves.size(); x++) {
+	    if (movenumber == node.nextMoves.get(x).moveNumber) { return x; }
+	}
 
-        return -1;
+	return -1;
     }
 
 
@@ -399,12 +399,12 @@ public class Utils {
      * @return string representation of integer list
      */
     public static String intArrayListToString(ArrayList<Integer> list) {
-        StringBuffer sb = new StringBuffer(50);
-        for (int x = 0; x < list.size() - 1; x++) {
-            sb.append(list.get(x) + ", ");
-        }
-        sb.append(list.get(list.size() - 1) + "");
-        return sb.toString();
+	StringBuffer sb = new StringBuffer(50);
+	for (int x = 0; x < list.size() - 1; x++) {
+	    sb.append(list.get(x) + ", ");
+	}
+	sb.append(list.get(list.size() - 1) + "");
+	return sb.toString();
     }
 
 
@@ -417,12 +417,12 @@ public class Utils {
      *         otherwise
      */
     public static boolean isWhitesMoveAtDepth(int depth) {
-        if (depth % 2 == 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
+	if (depth % 2 == 0) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
     }
 
 
@@ -435,12 +435,12 @@ public class Utils {
      *         otherwise
      */
     public static boolean isWhitesTurn(MCTNode node) {
-        if (node.moveDepth % 2 == 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
+	if (node.moveDepth % 2 == 0) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
     }
 
 
@@ -452,46 +452,46 @@ public class Utils {
      * @return string representation of piece
      */
     public static String pieceNumberToString(int pieceNumber) {
-        if (pieceNumber > 7 && pieceNumber < 16) { return "WP"; }
-        if (pieceNumber > 15 && pieceNumber < 24) { return "BP"; }
-        switch (pieceNumber) {
-            case 0:
-                return "WR";
-            case 1:
-                return "WN";
-            case 2:
-                return "WB";
-            case 3:
-                return "WQ";
-            case 4:
-                return "WK";
-            case 5:
-                return "WB";
-            case 6:
-                return "WN";
-            case 7:
-                return "WR";
+	if (pieceNumber > 7 && pieceNumber < 16) { return "WP"; }
+	if (pieceNumber > 15 && pieceNumber < 24) { return "BP"; }
+	switch (pieceNumber) {
+	case 0:
+	    return "WR";
+	case 1:
+	    return "WN";
+	case 2:
+	    return "WB";
+	case 3:
+	    return "WQ";
+	case 4:
+	    return "WK";
+	case 5:
+	    return "WB";
+	case 6:
+	    return "WN";
+	case 7:
+	    return "WR";
 
-            case 24:
-                return "BR";
-            case 25:
-                return "BN";
-            case 26:
-                return "BB";
-            case 27:
-                return "BQ";
-            case 28:
-                return "BK";
-            case 29:
-                return "BB";
-            case 30:
-                return "BN";
-            case 31:
-                return "BR";
+	case 24:
+	    return "BR";
+	case 25:
+	    return "BN";
+	case 26:
+	    return "BB";
+	case 27:
+	    return "BQ";
+	case 28:
+	    return "BK";
+	case 29:
+	    return "BB";
+	case 30:
+	    return "BN";
+	case 31:
+	    return "BR";
 
-            default:
-                return "XX";
-        }
+	default:
+	    return "XX";
+	}
     }
 
 
@@ -504,23 +504,23 @@ public class Utils {
      * @throws UtilsException
      */
     public static String pieceToChar(int piece) {
-        // white pieces
-        if (piece == 0 || piece == 7) { return "R"; }
-        if (piece == 1 || piece == 6) { return "N"; }
-        if (piece == 2 || piece == 5) { return "B"; }
-        if (piece == 3) { return "Q"; }
-        if (piece == 4) { return "K"; }
-        if (piece > 7 && piece < 16) { return ""; }
+	// white pieces
+	if (piece == 0 || piece == 7) { return "R"; }
+	if (piece == 1 || piece == 6) { return "N"; }
+	if (piece == 2 || piece == 5) { return "B"; }
+	if (piece == 3) { return "Q"; }
+	if (piece == 4) { return "K"; }
+	if (piece > 7 && piece < 16) { return ""; }
 
-        // black pieces
-        if (piece > 15 && piece < 24) { return ""; }
-        if (piece == 24 || piece == 31) { return "R"; }
-        if (piece == 25 || piece == 30) { return "N"; }
-        if (piece == 26 || piece == 29) { return "B"; }
-        if (piece == 27) { return "Q"; }
-        if (piece == 28) { return "K"; }
+	// black pieces
+	if (piece > 15 && piece < 24) { return ""; }
+	if (piece == 24 || piece == 31) { return "R"; }
+	if (piece == 25 || piece == 30) { return "N"; }
+	if (piece == 26 || piece == 29) { return "B"; }
+	if (piece == 27) { return "Q"; }
+	if (piece == 28) { return "K"; }
 
-        return null;
+	return null;
     }
 
 
@@ -532,21 +532,21 @@ public class Utils {
      * @return single letter piece representation
      */
     public static String pieceToCharFEN(int piece) {
-        if (piece == 0 || piece == 7) { return "R"; }
-        if (piece == 1 || piece == 6) { return "N"; }
-        if (piece == 2 || piece == 5) { return "B"; }
-        if (piece == 3) { return "Q"; }
-        if (piece == 4) { return "K"; }
-        if (piece > 7 && piece < 16) { return "P"; }
+	if (piece == 0 || piece == 7) { return "R"; }
+	if (piece == 1 || piece == 6) { return "N"; }
+	if (piece == 2 || piece == 5) { return "B"; }
+	if (piece == 3) { return "Q"; }
+	if (piece == 4) { return "K"; }
+	if (piece > 7 && piece < 16) { return "P"; }
 
-        if (piece > 15 && piece < 24) { return "p"; }
-        if (piece == 24 || piece == 31) { return "r"; }
-        if (piece == 25 || piece == 30) { return "n"; }
-        if (piece == 26 || piece == 29) { return "b"; }
-        if (piece == 27) { return "q"; }
-        if (piece == 28) { return "k"; }
+	if (piece > 15 && piece < 24) { return "p"; }
+	if (piece == 24 || piece == 31) { return "r"; }
+	if (piece == 25 || piece == 30) { return "n"; }
+	if (piece == 26 || piece == 29) { return "b"; }
+	if (piece == 27) { return "q"; }
+	if (piece == 28) { return "k"; }
 
-        return null;
+	return null;
     }
 
 
@@ -560,7 +560,7 @@ public class Utils {
      * @return position that is on given rank and file
      */
     public static int positionFromRankAndFile(int file, int rank) {
-        return (rank - 1) * 16 + (file - 1);
+	return (rank - 1) * 16 + (file - 1);
     }
 
 
@@ -572,9 +572,9 @@ public class Utils {
      * @return position on X88 format
      */
     public static int positionFromString(String pos) {
-        int file = Utils.charToIntFile(pos.charAt(0));
-        int rank = Integer.parseInt(pos.substring(1));
-        return Utils.positionFromRankAndFile(file, rank);
+	int file = Utils.charToIntFile(pos.charAt(0));
+	int rank = Integer.parseInt(pos.substring(1));
+	return Utils.positionFromRankAndFile(file, rank);
     }
 
 
@@ -588,12 +588,12 @@ public class Utils {
      */
     public static String positionToString(int position) {
 
-        int file = (byte) Utils.getFileFromPosition(position);
-        int znak = 96 + file;
-        char t = ((char) znak);
+	int file = (byte) Utils.getFileFromPosition(position);
+	int znak = 96 + file;
+	char t = ((char) znak);
 
-        int rank = Utils.getRankFromPosition(position);
-        return t + "" + rank + "";
+	int rank = Utils.getRankFromPosition(position);
+	return t + "" + rank + "";
     }
 
 
@@ -605,11 +605,11 @@ public class Utils {
      * @return readable form of moveNumber ie. "Ke1-f2"
      */
     public static String singleMoveNumberToString(int moveNumber) {
-        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
-        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
-        int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
-        return Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
-                + "-" + Utils.positionToString(to);
+	int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+	int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
+	int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
+	return Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
+		+ "-" + Utils.positionToString(to);
     }
 
 
@@ -621,12 +621,12 @@ public class Utils {
      * @return time in format "[hours]h[minutes]min[seconds]sec
      */
     public static String timeMillisToString(long millis) {
-        millis /= 1000;
-        long hours = millis / 3600;
-        millis = millis - hours * 3600;
-        long minutes = millis / 60;
-        millis -= minutes * 60;
-        return hours + "h " + minutes + "min " + millis + "sec";
+	millis /= 1000;
+	long hours = millis / 3600;
+	millis = millis - hours * 3600;
+	long minutes = millis / 60;
+	millis -= minutes * 60;
+	return hours + "h " + minutes + "min " + millis + "sec";
     }
 
 
@@ -636,8 +636,8 @@ public class Utils {
      * @return todays date
      */
     public static String today() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        return dateFormat.format(Calendar.getInstance().getTime());
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	return dateFormat.format(Calendar.getInstance().getTime());
     }
 
 
@@ -651,15 +651,15 @@ public class Utils {
      * @return string representation of move number
      */
     public static String whiteMoveNumberToFenString(int moveNumber, int depth,
-            String comment) {
-        int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
-        int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
-        int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
+	    String comment) {
+	int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
+	int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
+	int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
 
-        String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
-                + Utils.positionToString(to);
+	String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
+		+ Utils.positionToString(to);
 
-        return depth + ". " + m + "{ " + comment + " }";
+	return depth + ". " + m + "{ " + comment + " }";
 
     }
 
@@ -672,19 +672,19 @@ public class Utils {
      * @return string representation of white chooser strategy
      */
     public static String whiteStrategyToString(WhiteChooserStrategy chooserStrat) {
-        String chooser = "izbiranje: ";
-        switch (chooserStrat) {
-            case RANDOM:
-                chooser += "random";
-                break;
-            case VISIT_COUNT:
-                chooser += "max Visit Count";
-                break;
-            case RATING:
-                chooser += "max Rating";
-                break;
-        }
-        return chooser;
+	String chooser = "izbiranje: ";
+	switch (chooserStrat) {
+	case RANDOM:
+	    chooser += "random";
+	    break;
+	case VISIT_COUNT:
+	    chooser += "max Visit Count";
+	    break;
+	case RATING:
+	    chooser += "max Rating";
+	    break;
+	}
+	return chooser;
     }
 
 
@@ -697,15 +697,15 @@ public class Utils {
      *            string to be written in file
      */
     public static void writePGN(String fileName, String input) {
-        try {
+	try {
 
-            FileWriter fw = new FileWriter(new File(fileName));
-            fw.write(input);
-            fw.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+	    FileWriter fw = new FileWriter(new File(fileName));
+	    fw.write(input);
+	    fw.close();
+	}
+	catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
 

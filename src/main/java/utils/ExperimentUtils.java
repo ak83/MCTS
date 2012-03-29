@@ -16,16 +16,16 @@ public class ExperimentUtils {
      * @return Class that represents value type of <code>testedParameter</code>
      */
     public static Class<? extends Number> MCTestParameterValueType(
-            MCTestParameter testedParameter) {
-        switch (testedParameter) {
-            case C:
-                return Double.class;
-            case GOBAN:
-                return Integer.class;
-            default:
-                // this should never happen
-                return null;
-        }
+	    MCTestParameter testedParameter) {
+	switch (testedParameter) {
+	case C:
+	    return Double.class;
+	case GOBAN:
+	    return Integer.class;
+	default:
+	    // this should never happen
+	    return null;
+	}
     }
 
 
@@ -38,15 +38,15 @@ public class ExperimentUtils {
      *         if such enum does not exist
      */
     public static MCTestParameter mcTestParameterStringToEnum(String parameter) {
-        if (parameter.equalsIgnoreCase("c")) {
-            return MCTestParameter.C;
-        }
-        else if (parameter.equalsIgnoreCase("GOBAN")) {
-            return MCTestParameter.GOBAN;
-        }
-        else {
-            return null;
-        }
+	if (parameter.equalsIgnoreCase("c")) {
+	    return MCTestParameter.C;
+	}
+	else if (parameter.equalsIgnoreCase("GOBAN")) {
+	    return MCTestParameter.GOBAN;
+	}
+	else {
+	    return null;
+	}
     }
 
 
@@ -59,14 +59,14 @@ public class ExperimentUtils {
      *            new value
      */
     public static void setTestParameter(MCTestParameter parameter, Double value) {
-        switch (parameter) {
-            case C:
-                Constants.C = value;
-                break;
-            case GOBAN:
-                Constants.GOBAN = value.intValue();
+	switch (parameter) {
+	case C:
+	    Constants.C = value;
+	    break;
+	case GOBAN:
+	    Constants.GOBAN = value.intValue();
 
-        }
+	}
     }
 
 }
