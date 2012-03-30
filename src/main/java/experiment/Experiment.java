@@ -110,4 +110,10 @@ public class Experiment {
 
     }
 
+
+    
+    public ExperimentStatistics getExperimentStats() {
+        return this.experimentStats;
+    }
+
 }

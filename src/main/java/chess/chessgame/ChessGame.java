@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import mct.MCT;
 import mct.MCTStats;
 import utils.FruitUtils;
+import utils.IOUtils;
 import utils.Utils;
 import chess.chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
@@ -200,7 +201,7 @@ public class ChessGame {
                 Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
         if (Constants.WRITE_INDIVIDUAL_GAMES) {
-            Utils.writePGN(this.pgnFileName, this.fen);
+            IOUtils.writeToFile(this.pgnFileName, this.fen);
         }
 
         return new ChessGameResults(this.fen + "\n\n", this.matchStats);
