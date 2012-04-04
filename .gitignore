@@ -1,6 +1,5 @@
 bin
 target
-/experiment*/
 *.log.*
 *.log
 *.pgn
