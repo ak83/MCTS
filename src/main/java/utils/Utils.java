@@ -634,7 +634,7 @@ public class Utils {
      * @return todays date
      */
     public static String today() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
         return dateFormat.format(Calendar.getInstance().getTime());
     }
 

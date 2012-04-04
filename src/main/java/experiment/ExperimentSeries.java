@@ -1,6 +1,9 @@
 package experiment;
 
+import java.io.File;
+
 import utils.ExperimentUtils;
+import utils.Utils;
 import exec.Constants;
 
 /** Class that handles running multiple experiments */
@@ -14,18 +17,24 @@ public class ExperimentSeries {
      * Run experiments defined in configuration file
      */
     public void runExperiments() {
+        String rootDir = ExperimentUtils
+                .testParameterToString(Constants.testParameter)
+                + "--" + Utils.today();
+
+        new File(rootDir).mkdir();
+
         for (int x = 0; x < Constants.testParameterValues.size(); x++) {
 
             Double parameterValue = Constants.testParameterValues.get(x);
             ExperimentUtils.setTestParameter(Constants.testParameter,
                     parameterValue);
 
-            Experiment experiment = new Experiment("experiment" + x);
+            Experiment experiment = new Experiment(rootDir + "/experiment" + x);
             experiment.runExperiment();
             this.stasts
                     .addExperimentStatistics(experiment.getExperimentStats());
         }
 
-        this.stasts.writeDTMDiffToCsv();
+        this.stasts.writeDTMDiffToCsv(rootDir);
     }
 }
