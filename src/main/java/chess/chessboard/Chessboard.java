@@ -357,10 +357,25 @@ public class Chessboard extends SimpleChessboard implements Cloneable {
     }
 
 
+    /**
+     * If kings are in opposition filters moves to those where white rook
+     * "usefully" checks black king.
+     * 
+     * @param allWhiteMoves
+     *            list of moves that we want to filter
+     * @return moves where root checks black king if kings are in oppostition,
+     *         if they are not then <code>allWhiteMoves</code> is returned
+     */
     public ArrayList<Move> KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(
             ArrayList<Move> allWhiteMoves) {
         ArrayList<Move> rez = new ArrayList<Move>();
         int blackKingPos = this.piecePosition[28];
+        int blackKingRank = Utils.getRankFromPosition(blackKingPos);
+        int blackKingFile = Utils.getFileFromPosition(blackKingPos);
+
+        int whiteKingPos = this.piecePosition[4];
+        int whiteKingFile = Utils.getFileFromPosition(whiteKingPos);
+        int whiteKingRank = Utils.getRankFromPosition(whiteKingPos);
 
         // there are two rooks and only one should be on board
         int rookPos = this.piecePosition[0];
@@ -368,61 +383,60 @@ public class Chessboard extends SimpleChessboard implements Cloneable {
             rookPos = this.piecePosition[7];
         }
 
-        // if kings are on oppossition we find those in which white checks
+        // if kings are in opposition we find those in which white checks
         // otherwise all moves are valid
         if (this.willBlackKingBeInOppositionIfItMovesTo(blackKingPos)) {
-            int blackKingRank = Utils.getRankFromPosition(blackKingPos);
-            int blackKingFile = Utils.getFileFromPosition(blackKingPos);
 
+            // we filter moves
             for (Move currMove : allWhiteMoves) {
                 int movedPiece = Utils
                         .getMovedPieceFromMoveNumber(currMove.moveNumber);
                 int to = Utils
                         .getTargetPositionFromMoveNumber(currMove.moveNumber);
 
+                // rook moves
                 if (movedPiece == 0 || movedPiece == 7) {
-                    // poteze trdnjave
                     int rank = Utils.getRankFromPosition(to);
                     int file = Utils.getFileFromPosition(to);
 
                     boolean sameRank = rank == blackKingRank;
                     boolean sameFile = file == blackKingFile;
-                    if ((sameFile || sameRank)
-                            && !(ChessboardUtils
-                                    .isPositionBetweenPositionsOnLine(
-                                            this.piecePosition[4],
-                                            blackKingPos, to) || ChessboardUtils
-                                    .isPositionBetweenPositionsOnLine(to,
-                                            this.piecePosition[4], blackKingPos))) {
+
+                    boolean sameFileWhiteKing = file == whiteKingFile;
+                    boolean sameRankWhiteKing = rank == whiteKingRank;
+
+                    if ((sameRank && !sameRankWhiteKing)
+                            || (sameFile && !sameFileWhiteKing)) {
                         rez.add(new Move(currMove.moveNumber));
                     }
-                }
-                else {
-                    // poteze kralja
-                    int whiteKingPos = this.piecePosition[4];
-                    int whiteKingFile = Utils.getFileFromPosition(whiteKingPos);
-                    int whiteKingRank = Utils.getRankFromPosition(whiteKingPos);
-                    int rookRank = Utils.getRankFromPosition(rookPos);
-                    int rookFile = Utils.getFileFromPosition(rookPos);
 
-                    boolean areRanksSame = (whiteKingRank == blackKingRank)
-                            && (whiteKingRank == rookRank);
-                    boolean areFilesSame = (whiteKingFile == blackKingFile)
-                            && (whiteKingFile == rookFile);
-
-                    if (areRanksSame) {
-                        int rank = Utils.getRankFromPosition(to);
-                        if (rank != whiteKingRank) {
-                            rez.add(new Move(currMove.moveNumber));
-                        }
-                    }
-                    if (areFilesSame) {
-                        int file = Utils.getFileFromPosition(to);
-                        if (file != whiteKingFile) {
-                            rez.add(new Move(currMove.moveNumber));
-                        }
-                    }
                 }
+                // else {
+                // // poteze kralja
+                // int whiteKingPos = this.piecePosition[4];
+                // int whiteKingFile = Utils.getFileFromPosition(whiteKingPos);
+                // int whiteKingRank = Utils.getRankFromPosition(whiteKingPos);
+                // int rookRank = Utils.getRankFromPosition(rookPos);
+                // int rookFile = Utils.getFileFromPosition(rookPos);
+                //
+                // boolean areRanksSame = (whiteKingRank == blackKingRank)
+                // && (whiteKingRank == rookRank);
+                // boolean areFilesSame = (whiteKingFile == blackKingFile)
+                // && (whiteKingFile == rookFile);
+                //
+                // if (areRanksSame) {
+                // int rank = Utils.getRankFromPosition(to);
+                // if (rank != whiteKingRank) {
+                // rez.add(new Move(currMove.moveNumber));
+                // }
+                // }
+                // if (areFilesSame) {
+                // int file = Utils.getFileFromPosition(to);
+                // if (file != whiteKingFile) {
+                // rez.add(new Move(currMove.moveNumber));
+                // }
+                // }
+                // }
             }
         }
         else {
