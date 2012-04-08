@@ -13,6 +13,18 @@ public class IOUtils {
 
     private IOUtils() {}
 
+    /**
+     * prefix of files that contain whites average DTM difference from optimal
+     * move.
+     */
+    public static final String WHITE_DTM_DIFFERENCE_FILE_NAME = "whiteDTMDiff";
+
+    /** Default height for saving graphics */
+    public static final int    DEFAULT_GRAPH_HEIGHT           = 500;
+
+    /** Default width for saving graphics */
+    public static final int    DEFAULT_GRAPH_WIDTH            = 500;
+
 
     /**
      * Writes string into file
@@ -37,20 +49,24 @@ public class IOUtils {
 
     /**
      * Writes CSV file
-     * @param filePath file path
-     * @param columnNames column names of CSV file (first line) 
-     * @param data data that will be written to CSV
+     * 
+     * @param filePath
+     *            file path
+     * @param columnNames
+     *            column names of CSV file (first line)
+     * @param data
+     *            data that will be written to CSV
      */
     public static void writeCSV(String filePath, Vector<String> columnNames,
             Vector<Vector<Object>> data) {
         StringBuffer sb = new StringBuffer();
-        
-        //generate first line in file
+
+        // generate first line in file
         for (String columnName : columnNames) {
             sb.append(columnName + "\t");
         }
 
-        //generate CSV data
+        // generate CSV data
         for (Vector<Object> row : data) {
             sb.append("\n");
             for (Object columnData : row) {
@@ -58,7 +74,7 @@ public class IOUtils {
             }
         }
 
-        //write to a file
+        // write to a file
         IOUtils.writeToFile(filePath, sb.toString());
     }
 

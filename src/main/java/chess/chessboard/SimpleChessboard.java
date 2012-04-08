@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import chess.Move;
-
 import utils.ChessboardUtils;
 import utils.Utils;
+import chess.Move;
 import exceptions.ChessboardException;
 import exec.Constants;
 
-public class SimpleChessboard {
+public class SimpleChessboard implements Cloneable {
 
     /**
      * used for optimization purposes. Sets number of plys to check for state

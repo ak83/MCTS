@@ -5,10 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import logging.Logs;
+import utils.IOUtils;
 import chess.chessgame.ChessGame;
 import chess.chessgame.ChessGameResults;
-
-import logging.Logs;
 import exceptions.ChessboardException;
 import exec.Constants;
 
@@ -62,14 +62,19 @@ public class Experiment {
                         .getStatistics());
             }
             catch (ChessboardException e) {
+                System.err.println("There is an error in chessboard logic!");
                 e.printStackTrace();
-                System.exit(1);
+                throw new RuntimeException(e);
             }
         }
 
-        // write DTM diff to cvs file
-        String whiteDTMDiffCSVFilePath = this.name + "/" + "whiteDTMDiff.csv";
-        this.experimentStats.writeAverageDTMDiffToCVS(whiteDTMDiffCSVFilePath);
+        // write DTM diff to cvs files
+        String whiteDTMDiffCSVFilePath = this.name + "/"
+                + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME;
+        this.experimentStats.writeAverageDTMDiffToCVS(whiteDTMDiffCSVFilePath
+                + ".csv");
+        this.experimentStats
+                .saveWhiteDTMDifferenceGraph(whiteDTMDiffCSVFilePath + ".jpg");
 
         // write average tree size to cvs file
         String treeSizeCSVFilePath = this.name + "/" + "treeSize.csv";
@@ -84,8 +89,9 @@ public class Experiment {
             fw.close();
         }
         catch (IOException e) {
+            System.err.println("Could not write file " + pgnFilePath);
             e.printStackTrace();
-            System.exit(1);
+            throw new RuntimeException(e);
         }
 
         // write this experiments info to log file
@@ -111,7 +117,6 @@ public class Experiment {
     }
 
 
-    
     public ExperimentStatistics getExperimentStats() {
         return this.experimentStats;
     }

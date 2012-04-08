@@ -8,7 +8,7 @@ import mct.MCTNode;
 import moveChoosers.WhiteChooserStrategy;
 import moveFinders.BlackFinderStrategy;
 
-/** Class holds various utils methods */
+/** Class holds various utility methods */
 public class Utils {
 
     /**

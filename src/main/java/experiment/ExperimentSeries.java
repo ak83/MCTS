@@ -3,6 +3,7 @@ package experiment;
 import java.io.File;
 
 import utils.ExperimentUtils;
+import utils.IOUtils;
 import utils.Utils;
 import exec.Constants;
 
@@ -36,5 +37,8 @@ public class ExperimentSeries {
         }
 
         this.stasts.writeDTMDiffToCsv(rootDir);
+        this.stasts.saveDTMDiffGraph(rootDir + "/"
+                + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ".jpg",
+                Constants.testParameter);
     }
 }
