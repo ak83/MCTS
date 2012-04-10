@@ -184,6 +184,8 @@ public class ChessGame {
 
         this.logGameSummary(round, startTime, didWhiteWin, turnDepth);
 
+        this.matchStats.setStatisticsOfMCTS(this.MCTree.getMCTStatistics());
+
         String whiteStrat = Utils
                 .whiteStrategyToString(Constants.WHITE_MOVE_CHOOSER_STRATEGY);
 

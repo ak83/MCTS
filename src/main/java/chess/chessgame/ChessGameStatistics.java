@@ -2,6 +2,8 @@ package chess.chessgame;
 
 import java.util.HashMap;
 
+import mct.MCTStats;
+
 /**
  * Class for statistics that are to be logged.
  * 
@@ -23,6 +25,9 @@ public class ChessGameStatistics {
     /** Holds tree size per turn. */
     HashMap<Integer, Integer> treeSize              = new HashMap<Integer, Integer>(
                                                             50);
+
+    /** Statistics of MCTS that was used in chess game */
+    private MCTStats          statisticsOfMCTS;
 
 
     /**
@@ -81,9 +86,20 @@ public class ChessGameStatistics {
     }
 
 
-    
     public int getNumberOfPliesMade() {
         return this.numberOfPliesMade;
+    }
+
+
+    
+    public MCTStats getStatisticsOfMCTS() {
+        return this.statisticsOfMCTS;
+    }
+
+
+    
+    public void setStatisticsOfMCTS(MCTStats statisticsOfMCTS) {
+        this.statisticsOfMCTS = statisticsOfMCTS;
     }
 
 }

@@ -2,7 +2,11 @@ package utils;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Vector;
+
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
 
 /**
  * Class with methods for input/output
@@ -76,6 +80,27 @@ public class IOUtils {
 
         // write to a file
         IOUtils.writeToFile(filePath, sb.toString());
+    }
+
+
+    /**
+     * Saves {@link JFreeChart} as jpg picture to desired location
+     * 
+     * @param filePath
+     *            file to which generated picture will be saved
+     * @param chart
+     *            {@link JFreeChart} that we want to save
+     */
+    public static void saveChart(String filePath, JFreeChart chart) {
+        try {
+            ChartUtilities.saveChartAsJPEG(new File(filePath), chart,
+                    DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
+        }
+        catch (IOException e) {
+            System.err.println("Could not save " + filePath);
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
 }

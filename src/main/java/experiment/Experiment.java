@@ -76,6 +76,12 @@ public class Experiment {
         this.experimentStats
                 .saveWhiteDTMDifferenceGraph(whiteDTMDiffCSVFilePath + ".jpg");
 
+        this.experimentStats.saveCollapsesDTMTreeSizechart(this.name
+                + "/DTMTreeCollapsesTreeSize.jpg");
+
+        this.experimentStats.saveCollapseDTMChart(this.name
+                + "/collapsesDTM.jpg");
+
         // write average tree size to cvs file
         String treeSizeCSVFilePath = this.name + "/" + "treeSize.csv";
         this.experimentStats.writeAverageTreeSizeToCVS(treeSizeCSVFilePath);
