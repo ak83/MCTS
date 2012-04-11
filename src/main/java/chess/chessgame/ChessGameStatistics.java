@@ -89,6 +89,16 @@ public class ChessGameStatistics {
     }
 
 
+    /**
+     * Gets number of MCTS tree collapses that happened in chess game.
+     * 
+     * @return number of MCTS tree collapses
+     */
+    public int getNumberOfMCTSTreeCollapses() {
+        return this.statisticsOfMCTS.numberOfMCTreeColapses;
+    }
+
+
     public int getNumberOfPliesMade() {
         return this.numberOfPliesMade;
     }

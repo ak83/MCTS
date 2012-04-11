@@ -141,8 +141,24 @@ public class ExperimentStatistics {
 
 
     /**
-     * Create chart with number of MCTS tree collapses, dtm diff and average
-     * tree size (per match).
+     * Gets total number of all collapses that happened in experiments chess
+     * games.
+     * 
+     * @return total number of chess games
+     */
+    public int getNumberOfTreeCollapses() {
+        int total = 0;
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            total += stats.getNumberOfMCTSTreeCollapses();
+        }
+
+        return total;
+    }
+
+
+    /**
+     * Creates chart with number of MCTS tree collapses, dtm difference and
+     * average tree size (per match).
      * 
      * @param filePath
      *            file to which chart will be saved as jpg picture
@@ -188,8 +204,7 @@ public class ExperimentStatistics {
 
         Vector<Object> numberOfCollapses = new Vector<Object>();
         for (ChessGameStatistics stats : this.chessGameStatistics) {
-            numberOfCollapses
-                    .add(stats.getStatisticsOfMCTS().numberOfMCTreeColapses);
+            numberOfCollapses.add(stats.getNumberOfMCTSTreeCollapses());
         }
 
         // prepare correct data object
@@ -286,7 +301,8 @@ public class ExperimentStatistics {
             values.add(this.chessGameStatistics.get(x).getNumberOfPliesMade() / 2);
             values.add(this.chessGameStatistics.get(x)
                     .getAverageWhitesDTMDiff());
-            values.add(this.chessGameStatistics.get(x).getStatisticsOfMCTS().numberOfMCTreeColapses);
+            values.add(this.chessGameStatistics.get(x)
+                    .getNumberOfMCTSTreeCollapses());
             values.add(this.chessGameStatistics.get(x).getAverageTreeSize());
 
             // add row to data
@@ -306,7 +322,7 @@ public class ExperimentStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
             dataset.setValue(this.chessGameStatistics.get(x)
-                    .getStatisticsOfMCTS().numberOfMCTreeColapses,
+                    .getNumberOfMCTSTreeCollapses(),
                     StatisticsUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
                     (x + 1) + "");
         }
