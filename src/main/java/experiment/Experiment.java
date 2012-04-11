@@ -71,6 +71,7 @@ public class Experiment {
         // write DTM diff to cvs files
         String whiteDTMDiffCSVFilePath = this.name + "/"
                 + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME;
+
         this.experimentStats.writeAverageDTMDiffToCVS(whiteDTMDiffCSVFilePath
                 + ".csv");
         this.experimentStats
@@ -87,6 +88,10 @@ public class Experiment {
         // save length per chess game chart
         this.experimentStats.saveGameLengthPerGameChart(this.name + "/"
                 + IOUtils.GAME_LENGTH + ".jpg");
+
+        // save game length histogram
+        this.experimentStats.saveGameLengthHistogram(this.name
+                + "/gameLengthHistogram.jpg");
 
         this.experimentStats.saveCollapseDTMChart(this.name
                 + "/collapsesDTM.jpg");

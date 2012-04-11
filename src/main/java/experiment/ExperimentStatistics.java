@@ -1,6 +1,8 @@
 package experiment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jfree.chart.ChartFactory;
@@ -206,10 +208,60 @@ public class ExperimentStatistics {
         CategoryAxis categoryAxis = new CategoryAxis("Chess game");
         CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
                 categoryAxis);
-        combinedPlot.add(combinedPlot);
+        combinedPlot.add(plot);
 
         JFreeChart chart = new JFreeChart(combinedPlot);
         IOUtils.saveChart(filePath, chart);
+    }
+
+
+    /**
+     * Save histogram of chess game length.
+     * 
+     * @param filePath
+     *            file where chart will be saved as jpg picture
+     */
+    public void saveGameLengthHistogram(String filePath) {
+        // key is game length, value is number of chess game of that length
+        HashMap<Integer, Integer> gamesPerLength = new HashMap<Integer, Integer>();
+
+        // will hashmap with game length counters
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            // turns made in game
+            int gameLength = stats.getNumberOfTurnsMade();
+            if (gamesPerLength.get(gameLength) == null) {
+                gamesPerLength.put(gameLength, 1);
+            }
+            else {
+                // if game with current game length exists we increase counter
+                // of such games
+                gamesPerLength.put(gameLength,
+                        gamesPerLength.get(gameLength) + 1);
+            }
+        }
+
+        // sort keys
+        ArrayList<Integer> sortedKeys = new ArrayList<Integer>(
+                new TreeSet<Integer>(gamesPerLength.keySet()));
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (Integer gameLength : sortedKeys) {
+            dataset.addValue(gamesPerLength.get(gameLength), "number of games",
+                    gameLength);
+        }
+
+        CategoryPlot plot = new CategoryPlot();
+        StatisticsUtils.addToPlot(plot, dataset, "", new BarRenderer(), 0);
+
+        CategoryAxis categoryAxis = new CategoryAxis("Chess game length");
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
+                categoryAxis);
+        combinedPlot.add(plot);
+
+        JFreeChart chart = new JFreeChart(combinedPlot);
+
+        IOUtils.saveChart(filePath, chart);
+
     }
 
 
@@ -396,7 +448,7 @@ public class ExperimentStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
             dataset.setValue(this.chessGameStatistics.get(x)
-                    .getNumberOfPliesMade() / 2,
+                    .getNumberOfTurnsMade(),
                     StatisticsUtils.GAME_LENGTH_CATEGORY, (x + 1) + "");
         }
 

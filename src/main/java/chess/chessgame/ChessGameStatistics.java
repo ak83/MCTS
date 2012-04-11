@@ -104,6 +104,16 @@ public class ChessGameStatistics {
     }
 
 
+    /**
+     * Gets number of turns that were made in game.
+     * 
+     * @return number of turns
+     */
+    public int getNumberOfTurnsMade() {
+        return this.numberOfPliesMade / 2 + 1;
+    }
+
+
     public MCTStats getStatisticsOfMCTS() {
         return this.statisticsOfMCTS;
     }
