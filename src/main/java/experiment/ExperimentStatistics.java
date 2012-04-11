@@ -201,6 +201,18 @@ public class ExperimentStatistics {
 
 
     /**
+     * Writes CSV with all output parameters.
+     * 
+     * @param filePath
+     *            where file will be saved
+     */
+    public void writeUltimateCSV(String filePath) {
+        IOUtils.writeCSV(filePath, this.buildAllColumnNames(), this
+                .buildDataForCSV());
+    }
+
+
+    /**
      * Create chart with number of MCTS tree collapses and DTM diff (per match).
      * 
      * @param filePath
@@ -237,6 +249,51 @@ public class ExperimentStatistics {
             columnNames.add("ChessGame" + x);
         }
         return columnNames;
+    }
+
+
+    /**
+     * Builds column names for csv file that contains all output parameters.
+     * 
+     * @return column names
+     */
+    private Vector<String> buildAllColumnNames() {
+        Vector<String> columnNames = new Vector<String>();
+        columnNames.add("ChessGame");
+        columnNames.add("\"Winning side\"");
+        columnNames.add("\"game length\"");
+        columnNames.add("\"average DTM difference\"");
+        columnNames.add("\"number of MCTS tree collapses\"");
+        columnNames.add("\"average MCTS tree size\"");
+        return columnNames;
+
+    }
+
+
+    /**
+     * Build data for CSV file that contains all output parameters.
+     * 
+     * @return data for CSV file
+     */
+    private Vector<Vector<Object>> buildDataForCSV() {
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+
+        for (int x = 0; x < this.chessGameStatistics.size(); x++) {
+            // build a row of values
+            Vector<Object> values = new Vector<Object>();
+            values.add(x);
+            values.add(this.chessGameStatistics.get(x).getVictor());
+            values.add(this.chessGameStatistics.get(x).getNumberOfPliesMade() / 2);
+            values.add(this.chessGameStatistics.get(x)
+                    .getAverageWhitesDTMDiff());
+            values.add(this.chessGameStatistics.get(x).getStatisticsOfMCTS().numberOfMCTreeColapses);
+            values.add(this.chessGameStatistics.get(x).getAverageTreeSize());
+
+            // add row to data
+            data.add(values);
+        }
+
+        return data;
     }
 
 

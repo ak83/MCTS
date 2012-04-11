@@ -28,6 +28,9 @@ public class IOUtils {
      */
     public static final String NUMBER_OF_MCTS_TREE_COLLAPSES_FILE_NAME = "numberOfMCTSCollapses";
 
+    /** Prefix of files that contain all output parameters */
+    public static final String ULTIMATE_FILE_NAME                      = "all";
+
     /**
      * Prefix of files that contain (average) MCTS tree size
      */
@@ -82,7 +85,7 @@ public class IOUtils {
 
         // generate CSV data
         for (Vector<Object> row : data) {
-            sb.append("\n");
+            sb.append("\r\n");
             for (Object columnData : row) {
                 sb.append(columnData.toString() + "\t");
             }

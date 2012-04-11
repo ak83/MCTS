@@ -14,6 +14,9 @@ public class ChessGameStatistics {
     /** Number of plies made in chess game */
     int                       numberOfPliesMade     = 0;
 
+    /** Who won the chess game */
+    String                    victor                = "";
+
     /** Holds whites DTM difference from optimal move per turn. */
     HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(
                                                             50);
@@ -91,15 +94,18 @@ public class ChessGameStatistics {
     }
 
 
-    
     public MCTStats getStatisticsOfMCTS() {
         return this.statisticsOfMCTS;
     }
 
 
-    
     public void setStatisticsOfMCTS(MCTStats statisticsOfMCTS) {
         this.statisticsOfMCTS = statisticsOfMCTS;
+    }
+
+
+    public String getVictor() {
+        return this.victor;
     }
 
 }

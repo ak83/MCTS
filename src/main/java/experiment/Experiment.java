@@ -91,6 +91,9 @@ public class Experiment {
         this.experimentStats.writeAverageTreeSizeToCVS(this.name + "/"
                 + IOUtils.TREE_SIZE_FILE_NAME + ".csv");
 
+        this.experimentStats.writeUltimateCSV(this.name + "/"
+                + IOUtils.ULTIMATE_FILE_NAME + ".csv");
+
         String pgnFilePath = this.name + "/" + Constants.PGN_FILENAME;
         try {
 
