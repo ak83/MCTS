@@ -36,6 +36,8 @@ public class IOUtils {
      */
     public static final String TREE_SIZE_FILE_NAME                     = "treeSize";
 
+    public static final String GAME_LENGTH                             = "gameLength";
+
     /** Default height for saving graphics */
     public static final int    DEFAULT_GRAPH_HEIGHT                    = 500;
 

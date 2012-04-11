@@ -17,6 +17,9 @@ public class StatisticsUtils {
     /** Category for average tree size */
     public static final String TREE_SIZE_CATEGORY                    = "Average MCTS tree size";
 
+    /** Category for game length */
+    public static final String GAME_LENGTH_CATEGORY                  = "Game Length";
+
 
     /**
      * Sets given arguments for plot at selected index

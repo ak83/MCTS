@@ -186,8 +186,29 @@ public class ExperimentStatistics {
 
         combinedPlot.add(plot);
 
-        JFreeChart chart = new JFreeChart("", combinedPlot);
+        JFreeChart chart = new JFreeChart(combinedPlot);
 
+        IOUtils.saveChart(filePath, chart);
+    }
+
+
+    /**
+     * Creates chart with game length per individual chess game.
+     * 
+     * @param filePath
+     *            file where chart will be saved as jpg picture
+     */
+    public void saveGameLengthPerGameChart(String filePath) {
+        CategoryPlot plot = new CategoryPlot();
+        StatisticsUtils.addToPlot(plot, this.getGameLengthPerGameDataset(),
+                "Chess game length (in turns)", new LineAndShapeRenderer(), 0);
+
+        CategoryAxis categoryAxis = new CategoryAxis("Chess game");
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
+                categoryAxis);
+        combinedPlot.add(combinedPlot);
+
+        JFreeChart chart = new JFreeChart(combinedPlot);
         IOUtils.saveChart(filePath, chart);
     }
 
@@ -361,6 +382,24 @@ public class ExperimentStatistics {
                     .getAverageTreeSize(), StatisticsUtils.TREE_SIZE_CATEGORY,
                     (x + 1) + "");
         }
+        return dataset;
+    }
+
+
+    /**
+     * Builds {@link CategoryDataset} for individual chess game length.
+     * 
+     * @return {@link CategoryDataset} that represents individual chess game
+     *         length(in turns)
+     */
+    private CategoryDataset getGameLengthPerGameDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int x = 0; x < this.chessGameStatistics.size(); x++) {
+            dataset.setValue(this.chessGameStatistics.get(x)
+                    .getNumberOfPliesMade() / 2,
+                    StatisticsUtils.GAME_LENGTH_CATEGORY, (x + 1) + "");
+        }
+
         return dataset;
     }
 

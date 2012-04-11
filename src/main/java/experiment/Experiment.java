@@ -84,6 +84,10 @@ public class Experiment {
         this.experimentStats.saveCollapsesDTMTreeSizechart(this.name
                 + "/DTMTreeCollapsesTreeSize.jpg");
 
+        // save length per chess game chart
+        this.experimentStats.saveGameLengthPerGameChart(this.name + "/"
+                + IOUtils.GAME_LENGTH + ".jpg");
+
         this.experimentStats.saveCollapseDTMChart(this.name
                 + "/collapsesDTM.jpg");
 
