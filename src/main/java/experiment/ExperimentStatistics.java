@@ -1,8 +1,7 @@
 package experiment;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -68,30 +67,16 @@ public class ExperimentStatistics {
      *            file to which DTM differences will be saved
      */
     public void writeAverageDTMDiffToCVS(String filePath) {
-        // names for columns in csv file (ChessGame1, ChessGame2,....)
-        StringBuffer sbColumnNames = new StringBuffer();
 
-        // data (only one row) for each column
-        StringBuffer sbRow = new StringBuffer();
-
-        int x = 1;
+        Vector<Object> dtmDiff = new Vector<Object>();
         for (ChessGameStatistics stats : this.chessGameStatistics) {
-            sbColumnNames.append("ChessGame" + x + "\t");
-            sbRow.append(stats.getAverageWhitesDTMDiff() + "\t");
-            x++;
+            dtmDiff.add(stats.getAverageWhitesDTMDiff());
         }
 
-        try {
-            FileWriter fw = new FileWriter(new File(filePath));
-            fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
-            fw.close();
-        }
-        catch (Exception e) {
-            System.err.println("Could not write to file " + filePath);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        data.add(dtmDiff);
 
+        IOUtils.writeCSV(filePath, this.buildChessGameColumnNames(), data);
     }
 
 
@@ -125,30 +110,17 @@ public class ExperimentStatistics {
      *            file to which DTM differences will be saved
      */
     public void writeAverageTreeSizeToCVS(String filePath) {
-        // names for columns in csv file (ChessGame1, ChessGame2,....)
-        StringBuffer sbColumnNames = new StringBuffer();
 
-        // data (only one row) for each column
-        StringBuffer sbRow = new StringBuffer();
-
-        int x = 1;
+        // build vector and fill it with tree sizes
+        Vector<Object> treeSizes = new Vector<Object>();
         for (ChessGameStatistics stats : this.chessGameStatistics) {
-            sbColumnNames.append("ChessGame" + x + "\t");
-            sbRow.append(stats.getAverageTreeSize() + "\t");
-            x++;
+            treeSizes.add(stats.getAverageTreeSize());
         }
 
-        try {
-            FileWriter fw = new FileWriter(new File(filePath));
-            fw.write(sbColumnNames.toString() + "\r\n" + sbRow.toString());
-            fw.close();
-        }
-        catch (Exception e) {
-            System.err.println("Could not write file " + filePath);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        data.add(treeSizes);
 
+        IOUtils.writeCSV(filePath, this.buildChessGameColumnNames(), data);
     }
 
 
@@ -205,6 +177,30 @@ public class ExperimentStatistics {
 
 
     /**
+     * Writes number of MCTS tree collapses per match to CSV file.
+     * 
+     * @param filePath
+     *            file to which number of collapses will be saved.
+     */
+    public void writeNumberOfCollapsesToCSV(String filePath) {
+
+        Vector<String> columnNames = buildChessGameColumnNames();
+
+        Vector<Object> numberOfCollapses = new Vector<Object>();
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            numberOfCollapses
+                    .add(stats.getStatisticsOfMCTS().numberOfMCTreeColapses);
+        }
+
+        // prepare correct data object
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        data.add(numberOfCollapses);
+
+        IOUtils.writeCSV(filePath, columnNames, data);
+    }
+
+
+    /**
      * Create chart with number of MCTS tree collapses and DTM diff (per match).
      * 
      * @param filePath
@@ -229,6 +225,18 @@ public class ExperimentStatistics {
         JFreeChart chart = new JFreeChart(combinedPlot);
 
         IOUtils.saveChart(filePath, chart);
+    }
+
+
+    /**
+     * @return
+     */
+    private Vector<String> buildChessGameColumnNames() {
+        Vector<String> columnNames = new Vector<String>();
+        for (int x = 1; x <= this.chessGameStatistics.size(); x++) {
+            columnNames.add("ChessGame" + x);
+        }
+        return columnNames;
     }
 
 

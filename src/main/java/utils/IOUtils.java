@@ -21,13 +21,23 @@ public class IOUtils {
      * prefix of files that contain whites average DTM difference from optimal
      * move.
      */
-    public static final String WHITE_DTM_DIFFERENCE_FILE_NAME = "whiteDTMDiff";
+    public static final String WHITE_DTM_DIFFERENCE_FILE_NAME          = "whiteDTMDiff";
+
+    /**
+     * Prefix of files that contain number MCTS tree collapses.
+     */
+    public static final String NUMBER_OF_MCTS_TREE_COLLAPSES_FILE_NAME = "numberOfMCTSCollapses";
+
+    /**
+     * Prefix of files that contain (average) MCTS tree size
+     */
+    public static final String TREE_SIZE_FILE_NAME                     = "treeSize";
 
     /** Default height for saving graphics */
-    public static final int    DEFAULT_GRAPH_HEIGHT           = 500;
+    public static final int    DEFAULT_GRAPH_HEIGHT                    = 500;
 
     /** Default width for saving graphics */
-    public static final int    DEFAULT_GRAPH_WIDTH            = 500;
+    public static final int    DEFAULT_GRAPH_WIDTH                     = 500;
 
 
     /**

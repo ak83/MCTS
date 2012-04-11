@@ -36,6 +36,9 @@ public class ExperimentSeriesStatistics {
 
     /**
      * Writes average DTM difference from experiments to CSV file
+     * 
+     * @param rootDir
+     *            directory in which experiments are contained
      */
     public void writeDTMDiffToCsv(String rootDir) {
 

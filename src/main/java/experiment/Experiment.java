@@ -76,6 +76,11 @@ public class Experiment {
         this.experimentStats
                 .saveWhiteDTMDifferenceGraph(whiteDTMDiffCSVFilePath + ".jpg");
 
+        // output number of collapses files
+        this.experimentStats.writeNumberOfCollapsesToCSV(this.name + "/"
+                + IOUtils.NUMBER_OF_MCTS_TREE_COLLAPSES_FILE_NAME + ".csv");
+
+        // save chart that show with multiple output options
         this.experimentStats.saveCollapsesDTMTreeSizechart(this.name
                 + "/DTMTreeCollapsesTreeSize.jpg");
 
@@ -83,8 +88,8 @@ public class Experiment {
                 + "/collapsesDTM.jpg");
 
         // write average tree size to cvs file
-        String treeSizeCSVFilePath = this.name + "/" + "treeSize.csv";
-        this.experimentStats.writeAverageTreeSizeToCVS(treeSizeCSVFilePath);
+        this.experimentStats.writeAverageTreeSizeToCVS(this.name + "/"
+                + IOUtils.TREE_SIZE_FILE_NAME + ".csv");
 
         String pgnFilePath = this.name + "/" + Constants.PGN_FILENAME;
         try {
