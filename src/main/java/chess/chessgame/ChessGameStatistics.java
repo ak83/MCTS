@@ -15,7 +15,7 @@ public class ChessGameStatistics {
     int                       numberOfPliesMade     = 0;
 
     /** Who won the chess game */
-    String                    victor                = "";
+    boolean                   didWhiteWin           = false;
 
     /** Holds whites DTM difference from optimal move per turn. */
     HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(
@@ -124,8 +124,28 @@ public class ChessGameStatistics {
     }
 
 
+    /**
+     * Gets player who won the chess game.
+     * 
+     * @return "White" if white player won chess game, "Black" otherwise
+     */
     public String getVictor() {
-        return this.victor;
+        if (this.didWhiteWin) {
+            return "White";
+        }
+        else {
+            return "Black";
+        }
+    }
+
+
+    public HashMap<Integer, Integer> getTreeSize() {
+        return this.treeSize;
+    }
+
+
+    public boolean didWhiteWin() {
+        return this.didWhiteWin;
     }
 
 }

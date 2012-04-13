@@ -106,6 +106,43 @@ public class ExperimentStatistics {
 
 
     /**
+     * Gets average tree size per turn
+     * 
+     * @return average MCTS tree size for experiment
+     */
+    public double getAverageTreeSize() {
+        int totalTreeSize = 0;
+        int totalTurns = 0;
+
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            for (Integer turnTreeSize : stats.getTreeSize().values()) {
+                totalTreeSize += turnTreeSize;
+            }
+            totalTurns += stats.getTreeSize().size();
+        }
+
+        return totalTreeSize / (double) totalTurns;
+    }
+
+
+    /**
+     * Gets white success rate in experiment.
+     * 
+     * @return whites success rate
+     */
+    public double getAverageWhiteSuccessRate() {
+        int totalWhiteVictories = 0;
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            if (stats.didWhiteWin()) {
+                totalWhiteVictories++;
+            }
+        }
+
+        return totalWhiteVictories / (double) this.chessGameStatistics.size();
+    }
+
+
+    /**
      * Writes average MC tree size to CSV file.
      * 
      * @param filePath

@@ -124,6 +124,8 @@ public class ExperimentSeriesStatistics {
         columnNames.add("\"average DTM difference\"");
         columnNames.add("\"average chess game length\"");
         columnNames.add("\"number of MCTS tree collapses\"");
+        columnNames.add("\"average MCTS tree size\"");
+        columnNames.add("\"White success rate\"");
 
         return columnNames;
     }
@@ -145,6 +147,9 @@ public class ExperimentSeriesStatistics {
             row.add(this.experimentStatistics.get(x).getWhitesAverageDTMDiff());
             row.add(this.experimentStatistics.get(x).getAverageGameLength());
             row.add(this.experimentStatistics.get(x).getNumberOfTreeCollapses());
+            row.add(this.experimentStatistics.get(x).getAverageTreeSize());
+            row.add(this.experimentStatistics.get(x)
+                    .getAverageWhiteSuccessRate());
 
             // add current row to data
             data.add(row);
