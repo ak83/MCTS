@@ -6,5 +6,5 @@ package experiment;
  * @author Andraz
  */
 public enum MCTestParameter {
-    C, GOBAN
+    C, GOBAN, STEPS
 }

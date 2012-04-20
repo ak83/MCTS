@@ -44,6 +44,10 @@ public class ExperimentUtils {
         else if (parameter.equalsIgnoreCase("GOBAN")) {
             return MCTestParameter.GOBAN;
         }
+        else if (parameter.equalsIgnoreCase("SIMULATIONS")
+                || parameter.equalsIgnoreCase("STEPS")) {
+            return MCTestParameter.STEPS;
+        }
         else {
             return null;
         }
@@ -65,6 +69,8 @@ public class ExperimentUtils {
                 break;
             case GOBAN:
                 Constants.GOBAN = value.intValue();
+            case STEPS:
+                Constants.NUMBER_OF_RUNNING_STEPS = value.intValue();
 
         }
     }
@@ -83,6 +89,8 @@ public class ExperimentUtils {
                 return "C";
             case GOBAN:
                 return "GOBAN";
+            case STEPS:
+                return "MC_STEPS";
 
             default:
                 throw new IllegalArgumentException();
