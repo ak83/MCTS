@@ -1,8 +1,6 @@
 package experiment;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import logging.Logs;
@@ -103,19 +101,12 @@ public class Experiment {
         this.experimentStats.writeUltimateCSV(this.name + "/"
                 + IOUtils.ULTIMATE_FILE_NAME + ".csv");
 
-        String pgnFilePath = this.name + "/" + Constants.PGN_FILENAME;
-        try {
+        this.experimentStats.saveUltimateChart(this.name + "/"
+                + IOUtils.ULTIMATE_FILE_NAME + ".jpg");
 
-            File output = new File(pgnFilePath);
-            FileWriter fw = new FileWriter(output);
-            fw.write(this.pgn);
-            fw.close();
-        }
-        catch (IOException e) {
-            System.err.println("Could not write file " + pgnFilePath);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        String pgnFilePath = this.name + "/" + Constants.PGN_FILENAME;
+
+        IOUtils.writeToFile(pgnFilePath, this.pgn);
 
         // write this experiments info to log file
 

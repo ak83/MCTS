@@ -42,7 +42,7 @@ public class IOUtils {
     public static final int    DEFAULT_GRAPH_HEIGHT                    = 500;
 
     /** Default width for saving graphics */
-    public static final int    DEFAULT_GRAPH_WIDTH                     = 500;
+    public static final int    DEFAULT_GRAPH_WIDTH                     = 1200;
 
 
     /**

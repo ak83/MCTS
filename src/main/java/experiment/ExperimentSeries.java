@@ -24,6 +24,7 @@ public class ExperimentSeries {
 
         new File(rootDir).mkdir();
 
+        // run experiment for each test parameter value
         for (int x = 0; x < Constants.testParameterValues.size(); x++) {
 
             Double parameterValue = Constants.testParameterValues.get(x);
@@ -36,10 +37,13 @@ public class ExperimentSeries {
                     .addExperimentStatistics(experiment.getExperimentStats());
         }
 
+        // save statistics outputs
         this.stasts.writeDTMDiffToCsv(rootDir);
         this.stasts.saveDTMDiffGraph(rootDir + "/"
                 + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ".jpg",
                 Constants.testParameter);
+        this.stasts.saveUltimateChart(rootDir + "/"
+                + IOUtils.ULTIMATE_FILE_NAME + ".jpg", Constants.testParameter);
 
         this.stasts.writeUltimateCSV(rootDir + "/" + IOUtils.ULTIMATE_FILE_NAME
                 + ".csv");

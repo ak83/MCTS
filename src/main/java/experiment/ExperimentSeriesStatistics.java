@@ -1,18 +1,21 @@
 package experiment;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import utils.ExperimentUtils;
 import utils.IOUtils;
+import utils.ChartUtils;
 import exec.Constants;
 
 public class ExperimentSeriesStatistics {
@@ -101,15 +104,47 @@ public class ExperimentSeriesStatistics {
                 yAxisDescription, dataset, PlotOrientation.VERTICAL, false,
                 false, false);
 
-        try {
-            ChartUtilities.saveChartAsJPEG(new File(filepath), chart,
-                    IOUtils.DEFAULT_GRAPH_WIDTH, IOUtils.DEFAULT_GRAPH_HEIGHT);
-        }
-        catch (IOException e) {
-            System.err.println("Could not save " + filepath);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        IOUtils.saveChart(filepath, chart);
+    }
+
+
+    /**
+     * Saves Chart with every every output data
+     * 
+     * @param filePath
+     *            file where chart will be saved as jpg picture
+     * @param parameter
+     *            parameter that was tested in experiment series
+     */
+    public void saveUltimateChart(String filePath, MCTestParameter parameter) {
+        CategoryPlot plot = new CategoryPlot();
+
+        ChartUtils.addToPlot(plot, this.buildDTMDataset(),
+                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(),
+                0);
+        ChartUtils.addToPlot(plot, this.buildNumberOfCollapsesDataset(),
+                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
+                new LineAndShapeRenderer(), 1);
+        ChartUtils.addToPlot(plot, this.buildAverageTreeSizeDataset(),
+                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(),
+                2);
+        ChartUtils.addToPlot(plot, this.buildAGLDataset(),
+                ChartUtils.GAME_LENGTH_CATEGORY,
+                new LineAndShapeRenderer(), 3);
+        ChartUtils.addToPlot(plot, this.buildWSRDataset(),
+                ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
+                new LineAndShapeRenderer(), 4);
+
+        CategoryAxis categoryAxis = new CategoryAxis(ExperimentUtils
+                .testParameterToString(parameter));
+
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
+                categoryAxis);
+        combinedPlot.add(plot);
+
+        JFreeChart chart = new JFreeChart(combinedPlot);
+        IOUtils.saveChart(filePath, chart);
+
     }
 
 
@@ -156,6 +191,108 @@ public class ExperimentSeriesStatistics {
         }
 
         return data;
+    }
+
+
+    /**
+     * Generates dataset from experiments for DTM difference where category axis
+     * values are experiments test parameter values.
+     * 
+     * @return {@link CategoryDataset} that represents DTM difference from
+     *         optimal move.
+     */
+    private CategoryDataset buildDTMDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int x = 0; x < this.experimentStatistics.size(); x++) {
+            dataset.setValue(this.experimentStatistics.get(x)
+                    .getWhitesAverageDTMDiff(),
+                    ChartUtils.DTM_DIFF_CATHEGORY,
+                    Constants.testParameterValues.get(x));
+        }
+
+        return dataset;
+    }
+
+
+    /**
+     * Generates dataset from experiments for white success rate where category
+     * axis values are experiments test parameter values.
+     * 
+     * @return {@link CategoryDataset} that represents white success rate per
+     *         experiment test parameter value
+     */
+    private CategoryDataset buildWSRDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int x = 0; x < this.experimentStatistics.size(); x++) {
+            dataset.setValue(this.experimentStatistics.get(x)
+                    .getAverageWhiteSuccessRate(),
+                    ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
+                    Constants.testParameterValues.get(x));
+        }
+
+        return dataset;
+    }
+
+
+    /**
+     * Generates {@link DefaultCategoryDataset} from experiments for average
+     * game length per experiment where category axis values are experiments
+     * test parameter values.
+     * 
+     * @return {@link CategoryDataset} that represents average game length per
+     *         experiment test parameter value
+     */
+    private CategoryDataset buildAGLDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int x = 0; x < this.experimentStatistics.size(); x++) {
+            dataset.setValue(this.experimentStatistics.get(x)
+                    .getAverageGameLength(),
+                    ChartUtils.GAME_LENGTH_CATEGORY,
+                    Constants.testParameterValues.get(x));
+        }
+
+        return dataset;
+    }
+
+
+    /**
+     * Generates {@link DefaultCategoryDataset} from experiments for average
+     * tree size per experiment where category axis values are experiments test
+     * parameter values.
+     * 
+     * @return {@link DefaultCategoryDataset} that represents average tree size
+     *         per experiment test parameter value
+     */
+    private CategoryDataset buildAverageTreeSizeDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int x = 0; x < this.experimentStatistics.size(); x++) {
+            dataset.setValue(this.experimentStatistics.get(x)
+                    .getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY,
+                    Constants.testParameterValues.get(x));
+        }
+
+        return dataset;
+    }
+
+
+    /**
+     * Generates {@link DefaultCategoryDataset} from experiments for number of
+     * tree collapses per experiment where category axis values are experiments
+     * test parameter values.
+     * 
+     * @return {@link DefaultCategoryDataset} that represents number of tree
+     *         collapses per experiment test parameter value
+     */
+    private CategoryDataset buildNumberOfCollapsesDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int x = 0; x < this.experimentStatistics.size(); x++) {
+            dataset.setValue(this.experimentStatistics.get(x)
+                    .getNumberOfTreeCollapses(),
+                    ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
+                    Constants.testParameterValues.get(x));
+        }
+
+        return dataset;
     }
 
 }

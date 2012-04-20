@@ -16,8 +16,8 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import utils.ChartUtils;
 import utils.IOUtils;
-import utils.StatisticsUtils;
 import chess.chessgame.ChessGameStatistics;
 
 /**
@@ -97,9 +97,9 @@ public class ExperimentStatistics {
         }
 
         String title = "Whites average DTM difference from optimal move";
-        JFreeChart chart = ChartFactory.createLineChart(title, "Chess game",
-                "average DTM difference", dataset, PlotOrientation.VERTICAL,
-                false, false, false);
+        JFreeChart chart = ChartFactory.createLineChart(title,
+                ChartUtils.CHESS_GAME_CATEGORY_AXIS, "average DTM difference",
+                dataset, PlotOrientation.VERTICAL, false, false, false);
 
         IOUtils.saveChart(filePath, chart);
     }
@@ -207,17 +207,15 @@ public class ExperimentStatistics {
         CategoryPlot plot = new CategoryPlot();
         plot.setDomainGridlinesVisible(true);
 
-        StatisticsUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
-                StatisticsUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
+        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
+                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
                 new BarRenderer(), 2);
 
-        StatisticsUtils.addToPlot(plot, this.getDTMDiffDataset(),
-                StatisticsUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(),
-                0);
+        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(),
+                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
 
-        StatisticsUtils.addToPlot(plot, this.getAverageTreeSizeDataset(),
-                StatisticsUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(),
-                1);
+        ChartUtils.addToPlot(plot, this.getAverageTreeSizeDataset(),
+                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 1);
 
         CategoryAxis categoryAxis = new CategoryAxis("Chess game");
         CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
@@ -239,10 +237,11 @@ public class ExperimentStatistics {
      */
     public void saveGameLengthPerGameChart(String filePath) {
         CategoryPlot plot = new CategoryPlot();
-        StatisticsUtils.addToPlot(plot, this.getGameLengthPerGameDataset(),
+        ChartUtils.addToPlot(plot, this.getGameLengthPerGameDataset(),
                 "Chess game length (in turns)", new LineAndShapeRenderer(), 0);
 
-        CategoryAxis categoryAxis = new CategoryAxis("Chess game");
+        CategoryAxis categoryAxis = new CategoryAxis(
+                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
         CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
                 categoryAxis);
         combinedPlot.add(plot);
@@ -288,7 +287,7 @@ public class ExperimentStatistics {
         }
 
         CategoryPlot plot = new CategoryPlot();
-        StatisticsUtils.addToPlot(plot, dataset, "", new BarRenderer(), 0);
+        ChartUtils.addToPlot(plot, dataset, "", new BarRenderer(), 0);
 
         CategoryAxis categoryAxis = new CategoryAxis("Chess game length");
         CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
@@ -338,6 +337,33 @@ public class ExperimentStatistics {
 
 
     /**
+     * Saves chart with all output stuff on it.
+     * 
+     * @param filepath
+     *            file where chart will be saved as jpg picture
+     */
+    public void saveUltimateChart(String filepath) {
+        CategoryPlot plot = new CategoryPlot();
+
+        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(),
+                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
+        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
+                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
+                new LineAndShapeRenderer(), 1);
+        ChartUtils.addToPlot(plot, this.getGameLengthPerGameDataset(),
+                ChartUtils.GAME_LENGTH_CATEGORY, new LineAndShapeRenderer(), 2);
+        ChartUtils.addToPlot(plot, this.getAverageTreeSizeDataset(),
+                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 3);
+
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
+                new CategoryAxis(ChartUtils.CHESS_GAME_CATEGORY_AXIS));
+        combinedPlot.add(plot);
+
+        IOUtils.saveChart(filepath, new JFreeChart(plot));
+    }
+
+
+    /**
      * Create chart with number of MCTS tree collapses and DTM diff (per match).
      * 
      * @param filePath
@@ -347,14 +373,14 @@ public class ExperimentStatistics {
         CategoryPlot plot = new CategoryPlot();
         plot.setDomainGridlinesVisible(true);
 
-        StatisticsUtils.addToPlot(plot, this.getDTMDiffDataset(),
-                StatisticsUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(),
-                0);
-        StatisticsUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
-                StatisticsUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
+        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(),
+                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
+        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
+                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
                 new BarRenderer(), 1);
 
-        CategoryAxis categoryAxis = new CategoryAxis("Chess game");
+        CategoryAxis categoryAxis = new CategoryAxis(
+                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
         CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
                 categoryAxis);
         combinedPlot.add(plot);
@@ -433,8 +459,8 @@ public class ExperimentStatistics {
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
             dataset.setValue(this.chessGameStatistics.get(x)
                     .getNumberOfMCTSTreeCollapses(),
-                    StatisticsUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
-                    (x + 1) + "");
+                    ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, (x + 1)
+                            + "");
         }
 
         return dataset;
@@ -451,8 +477,8 @@ public class ExperimentStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
             dataset.setValue(this.chessGameStatistics.get(x)
-                    .getAverageWhitesDTMDiff(),
-                    StatisticsUtils.DTM_DIFF_CATHEGORY, (x + 1) + "");
+                    .getAverageWhitesDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY,
+                    (x + 1) + "");
         }
         return dataset;
     }
@@ -468,7 +494,7 @@ public class ExperimentStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
             dataset.setValue(this.chessGameStatistics.get(x)
-                    .getAverageTreeSize(), StatisticsUtils.TREE_SIZE_CATEGORY,
+                    .getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY,
                     (x + 1) + "");
         }
         return dataset;
@@ -485,8 +511,28 @@ public class ExperimentStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
             dataset.setValue(this.chessGameStatistics.get(x)
-                    .getNumberOfTurnsMade(),
-                    StatisticsUtils.GAME_LENGTH_CATEGORY, (x + 1) + "");
+                    .getNumberOfTurnsMade(), ChartUtils.GAME_LENGTH_CATEGORY,
+                    (x + 1) + "");
+        }
+
+        return dataset;
+    }
+
+
+    /**
+     * Builds {@link DefaultCategoryDataset} for chess game victory.
+     * 
+     * @return {@link DefaultCategoryDataset} that maps white win to 0 and white
+     *         loss to 1
+     */
+    @SuppressWarnings("unused")
+    private CategoryDataset getDidWhiteLooseDataset() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int x = 0; x < this.chessGameStatistics.size(); x++) {
+            int didWhiteWine = this.chessGameStatistics.get(x).didWhiteWin() ? 0
+                    : 1;
+            dataset.setValue(didWhiteWine, ChartUtils.DID_WHITE_LOOSE_CATEGORY,
+                    (x + 1) + "");
         }
 
         return dataset;
