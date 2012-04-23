@@ -5,12 +5,10 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
@@ -79,29 +77,6 @@ public class ExperimentStatistics {
         data.add(dtmDiff);
 
         IOUtils.writeCSV(filePath, this.buildChessGameColumnNames(), data);
-    }
-
-
-    /**
-     * Creates line chart of average dtm difference per chess game
-     * 
-     * @param filePath
-     *            file to which graph will be saved as jpg picture
-     */
-    public void saveWhiteDTMDifferenceGraph(String filePath) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (int x = 0; x < this.chessGameStatistics.size(); x++) {
-            dataset.setValue(this.chessGameStatistics.get(x)
-                    .getAverageWhitesDTMDiff(), "whites DTM difference",
-                    (x + 1) + "");
-        }
-
-        String title = "Whites average DTM difference from optimal move";
-        JFreeChart chart = ChartFactory.createLineChart(title,
-                ChartUtils.CHESS_GAME_CATEGORY_AXIS, "average DTM difference",
-                dataset, PlotOrientation.VERTICAL, false, false, false);
-
-        IOUtils.saveChart(filePath, chart);
     }
 
 
@@ -230,28 +205,6 @@ public class ExperimentStatistics {
 
 
     /**
-     * Creates chart with game length per individual chess game.
-     * 
-     * @param filePath
-     *            file where chart will be saved as jpg picture
-     */
-    public void saveGameLengthPerGameChart(String filePath) {
-        CategoryPlot plot = new CategoryPlot();
-        ChartUtils.addToPlot(plot, this.getGameLengthPerGameDataset(),
-                "Chess game length (in turns)", new LineAndShapeRenderer(), 0);
-
-        CategoryAxis categoryAxis = new CategoryAxis(
-                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
-        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
-                categoryAxis);
-        combinedPlot.add(plot);
-
-        JFreeChart chart = new JFreeChart(combinedPlot);
-        IOUtils.saveChart(filePath, chart);
-    }
-
-
-    /**
      * Save histogram of chess game length.
      * 
      * @param filePath
@@ -343,6 +296,7 @@ public class ExperimentStatistics {
      *            file where chart will be saved as jpg picture
      */
     public void saveUltimateChart(String filepath) {
+
         CategoryPlot plot = new CategoryPlot();
 
         ChartUtils.addToPlot(plot, this.getDTMDiffDataset(),
@@ -388,6 +342,45 @@ public class ExperimentStatistics {
         JFreeChart chart = new JFreeChart(combinedPlot);
 
         IOUtils.saveChart(filePath, chart);
+    }
+
+
+    /**
+     * Saves each output on their own chart.
+     * 
+     * @param dir
+     *            directory where charts will be saved
+     */
+    public void saveAllSingleDatasetCharts(String dir) {
+
+        String ending = ".jpg";
+        String separator = "/";
+
+        // DTM diff
+        ChartUtils.saveIndividualChart(dir + separator
+                + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ending, this
+                .getDTMDiffDataset(), ChartUtils.DTM_DIFF_CATHEGORY,
+                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+
+        // tree size
+        ChartUtils.saveIndividualChart(dir + separator
+                + IOUtils.TREE_SIZE_FILE_NAME + ending, this
+                .getAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY,
+                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+
+        // AGL
+        ChartUtils.saveIndividualChart(dir + separator
+                + IOUtils.GAME_LENGTH_FILE_NAME + ending,
+                getGameLengthPerGameDataset(), ChartUtils.GAME_LENGTH_CATEGORY,
+                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+
+        // number of collapses
+        ChartUtils.saveIndividualChart(dir + separator
+                + ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY + ending,
+                this.getNumberOfCollapsesDataSet(),
+                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
+                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+
     }
 
 

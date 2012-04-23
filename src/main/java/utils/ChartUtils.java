@@ -1,9 +1,13 @@
 package utils;
 
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 
 public class ChartUtils {
@@ -51,6 +55,33 @@ public class ChartUtils {
         plot.setDataset(index, dataset);
         plot.mapDatasetToRangeAxis(index, index);
         plot.setRenderer(index, renderer);
+    }
+
+
+    /**
+     * Saves chart with only one dataset.
+     * 
+     * @param filepath
+     *            file where chart will be saved as jpg picture
+     * @param dataset
+     *            {@link CategoryDataset} to be plotted
+     * @param rangeAxisCategory
+     *            range axis name
+     * @param category
+     *            axis name
+     */
+    public static void saveIndividualChart(String filepath,
+            CategoryDataset dataset, String rangeAxisCategory,
+            String categoryAxis) {
+        CategoryPlot plot = new CategoryPlot();
+        ChartUtils.addToPlot(plot, dataset, rangeAxisCategory,
+                new LineAndShapeRenderer(), 0);
+
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
+                new CategoryAxis(categoryAxis));
+        combinedPlot.add(plot);
+
+        IOUtils.saveChart(filepath, new JFreeChart(combinedPlot));
     }
 
 }

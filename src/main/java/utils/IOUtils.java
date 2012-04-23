@@ -36,7 +36,11 @@ public class IOUtils {
      */
     public static final String TREE_SIZE_FILE_NAME                     = "treeSize";
 
-    public static final String GAME_LENGTH                             = "gameLength";
+    /** Prefix of files that represent data connected to game length. */
+    public static final String GAME_LENGTH_FILE_NAME                             = "gameLength";
+
+    /** Prefix of files that represent white players success rate. */
+    public static final String WHITE_SUCCESS_RATE_FILE_NAME            = "whiteSuccessRate";
 
     /** Default height for saving graphics */
     public static final int    DEFAULT_GRAPH_HEIGHT                    = 500;

@@ -3,19 +3,17 @@ package experiment;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import utils.ChartUtils;
 import utils.ExperimentUtils;
 import utils.IOUtils;
-import utils.ChartUtils;
 import exec.Constants;
 
 public class ExperimentSeriesStatistics {
@@ -80,35 +78,6 @@ public class ExperimentSeriesStatistics {
 
 
     /**
-     * Creates line chart of whites DTM difference per experiments parameter
-     * under test value.
-     * 
-     * @param filepath
-     *            file to which chart will be saved as jpg picture
-     * @param parameter
-     *            parameter that was tested
-     */
-    public void saveDTMDiffGraph(String filepath, MCTestParameter parameter) {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-        String yAxisDescription = "Average DTM difference";
-        for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x)
-                    .getWhitesAverageDTMDiff(), yAxisDescription,
-                    Constants.testParameterValues.get(x));
-        }
-
-        String title = "Whites average DTM differnce";
-        String testParam = ExperimentUtils.testParameterToString(parameter);
-        JFreeChart chart = ChartFactory.createLineChart(title, testParam,
-                yAxisDescription, dataset, PlotOrientation.VERTICAL, false,
-                false, false);
-
-        IOUtils.saveChart(filepath, chart);
-    }
-
-
-    /**
      * Saves Chart with every every output data
      * 
      * @param filePath
@@ -120,17 +89,14 @@ public class ExperimentSeriesStatistics {
         CategoryPlot plot = new CategoryPlot();
 
         ChartUtils.addToPlot(plot, this.buildDTMDataset(),
-                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(),
-                0);
+                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
         ChartUtils.addToPlot(plot, this.buildNumberOfCollapsesDataset(),
                 ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
                 new LineAndShapeRenderer(), 1);
         ChartUtils.addToPlot(plot, this.buildAverageTreeSizeDataset(),
-                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(),
-                2);
+                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 2);
         ChartUtils.addToPlot(plot, this.buildAGLDataset(),
-                ChartUtils.GAME_LENGTH_CATEGORY,
-                new LineAndShapeRenderer(), 3);
+                ChartUtils.GAME_LENGTH_CATEGORY, new LineAndShapeRenderer(), 3);
         ChartUtils.addToPlot(plot, this.buildWSRDataset(),
                 ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
                 new LineAndShapeRenderer(), 4);
@@ -145,6 +111,52 @@ public class ExperimentSeriesStatistics {
         JFreeChart chart = new JFreeChart(combinedPlot);
         IOUtils.saveChart(filePath, chart);
 
+    }
+
+
+    /**
+     * Saves each output data into its own chart.
+     * 
+     * @param dir
+     *            directory where charts will be saved
+     */
+    public void saveIndividualCharts(String dir) {
+        String ending = ".jpg";
+        String separator = "/";
+
+        String categoryAxis = ExperimentUtils
+                .testParameterToString(Constants.testParameter);
+
+        // DTM diff
+        ChartUtils
+                .saveIndividualChart(dir + separator
+                        + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ending, this
+                        .buildDTMDataset(), ChartUtils.DTM_DIFF_CATHEGORY,
+                        categoryAxis);
+
+        // game length
+        ChartUtils.saveIndividualChart(dir + separator
+                + IOUtils.GAME_LENGTH_FILE_NAME + ending, this
+                .buildAGLDataset(), ChartUtils.GAME_LENGTH_CATEGORY,
+                categoryAxis);
+
+        // collapses
+        ChartUtils.saveIndividualChart(dir + separator
+                + IOUtils.NUMBER_OF_MCTS_TREE_COLLAPSES_FILE_NAME + ending,
+                this.buildNumberOfCollapsesDataset(),
+                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, categoryAxis);
+
+        // tree size
+        ChartUtils.saveIndividualChart(dir + separator
+                + IOUtils.TREE_SIZE_FILE_NAME + ending, this
+                .buildAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY,
+                categoryAxis);
+
+        // WSR
+        ChartUtils.saveIndividualChart(dir + separator
+                + IOUtils.WHITE_SUCCESS_RATE_FILE_NAME + ending, this
+                .buildWSRDataset(), ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
+                categoryAxis);
     }
 
 
@@ -205,8 +217,7 @@ public class ExperimentSeriesStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
             dataset.setValue(this.experimentStatistics.get(x)
-                    .getWhitesAverageDTMDiff(),
-                    ChartUtils.DTM_DIFF_CATHEGORY,
+                    .getWhitesAverageDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY,
                     Constants.testParameterValues.get(x));
         }
 
@@ -246,8 +257,7 @@ public class ExperimentSeriesStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
             dataset.setValue(this.experimentStatistics.get(x)
-                    .getAverageGameLength(),
-                    ChartUtils.GAME_LENGTH_CATEGORY,
+                    .getAverageGameLength(), ChartUtils.GAME_LENGTH_CATEGORY,
                     Constants.testParameterValues.get(x));
         }
 

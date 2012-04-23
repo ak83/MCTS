@@ -39,13 +39,12 @@ public class ExperimentSeries {
 
         // save statistics outputs
         this.stasts.writeDTMDiffToCsv(rootDir);
-        this.stasts.saveDTMDiffGraph(rootDir + "/"
-                + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ".jpg",
-                Constants.testParameter);
         this.stasts.saveUltimateChart(rootDir + "/"
                 + IOUtils.ULTIMATE_FILE_NAME + ".jpg", Constants.testParameter);
 
         this.stasts.writeUltimateCSV(rootDir + "/" + IOUtils.ULTIMATE_FILE_NAME
                 + ".csv");
+
+        this.stasts.saveIndividualCharts(rootDir);
     }
 }

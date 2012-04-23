@@ -72,8 +72,8 @@ public class Experiment {
 
         this.experimentStats.writeAverageDTMDiffToCVS(whiteDTMDiffCSVFilePath
                 + ".csv");
-        this.experimentStats
-                .saveWhiteDTMDifferenceGraph(whiteDTMDiffCSVFilePath + ".jpg");
+
+        this.experimentStats.saveAllSingleDatasetCharts(this.name);
 
         // output number of collapses files
         this.experimentStats.writeNumberOfCollapsesToCSV(this.name + "/"
@@ -82,10 +82,6 @@ public class Experiment {
         // save chart that show with multiple output options
         this.experimentStats.saveCollapsesDTMTreeSizechart(this.name
                 + "/DTMTreeCollapsesTreeSize.jpg");
-
-        // save length per chess game chart
-        this.experimentStats.saveGameLengthPerGameChart(this.name + "/"
-                + IOUtils.GAME_LENGTH + ".jpg");
 
         // save game length histogram
         this.experimentStats.saveGameLengthHistogram(this.name
