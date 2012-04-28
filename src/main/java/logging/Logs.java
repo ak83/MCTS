@@ -1,5 +1,6 @@
 package logging;
 
+import java.io.File;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -42,8 +43,12 @@ public class Logs {
 
         // file handler setup
         Handler fh = null;
+        String logPath = experimentDir + File.separator
+                + Constants.LOG_FILENAME;
         try {
-            fh = new FileHandler(experimentDir + "/" + Constants.LOG_FILENAME);
+            fh = new FileHandler(
+                    experimentDir.equalsIgnoreCase("") ? Constants.LOG_FILENAME
+                            : logPath);
         }
         catch (Exception e) {
             e.printStackTrace();

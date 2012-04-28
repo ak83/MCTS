@@ -38,7 +38,7 @@ public class Experiment {
 
     public void runExperiment() {
         // create experiment directory and individual games directory
-        String individualGamesDirPath = this.name + "/"
+        String individualGamesDirPath = this.name + File.separator
                 + Constants.INDIVIDUAL_GAMES_DIR_NAME;
         new File(this.name).mkdir();
         new File(individualGamesDirPath).mkdir();
@@ -51,8 +51,8 @@ public class Experiment {
 
         // run chess games
         for (int x = 0; x < Constants.NUMBER_OF_GAMES_PLAYED; x++) {
-            ChessGame game = new ChessGame(individualGamesDirPath + "/game" + x
-                    + ".pgn");
+            ChessGame game = new ChessGame(individualGamesDirPath
+                    + File.separator + "game" + x + ".pgn");
             try {
                 ChessGameResults gameResult = game.playGame(x);
                 this.pgn += gameResult.getPgn();
@@ -67,7 +67,7 @@ public class Experiment {
         }
 
         // write DTM diff to cvs files
-        String whiteDTMDiffCSVFilePath = this.name + "/"
+        String whiteDTMDiffCSVFilePath = this.name + File.separator
                 + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME;
 
         this.experimentStats.writeAverageDTMDiffToCVS(whiteDTMDiffCSVFilePath
@@ -76,31 +76,33 @@ public class Experiment {
         this.experimentStats.saveAllSingleDatasetCharts(this.name);
 
         // output number of collapses files
-        this.experimentStats.writeNumberOfCollapsesToCSV(this.name + "/"
+        this.experimentStats.writeNumberOfCollapsesToCSV(this.name
+                + File.separator
                 + IOUtils.NUMBER_OF_MCTS_TREE_COLLAPSES_FILE_NAME + ".csv");
 
         // save chart that show with multiple output options
         this.experimentStats.saveCollapsesDTMTreeSizechart(this.name
-                + "/DTMTreeCollapsesTreeSize.jpg");
+                + File.separator + "DTMTreeCollapsesTreeSize.jpg");
 
         // save game length histogram
-        this.experimentStats.saveGameLengthHistogram(this.name
-                + "/gameLengthHistogram.jpg");
+        this.experimentStats.saveGameLengthHistogram(this.name + File.separator
+                + "gameLengthHistogram.jpg");
 
-        this.experimentStats.saveCollapseDTMChart(this.name
-                + "/collapsesDTM.jpg");
+        this.experimentStats.saveCollapseDTMChart(this.name + File.separator
+                + "collapsesDTM.jpg");
 
         // write average tree size to cvs file
-        this.experimentStats.writeAverageTreeSizeToCVS(this.name + "/"
-                + IOUtils.TREE_SIZE_FILE_NAME + ".csv");
+        this.experimentStats.writeAverageTreeSizeToCVS(this.name
+                + File.separator + IOUtils.TREE_SIZE_FILE_NAME + ".csv");
 
-        this.experimentStats.writeUltimateCSV(this.name + "/"
+        this.experimentStats.writeUltimateCSV(this.name + File.separator
                 + IOUtils.ULTIMATE_FILE_NAME + ".csv");
 
-        this.experimentStats.saveUltimateChart(this.name + "/"
+        this.experimentStats.saveUltimateChart(this.name + File.separator
                 + IOUtils.ULTIMATE_FILE_NAME + ".jpg");
 
-        String pgnFilePath = this.name + "/" + Constants.PGN_FILENAME;
+        String pgnFilePath = this.name + File.separator
+                + Constants.PGN_FILENAME;
 
         IOUtils.writeToFile(pgnFilePath, this.pgn);
 

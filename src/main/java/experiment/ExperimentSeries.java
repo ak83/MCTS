@@ -31,7 +31,8 @@ public class ExperimentSeries {
             ExperimentUtils.setTestParameter(Constants.testParameter,
                     parameterValue);
 
-            Experiment experiment = new Experiment(rootDir + "/experiment" + x);
+            Experiment experiment = new Experiment(rootDir + File.separator
+                    + "experiment" + x);
             experiment.runExperiment();
             this.stasts
                     .addExperimentStatistics(experiment.getExperimentStats());
@@ -39,11 +40,11 @@ public class ExperimentSeries {
 
         // save statistics outputs
         this.stasts.writeDTMDiffToCsv(rootDir);
-        this.stasts.saveUltimateChart(rootDir + "/"
+        this.stasts.saveUltimateChart(rootDir + File.separator
                 + IOUtils.ULTIMATE_FILE_NAME + ".jpg", Constants.testParameter);
 
-        this.stasts.writeUltimateCSV(rootDir + "/" + IOUtils.ULTIMATE_FILE_NAME
-                + ".csv");
+        this.stasts.writeUltimateCSV(rootDir + File.separator
+                + IOUtils.ULTIMATE_FILE_NAME + ".csv");
 
         this.stasts.saveIndividualCharts(rootDir);
     }
