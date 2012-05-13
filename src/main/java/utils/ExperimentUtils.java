@@ -69,8 +69,10 @@ public class ExperimentUtils {
                 break;
             case GOBAN:
                 Constants.GOBAN = value.intValue();
+                break;
             case STEPS:
                 Constants.NUMBER_OF_RUNNING_STEPS = value.intValue();
+                break;
 
         }
     }
