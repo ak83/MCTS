@@ -1,7 +1,9 @@
 package chess.chessgame;
 
 import java.io.IOException;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import mct.MCT;
 import mct.MCTStats;
@@ -41,6 +43,9 @@ public class ChessGame {
     /** Logger */
     private Logger              log        = Logger.getLogger("MCTS.ChessGame");
 
+    /** {@link FileHandler} for individual games log */
+    private FileHandler         individualGameLog;
+
     /** For keeping this matches statistics */
     private ChessGameStatistics matchStats = new ChessGameStatistics();
 
@@ -53,6 +58,19 @@ public class ChessGame {
      */
     public ChessGame(String outputFilename) {
         this.pgnFileName = outputFilename;
+        try {
+            this.individualGameLog = new FileHandler(this.pgnFileName + ".log");
+            this.individualGameLog.setFormatter(new SimpleFormatter());
+            this.log.addHandler(this.individualGameLog);
+        }
+        catch (SecurityException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
 
@@ -268,5 +286,8 @@ public class ChessGame {
                 + "\r\n"
                 + blacksAverageDiff
                 + "\r\n###########################################################################################\r\n###########################################################################################\r\n");
+
+        this.log.removeHandler(this.individualGameLog);
+
     }
 }
