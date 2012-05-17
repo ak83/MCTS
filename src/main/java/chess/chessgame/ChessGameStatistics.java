@@ -110,7 +110,7 @@ public class ChessGameStatistics {
      * @return number of turns
      */
     public int getNumberOfTurnsMade() {
-        return this.numberOfPliesMade / 2 + 1;
+        return this.whitesDiffFromOptimal.size();
     }
 
 

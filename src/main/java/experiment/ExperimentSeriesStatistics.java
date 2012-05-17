@@ -14,6 +14,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import utils.ChartUtils;
 import utils.ExperimentUtils;
 import utils.IOUtils;
+import chess.chessgame.ChessGameStatistics;
 import exec.Constants;
 
 public class ExperimentSeriesStatistics {
@@ -157,6 +158,136 @@ public class ExperimentSeriesStatistics {
                 + IOUtils.WHITE_SUCCESS_RATE_FILE_NAME + ending, this
                 .buildWSRDataset(), ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
                 categoryAxis);
+    }
+
+
+    /**
+     * Gets average game length.
+     * 
+     * @return average number of turns per game in experiments series
+     */
+    public double getAverageGameLength() {
+        int counter = 0;
+        int total = 0;
+        for (ExperimentStatistics experimentStats : this.experimentStatistics) {
+            for (ChessGameStatistics gameStats : experimentStats
+                    .getChessGameStatistics()) {
+                counter++;
+                total += gameStats.getNumberOfTurnsMade();
+            }
+        }
+
+        return total / (double) counter;
+    }
+
+
+    /**
+     * Gets average DTM difference from optimal move.
+     * 
+     * @return average DTM difference from optimal move per ply
+     */
+    public double getAverageDTMDiff() {
+        int counter = 0;
+        int total = 0;
+        for (ExperimentStatistics experimentStats : this.experimentStatistics) {
+            for (ChessGameStatistics gameStats : experimentStats
+                    .getChessGameStatistics()) {
+                for (Integer dtmDiff : gameStats.getWhitesDiffFromOptimal()
+                        .values()) {
+                    counter++;
+                    total += dtmDiff;
+                }
+            }
+        }
+
+        return total / (double) counter;
+    }
+
+
+    /**
+     * Gets whites success rate from all games in experiment series.
+     * 
+     * @return white success rate
+     */
+    public double getWhiteSuccessRate() {
+        int counter = 0;
+        int total = 0;
+        for (ExperimentStatistics experimentStats : this.experimentStatistics) {
+            for (ChessGameStatistics gameStats : experimentStats
+                    .getChessGameStatistics()) {
+                if (gameStats.didWhiteWin()) {
+                    total++;
+                }
+                counter++;
+            }
+        }
+
+        return total / (double) counter;
+    }
+
+
+    /**
+     * Gets average tree size per turn.
+     * 
+     * @return average MCTS tree size per turn
+     */
+    public double getAverageTreeSize() {
+        int counter = 0;
+        int total = 0;
+        for (ExperimentStatistics experimentStats : this.experimentStatistics) {
+            for (ChessGameStatistics gameStats : experimentStats
+                    .getChessGameStatistics()) {
+                for (Integer treeSize : gameStats.getTreeSize().values()) {
+                    counter++;
+                    total += treeSize;
+                }
+            }
+        }
+
+        return total / (double) counter;
+    }
+
+
+    /**
+     * Gets average number of tree collapses per chess game.
+     * 
+     * @return number of MCTS tree collapses per chess game.
+     */
+    public double getAverageNumberOfCollapses() {
+        int counter = 0;
+        int total = 0;
+        for (ExperimentStatistics experimentStats : this.experimentStatistics) {
+            for (ChessGameStatistics gameStats : experimentStats
+                    .getChessGameStatistics()) {
+                counter++;
+                total += gameStats.getNumberOfMCTSTreeCollapses();
+            }
+        }
+
+        return total / (double) counter;
+    }
+
+
+    /**
+     * Summarizes statistics.
+     * 
+     * @return {@link String} representation of statistics.
+     */
+    public String getSummary() {
+        String rez = "";
+        rez += "White success rate was " + this.getWhiteSuccessRate()
+                + System.getProperty("line.separator");
+        rez += "Average game length: " + this.getAverageGameLength()
+                + System.getProperty("line.separator");
+        rez += "Average DTM difference: " + this.getAverageDTMDiff()
+                + System.getProperty("line.separator");
+        rez += "Average MCTS tree size: " + this.getAverageTreeSize()
+                + System.getProperty("line.separator");
+        rez += "Number of MCTS tree collapses per game: "
+                + this.getAverageNumberOfCollapses()
+                + System.getProperty("line.separator");
+
+        return rez;
     }
 
 

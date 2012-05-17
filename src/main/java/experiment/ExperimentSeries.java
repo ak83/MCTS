@@ -51,10 +51,17 @@ public class ExperimentSeries {
                 + IOUtils.ULTIMATE_FILE_NAME + ".csv");
 
         this.stasts.saveIndividualCharts(rootDir);
-        
-        //summarize statistics in log file
+
+        // summarize statistics in log file
         Logs.initLoggers(rootDir);
         ExperimentSeries.log = Logger.getLogger("MCTS.Main");
+
+        // write summary into log
+        String summary = "Experiment series summary:"
+                + System.getProperty("line.separator")
+                + this.stasts.getSummary()
+                + System.getProperty("line.separator");
+        ExperimentSeries.log.info(summary);
         ExperimentSeries.log.info("END");
     }
 }

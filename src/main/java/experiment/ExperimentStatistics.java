@@ -147,10 +147,10 @@ public class ExperimentStatistics {
         int totalLength = 0;
 
         for (ChessGameStatistics stats : this.chessGameStatistics) {
-            totalLength += stats.getNumberOfPliesMade();
+            totalLength += stats.getNumberOfTurnsMade();
         }
 
-        return (double) (totalLength / (double) this.chessGameStatistics.size()) / 2.0d;
+        return (double) (totalLength / (double) this.chessGameStatistics.size());
     }
 
 
@@ -381,6 +381,11 @@ public class ExperimentStatistics {
                 ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
                 ChartUtils.CHESS_GAME_CATEGORY_AXIS);
 
+    }
+
+
+    public ArrayList<ChessGameStatistics> getChessGameStatistics() {
+        return this.chessGameStatistics;
     }
 
 
