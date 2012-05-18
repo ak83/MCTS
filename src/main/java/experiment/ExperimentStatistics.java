@@ -432,7 +432,7 @@ public class ExperimentStatistics {
             Vector<Object> values = new Vector<Object>();
             values.add(x);
             values.add(this.chessGameStatistics.get(x).getVictor());
-            values.add(this.chessGameStatistics.get(x).getNumberOfPliesMade() / 2);
+            values.add(this.chessGameStatistics.get(x).getNumberOfTurnsMade());
             values.add(this.chessGameStatistics.get(x)
                     .getAverageWhitesDTMDiff());
             values.add(this.chessGameStatistics.get(x)
