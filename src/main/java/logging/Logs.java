@@ -43,12 +43,9 @@ public class Logs {
 
         // file handler setup
         Handler fh = null;
-        String logPath = experimentDir + File.separator
-                + Constants.LOG_FILENAME;
+        String logPath = experimentDir + File.separator + Constants.LOG_FILENAME;
         try {
-            fh = new FileHandler(
-                    experimentDir.equalsIgnoreCase("") ? Constants.LOG_FILENAME
-                            : logPath);
+            fh = new FileHandler(experimentDir.equalsIgnoreCase("") ? Constants.LOG_FILENAME : logPath);
         }
         catch (Exception e) {
             e.printStackTrace();

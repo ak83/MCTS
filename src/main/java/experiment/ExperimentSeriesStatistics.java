@@ -61,8 +61,7 @@ public class ExperimentSeriesStatistics {
         data.add(dtmDiff);
 
         // write to csv
-        IOUtils.writeCSV(rootDir + "/" + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME
-                + ".csv", columnNames, data);
+        IOUtils.writeCSV(rootDir + "/" + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ".csv", columnNames, data);
     }
 
 
@@ -73,8 +72,7 @@ public class ExperimentSeriesStatistics {
      *            where file will be saved
      */
     public void writeUltimateCSV(String filePath) {
-        IOUtils.writeCSV(filePath, this.buildAllColumnNames(), this
-                .buildDataForCSV());
+        IOUtils.writeCSV(filePath, this.buildAllColumnNames(), this.buildDataForCSV());
     }
 
 
@@ -89,24 +87,15 @@ public class ExperimentSeriesStatistics {
     public void saveUltimateChart(String filePath, MCTestParameter parameter) {
         CategoryPlot plot = new CategoryPlot();
 
-        ChartUtils.addToPlot(plot, this.buildDTMDataset(),
-                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
-        ChartUtils.addToPlot(plot, this.buildNumberOfCollapsesDataset(),
-                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
-                new LineAndShapeRenderer(), 1);
-        ChartUtils.addToPlot(plot, this.buildAverageTreeSizeDataset(),
-                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 2);
-        ChartUtils.addToPlot(plot, this.buildAGLDataset(),
-                ChartUtils.GAME_LENGTH_CATEGORY, new LineAndShapeRenderer(), 3);
-        ChartUtils.addToPlot(plot, this.buildWSRDataset(),
-                ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
-                new LineAndShapeRenderer(), 4);
+        ChartUtils.addToPlot(plot, this.buildDTMDataset(), ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
+        ChartUtils.addToPlot(plot, this.buildNumberOfCollapsesDataset(), ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, new LineAndShapeRenderer(), 1);
+        ChartUtils.addToPlot(plot, this.buildAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 2);
+        ChartUtils.addToPlot(plot, this.buildAGLDataset(), ChartUtils.GAME_LENGTH_CATEGORY, new LineAndShapeRenderer(), 3);
+        ChartUtils.addToPlot(plot, this.buildWSRDataset(), ChartUtils.WHITE_SUCCESS_RATE_CATEGORY, new LineAndShapeRenderer(), 4);
 
-        CategoryAxis categoryAxis = new CategoryAxis(ExperimentUtils
-                .testParameterToString(parameter));
+        CategoryAxis categoryAxis = new CategoryAxis(ExperimentUtils.testParameterToString(parameter));
 
-        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
-                categoryAxis);
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(categoryAxis);
         combinedPlot.add(plot);
 
         JFreeChart chart = new JFreeChart(combinedPlot);
@@ -125,39 +114,27 @@ public class ExperimentSeriesStatistics {
         String ending = ".jpg";
         String separator = "/";
 
-        String categoryAxis = ExperimentUtils
-                .testParameterToString(Constants.testParameter);
+        String categoryAxis = ExperimentUtils.testParameterToString(Constants.testParameter);
 
         // DTM diff
-        ChartUtils
-                .saveIndividualChart(dir + separator
-                        + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ending, this
-                        .buildDTMDataset(), ChartUtils.DTM_DIFF_CATHEGORY,
-                        categoryAxis);
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ending, this.buildDTMDataset(),
+                ChartUtils.DTM_DIFF_CATHEGORY, categoryAxis);
 
         // game length
-        ChartUtils.saveIndividualChart(dir + separator
-                + IOUtils.GAME_LENGTH_FILE_NAME + ending, this
-                .buildAGLDataset(), ChartUtils.GAME_LENGTH_CATEGORY,
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.GAME_LENGTH_FILE_NAME + ending, this.buildAGLDataset(), ChartUtils.GAME_LENGTH_CATEGORY,
                 categoryAxis);
 
         // collapses
-        ChartUtils.saveIndividualChart(dir + separator
-                + IOUtils.NUMBER_OF_MCTS_TREE_COLLAPSES_FILE_NAME + ending,
-                this.buildNumberOfCollapsesDataset(),
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.NUMBER_OF_MCTS_TREE_COLLAPSES_FILE_NAME + ending, this.buildNumberOfCollapsesDataset(),
                 ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, categoryAxis);
 
         // tree size
-        ChartUtils.saveIndividualChart(dir + separator
-                + IOUtils.TREE_SIZE_FILE_NAME + ending, this
-                .buildAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY,
-                categoryAxis);
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.TREE_SIZE_FILE_NAME + ending, this.buildAverageTreeSizeDataset(),
+                ChartUtils.TREE_SIZE_CATEGORY, categoryAxis);
 
         // WSR
-        ChartUtils.saveIndividualChart(dir + separator
-                + IOUtils.WHITE_SUCCESS_RATE_FILE_NAME + ending, this
-                .buildWSRDataset(), ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
-                categoryAxis);
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.WHITE_SUCCESS_RATE_FILE_NAME + ending, this.buildWSRDataset(),
+                ChartUtils.WHITE_SUCCESS_RATE_CATEGORY, categoryAxis);
     }
 
 
@@ -170,8 +147,7 @@ public class ExperimentSeriesStatistics {
         int counter = 0;
         int total = 0;
         for (ExperimentStatistics experimentStats : this.experimentStatistics) {
-            for (ChessGameStatistics gameStats : experimentStats
-                    .getChessGameStatistics()) {
+            for (ChessGameStatistics gameStats : experimentStats.getChessGameStatistics()) {
                 counter++;
                 total += gameStats.getNumberOfTurnsMade();
             }
@@ -190,10 +166,8 @@ public class ExperimentSeriesStatistics {
         int counter = 0;
         int total = 0;
         for (ExperimentStatistics experimentStats : this.experimentStatistics) {
-            for (ChessGameStatistics gameStats : experimentStats
-                    .getChessGameStatistics()) {
-                for (Integer dtmDiff : gameStats.getWhitesDiffFromOptimal()
-                        .values()) {
+            for (ChessGameStatistics gameStats : experimentStats.getChessGameStatistics()) {
+                for (Integer dtmDiff : gameStats.getWhitesDiffFromOptimal().values()) {
                     counter++;
                     total += dtmDiff;
                 }
@@ -213,8 +187,7 @@ public class ExperimentSeriesStatistics {
         int counter = 0;
         int total = 0;
         for (ExperimentStatistics experimentStats : this.experimentStatistics) {
-            for (ChessGameStatistics gameStats : experimentStats
-                    .getChessGameStatistics()) {
+            for (ChessGameStatistics gameStats : experimentStats.getChessGameStatistics()) {
                 if (gameStats.didWhiteWin()) {
                     total++;
                 }
@@ -235,8 +208,7 @@ public class ExperimentSeriesStatistics {
         int counter = 0;
         int total = 0;
         for (ExperimentStatistics experimentStats : this.experimentStatistics) {
-            for (ChessGameStatistics gameStats : experimentStats
-                    .getChessGameStatistics()) {
+            for (ChessGameStatistics gameStats : experimentStats.getChessGameStatistics()) {
                 for (Integer treeSize : gameStats.getTreeSize().values()) {
                     counter++;
                     total += treeSize;
@@ -257,8 +229,7 @@ public class ExperimentSeriesStatistics {
         int counter = 0;
         int total = 0;
         for (ExperimentStatistics experimentStats : this.experimentStatistics) {
-            for (ChessGameStatistics gameStats : experimentStats
-                    .getChessGameStatistics()) {
+            for (ChessGameStatistics gameStats : experimentStats.getChessGameStatistics()) {
                 counter++;
                 total += gameStats.getNumberOfMCTSTreeCollapses();
             }
@@ -275,17 +246,11 @@ public class ExperimentSeriesStatistics {
      */
     public String getSummary() {
         String rez = "";
-        rez += "White success rate was " + this.getWhiteSuccessRate()
-                + System.getProperty("line.separator");
-        rez += "Average game length: " + this.getAverageGameLength()
-                + System.getProperty("line.separator");
-        rez += "Average DTM difference: " + this.getAverageDTMDiff()
-                + System.getProperty("line.separator");
-        rez += "Average MCTS tree size: " + this.getAverageTreeSize()
-                + System.getProperty("line.separator");
-        rez += "Number of MCTS tree collapses per game: "
-                + this.getAverageNumberOfCollapses()
-                + System.getProperty("line.separator");
+        rez += "White success rate was " + this.getWhiteSuccessRate() + System.getProperty("line.separator");
+        rez += "Average game length: " + this.getAverageGameLength() + System.getProperty("line.separator");
+        rez += "Average DTM difference: " + this.getAverageDTMDiff() + System.getProperty("line.separator");
+        rez += "Average MCTS tree size: " + this.getAverageTreeSize() + System.getProperty("line.separator");
+        rez += "Number of MCTS tree collapses per game: " + this.getAverageNumberOfCollapses() + System.getProperty("line.separator");
 
         return rez;
     }
@@ -326,8 +291,7 @@ public class ExperimentSeriesStatistics {
             row.add(this.experimentStatistics.get(x).getAverageGameLength());
             row.add(this.experimentStatistics.get(x).getNumberOfTreeCollapses());
             row.add(this.experimentStatistics.get(x).getAverageTreeSize());
-            row.add(this.experimentStatistics.get(x)
-                    .getAverageWhiteSuccessRate());
+            row.add(this.experimentStatistics.get(x).getAverageWhiteSuccessRate());
 
             // add current row to data
             data.add(row);
@@ -347,9 +311,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildDTMDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x)
-                    .getWhitesAverageDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY,
-                    Constants.testParameterValues.get(x));
+            dataset.setValue(this.experimentStatistics.get(x).getWhitesAverageDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY, Constants.testParameterValues.get(x));
         }
 
         return dataset;
@@ -366,9 +328,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildWSRDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x)
-                    .getAverageWhiteSuccessRate(),
-                    ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
+            dataset.setValue(this.experimentStatistics.get(x).getAverageWhiteSuccessRate(), ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
                     Constants.testParameterValues.get(x));
         }
 
@@ -387,9 +347,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildAGLDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x)
-                    .getAverageGameLength(), ChartUtils.GAME_LENGTH_CATEGORY,
-                    Constants.testParameterValues.get(x));
+            dataset.setValue(this.experimentStatistics.get(x).getAverageGameLength(), ChartUtils.GAME_LENGTH_CATEGORY, Constants.testParameterValues.get(x));
         }
 
         return dataset;
@@ -407,9 +365,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildAverageTreeSizeDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x)
-                    .getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY,
-                    Constants.testParameterValues.get(x));
+            dataset.setValue(this.experimentStatistics.get(x).getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY, Constants.testParameterValues.get(x));
         }
 
         return dataset;
@@ -427,9 +383,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildNumberOfCollapsesDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x)
-                    .getNumberOfTreeCollapses(),
-                    ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
+            dataset.setValue(this.experimentStatistics.get(x).getNumberOfTreeCollapses(), ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
                     Constants.testParameterValues.get(x));
         }
 

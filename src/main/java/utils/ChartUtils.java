@@ -48,8 +48,7 @@ public class ChartUtils {
      * @param index
      *            index to which all previous parameters will be set
      */
-    public static void addToPlot(CategoryPlot plot, CategoryDataset dataset,
-            String rangeAxisName, CategoryItemRenderer renderer, int index) {
+    public static void addToPlot(CategoryPlot plot, CategoryDataset dataset, String rangeAxisName, CategoryItemRenderer renderer, int index) {
         ValueAxis rangeAxis = new NumberAxis(rangeAxisName);
         plot.setRangeAxis(index, rangeAxis);
         plot.setDataset(index, dataset);
@@ -70,15 +69,11 @@ public class ChartUtils {
      * @param category
      *            axis name
      */
-    public static void saveIndividualChart(String filepath,
-            CategoryDataset dataset, String rangeAxisCategory,
-            String categoryAxis) {
+    public static void saveIndividualChart(String filepath, CategoryDataset dataset, String rangeAxisCategory, String categoryAxis) {
         CategoryPlot plot = new CategoryPlot();
-        ChartUtils.addToPlot(plot, dataset, rangeAxisCategory,
-                new LineAndShapeRenderer(), 0);
+        ChartUtils.addToPlot(plot, dataset, rangeAxisCategory, new LineAndShapeRenderer(), 0);
 
-        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
-                new CategoryAxis(categoryAxis));
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(new CategoryAxis(categoryAxis));
         combinedPlot.add(plot);
 
         IOUtils.saveChart(filepath, new JFreeChart(combinedPlot));

@@ -22,8 +22,7 @@ public class Utils {
      *         otherwise
      */
     public static boolean arePositionsAdjacent(int positionA, int positionB) {
-        if (!ChessboardUtils.isPositionLegal(positionA)
-                || !ChessboardUtils.isPositionLegal(positionB)) { return false; }
+        if (!ChessboardUtils.isPositionLegal(positionA) || !ChessboardUtils.isPositionLegal(positionB)) { return false; }
 
         int diff = Math.abs(positionB - positionA);
         if (diff == 1 || diff == 15 || diff == 16 || diff == 17) {
@@ -45,8 +44,7 @@ public class Utils {
      * @return <code>true</code> if positions lie on adjacent diagonals,
      *         <code>false</code> otherwise
      */
-    public static boolean arePsotionsDiagonallyAdjacent(int position1,
-            int position2) {
+    public static boolean arePsotionsDiagonallyAdjacent(int position1, int position2) {
         int edgePos1 = Utils.getPositiveEdgePositionFromPosition(position1);
         int edgePos2 = Utils.getPositiveEdgePositionFromPosition(position2);
         if (edgePos1 < 8 && edgePos2 < 8) {
@@ -54,8 +52,7 @@ public class Utils {
             int file2 = Utils.getFileFromPosition(edgePos2);
             return Math.abs(file2 - file1) == 1;
         }
-        else if ((edgePos1 > 7 || edgePos1 == 0)
-                && (edgePos2 > 7 || edgePos2 == 0)) {
+        else if ((edgePos1 > 7 || edgePos1 == 0) && (edgePos2 > 7 || edgePos2 == 0)) {
             int rank1 = Utils.getRankFromPosition(edgePos1);
             int rank2 = Utils.getRankFromPosition(edgePos2);
             return Math.abs(rank2 - rank1) == 1;
@@ -87,14 +84,12 @@ public class Utils {
      *            comment for move
      * @return fen for black part of turn
      */
-    public static String blackMoveNumberToFenString(int moveNumber,
-            String comment) {
+    public static String blackMoveNumberToFenString(int moveNumber, String comment) {
         int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
         int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
 
-        String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
-                + Utils.positionToString(to);
+        String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from) + Utils.positionToString(to);
 
         return m + " { " + comment + " }";
     }
@@ -152,8 +147,7 @@ public class Utils {
      *            piece on target position
      * @return move number
      */
-    public static int constructMoveNumber(int from, int to, int movedPiece,
-            int targetPiece) {
+    public static int constructMoveNumber(int from, int to, int movedPiece, int targetPiece) {
         int rez = targetPiece & 0xFF;
         rez |= (movedPiece & 0xFF) << 8;
         rez |= (to & 0xFF) << 16;
@@ -188,14 +182,10 @@ public class Utils {
      *            number of simulation run per evaluation of a node
      * @return fen preamble
      */
-    public static String constructPreamble(String whiteStrategy,
-            String blackStrategy, double c, int goban, boolean didWhiteWin,
-            int whatRound, int numberOfPliesMade, int numberOfInitialMCTSteps,
-            int numberOfRunningMCTSteps, int numberOfSimulationsPerEvaluation) {
-        String event = "[Event \"InitalMCTSteps: " + numberOfInitialMCTSteps
-                + ", RunningMCTSteps: " + numberOfRunningMCTSteps
-                + ", number of simulations per evaluation: "
-                + numberOfSimulationsPerEvaluation + "\"]\n";
+    public static String constructPreamble(String whiteStrategy, String blackStrategy, double c, int goban, boolean didWhiteWin, int whatRound,
+            int numberOfPliesMade, int numberOfInitialMCTSteps, int numberOfRunningMCTSteps, int numberOfSimulationsPerEvaluation) {
+        String event = "[Event \"InitalMCTSteps: " + numberOfInitialMCTSteps + ", RunningMCTSteps: " + numberOfRunningMCTSteps
+                + ", number of simulations per evaluation: " + numberOfSimulationsPerEvaluation + "\"]\n";
         String site = "[Site \"C = " + c + ", goban = " + goban + "\"]\n";
         String date = "[Date \"" + Utils.today() + "\"]\n";
         String round = "[Round \"" + whatRound + "\"]\n";
@@ -606,8 +596,7 @@ public class Utils {
         int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
         int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
-        return Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
-                + "-" + Utils.positionToString(to);
+        return Utils.pieceToChar(movedPiece) + Utils.positionToString(from) + "-" + Utils.positionToString(to);
     }
 
 
@@ -648,14 +637,12 @@ public class Utils {
      *            which consequential move is this in match.
      * @return string representation of move number
      */
-    public static String whiteMoveNumberToFenString(int moveNumber, int depth,
-            String comment) {
+    public static String whiteMoveNumberToFenString(int moveNumber, int depth, String comment) {
         int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
         int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
 
-        String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from)
-                + Utils.positionToString(to);
+        String m = Utils.pieceToChar(movedPiece) + Utils.positionToString(from) + Utils.positionToString(to);
 
         return depth + ". " + m + "{ " + comment + " }";
 

@@ -45,10 +45,8 @@ public class WhiteMoveChooser {
                 rez = WhiteMoveChooser.chooseMaxRatingMove(node);
                 break;
         }
-        String logString = "V polpotezi " + (node.moveDepth + 1)
-                + " je beli izbiral med potezami :\r\n"
-                + node.descendantsToString() + "Izbral si pa je potezo "
-                + (rez + 1);
+        String logString = "V polpotezi " + (node.moveDepth + 1) + " je beli izbiral med potezami :\r\n" + node.descendantsToString()
+                + "Izbral si pa je potezo " + (rez + 1);
 
         WhiteMoveChooser.log.fine(logString);
 
@@ -97,8 +95,7 @@ public class WhiteMoveChooser {
         double maxRating = -Double.MAX_VALUE;
 
         for (int x = 0; x < node.nextMoves.size(); x++) {
-            double currRating = MCTUtils.computeNodeRating(node.nextMoves
-                    .get(x));
+            double currRating = MCTUtils.computeNodeRating(node.nextMoves.get(x));
             if (currRating > maxRating) {
                 rezCand = new ArrayList<Integer>();
                 maxRating = currRating;

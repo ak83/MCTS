@@ -94,8 +94,7 @@ public class MCTNode {
         this.isWhitesMove = true;
         this.chessboard = (SimpleChessboard) board.clone();
         try {
-            this.evalFromWhitesPerspective = board
-                    .evaluateChessboardFromWhitesPerpective();
+            this.evalFromWhitesPerspective = board.evaluateChessboardFromWhitesPerpective();
         }
         catch (ChessboardException e) {
             throw new RuntimeErrorException(new Error(e));
@@ -124,8 +123,7 @@ public class MCTNode {
         SimpleChessboard temp = new Chessboard("temp", parent);
         temp.makeAMove(moveNumber);
         this.chessboard = temp;
-        this.evalFromWhitesPerspective = temp
-                .evaluateChessboardFromWhitesPerpective();
+        this.evalFromWhitesPerspective = temp.evaluateChessboardFromWhitesPerpective();
     }
 
 
@@ -141,8 +139,7 @@ public class MCTNode {
      *            chessboard that belong to this node
      * @throws ChessboardException
      */
-    public MCTNode(int moveNumber, int depth, SimpleChessboard boardState)
-            throws ChessboardException {
+    public MCTNode(int moveNumber, int depth, SimpleChessboard boardState) throws ChessboardException {
         this.parent = null;
         this.moveDepth = depth;
         this.moveNumber = moveNumber;
@@ -153,8 +150,7 @@ public class MCTNode {
         SimpleChessboard temp = new Chessboard(boardState, "temp");
         temp.makeAMove(moveNumber);
         this.chessboard = temp;
-        this.evalFromWhitesPerspective = temp
-                .evaluateChessboardFromWhitesPerpective();
+        this.evalFromWhitesPerspective = temp.evaluateChessboardFromWhitesPerpective();
     }
 
 
@@ -181,14 +177,9 @@ public class MCTNode {
      * @Override
      */
     public String toString() {
-        String s = "Globina: " + this.moveDepth + ", poteza: "
-                + Utils.singleMoveNumberToString(this.moveNumber)
-                + ", stevilo matov: " + this.numberOfMatsInNode
-                + ", visitCount: " + this.visitCount + ", isWhitesMove: "
-                + this.isWhitesMove + ", maximumSubTreeDepth: "
-                + this.maximumSubTreeDepth
-                + ", minumumDepthOfDescendWhoRepresentsMat: "
-                + this.minimumDepthOfDescendadWhoRepresentsCheckMate;
+        String s = "Globina: " + this.moveDepth + ", poteza: " + Utils.singleMoveNumberToString(this.moveNumber) + ", stevilo matov: "
+                + this.numberOfMatsInNode + ", visitCount: " + this.visitCount + ", isWhitesMove: " + this.isWhitesMove + ", maximumSubTreeDepth: "
+                + this.maximumSubTreeDepth + ", minumumDepthOfDescendWhoRepresentsMat: " + this.minimumDepthOfDescendadWhoRepresentsCheckMate;
         if (this.nextMoves == null) {
             s = s + ", stevilo naslednikov: nerazvito";
         }
@@ -210,21 +201,10 @@ public class MCTNode {
         if (this.nextMoves != null) {
             for (int x = 0; x < this.nextMoves.size(); x++) {
                 MCTNode n = this.nextMoves.get(x);
-                sb.append("\t"
-                        + (x + 1)
-                        + ",\t"
-                        + n.moveDepth
-                        + ",\t"
-                        + Utils.singleMoveNumberToString(n.moveNumber)
-                        + ",\t"
-                        + n.numberOfMatsInNode
-                        + ",\t"
-                        + n.visitCount
-                        + ",\t"
-                        + n.maximumSubTreeDepth
-                        + ",\t"
-                        + (n.minimumDepthOfDescendadWhoRepresentsCheckMate != Integer.MAX_VALUE ? n.minimumDepthOfDescendadWhoRepresentsCheckMate
-                                : "-1") + "\r\n");;
+                sb.append("\t" + (x + 1) + ",\t" + n.moveDepth + ",\t" + Utils.singleMoveNumberToString(n.moveNumber) + ",\t" + n.numberOfMatsInNode + ",\t"
+                        + n.visitCount + ",\t" + n.maximumSubTreeDepth + ",\t"
+                        + (n.minimumDepthOfDescendadWhoRepresentsCheckMate != Integer.MAX_VALUE ? n.minimumDepthOfDescendadWhoRepresentsCheckMate : "-1")
+                        + "\r\n");;
             }
         }
         else {

@@ -29,15 +29,13 @@ public class MCTUtils {
 
         if (!node.isWhitesMove) {
             // poteze belega
-            double value = (double) node.numberOfMatsInNode
-                    / (double) node.visitCount;
+            double value = (double) node.numberOfMatsInNode / (double) node.visitCount;
             double temp = Math.log(node.parent.visitCount) / node.visitCount;
             return value + node.c * Math.sqrt(temp);
         }
         else {
             // poteze crnega
-            double value = (double) node.numberOfMatsInNode
-                    / (double) node.visitCount;
+            double value = (double) node.numberOfMatsInNode / (double) node.visitCount;
             double temp = Math.log(node.parent.visitCount) / node.visitCount;
             return (1 - value) + node.c * Math.sqrt(temp);
         }
@@ -106,9 +104,7 @@ public class MCTUtils {
      * @return choose ply number for given strategies
      * @throws ChessboardException
      */
-    public static int findNextMove(MCTNode node,
-            WhiteFinderStrategy whiteSimuationStrategy,
-            BlackFinderStrategy blackSimulationStrategy)
+    public static int findNextMove(MCTNode node, WhiteFinderStrategy whiteSimuationStrategy, BlackFinderStrategy blackSimulationStrategy)
             throws ChessboardException {
         if (node.isWhitesMove) {
             Chessboard temp = new Chessboard("temp", node);
@@ -116,8 +112,7 @@ public class MCTUtils {
         }
         else {
             Chessboard temp = new Chessboard("temp", node);
-            return BlackMoveFinder.findBlackKingMove(temp,
-                    blackSimulationStrategy);
+            return BlackMoveFinder.findBlackKingMove(temp, blackSimulationStrategy);
         }
     }
 

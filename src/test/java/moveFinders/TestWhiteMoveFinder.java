@@ -34,13 +34,11 @@ public class TestWhiteMoveFinder {
         initialPostion.put(52, 0);
         initialPostion.put(37, 4);
         initialPostion.put(69, 28);
-        TestWhiteMoveFinder.cbKRK = new Chessboard("KRK test board",
-                initialPostion);
+        TestWhiteMoveFinder.cbKRK = new Chessboard("KRK test board", initialPostion);
 
         System.out.println(TestWhiteMoveFinder.cbKRK);
 
-        TestWhiteMoveFinder.allCbKRKMoves = TestWhiteMoveFinder.cbKRK
-                .getAllLegalWhitePlies();
+        TestWhiteMoveFinder.allCbKRKMoves = TestWhiteMoveFinder.cbKRK.getAllLegalWhitePlies();
         int x = 0;
         for (Move move : TestWhiteMoveFinder.allCbKRKMoves) {
             System.out.println(x + ": " + move);
@@ -64,20 +62,16 @@ public class TestWhiteMoveFinder {
 
     @Test
     public void testGeneralHeuristics() {
-        ArrayList<Move> returned = WhiteMoveFinder
-                .generalHeuristics(TestWhiteMoveFinder.cbKRK);
+        ArrayList<Move> returned = WhiteMoveFinder.generalHeuristics(TestWhiteMoveFinder.cbKRK);
 
         Integer[] indexesNotInAllMoves = { 10, 11, 14, 15, 16, 17, 18 };
-        ArrayList<Integer> listOfIndexesNotInAllMoves = new ArrayList<Integer>(
-                Arrays.asList(indexesNotInAllMoves));
+        ArrayList<Integer> listOfIndexesNotInAllMoves = new ArrayList<Integer>(Arrays.asList(indexesNotInAllMoves));
         for (int x = 0; x < TestWhiteMoveFinder.allCbKRKMoves.size(); x++) {
             if (listOfIndexesNotInAllMoves.contains(x)) {
-                assertFalse(returned.contains(TestWhiteMoveFinder.allCbKRKMoves
-                        .get(x)));
+                assertFalse(returned.contains(TestWhiteMoveFinder.allCbKRKMoves.get(x)));
             }
             else {
-                assertTrue(returned.contains(TestWhiteMoveFinder.allCbKRKMoves
-                        .get(x)));
+                assertTrue(returned.contains(TestWhiteMoveFinder.allCbKRKMoves.get(x)));
             }
         }
     }

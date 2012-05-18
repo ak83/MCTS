@@ -18,16 +18,13 @@ public class ChessGameStatistics {
     boolean                   didWhiteWin           = false;
 
     /** Holds whites DTM difference from optimal move per turn. */
-    HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(
-                                                            50);
+    HashMap<Integer, Integer> whitesDiffFromOptimal = new HashMap<Integer, Integer>(50);
 
     /** Holds blacks DTM difference from optimal move per turn. */
-    HashMap<Integer, Integer> blacksDiffFromOptimal = new HashMap<Integer, Integer>(
-                                                            50);
+    HashMap<Integer, Integer> blacksDiffFromOptimal = new HashMap<Integer, Integer>(50);
 
     /** Holds tree size per turn. */
-    HashMap<Integer, Integer> treeSize              = new HashMap<Integer, Integer>(
-                                                            50);
+    HashMap<Integer, Integer> treeSize              = new HashMap<Integer, Integer>(50);
 
     /** Statistics of MCTS that was used in chess game */
     private MCTStats          statisticsOfMCTS;

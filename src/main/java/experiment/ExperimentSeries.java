@@ -22,9 +22,7 @@ public class ExperimentSeries {
      * Run experiments defined in configuration file
      */
     public void runExperiments() {
-        String rootDir = ExperimentUtils
-                .testParameterToString(Constants.testParameter)
-                + "--" + Utils.today();
+        String rootDir = ExperimentUtils.testParameterToString(Constants.testParameter) + "--" + Utils.today();
 
         new File(rootDir).mkdir();
 
@@ -32,23 +30,18 @@ public class ExperimentSeries {
         for (int x = 0; x < Constants.testParameterValues.size(); x++) {
 
             Double parameterValue = Constants.testParameterValues.get(x);
-            ExperimentUtils.setTestParameter(Constants.testParameter,
-                    parameterValue);
+            ExperimentUtils.setTestParameter(Constants.testParameter, parameterValue);
 
-            Experiment experiment = new Experiment(rootDir + File.separator
-                    + "experiment" + x);
+            Experiment experiment = new Experiment(rootDir + File.separator + "experiment" + x);
             experiment.runExperiment();
-            this.stasts
-                    .addExperimentStatistics(experiment.getExperimentStats());
+            this.stasts.addExperimentStatistics(experiment.getExperimentStats());
         }
 
         // save statistics outputs
         this.stasts.writeDTMDiffToCsv(rootDir);
-        this.stasts.saveUltimateChart(rootDir + File.separator
-                + IOUtils.ULTIMATE_FILE_NAME + ".jpg", Constants.testParameter);
+        this.stasts.saveUltimateChart(rootDir + File.separator + IOUtils.ULTIMATE_FILE_NAME + ".jpg", Constants.testParameter);
 
-        this.stasts.writeUltimateCSV(rootDir + File.separator
-                + IOUtils.ULTIMATE_FILE_NAME + ".csv");
+        this.stasts.writeUltimateCSV(rootDir + File.separator + IOUtils.ULTIMATE_FILE_NAME + ".csv");
 
         this.stasts.saveIndividualCharts(rootDir);
 
@@ -57,10 +50,7 @@ public class ExperimentSeries {
         ExperimentSeries.log = Logger.getLogger("MCTS.Main");
 
         // write summary into log
-        String summary = "Experiment series summary:"
-                + System.getProperty("line.separator")
-                + this.stasts.getSummary()
-                + System.getProperty("line.separator");
+        String summary = "Experiment series summary:" + System.getProperty("line.separator") + this.stasts.getSummary() + System.getProperty("line.separator");
         ExperimentSeries.log.info(summary);
         ExperimentSeries.log.info("END");
     }

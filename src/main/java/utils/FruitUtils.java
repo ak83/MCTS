@@ -32,19 +32,15 @@ public class FruitUtils {
             FruitUtils.writeToProcess(pr, "ucinewgame");
             FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
             FruitUtils.writeToProcess(pr, "setoption name MultiPV value 100");
-            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value "
-                    + Constants.EMD_DIR);
-            FruitUtils.writeToProcess(pr,
-                    "setoption name NalimovCache value 32");
-            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value "
-                    + Constants.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value " + Constants.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name NalimovCache value 32");
+            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value " + Constants.EMD_DIR);
             FruitUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
             FruitUtils.writeToProcess(pr, "position fen " + fen);
             FruitUtils.writeToProcess(pr, "go depth 2");
             pr.getOutputStream().close();
 
-            BufferedReader input = new BufferedReader(new InputStreamReader(pr
-                    .getInputStream()));
+            BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
             String line = null;
 
@@ -79,9 +75,7 @@ public class FruitUtils {
         }
         catch (Exception e) {
             e.printStackTrace();
-            FruitUtils.log
-                    .severe("There has been an error in program. Fruit output is:\r\n"
-                            + fruitOutput);
+            FruitUtils.log.severe("There has been an error in program. Fruit output is:\r\n" + fruitOutput);
             System.exit(3);
         }
 
@@ -99,8 +93,7 @@ public class FruitUtils {
      *            input message
      * @throws IOException
      */
-    public static void writeToProcess(Process process, String msg)
-            throws IOException {
+    public static void writeToProcess(Process process, String msg) throws IOException {
         char[] chars = (msg + "\n").toCharArray();
         byte[] bytes = new byte[chars.length];
         for (int x = 0; x < chars.length; x++) {
@@ -124,8 +117,7 @@ public class FruitUtils {
             writeToProcess(pr, "isready");
 
             pr.getOutputStream().close();
-            BufferedReader input = new BufferedReader(new InputStreamReader(pr
-                    .getInputStream()));
+            BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
             String line = null;
             while ((line = input.readLine()) != null) {
@@ -149,8 +141,7 @@ public class FruitUtils {
      *            output of fruit
      * @return DTM of move
      */
-    public static int getDTMOfMoveFromFruitOutput(String move,
-            String fruitOutput) {
+    public static int getDTMOfMoveFromFruitOutput(String move, String fruitOutput) {
         String[] lines = fruitOutput.split("\n");
         String rez = null;
         for (String line : lines) {
@@ -159,9 +150,7 @@ public class FruitUtils {
                     rez = line.split(" ")[7];
                 }
                 catch (Exception e) {
-                    FruitUtils.log
-                            .severe("There has been an error in program. Fruit output is:\r\n"
-                                    + fruitOutput);
+                    FruitUtils.log.severe("There has been an error in program. Fruit output is:\r\n" + fruitOutput);
                     e.printStackTrace();
                 }
                 break;

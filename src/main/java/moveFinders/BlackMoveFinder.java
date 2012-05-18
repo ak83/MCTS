@@ -34,8 +34,7 @@ public class BlackMoveFinder {
      * @return move number for given strategy
      * @throws ChessboardException
      */
-    public static int findBlackKingMove(Chessboard board,
-            BlackFinderStrategy strategy) throws ChessboardException {
+    public static int findBlackKingMove(Chessboard board, BlackFinderStrategy strategy) throws ChessboardException {
         ArrayList<Move> moves = board.getAllLegalBlackKingMoves();
 
         if (moves.size() == 0) { return -1; }
@@ -50,19 +49,15 @@ public class BlackMoveFinder {
             case GOOD: { // crni tezi proti centru, toda ce je mozno pa poje
                          // belo
                 // figuro, poleg tega se pa tudi izgiba opoziciji kraljev
-                ArrayList<Move> blackEats = board
-                        .movesWhereBlackKingEatsWhite();
+                ArrayList<Move> blackEats = board.movesWhereBlackKingEatsWhite();
                 if (blackEats.size() == 0) {
                     if (true) {
-                        ArrayList<Move> avoidsOpp = board
-                                .movesWhereBlackKingEvadesOposition(moves);
+                        ArrayList<Move> avoidsOpp = board.movesWhereBlackKingEvadesOposition(moves);
                         if (avoidsOpp.size() == 0) {
-                            return BlackMoveFinder
-                                    .findBlackKingCenterMove(moves);
+                            return BlackMoveFinder.findBlackKingCenterMove(moves);
                         }
                         else {
-                            return BlackMoveFinder
-                                    .findBlackKingCenterMove(avoidsOpp);
+                            return BlackMoveFinder.findBlackKingCenterMove(avoidsOpp);
                         }
                     }
                 }
@@ -86,13 +81,11 @@ public class BlackMoveFinder {
      * @return move number for center black king strategy
      */
     private static int findBlackKingCenterMove(ArrayList<Move> moves) {
-        int minDist = MoveFindersUtils
-                .findMinimumDistanceFromCenterFromPlies(moves);
+        int minDist = MoveFindersUtils.findMinimumDistanceFromCenterFromPlies(moves);
         ArrayList<Move> rezMoves = new ArrayList<Move>();
 
         for (int x = 0; x < moves.size(); x++) {
-            int dist = MoveFindersUtils
-                    .distanceOfMoveFromCenter(moves.get(x).moveNumber);
+            int dist = MoveFindersUtils.distanceOfMoveFromCenter(moves.get(x).moveNumber);
             if (dist == minDist) {
                 rezMoves.add(moves.get(x));
             }
@@ -129,12 +122,9 @@ public class BlackMoveFinder {
             FruitUtils.writeToProcess(pr, "ucinewgame");
             FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
             FruitUtils.writeToProcess(pr, "setoption name MultiPV value 100");
-            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value "
-                    + Constants.EMD_DIR);
-            FruitUtils.writeToProcess(pr,
-                    "setoption name NalimovCache value 32");
-            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value "
-                    + Constants.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value " + Constants.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name NalimovCache value 32");
+            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value " + Constants.EMD_DIR);
             FruitUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
             // writeToProcess(pr,
             // "position fen r7/8/5k2/8/8/8/R7/K7 w - - 0 1");
@@ -142,8 +132,7 @@ public class BlackMoveFinder {
             FruitUtils.writeToProcess(pr, "go depth 2");
             pr.getOutputStream().close();
 
-            BufferedReader input = new BufferedReader(new InputStreamReader(pr
-                    .getInputStream()));
+            BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 
             String line = null;
             String h = null;

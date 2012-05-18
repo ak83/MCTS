@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import chess.Move;
 
-
 public class MoveFindersUtils {
 
     /**
@@ -44,8 +43,7 @@ public class MoveFindersUtils {
      */
     public static int distanceOfMoveFromCenter(int moveNumber) {
         int fileDiff = rankDistanceOfMoveFromCenter(moveNumber);
-        int rankDiff = MoveFindersUtils
-                .fileDistanceOfMoveFromCenter(moveNumber);
+        int rankDiff = MoveFindersUtils.fileDistanceOfMoveFromCenter(moveNumber);
 
         return fileDiff + rankDiff;
     }
@@ -86,8 +84,7 @@ public class MoveFindersUtils {
      *            plies
      * @return minimum distance of ply target position from chess board center
      */
-    public static int findMinimumDistanceFromCenterFromPlies(
-            ArrayList<Move> plies) {
+    public static int findMinimumDistanceFromCenterFromPlies(ArrayList<Move> plies) {
         int minDist = -1;
         for (int x = 0; x < plies.size(); x++) {
             int moveNumber = plies.get(x).moveNumber;

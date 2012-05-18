@@ -195,8 +195,7 @@ public class SimpleChessboard implements Cloneable {
      */
     @SuppressWarnings("unchecked")
     public HashMap<Integer, Integer> cloneNumberOfTimesBoardStateHasOccured() {
-        return (HashMap<Integer, Integer>) this.numberOfTimesBoardStateHasOccured
-                .clone();
+        return (HashMap<Integer, Integer>) this.numberOfTimesBoardStateHasOccured.clone();
     }
 
 
@@ -269,15 +268,13 @@ public class SimpleChessboard implements Cloneable {
 
         // for optimization purposes we limit number of states that we check
         if (this.previousHashes.size() > SimpleChessboard.NUMBER_OF_PREVIOUS_MOVES_WE_CHECK_FOR_REPEATED_STATE_PAT) {
-            this.numberOfTimesBoardStateHasOccured.remove(this.previousHashes
-                    .get(0));
+            this.numberOfTimesBoardStateHasOccured.remove(this.previousHashes.get(0));
             this.previousHashes.remove(0);
         }
 
         if (this.numberOfTimesBoardStateHasOccured.containsKey(hash)) {
             // we increase number of times that state has appeared.
-            int stateAppeared = this.numberOfTimesBoardStateHasOccured
-                    .get(hash) + 1;
+            int stateAppeared = this.numberOfTimesBoardStateHasOccured.get(hash) + 1;
             this.numberOfTimesBoardStateHasOccured.put(hash, stateAppeared);
 
             if (stateAppeared > 2) {
@@ -301,24 +298,19 @@ public class SimpleChessboard implements Cloneable {
      * @throws UtilsException
      */
     public void makeAMove(int moveNumber) throws ChessboardException {
-        if (moveNumber == -1) { throw new ChessboardException(
-                "neveljavna poteza"); }
+        if (moveNumber == -1) { throw new ChessboardException("neveljavna poteza"); }
 
         int from = Utils.getStartingPositionFromMoveNumber(moveNumber);
         int to = Utils.getTargetPositionFromMoveNumber(moveNumber);
         int movedPiece = Utils.getMovedPieceFromMoveNumber(moveNumber);
         int targetPiece = Utils.getTargetPieceFromMoveNumber(moveNumber);
 
-        if (this.board[from] != movedPiece
-                || this.piecePosition[movedPiece] != from) { throw new ChessboardException(
-                "na mestu " + from + "ni figura " + movedPiece); }
-        if (targetPiece != -1
-                && (this.board[to] != targetPiece || this.piecePosition[targetPiece] != to)) {
-            throw new ChessboardException("na mestu " + to + " ni figura "
-                    + targetPiece + ", ampak je " + this.board[to]);
+        if (this.board[from] != movedPiece || this.piecePosition[movedPiece] != from) { throw new ChessboardException("na mestu " + from + "ni figura "
+                + movedPiece); }
+        if (targetPiece != -1 && (this.board[to] != targetPiece || this.piecePosition[targetPiece] != to)) {
+            throw new ChessboardException("na mestu " + to + " ni figura " + targetPiece + ", ampak je " + this.board[to]);
         }
-        else if (targetPiece == -1 && this.board[to] != -1) { throw new ChessboardException(
-                "Pozijia to: " + to + " ni prazna"); }
+        else if (targetPiece == -1 && this.board[to] != -1) { throw new ChessboardException("Pozijia to: " + to + " ni prazna"); }
 
         this.makeAMove(from, to);
     }
@@ -338,8 +330,7 @@ public class SimpleChessboard implements Cloneable {
 
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
@@ -365,8 +356,7 @@ public class SimpleChessboard implements Cloneable {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
@@ -386,15 +376,13 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih kmetov
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalWhitePawnMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhitePawnMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 8; x < 16; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhitePawnMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
@@ -413,15 +401,13 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih kmetov
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalBlackPawnMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalBlackPawnMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 16; x < 24; x++) {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackPawnMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
@@ -440,8 +426,7 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih trdnjav
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalWhiteRookMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhiteRookMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int[] rooks = { 0, 7 };
 
@@ -449,8 +434,7 @@ public class SimpleChessboard implements Cloneable {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteRookMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
@@ -469,8 +453,7 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih trdnjav
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalBlackRookMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalBlackRookMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int[] rooks = { 24, 31 };
 
@@ -478,8 +461,7 @@ public class SimpleChessboard implements Cloneable {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackRookMoveLegal(from, y)) {
                         int t = this.constructMoveNumber(from, y);
@@ -498,8 +480,7 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih konjev
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalWhiteKnightMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhiteKnightMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int[] knights = { 1, 6 };
 
@@ -507,8 +488,7 @@ public class SimpleChessboard implements Cloneable {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteKnightMoveLegal(from, y)) {
@@ -528,8 +508,7 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih konjev
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalBlackKnightMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalBlackKnightMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int[] knights = { 25, 30 };
 
@@ -537,8 +516,7 @@ public class SimpleChessboard implements Cloneable {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackKnightMoveLegal(from, y)) {
@@ -558,8 +536,7 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belih tekacev
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalWhiteBishopMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhiteBishopMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int[] bishops = { 2, 5 };
 
@@ -567,8 +544,7 @@ public class SimpleChessboard implements Cloneable {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
                     if (this.isWhiteBishopMoveLegal(from, y)) {
@@ -588,8 +564,7 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnih tekacev
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalBlackBishopMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalBlackBishopMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int[] bishops = { 26, 29 };
 
@@ -597,8 +572,7 @@ public class SimpleChessboard implements Cloneable {
             int from = this.piecePosition[x];
             if (from != -1) {
                 if (!ChessboardUtils.isPositionLegal(from))
-                    throw new ChessboardException("figura " + x
-                            + " je na poziciji " + from);
+                    throw new ChessboardException("figura " + x + " je na poziciji " + from);
 
                 for (int y = 0; y < 128; y++) {
                     if (this.isBlackBishopMoveLegal(from, y)) {
@@ -618,15 +592,13 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez bele kravljice
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalWhiteQueenMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhiteQueenMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[3];
 
         if (from != -1) {
             if (!ChessboardUtils.isPositionLegal(from))
-                throw new ChessboardException("figura " + 3
-                        + " je na poziciji " + from);
+                throw new ChessboardException("figura " + 3 + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
                 if (this.isWhiteQueenMoveLegal(from, y)) {
@@ -645,15 +617,13 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crne kravljice
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalBlackQueenMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalBlackQueenMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[27];
 
         if (from != -1) {
             if (!ChessboardUtils.isPositionLegal(from))
-                throw new ChessboardException("figura " + 27
-                        + " je na poziciji " + from);
+                throw new ChessboardException("figura " + 27 + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
                 if (this.isBlackQueenMoveLegal(from, y)) {
@@ -672,15 +642,13 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez belega kralja
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalWhiteKingMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhiteKingMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[4];
 
         if (from != -1) {
             if (!ChessboardUtils.isPositionLegal(from))
-                throw new ChessboardException("figura " + 4
-                        + " je na poziciji " + from);
+                throw new ChessboardException("figura " + 4 + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
                 if (this.isWhiteKingMoveLegal(from, y)) {
@@ -699,15 +667,13 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih potez crnega kralja
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalBlackKingMoves()
-            throws ChessboardException {
+    public ArrayList<Move> getAllLegalBlackKingMoves() throws ChessboardException {
         ArrayList<Move> rez = new ArrayList<Move>();
         int from = this.piecePosition[28];
 
         if (from != -1) {
             if (!ChessboardUtils.isPositionLegal(from))
-                throw new ChessboardException("figura " + 28
-                        + " je na poziciji " + from);
+                throw new ChessboardException("figura " + 28 + " je na poziciji " + from);
 
             for (int y = 0; y < 128; y++) {
                 if (this.isBlackKingMoveLegal(from, y)) {
@@ -726,8 +692,7 @@ public class SimpleChessboard implements Cloneable {
      * 
      * @return evaluation of chess board state
      */
-    public ChessboardEvalState evaluateChessboardFromWhitesPerpective()
-            throws ChessboardException {
+    public ChessboardEvalState evaluateChessboardFromWhitesPerpective() throws ChessboardException {
         if (this.isBlackKingMated()) { return ChessboardEvalState.BLACK_KING_MATED; }
         if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
         if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return ChessboardEvalState.WHITE_PIECE_IN_DANGER; }
@@ -770,8 +735,7 @@ public class SimpleChessboard implements Cloneable {
 
 
     public boolean isBlackKingMated() throws ChessboardException {
-        int numberOfBlackKingPossibleMoves = this.getAllLegalBlackKingMoves()
-                .size();
+        int numberOfBlackKingPossibleMoves = this.getAllLegalBlackKingMoves().size();
 
         if (numberOfBlackKingPossibleMoves == 0) {
             return this.isBlackKingChecked();
@@ -790,8 +754,7 @@ public class SimpleChessboard implements Cloneable {
      * @throws ChessboardException
      */
     public boolean isBlackKingPatted() throws ChessboardException {
-        int numberOfPossibleBlackKingMoves = this.getAllLegalBlackKingMoves()
-                .size();
+        int numberOfPossibleBlackKingMoves = this.getAllLegalBlackKingMoves().size();
 
         if (numberOfPossibleBlackKingMoves == 0) {
             return !this.isBlackKingChecked();
@@ -802,8 +765,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isAnyWhiteFigureUnderAttackFromBlack()
-            throws ChessboardException {
+    public boolean isAnyWhiteFigureUnderAttackFromBlack() throws ChessboardException {
         // ni stestirana
         for (int x = 0; x < 16; x++) {
             int pos = this.piecePosition[x];
@@ -818,8 +780,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhitePawnMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhitePawnMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -832,16 +793,14 @@ public class SimpleChessboard implements Cloneable {
         if (diff == 16 && this.board[to] == -1)
             return true;
         if (diff == 15 || diff == 17) {
-            if (this.board[to] != -1
-                    && !ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] != -1 && !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
         }
         return false;
     }
 
 
-    public boolean isWhiteCannibalPawnMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteCannibalPawnMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -861,8 +820,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackPawnMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackPawnMoveLegal(int from, int to) throws ChessboardException {
         // ni stestirana, samo bi mogla delat
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
@@ -876,16 +834,14 @@ public class SimpleChessboard implements Cloneable {
         if (diff == -16 && this.board[to] == -1)
             return true;
         if (diff == -15 || diff == -17) {
-            if (this.board[to] != -1
-                    && ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] != -1 && ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
         }
         return false;
     }
 
 
-    public boolean isBlackCannibalPawnMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackCannibalPawnMoveLegal(int from, int to) throws ChessboardException {
         // ni stestirana, samo bi mogla delat
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
@@ -906,8 +862,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteRookMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteRookMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -931,8 +886,7 @@ public class SimpleChessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1
-                    || !ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             if (ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
@@ -951,8 +905,7 @@ public class SimpleChessboard implements Cloneable {
                     return false;
                 temp += diff;
             }
-            if (this.board[to] == -1
-                    || !ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             if (ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
@@ -962,8 +915,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteCannibalRookMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteCannibalRookMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1010,8 +962,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackRookMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackRookMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1035,8 +986,7 @@ public class SimpleChessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1
-                    || ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             if (!ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
@@ -1055,8 +1005,7 @@ public class SimpleChessboard implements Cloneable {
                     return false;
                 temp += diff;
             }
-            if (this.board[to] == -1
-                    || ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             if (!ChessboardUtils.isPieceWhite(this.board[to]))
                 return false;
@@ -1066,8 +1015,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackCannibalRookMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackCannibalRookMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1114,8 +1062,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteBishopMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteBishopMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1146,8 +1093,7 @@ public class SimpleChessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1
-                    || !ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || !ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             else
                 return false;
@@ -1156,8 +1102,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteCannibalBishopMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteCannibalBishopMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1194,8 +1139,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackCannibalBishopMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackCannibalBishopMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1232,8 +1176,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackBishopMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackBishopMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1264,8 +1207,7 @@ public class SimpleChessboard implements Cloneable {
                 temp += diff;
             }
 
-            if (this.board[to] == -1
-                    || ChessboardUtils.isPieceWhite(this.board[to]))
+            if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to]))
                 return true;
             else
                 return false;
@@ -1274,8 +1216,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteKnightMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteKnightMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1284,8 +1225,7 @@ public class SimpleChessboard implements Cloneable {
         if (from == to)
             return false;
 
-        if (this.board[to] == -1
-                || !ChessboardUtils.isPieceWhite(this.board[to])) {
+        if (this.board[to] == -1 || !ChessboardUtils.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
                 case 14:
@@ -1302,8 +1242,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteCannibalKnightMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteCannibalKnightMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1329,8 +1268,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackKnightMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackKnightMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1339,8 +1277,7 @@ public class SimpleChessboard implements Cloneable {
         if (from == to)
             return false;
 
-        if (this.board[to] == -1
-                || ChessboardUtils.isPieceWhite(this.board[to])) {
+        if (this.board[to] == -1 || ChessboardUtils.isPieceWhite(this.board[to])) {
             int raz = Math.abs(from - to);
             switch (raz) {
                 case 14:
@@ -1357,8 +1294,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackCannibalKnightMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackCannibalKnightMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1384,8 +1320,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteQueenMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteQueenMoveLegal(int from, int to) throws ChessboardException {
         if (this.isWhiteBishopMoveLegal(from, to))
             return true;
         if (this.isWhiteRookMoveLegal(from, to))
@@ -1395,8 +1330,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteCannibalQueenMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteCannibalQueenMoveLegal(int from, int to) throws ChessboardException {
         if (this.isWhiteCannibalBishopMoveLegal(from, to))
             return true;
         if (this.isWhiteCannibalRookMoveLegal(from, to))
@@ -1406,8 +1340,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackQueenMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackQueenMoveLegal(int from, int to) throws ChessboardException {
         if (this.isBlackBishopMoveLegal(from, to))
             return true;
         if (this.isBlackRookMoveLegal(from, to))
@@ -1417,8 +1350,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackCannibalQueenMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackCannibalQueenMoveLegal(int from, int to) throws ChessboardException {
         if (this.isBlackCannibalBishopMoveLegal(from, to))
             return true;
         if (this.isBlackCannibalRookMoveLegal(from, to))
@@ -1428,8 +1360,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteKingMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteKingMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1466,8 +1397,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteCannibalKingMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteCannibalKingMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1501,8 +1431,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackKingMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackKingMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1540,8 +1469,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackCannibalKingMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackCannibalKingMoveLegal(int from, int to) throws ChessboardException {
         if (from < 0 || from > 127)
             throw new ChessboardException("from = " + from);
 
@@ -1574,8 +1502,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isWhiteMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isWhiteMoveLegal(int from, int to) throws ChessboardException {
         int piece = this.board[from];
 
         // if(DEBUG) println("Za�etek isWhiteMoveLegal(int from, int to)");
@@ -1615,8 +1542,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isBlackMoveLegal(int from, int to)
-            throws ChessboardException {
+    public boolean isBlackMoveLegal(int from, int to) throws ChessboardException {
         int piece = this.board[from];
 
         if (piece > 15 && piece < 24)
@@ -1658,31 +1584,26 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isPositionUnderAttackByBlack(int position,
-            boolean ignoreBlackKing) throws ChessboardException {
+    public boolean isPositionUnderAttackByBlack(int position, boolean ignoreBlackKing) throws ChessboardException {
         if (!ChessboardUtils.isPositionLegal(position))
             return true;
 
         for (int x = 16; x < 32; x++) {
             // trdnjavi
             if ((x == 24 || x == 31) && this.piecePosition[x] != -1) {
-                if (this.isBlackCannibalRookMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isBlackCannibalRookMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // konja
             if ((x == 25 || x == 30) && this.piecePosition[x] != -1) {
-                if (this.isBlackCannibalKnightMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isBlackCannibalKnightMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // tekaca
             if ((x == 26 || x == 29) && this.piecePosition[x] != -1) {
-                if (this.isBlackCannibalBishopMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isBlackCannibalBishopMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // kraljica
             if (x == 27 && this.piecePosition[x] != -1) {
-                if (this.isBlackCannibalQueenMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isBlackCannibalQueenMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // kralj
             if (x == 28 && !ignoreBlackKing) {
@@ -1703,8 +1624,7 @@ public class SimpleChessboard implements Cloneable {
     }
 
 
-    public boolean isPositionUnderAttackByWhite(int position,
-            boolean ignoreWhiteKing) throws ChessboardException {
+    public boolean isPositionUnderAttackByWhite(int position, boolean ignoreWhiteKing) throws ChessboardException {
         if (position < 0 || position > 127)
             throw new ChessboardException("position = " + position);
 
@@ -1714,23 +1634,19 @@ public class SimpleChessboard implements Cloneable {
         for (int x = 0; x < 8; x++) {
             // trdnjavi
             if ((x == 0 || x == 7) && this.piecePosition[x] != -1) {
-                if (this.isWhiteCannibalRookMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isWhiteCannibalRookMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // konja
             if ((x == 1 || x == 6) && this.piecePosition[x] != -1) {
-                if (this.isWhiteCannibalKnightMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isWhiteCannibalKnightMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // tekaca
             if ((x == 2 || x == 5) && this.piecePosition[x] != -1) {
-                if (this.isWhiteCannibalBishopMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isWhiteCannibalBishopMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // kraljica
             if (x == 3 && this.piecePosition[x] != -1) {
-                if (this.isWhiteCannibalQueenMoveLegal(this.piecePosition[x],
-                        position)) { return true; }
+                if (this.isWhiteCannibalQueenMoveLegal(this.piecePosition[x], position)) { return true; }
             }
             // kralj
             if (x == 4 && !ignoreWhiteKing) {
@@ -1827,11 +1743,9 @@ public class SimpleChessboard implements Cloneable {
         result.board = this.board.clone();
         result.isWhitesTurn = this.isWhitesTurn;
         result.numberOfMovesMade = this.numberOfMovesMade;
-        result.numberOfTimesBoardStateHasOccured = new HashMap<Integer, Integer>(
-                this.numberOfMovesMade);
+        result.numberOfTimesBoardStateHasOccured = new HashMap<Integer, Integer>(this.numberOfMovesMade);
         result.piecePosition = this.piecePosition.clone();
-        result.previousHashes = (ArrayList<Integer>) this.previousHashes
-                .clone();
+        result.previousHashes = (ArrayList<Integer>) this.previousHashes.clone();
         result.wasBoardStateRepeatedThreeTimes = this.wasBoardStateRepeatedThreeTimes;
 
         return result;
@@ -1852,13 +1766,11 @@ public class SimpleChessboard implements Cloneable {
         for (int off : diff) {
             int currPlusPosition = position + off;
             int currMinusPosition = position - off;
-            if (ChessboardUtils.isPositionLegal(currPlusPosition)
-                    && this.board[currPlusPosition] != -1) {
+            if (ChessboardUtils.isPositionLegal(currPlusPosition) && this.board[currPlusPosition] != -1) {
                 rez.add(this.board[currPlusPosition]);
             }
 
-            if (ChessboardUtils.isPositionLegal(currMinusPosition)
-                    && this.board[currMinusPosition] != -1) {
+            if (ChessboardUtils.isPositionLegal(currMinusPosition) && this.board[currMinusPosition] != -1) {
                 rez.add(this.board[currMinusPosition]);
             }
         }

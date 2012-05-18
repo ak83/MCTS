@@ -27,19 +27,13 @@ public class TestChessboardUtils {
 
     @Test
     public void testIsPositionBetweenPositionsOnLine() {
-        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(1,
-                0, 2));
-        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(50,
-                55, 49));
-        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(68,
-                84, 36));
-        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(55,
-                7, 119));
+        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(1, 0, 2));
+        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(50, 55, 49));
+        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(68, 84, 36));
+        Assert.assertTrue(ChessboardUtils.isPositionBetweenPositionsOnLine(55, 7, 119));
 
-        Assert.assertFalse(ChessboardUtils.isPositionBetweenPositionsOnLine(0,
-                3, 8));
-        Assert.assertFalse(ChessboardUtils.isPositionBetweenPositionsOnLine(39,
-                2, 5));
+        Assert.assertFalse(ChessboardUtils.isPositionBetweenPositionsOnLine(0, 3, 8));
+        Assert.assertFalse(ChessboardUtils.isPositionBetweenPositionsOnLine(39, 2, 5));
     }
 
 

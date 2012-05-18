@@ -38,9 +38,8 @@ public class Move {
         int movedPiece = Utils.getMovedPieceFromMoveNumber(this.moveNumber);
         int targetPiece = Utils.getTargetPieceFromMoveNumber(this.moveNumber);
 
-        return "move: " + Utils.singleMoveNumberToString(this.moveNumber)
-                + "\tfrom: " + from + "\tto: " + to + "\tmovedPiece: "
-                + movedPiece + "\ttargetPiece: " + targetPiece;
+        return "move: " + Utils.singleMoveNumberToString(this.moveNumber) + "\tfrom: " + from + "\tto: " + to + "\tmovedPiece: " + movedPiece
+                + "\ttargetPiece: " + targetPiece;
     }
 
 

@@ -23,8 +23,7 @@ public class Main {
         Constants.initConstants(args);
 
         if (!new File(Constants.FRUIT_FILEPATH).exists()) {
-            System.err
-                    .println("Fruit file path is not set correctly. Ending program");
+            System.err.println("Fruit file path is not set correctly. Ending program");
             System.exit(1);
         }
 

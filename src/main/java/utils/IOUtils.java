@@ -37,7 +37,7 @@ public class IOUtils {
     public static final String TREE_SIZE_FILE_NAME                     = "treeSize";
 
     /** Prefix of files that represent data connected to game length. */
-    public static final String GAME_LENGTH_FILE_NAME                             = "gameLength";
+    public static final String GAME_LENGTH_FILE_NAME                   = "gameLength";
 
     /** Prefix of files that represent white players success rate. */
     public static final String WHITE_SUCCESS_RATE_FILE_NAME            = "whiteSuccessRate";
@@ -80,8 +80,7 @@ public class IOUtils {
      * @param data
      *            data that will be written to CSV
      */
-    public static void writeCSV(String filePath, Vector<String> columnNames,
-            Vector<Vector<Object>> data) {
+    public static void writeCSV(String filePath, Vector<String> columnNames, Vector<Vector<Object>> data) {
         StringBuffer sb = new StringBuffer();
 
         // generate first line in file
@@ -112,8 +111,7 @@ public class IOUtils {
      */
     public static void saveChart(String filePath, JFreeChart chart) {
         try {
-            ChartUtilities.saveChartAsJPEG(new File(filePath), chart,
-                    DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
+            ChartUtilities.saveChartAsJPEG(new File(filePath), chart, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
         }
         catch (IOException e) {
             System.err.println("Could not save " + filePath);

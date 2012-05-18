@@ -182,19 +182,14 @@ public class ExperimentStatistics {
         CategoryPlot plot = new CategoryPlot();
         plot.setDomainGridlinesVisible(true);
 
-        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
-                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
-                new BarRenderer(), 2);
+        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(), ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, new BarRenderer(), 2);
 
-        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(),
-                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
+        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(), ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
 
-        ChartUtils.addToPlot(plot, this.getAverageTreeSizeDataset(),
-                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 1);
+        ChartUtils.addToPlot(plot, this.getAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 1);
 
         CategoryAxis categoryAxis = new CategoryAxis("Chess game");
-        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
-                categoryAxis);
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(categoryAxis);
 
         combinedPlot.add(plot);
 
@@ -224,27 +219,23 @@ public class ExperimentStatistics {
             else {
                 // if game with current game length exists we increase counter
                 // of such games
-                gamesPerLength.put(gameLength,
-                        gamesPerLength.get(gameLength) + 1);
+                gamesPerLength.put(gameLength, gamesPerLength.get(gameLength) + 1);
             }
         }
 
         // sort keys
-        ArrayList<Integer> sortedKeys = new ArrayList<Integer>(
-                new TreeSet<Integer>(gamesPerLength.keySet()));
+        ArrayList<Integer> sortedKeys = new ArrayList<Integer>(new TreeSet<Integer>(gamesPerLength.keySet()));
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (Integer gameLength : sortedKeys) {
-            dataset.addValue(gamesPerLength.get(gameLength), "number of games",
-                    gameLength);
+            dataset.addValue(gamesPerLength.get(gameLength), "number of games", gameLength);
         }
 
         CategoryPlot plot = new CategoryPlot();
         ChartUtils.addToPlot(plot, dataset, "", new BarRenderer(), 0);
 
         CategoryAxis categoryAxis = new CategoryAxis("Chess game length");
-        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
-                categoryAxis);
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(categoryAxis);
         combinedPlot.add(plot);
 
         JFreeChart chart = new JFreeChart(combinedPlot);
@@ -284,8 +275,7 @@ public class ExperimentStatistics {
      *            where file will be saved
      */
     public void writeUltimateCSV(String filePath) {
-        IOUtils.writeCSV(filePath, this.buildAllColumnNames(), this
-                .buildDataForCSV());
+        IOUtils.writeCSV(filePath, this.buildAllColumnNames(), this.buildDataForCSV());
     }
 
 
@@ -299,18 +289,12 @@ public class ExperimentStatistics {
 
         CategoryPlot plot = new CategoryPlot();
 
-        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(),
-                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
-        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
-                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
-                new LineAndShapeRenderer(), 1);
-        ChartUtils.addToPlot(plot, this.getGameLengthPerGameDataset(),
-                ChartUtils.GAME_LENGTH_CATEGORY, new LineAndShapeRenderer(), 2);
-        ChartUtils.addToPlot(plot, this.getAverageTreeSizeDataset(),
-                ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 3);
+        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(), ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
+        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(), ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, new LineAndShapeRenderer(), 1);
+        ChartUtils.addToPlot(plot, this.getGameLengthPerGameDataset(), ChartUtils.GAME_LENGTH_CATEGORY, new LineAndShapeRenderer(), 2);
+        ChartUtils.addToPlot(plot, this.getAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY, new LineAndShapeRenderer(), 3);
 
-        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
-                new CategoryAxis(ChartUtils.CHESS_GAME_CATEGORY_AXIS));
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(new CategoryAxis(ChartUtils.CHESS_GAME_CATEGORY_AXIS));
         combinedPlot.add(plot);
 
         IOUtils.saveChart(filepath, new JFreeChart(plot));
@@ -327,16 +311,11 @@ public class ExperimentStatistics {
         CategoryPlot plot = new CategoryPlot();
         plot.setDomainGridlinesVisible(true);
 
-        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(),
-                ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
-        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(),
-                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
-                new BarRenderer(), 1);
+        ChartUtils.addToPlot(plot, this.getDTMDiffDataset(), ChartUtils.DTM_DIFF_CATHEGORY, new LineAndShapeRenderer(), 0);
+        ChartUtils.addToPlot(plot, this.getNumberOfCollapsesDataSet(), ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, new BarRenderer(), 1);
 
-        CategoryAxis categoryAxis = new CategoryAxis(
-                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
-        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(
-                categoryAxis);
+        CategoryAxis categoryAxis = new CategoryAxis(ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+        CombinedDomainCategoryPlot combinedPlot = new CombinedDomainCategoryPlot(categoryAxis);
         combinedPlot.add(plot);
 
         JFreeChart chart = new JFreeChart(combinedPlot);
@@ -357,29 +336,20 @@ public class ExperimentStatistics {
         String separator = "/";
 
         // DTM diff
-        ChartUtils.saveIndividualChart(dir + separator
-                + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ending, this
-                .getDTMDiffDataset(), ChartUtils.DTM_DIFF_CATHEGORY,
-                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ending, this.getDTMDiffDataset(),
+                ChartUtils.DTM_DIFF_CATHEGORY, ChartUtils.CHESS_GAME_CATEGORY_AXIS);
 
         // tree size
-        ChartUtils.saveIndividualChart(dir + separator
-                + IOUtils.TREE_SIZE_FILE_NAME + ending, this
-                .getAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY,
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.TREE_SIZE_FILE_NAME + ending, this.getAverageTreeSizeDataset(), ChartUtils.TREE_SIZE_CATEGORY,
                 ChartUtils.CHESS_GAME_CATEGORY_AXIS);
 
         // AGL
-        ChartUtils.saveIndividualChart(dir + separator
-                + IOUtils.GAME_LENGTH_FILE_NAME + ending,
-                getGameLengthPerGameDataset(), ChartUtils.GAME_LENGTH_CATEGORY,
-                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+        ChartUtils.saveIndividualChart(dir + separator + IOUtils.GAME_LENGTH_FILE_NAME + ending, getGameLengthPerGameDataset(),
+                ChartUtils.GAME_LENGTH_CATEGORY, ChartUtils.CHESS_GAME_CATEGORY_AXIS);
 
         // number of collapses
-        ChartUtils.saveIndividualChart(dir + separator
-                + ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY + ending,
-                this.getNumberOfCollapsesDataSet(),
-                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
-                ChartUtils.CHESS_GAME_CATEGORY_AXIS);
+        ChartUtils.saveIndividualChart(dir + separator + ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY + ending, this.getNumberOfCollapsesDataSet(),
+                ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, ChartUtils.CHESS_GAME_CATEGORY_AXIS);
 
     }
 
@@ -433,10 +403,8 @@ public class ExperimentStatistics {
             values.add(x);
             values.add(this.chessGameStatistics.get(x).getVictor());
             values.add(this.chessGameStatistics.get(x).getNumberOfTurnsMade());
-            values.add(this.chessGameStatistics.get(x)
-                    .getAverageWhitesDTMDiff());
-            values.add(this.chessGameStatistics.get(x)
-                    .getNumberOfMCTSTreeCollapses());
+            values.add(this.chessGameStatistics.get(x).getAverageWhitesDTMDiff());
+            values.add(this.chessGameStatistics.get(x).getNumberOfMCTSTreeCollapses());
             values.add(this.chessGameStatistics.get(x).getAverageTreeSize());
 
             // add row to data
@@ -455,10 +423,7 @@ public class ExperimentStatistics {
     private CategoryDataset getNumberOfCollapsesDataSet() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
-            dataset.setValue(this.chessGameStatistics.get(x)
-                    .getNumberOfMCTSTreeCollapses(),
-                    ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, (x + 1)
-                            + "");
+            dataset.setValue(this.chessGameStatistics.get(x).getNumberOfMCTSTreeCollapses(), ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY, (x + 1) + "");
         }
 
         return dataset;
@@ -474,9 +439,7 @@ public class ExperimentStatistics {
     private CategoryDataset getDTMDiffDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
-            dataset.setValue(this.chessGameStatistics.get(x)
-                    .getAverageWhitesDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY,
-                    (x + 1) + "");
+            dataset.setValue(this.chessGameStatistics.get(x).getAverageWhitesDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY, (x + 1) + "");
         }
         return dataset;
     }
@@ -491,9 +454,7 @@ public class ExperimentStatistics {
     private CategoryDataset getAverageTreeSizeDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
-            dataset.setValue(this.chessGameStatistics.get(x)
-                    .getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY,
-                    (x + 1) + "");
+            dataset.setValue(this.chessGameStatistics.get(x).getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY, (x + 1) + "");
         }
         return dataset;
     }
@@ -508,9 +469,7 @@ public class ExperimentStatistics {
     private CategoryDataset getGameLengthPerGameDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
-            dataset.setValue(this.chessGameStatistics.get(x)
-                    .getNumberOfTurnsMade(), ChartUtils.GAME_LENGTH_CATEGORY,
-                    (x + 1) + "");
+            dataset.setValue(this.chessGameStatistics.get(x).getNumberOfTurnsMade(), ChartUtils.GAME_LENGTH_CATEGORY, (x + 1) + "");
         }
 
         return dataset;
@@ -527,10 +486,8 @@ public class ExperimentStatistics {
     private CategoryDataset getDidWhiteLooseDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.chessGameStatistics.size(); x++) {
-            int didWhiteWine = this.chessGameStatistics.get(x).didWhiteWin() ? 0
-                    : 1;
-            dataset.setValue(didWhiteWine, ChartUtils.DID_WHITE_LOOSE_CATEGORY,
-                    (x + 1) + "");
+            int didWhiteWine = this.chessGameStatistics.get(x).didWhiteWin() ? 0 : 1;
+            dataset.setValue(didWhiteWine, ChartUtils.DID_WHITE_LOOSE_CATEGORY, (x + 1) + "");
         }
 
         return dataset;

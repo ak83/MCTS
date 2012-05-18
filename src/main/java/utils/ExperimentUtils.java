@@ -15,8 +15,7 @@ public class ExperimentUtils {
      *            parameter for which type of its values will be returned
      * @return Class that represents value type of <code>testedParameter</code>
      */
-    public static Class<? extends Number> MCTestParameterValueType(
-            MCTestParameter testedParameter) {
+    public static Class<? extends Number> MCTestParameterValueType(MCTestParameter testedParameter) {
         switch (testedParameter) {
             case C:
                 return Double.class;
@@ -44,8 +43,7 @@ public class ExperimentUtils {
         else if (parameter.equalsIgnoreCase("GOBAN")) {
             return MCTestParameter.GOBAN;
         }
-        else if (parameter.equalsIgnoreCase("SIMULATIONS")
-                || parameter.equalsIgnoreCase("STEPS")) {
+        else if (parameter.equalsIgnoreCase("SIMULATIONS") || parameter.equalsIgnoreCase("STEPS")) {
             return MCTestParameter.STEPS;
         }
         else {

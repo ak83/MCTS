@@ -218,8 +218,8 @@ public class Constants {
      * Used for checking if all mandatory parameters have been set in cofig
      * file.
      */
-    private static boolean[]           FILE_MANDATORY_PARAMETERS                                                       = {
-            false, false, false, false, false, false, false, false                                                    };
+    private static boolean[]           FILE_MANDATORY_PARAMETERS                                                       = { false, false, false, false, false,
+            false, false, false                                                                                       };
 
 
     /**
@@ -286,24 +286,20 @@ public class Constants {
      * @return parameters converted to string.
      */
     public static String constantsString() {
-        String rez = "NUMBER_OF_GAMES_PLAYED "
-                + Constants.NUMBER_OF_GAMES_PLAYED + "\r\n";
+        String rez = "NUMBER_OF_GAMES_PLAYED " + Constants.NUMBER_OF_GAMES_PLAYED + "\r\n";
         rez += "PGN_FILENAME " + Constants.PGN_FILENAME + "\r\n";
         rez += "LOG_FILENAME " + Constants.LOG_FILENAME + "\r\n";
         rez += "CONFIG_FILENAME " + Constants.CONFIG_FILENAME + "\r\n";
         rez += "FRUIT_FILEPATH " + Constants.FRUIT_FILEPATH + "\r\n";
         rez += "EMD_DIR " + Constants.EMD_DIR + "\r\n";
-        rez += "MAX_DEPTH " + Constants.MAX_DEPTH
-                + " (maximum number of plys in chessgame)\r\n";
+        rez += "MAX_DEPTH " + Constants.MAX_DEPTH + " (maximum number of plys in chessgame)\r\n";
         rez += "C " + Constants.C + "\r\n";
         rez += "GOBAN " + Constants.GOBAN + "\r\n";
-        rez += "NUMBER_OF_SIMULATIONS_PER_EVALUATION "
-                + Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION
+        rez += "NUMBER_OF_SIMULATIONS_PER_EVALUATION " + Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION
                 + " (how many simulation we run per every added node)\r\n";
         rez += "ENDING " + Constants.ENDING + "\r\n";
 
-        rez += "BLACK_SIMULATION_STRATEGY "
-                + Constants.BLACK_SIMULATION_STRATEGY;
+        rez += "BLACK_SIMULATION_STRATEGY " + Constants.BLACK_SIMULATION_STRATEGY;
         switch (Constants.BLACK_SIMULATION_STRATEGY) {
             case RANDOM:
                 rez += " (black doesn' use heuristics).\r\n";
@@ -319,8 +315,7 @@ public class Constants {
                 break;
         }
 
-        rez += "WHITE_SIMULATION_STRATEGY "
-                + Constants.WHITE_SIMULATION_STRATEGY;
+        rez += "WHITE_SIMULATION_STRATEGY " + Constants.WHITE_SIMULATION_STRATEGY;
         switch (Constants.WHITE_SIMULATION_STRATEGY) {
             case RANDOM:
                 rez += " (white is using random strategy - it doesn't use heuristics)\r\n";
@@ -331,14 +326,10 @@ public class Constants {
                 break;
         }
 
-        rez += "NUMBER_OF_INITAL_STEPS " + Constants.NUMBER_OF_INITAL_STEPS
-                + " (number of MC steps before game starts).\r\n";
-        rez += "NUMBER_OF_RUNNING_STEPS " + Constants.NUMBER_OF_RUNNING_STEPS
-                + " (number of MC steps performed before whites move).\r\n";
+        rez += "NUMBER_OF_INITAL_STEPS " + Constants.NUMBER_OF_INITAL_STEPS + " (number of MC steps before game starts).\r\n";
+        rez += "NUMBER_OF_RUNNING_STEPS " + Constants.NUMBER_OF_RUNNING_STEPS + " (number of MC steps performed before whites move).\r\n";
 
-        rez += "WHITE_MOVE_CHOOSER_STRATEGY "
-                + Constants.WHITE_MOVE_CHOOSER_STRATEGY
-                + " (white draws moves by selecting child node of root -";
+        rez += "WHITE_MOVE_CHOOSER_STRATEGY " + Constants.WHITE_MOVE_CHOOSER_STRATEGY + " (white draws moves by selecting child node of root -";
         switch (Constants.WHITE_MOVE_CHOOSER_STRATEGY) {
             case RANDOM:
                 rez += " chooses random node).\r\n";
@@ -351,8 +342,7 @@ public class Constants {
                 break;
         }
 
-        rez += "BLACK_MOVE_CHOOSER_STRATEGY "
-                + Constants.BLACK_MOVE_CHOOSER_STRATEGY;
+        rez += "BLACK_MOVE_CHOOSER_STRATEGY " + Constants.BLACK_MOVE_CHOOSER_STRATEGY;
         switch (Constants.BLACK_MOVE_CHOOSER_STRATEGY) {
             case RANDOM:
                 rez += " (black doesn' use heuristics).\r\n";
@@ -368,40 +358,30 @@ public class Constants {
                 break;
         }
 
-        rez += "SELECTION_EVALUATES_CHESSBOARD "
-                + Constants.SELECTION_EVALUATES_CHESSBOARD
+        rez += "SELECTION_EVALUATES_CHESSBOARD " + Constants.SELECTION_EVALUATES_CHESSBOARD
                 + " (if set and if selection find node that represents mat it ends).\r\n";
 
-        rez += "SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING "
-                + Constants.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING
+        rez += "SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING " + Constants.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING
                 + " (if set selection, when choosing next node, only takes nodes with highest visitcount in account).\r\n";
 
-        rez += "WRITE_INDIVIDUAL_GAMES "
-                + Constants.WRITE_INDIVIDUAL_GAMES
-                + " (if set program writes individual games also to sgames dir).\r\n";
+        rez += "WRITE_INDIVIDUAL_GAMES " + Constants.WRITE_INDIVIDUAL_GAMES + " (if set program writes individual games also to sgames dir).\r\n";
         rez += "\r\n";
         rez += "HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 "
                 + Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3
                 + " (if set and white king is more than 3 title away from black king, then white moves king closer to black king).\r\n";
 
-        rez += "HEURISTICS_white_KING_only_moves_coser_to_black_king "
-                + Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king
+        rez += "HEURISTICS_white_KING_only_moves_coser_to_black_king " + Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king
                 + " (if set white king can't increase distance to white king).\r\n";
 
-        rez += "HEURISTICS_check_for_urgent_moves "
-                + Constants.HEURISTICS_check_for_urgent_moves
+        rez += "HEURISTICS_check_for_urgent_moves " + Constants.HEURISTICS_check_for_urgent_moves
                 + " (if set white checks if any of his figures are in dagner and tries to move them to safety).\r\n";
 
-        rez += "HEURISTICS_only_safe_moves "
-                + Constants.HEURISTICS_only_safe_moves
-                + " (if set white tries to move figures to safe titles)\r\n";
+        rez += "HEURISTICS_only_safe_moves " + Constants.HEURISTICS_only_safe_moves + " (if set white tries to move figures to safe titles)\r\n";
 
-        rez += "HEURISTICS_avoid_move_repetition "
-                + Constants.HEURISTICS_avoid_move_repetition + "\r\n";
+        rez += "HEURISTICS_avoid_move_repetition " + Constants.HEURISTICS_avoid_move_repetition + "\r\n";
 
         if (Constants.ENDING.equalsIgnoreCase("KRK")) {
-            rez += "KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition "
-                    + Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition
+            rez += "KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition " + Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition
                     + " (if set, when king are in opposition white tries to check).\r\n";
         }
         else if (Constants.ENDING.equalsIgnoreCase("KBBK")) {
@@ -440,12 +420,9 @@ public class Constants {
                 }
 
                 String[] words = line.split("[ \t]");
-                if (words[0].equalsIgnoreCase("number_of_games")
-                        || words[0].equalsIgnoreCase("number_of_games_played")) {
+                if (words[0].equalsIgnoreCase("number_of_games") || words[0].equalsIgnoreCase("number_of_games_played")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'number_of_games' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'number_of_games' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -454,9 +431,7 @@ public class Constants {
                         numOfGames = Integer.parseInt(words[1]);
                     }
                     catch (NumberFormatException e) {
-                        System.err
-                                .println("*** ERROR: In config file token after 'number_of_games' must be an integer (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: In config file token after 'number_of_games' must be an integer (line: " + currentLine + ").");
                         System.exit(1);
                     }
                     Constants.NUMBER_OF_GAMES_PLAYED = numOfGames;
@@ -465,9 +440,7 @@ public class Constants {
                 }
                 else if (words[0].equalsIgnoreCase("c")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'c' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'c' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -476,9 +449,7 @@ public class Constants {
                         c = Double.parseDouble(words[1]);
                     }
                     catch (NumberFormatException e) {
-                        System.err
-                                .println("*** ERROR: In config file token after 'c' must be double (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: In config file token after 'c' must be double (line: " + currentLine + ").");
                     }
 
                     Constants.C = c;
@@ -486,9 +457,7 @@ public class Constants {
                 }
                 else if (words[0].equalsIgnoreCase("goban")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'goban' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'goban' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -497,9 +466,7 @@ public class Constants {
                         goban = Integer.parseInt(words[1]);
                     }
                     catch (NumberFormatException e) {
-                        System.err
-                                .println("*** ERROR: In config file token after 'goban' must be an integer (line: "
-                                        + currentLine + " ).");
+                        System.err.println("*** ERROR: In config file token after 'goban' must be an integer (line: " + currentLine + " ).");
                         System.exit(1);
                     }
 
@@ -507,12 +474,10 @@ public class Constants {
                     Constants.FILE_MANDATORY_PARAMETERS[2] = true;
 
                 }
-                else if (words[0]
-                        .equalsIgnoreCase("number_of_simulations_per_evaluation")) {
+                else if (words[0].equalsIgnoreCase("number_of_simulations_per_evaluation")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'number_of_simulations_per_evaluation' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'number_of_simulations_per_evaluation' (line: "
+                                + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -521,21 +486,17 @@ public class Constants {
                         numOfSim = Integer.parseInt(words[1]);
                     }
                     catch (NumberFormatException e) {
-                        System.err
-                                .println("*** ERROR: In config file token after 'number_of_simulations_per_evaluation' must be an integer (line: "
-                                        + currentLine + " ).");
+                        System.err.println("*** ERROR: In config file token after 'number_of_simulations_per_evaluation' must be an integer (line: "
+                                + currentLine + " ).");
                         System.exit(1);
                     }
 
                     Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION = numOfSim;
                     Constants.FILE_MANDATORY_PARAMETERS[3] = true;
                 }
-                else if (words[0].equalsIgnoreCase("number_of_inital_steps")
-                        || words[0].equalsIgnoreCase("initial_steps")) {
+                else if (words[0].equalsIgnoreCase("number_of_inital_steps") || words[0].equalsIgnoreCase("initial_steps")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'number_of_inital_steps' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'number_of_inital_steps' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -544,9 +505,7 @@ public class Constants {
                         numOfSteps = Integer.parseInt(words[1]);
                     }
                     catch (NumberFormatException e) {
-                        System.err
-                                .println("*** ERROR: In config file token after 'number_of_inital_steps' must be an integer (line: "
-                                        + currentLine + " ).");
+                        System.err.println("*** ERROR: In config file token after 'number_of_inital_steps' must be an integer (line: " + currentLine + " ).");
                         System.exit(1);
                     }
 
@@ -554,12 +513,9 @@ public class Constants {
                     Constants.FILE_MANDATORY_PARAMETERS[4] = true;
 
                 }
-                else if (words[0].equalsIgnoreCase("number_of_running_steps")
-                        || words[0].equalsIgnoreCase("running_steps")) {
+                else if (words[0].equalsIgnoreCase("number_of_running_steps") || words[0].equalsIgnoreCase("running_steps")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'number_of_running_steps' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'number_of_running_steps' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -568,9 +524,7 @@ public class Constants {
                         numOfSteps = Integer.parseInt(words[1]);
                     }
                     catch (NumberFormatException e) {
-                        System.err
-                                .println("*** ERROR: In config file token after 'number_of_running_steps' must be an integer (line: "
-                                        + currentLine + " ).");
+                        System.err.println("*** ERROR: In config file token after 'number_of_running_steps' must be an integer (line: " + currentLine + " ).");
                         System.exit(1);
                     }
 
@@ -580,9 +534,7 @@ public class Constants {
                 }
                 else if (words[0].equalsIgnoreCase("ending")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'ending' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'ending' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -591,37 +543,25 @@ public class Constants {
                     boolean notKRK = !words[1].equalsIgnoreCase("krk");
                     boolean notKBBK = !words[1].equalsIgnoreCase("kbbk");
                     if (notKRRK && notKQK && notKRK && notKBBK) {
-                        System.err
-                                .println("Line "
-                                        + currentLine
-                                        + " in config file does not contain valid ending.");
+                        System.err.println("Line " + currentLine + " in config file does not contain valid ending.");
                         System.exit(1);
                     }
 
                     Constants.ENDING = words[1];
                     Constants.FILE_MANDATORY_PARAMETERS[6] = true;
                 }
-                else if (words[0]
-                        .equalsIgnoreCase("white_move_chooser_strategy")
-                        || words[0].equalsIgnoreCase("white_strat")) {
+                else if (words[0].equalsIgnoreCase("white_move_chooser_strategy") || words[0].equalsIgnoreCase("white_strat")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'white_move_chooser_strategy' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'white_move_chooser_strategy' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
-                    boolean visitCount = words[1]
-                            .equalsIgnoreCase("visitcount")
-                            || words[1].equalsIgnoreCase("visit_count");
+                    boolean visitCount = words[1].equalsIgnoreCase("visitcount") || words[1].equalsIgnoreCase("visit_count");
                     boolean rating = words[1].equalsIgnoreCase("rating");
                     boolean random = words[1].equalsIgnoreCase("random");
 
                     if (!visitCount && !rating && !random) {
-                        System.err
-                                .println("Line "
-                                        + currentLine
-                                        + " in config file does not contain valid white move chooser strategy.");
+                        System.err.println("Line " + currentLine + " in config file does not contain valid white move chooser strategy.");
                         System.exit(1);
                     }
 
@@ -647,9 +587,7 @@ public class Constants {
                  */
                 else if (words[0].equalsIgnoreCase("file_log_level")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'file_log_level' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'file_log_level' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -658,17 +596,11 @@ public class Constants {
                         level = Level.parse(words[1]);
                     }
                     catch (IllegalArgumentException e) {
-                        System.err
-                                .println("Line "
-                                        + currentLine
-                                        + " in config file does not contain valid level.");
+                        System.err.println("Line " + currentLine + " in config file does not contain valid level.");
                         System.exit(1);
                     }
                     catch (NullPointerException e) {
-                        System.err
-                                .println("Line "
-                                        + currentLine
-                                        + " in config file does not contain valid level.");
+                        System.err.println("Line " + currentLine + " in config file does not contain valid level.");
                         System.exit(1);
                     }
 
@@ -676,9 +608,7 @@ public class Constants {
                 }
                 else if (words[0].equalsIgnoreCase("console_log_level")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 1 token after 'console_log_level' (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 1 token after 'console_log_level' (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -687,17 +617,11 @@ public class Constants {
                         level = Level.parse(words[1]);
                     }
                     catch (IllegalArgumentException e) {
-                        System.err
-                                .println("Line "
-                                        + currentLine
-                                        + " in config file does not contain valid level.");
+                        System.err.println("Line " + currentLine + " in config file does not contain valid level.");
                         System.exit(1);
                     }
                     catch (NullPointerException e) {
-                        System.err
-                                .println("Line "
-                                        + currentLine
-                                        + " in config file does not contain valid level.");
+                        System.err.println("Line " + currentLine + " in config file does not contain valid level.");
                         System.exit(1);
                     }
 
@@ -705,21 +629,14 @@ public class Constants {
                 }
                 else if (words[0].equalsIgnoreCase("selection_evaluates")) {
                     if (words.length != 1) {
-                        System.err
-                                .println("There must be no other tokens after selection_evaluates (line: "
-                                        + currentLine + " ).");
+                        System.err.println("There must be no other tokens after selection_evaluates (line: " + currentLine + " ).");
                         System.exit(1);
                     }
                     Constants.SELECTION_EVALUATES_CHESSBOARD = true;
                 }
-                else if (words[0]
-                        .equalsIgnoreCase("selection_uses_visti_count")
-                        || words[0].equalsIgnoreCase("suvc")) {
+                else if (words[0].equalsIgnoreCase("selection_uses_visti_count") || words[0].equalsIgnoreCase("suvc")) {
                     if (words.length != 1) {
-                        System.err
-                                .println("There must be no other tokens after "
-                                        + words[0] + " (line: " + currentLine
-                                        + " ).");
+                        System.err.println("There must be no other tokens after " + words[0] + " (line: " + currentLine + " ).");
                         System.exit(1);
                     }
 
@@ -732,12 +649,9 @@ public class Constants {
                  * *********************************
                  * ********************************
                  */
-                else if (words[0].equalsIgnoreCase("GENERAL")
-                        || words[0].equalsIgnoreCase(Constants.ENDING)) {
+                else if (words[0].equalsIgnoreCase("GENERAL") || words[0].equalsIgnoreCase(Constants.ENDING)) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 2 token when setting heuristics (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 2 token when setting heuristics (line: " + currentLine + ").");
                         System.exit(1);
                     }
                     if (words[1].equalsIgnoreCase("kingMovesCloserIfTooFar")) {
@@ -761,36 +675,27 @@ public class Constants {
                     else if (words[1].equalsIgnoreCase("avoidMoveRepetition")) {
                         Constants.HEURISTICS_avoid_move_repetition = true;
                     }
-                    else if (words[1]
-                            .equalsIgnoreCase("checksIfKingsInOpposition")
-                            && Constants.ENDING.equalsIgnoreCase("KRK")) {
+                    else if (words[1].equalsIgnoreCase("checksIfKingsInOpposition") && Constants.ENDING.equalsIgnoreCase("KRK")) {
                         Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = true;
                     }
-                    else if (words[1]
-                            .equalsIgnoreCase("bishopsOnAdjacentDiagonals")
-                            && Constants.ENDING.equalsIgnoreCase("KBBK")) {
+                    else if (words[1].equalsIgnoreCase("bishopsOnAdjacentDiagonals") && Constants.ENDING.equalsIgnoreCase("KBBK")) {
                         Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = true;
                     }
                     else {
-                        System.err.println("*** ERROR: " + words[1]
-                                + " does not represent valid heuristic (line: "
-                                + currentLine + ").");
+                        System.err.println("*** ERROR: " + words[1] + " does not represent valid heuristic (line: " + currentLine + ").");
                         System.exit(1);
                     }
                 }
                 else if (words[0].equalsIgnoreCase("BLACK")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 2 token when setting black move strategy (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 2 token when setting black move strategy (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
                     if (words[1].equalsIgnoreCase("random")) {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.RANDOM;
                     }
-                    else if (words[1].equalsIgnoreCase("center")
-                            || words[1].equalsIgnoreCase("centre")) {
+                    else if (words[1].equalsIgnoreCase("center") || words[1].equalsIgnoreCase("centre")) {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.CENTER;
                     }
                     else if (words[1].equalsIgnoreCase("normal")) {
@@ -800,46 +705,32 @@ public class Constants {
                         Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.PERFECT;
                     }
                     else {
-                        System.err.println(words[1]
-                                + " is not valid strategy (line: "
-                                + currentLine + " ).");
+                        System.err.println(words[1] + " is not valid strategy (line: " + currentLine + " ).");
                         System.exit(1);
                     }
                 }
                 else if (words[0].equalsIgnoreCase("white")) {
                     if (words.length != 2) {
-                        System.err
-                                .println("*** ERROR: Config file must have exactly 2 token when setting white move strategy (line: "
-                                        + currentLine + ").");
+                        System.err.println("*** ERROR: Config file must have exactly 2 token when setting white move strategy (line: " + currentLine + ").");
                         System.exit(1);
                     }
                     if (words[1].equalsIgnoreCase("random")) {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
                     }
-                    else if (words[1].equalsIgnoreCase("vc")
-                            || words[1].equalsIgnoreCase("visit_count")
-                            || words[1].equalsIgnoreCase("visitCount")) {
+                    else if (words[1].equalsIgnoreCase("vc") || words[1].equalsIgnoreCase("visit_count") || words[1].equalsIgnoreCase("visitCount")) {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
                     }
                     else if (words[1].equalsIgnoreCase("rating")) {
                         Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
                     }
                     else {
-                        System.err.println(words[1]
-                                + " is not valid strategy (line: "
-                                + currentLine + " ).");
+                        System.err.println(words[1] + " is not valid strategy (line: " + currentLine + " ).");
                         System.exit(1);
                     }
                 }
-                else if (words[0].equalsIgnoreCase("NWH")
-                        || words[0].equalsIgnoreCase("whiteNoHeuristics")) {
+                else if (words[0].equalsIgnoreCase("NWH") || words[0].equalsIgnoreCase("whiteNoHeuristics")) {
                     if (words.length != 1) {
-                        System.err
-                                .println("There mustn't be any other token besides "
-                                        + words[0]
-                                        + " (line: "
-                                        + currentLine
-                                        + ").");
+                        System.err.println("There mustn't be any other token besides " + words[0] + " (line: " + currentLine + ").");
                         System.exit(1);
                     }
 
@@ -857,8 +748,7 @@ public class Constants {
                     // but not current ending then we ignore it
                 }
                 else {
-                    System.err.println("Token " + words[0]
-                            + " is invalid (line: " + currentLine + ").");
+                    System.err.println("Token " + words[0] + " is invalid (line: " + currentLine + ").");
                     System.exit(1);
                 }
             }
@@ -903,8 +793,7 @@ public class Constants {
             }
         }
         if (missing) {
-            String rez = "There are parameters missing in config file:\r\n"
-                    + sb.toString();
+            String rez = "There are parameters missing in config file:\r\n" + sb.toString();
             System.err.print(rez);
             System.exit(1);
         }
@@ -937,16 +826,13 @@ public class Constants {
         String[] lineArgs = line.split("[ \t]");
 
         // check if keyword is correct
-        if (!lineArgs[0].equalsIgnoreCase("TP")
-                && !lineArgs[0].equalsIgnoreCase("TESTED_PARAMETER")) {
-            System.err
-                    .println("First line of configuration file must be tested parameter");
+        if (!lineArgs[0].equalsIgnoreCase("TP") && !lineArgs[0].equalsIgnoreCase("TESTED_PARAMETER")) {
+            System.err.println("First line of configuration file must be tested parameter");
             System.exit(1);
         }
 
         // convert string representation of parameter to enum
-        Constants.testParameter = ExperimentUtils
-                .mcTestParameterStringToEnum(lineArgs[1]);
+        Constants.testParameter = ExperimentUtils.mcTestParameterStringToEnum(lineArgs[1]);
 
         if (Constants.testParameter == null) {
             System.err.println("Invalid test parameter");
@@ -954,8 +840,7 @@ public class Constants {
 
         // check if and values are specified
         if (lineArgs.length < 3) {
-            System.err
-                    .println("Configuration file does not contain any values for test parameter");
+            System.err.println("Configuration file does not contain any values for test parameter");
         }
 
         // fill test parameter values

@@ -21,27 +21,20 @@ public class ChessboardUtils {
      * @return <code>true</code> if positionX between other position and all
      *         position are on same line, otherwise <code>false</code>
      */
-    public static boolean isPositionBetweenPositionsOnLine(int positionX,
-            int positionA, int positionB) {
+    public static boolean isPositionBetweenPositionsOnLine(int positionX, int positionA, int positionB) {
 
         // if positionX is not between other positions, it can't be between
         // them. Duh...
-        boolean greaterThanBoth = (positionX > positionA)
-                && (positionX > positionB);
-        boolean lowertThanBoth = (positionX < positionA)
-                && (positionX < positionB);
+        boolean greaterThanBoth = (positionX > positionA) && (positionX > positionB);
+        boolean lowertThanBoth = (positionX < positionA) && (positionX < positionB);
 
         if (greaterThanBoth || lowertThanBoth) { return false; }
 
         // all positions must be on same line
-        boolean sameRank = (Utils.getRankFromPosition(positionX) == Utils
-                .getRankFromPosition(positionA))
-                && (Utils.getRankFromPosition(positionX) == Utils
-                        .getRankFromPosition(positionB));
-        boolean sameFile = (Utils.getFileFromPosition(positionX) == Utils
-                .getFileFromPosition(positionA))
-                && (Utils.getFileFromPosition(positionX) == Utils
-                        .getFileFromPosition(positionB));
+        boolean sameRank = (Utils.getRankFromPosition(positionX) == Utils.getRankFromPosition(positionA))
+                && (Utils.getRankFromPosition(positionX) == Utils.getRankFromPosition(positionB));
+        boolean sameFile = (Utils.getFileFromPosition(positionX) == Utils.getFileFromPosition(positionA))
+                && (Utils.getFileFromPosition(positionX) == Utils.getFileFromPosition(positionB));
 
         if (sameFile || sameRank) {
             return true;
