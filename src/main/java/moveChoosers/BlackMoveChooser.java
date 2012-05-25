@@ -15,10 +15,6 @@ import exceptions.ChessboardException;
  */
 public class BlackMoveChooser {
 
-    /** Logger */
-    private static Logger log = Logger.getLogger("MCTS.BlackMoveChooser");
-
-
     /** This is static class. */
     private BlackMoveChooser() {}
 
@@ -30,13 +26,14 @@ public class BlackMoveChooser {
      *            board on which we look for move number
      * @param strategy
      *            Black king strategy
+     * @param log
+     *            log in which made move is logged
      * @return selected move number
      * @throws ChessboardException
      */
-    public static int chooseBlackKingMove(Chessboard board, BlackFinderStrategy strategy) throws ChessboardException {
+    public static int chooseBlackKingMove(Chessboard board, BlackFinderStrategy strategy, Logger log) throws ChessboardException {
         int rez = BlackMoveFinder.findBlackKingMove(board, strategy);
-        BlackMoveChooser.log.fine("V polpotezi " + (board.getNumberOfPliesMade() + 1) + " je èrni izbral potezo "
-                + Utils.singleMoveNumberToString(rez).toLowerCase());
+        log.fine("V polpotezi " + (board.getNumberOfPliesMade() + 1) + " je èrni izbral potezo " + Utils.singleMoveNumberToString(rez).toLowerCase());
         return rez;
     }
 

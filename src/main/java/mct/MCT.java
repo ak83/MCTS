@@ -37,15 +37,23 @@ public class MCT {
     /** random used by this class */
     private Random     random               = new Random();
 
-    /** Statistics produced by MCT algortihm */
+    /** Statistics produced by MCT algorithm */
     private MCTStats   stats                = new MCTStats();
 
     /** Logger */
-    private Logger     log                  = Logger.getLogger("MCTS.MCT");
+    private Logger     log;
 
 
-    /** Consturctor */
-    public MCT() {}
+    /**
+     * Constructor
+     * 
+     * @param log
+     *            where details are logged
+     */
+    public MCT(Logger log) {
+        this.log = log;
+
+    }
 
 
     /**
@@ -291,12 +299,12 @@ public class MCT {
 
         if (this.root.isWhitesMove) {
 
-            rez = WhiteMoveChooser.chooseAMove(this.root, whiteChoosingStrategy);
+            rez = WhiteMoveChooser.chooseAMove(this.root, whiteChoosingStrategy, this.log);
 
             rez = this.root.nextMoves.get(rez).moveNumber;
         }
         else {
-            rez = BlackMoveChooser.chooseBlackKingMove(this.mainChessboard, blackChoosingStrategy);
+            rez = BlackMoveChooser.chooseBlackKingMove(this.mainChessboard, blackChoosingStrategy, this.log);
         }
 
         return rez;

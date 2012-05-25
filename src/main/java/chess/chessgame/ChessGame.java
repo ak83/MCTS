@@ -22,26 +22,21 @@ import exec.Constants;
 public class ChessGame {
 
     /**
-     * Which turn currently is.
-     */
-    // private int turnDepth = 1;
-
-    /**
      * This matches fen.
      */
     private String              fen        = "";
 
     /**
-     * File path where this match will be saved if sacing invidiual games is
+     * File path where this match will be saved if saving individual games is
      * enabled.
      */
     private String              pgnFileName;
 
-    /** MC tree */
-    private MCT                 MCTree     = new MCT();
-
     /** Logger */
     private Logger              log        = Logger.getLogger("MCTS.ChessGame");
+
+    /** MC tree */
+    private MCT                 MCTree     = new MCT(this.log);
 
     /** {@link FileHandler} for individual games log */
     private FileHandler         individualGameLog;

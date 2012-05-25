@@ -16,23 +16,23 @@ public class WhiteMoveChooser {
 
     /** Random used by this class */
     private static Random random = new Random();
-    /** Logger */
-    private static Logger log    = Logger.getLogger("MCTS.WhiteMoveChooser");
 
 
     public WhiteMoveChooser() {}
 
 
     /**
-     * Chooses black move from {@link MCTNode}
+     * Chooses whites move from {@link MCTNode}.
      * 
      * @param node
      *            root node
      * @param strategy
      *            strategy on which we choose ply move
+     * @param log
+     *            {@link Logger} in which details of chosen move are saved
      * @return chosen index of nodes child
      */
-    public static int chooseAMove(MCTNode node, WhiteChooserStrategy strategy) {
+    public static int chooseAMove(MCTNode node, WhiteChooserStrategy strategy, Logger log) {
         int rez = -1;
         switch (strategy) {
             case RANDOM:
@@ -48,14 +48,14 @@ public class WhiteMoveChooser {
         String logString = "V polpotezi " + (node.moveDepth + 1) + " je beli izbiral med potezami :\r\n" + node.descendantsToString()
                 + "Izbral si pa je potezo " + (rez + 1);
 
-        WhiteMoveChooser.log.fine(logString);
+        log.fine(logString);
 
         return rez;
     }
 
 
     /**
-     * Gets son nodes with higheset visit count from <code>node</code>.
+     * Gets son nodes with highest visit count from <code>node</code>.
      * 
      * @param node
      *            parent of node from which we choose
