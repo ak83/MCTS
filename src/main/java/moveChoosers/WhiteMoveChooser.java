@@ -45,8 +45,8 @@ public class WhiteMoveChooser {
                 rez = WhiteMoveChooser.chooseMaxRatingMove(node);
                 break;
         }
-        String logString = "V polpotezi " + (node.moveDepth + 1) + " je beli izbiral med potezami :\r\n" + node.descendantsToString()
-                + "Izbral si pa je potezo " + (rez + 1);
+        String logString = "Parent node info: " + node + System.getProperty("line.separator") + "V polpotezi " + (node.moveDepth + 1)
+                + " je beli izbiral med potezami :\r\n" + node.descendantsToString() + "Izbral si pa je potezo " + (rez + 1);
 
         log.fine(logString);
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.management.RuntimeErrorException;
 
+import utils.MCTUtils;
 import utils.Utils;
 import chess.chessboard.Chessboard;
 import chess.chessboard.ChessboardEvalState;
@@ -177,9 +178,10 @@ public class MCTNode {
      * @Override
      */
     public String toString() {
-        String s = "Globina: " + this.moveDepth + ", poteza: " + Utils.singleMoveNumberToString(this.moveNumber) + ", stevilo matov: "
+        String s = "Depth: " + this.moveDepth + ", move: " + Utils.singleMoveNumberToString(this.moveNumber) + ", numberOfCheckmates: "
                 + this.numberOfMatsInNode + ", visitCount: " + this.visitCount + ", isWhitesMove: " + this.isWhitesMove + ", maximumSubTreeDepth: "
-                + this.maximumSubTreeDepth + ", minumumDepthOfDescendWhoRepresentsMat: " + this.minimumDepthOfDescendadWhoRepresentsCheckMate;
+                + this.maximumSubTreeDepth + ", minumumDepthOfDescendWhoRepresentsMat: " + this.minimumDepthOfDescendadWhoRepresentsCheckMate
+                + ", checkmateRatio " + (this.numberOfMatsInNode / (double) this.visitCount);
         if (this.nextMoves == null) {
             s = s + ", stevilo naslednikov: nerazvito";
         }
@@ -197,14 +199,16 @@ public class MCTNode {
      */
     public String descendantsToString() {
         StringBuffer sb = new StringBuffer(50);
-        sb.append("\tid,\tdepth,\tmove,\tnumberOfCheckmates,\tvisitcount,\tmaximumSubTreeDepth,\tminimumDepthOfDescendadThatRepresentCheckmate\r\n");
+        String newLine = System.getProperty("line.separator");
+        sb.append("\tid,\tdepth,\tmove,\tnumberOfCheckmates,\tvisitcount,\tUCTRank,\tmaximumSubTreeDepth,\tminimumDepthOfDescendadThatRepresentCheckmate,\tcheckmateRatio"
+                + newLine);
         if (this.nextMoves != null) {
             for (int x = 0; x < this.nextMoves.size(); x++) {
                 MCTNode n = this.nextMoves.get(x);
                 sb.append("\t" + (x + 1) + ",\t" + n.moveDepth + ",\t" + Utils.singleMoveNumberToString(n.moveNumber) + ",\t" + n.numberOfMatsInNode + ",\t"
-                        + n.visitCount + ",\t" + n.maximumSubTreeDepth + ",\t"
+                        + n.visitCount + ",\t" + MCTUtils.computeNodeRating(n) + ",\t" + n.maximumSubTreeDepth + ",\t"
                         + (n.minimumDepthOfDescendadWhoRepresentsCheckMate != Integer.MAX_VALUE ? n.minimumDepthOfDescendadWhoRepresentsCheckMate : "-1")
-                        + "\r\n");;
+                        + ",\t" + (n.numberOfMatsInNode / (double) n.visitCount) + newLine);;
             }
         }
         else {
