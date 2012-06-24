@@ -205,44 +205,41 @@ public class ChessGame {
      * @param didWhiteWin
      *            <code>true</code> if white won the match, <code>false</code>
      *            otherwise
+     * @param turnsMade
+     *            number of turn made
      */
     private void logGameSummary(int round, long startTime, boolean didWhiteWin, int turnsMade) {
+        String newLine = System.getProperty("line.separator");
         long runTime = System.currentTimeMillis() - startTime;
         MCTStats stats = this.MCTree.getMCTStatistics();
         String logString0 = "\r\n##########################\r\n###########################\r\nPOVZETEK igre " + this.pgnFileName + ". Igra je bila odigrana v "
-                + Utils.timeMillisToString(runTime);
+                + Utils.timeMillisToString(runTime) + newLine;
         if (didWhiteWin) {
-            logString0 += "\r\nZmagal je BELI v " + turnsMade + " potezah";
+            logString0 += "Zmagal je BELI v " + turnsMade + " potezah";
         }
         else {
-            logString0 += "\r\nZmagal je CRNI v " + turnsMade + " potezah";
+            logString0 += "Zmagal je CRNI v " + turnsMade + " potezah";
         }
         String logString1 = "V igri je bilo:";
         String logString2 = stats.numberOfMatsInSimAddsOneNode + " matov v simulationAddsOneNode.";
 
         String logString3 = stats.numberOfMatsInSimulation + " matov v simulation";
 
-        String logString4 = "Crni je " + stats.numberOfMCTreeColapses + "-krat izbral potezo, ki je ni v drevesu";
-        logString4 += ".\r\n Pred koncem igre pa je bila velikost drevesa " + this.MCTree.getCurrentTreeSize();
+        String logString4 = "Crni je " + stats.numberOfMCTreeColapses + "-krat izbral potezo, ki je ni v drevesu." + newLine;
+        logString4 += " Pred koncem igre pa je bila velikost drevesa " + this.MCTree.getCurrentTreeSize();
 
         // average difference from optimal moves
         String whitesAverageDiff = "Average whites DTM difference from optimal move is " + this.matchStats.getAverageWhitesDTMDiff();
         String blacksAverageDiff = "Average black DTM difference from optimal move is " + this.matchStats.getAverageBlacksDTMDiff();
 
-        this.log.info(logString0
-                + "\r\n"
-                + logString1
-                + "\r\n"
-                + logString2
-                + "\r\n"
-                + logString3
-                + "\r\n"
-                + logString4
-                + "\r\n"
-                + whitesAverageDiff
-                + "\r\n"
-                + blacksAverageDiff
-                + "\r\n###########################################################################################\r\n###########################################################################################\r\n");
+        // MCTNode related statistics
+        String nodes = "Nodes visited summary : " + stats.getNodeStatistics().toString();
+        String selectedNodes = "Selected nodes summary : " + stats.getNodesSelectedStatistics().toString();
+
+        this.log.info(logString0 + newLine + logString1 + newLine + logString2 + newLine + logString3 + newLine + logString4 + newLine + whitesAverageDiff
+                + newLine + blacksAverageDiff + newLine + nodes + newLine + selectedNodes
+                + "###########################################################################################" + newLine
+                + "###########################################################################################" + newLine);
 
         this.log.removeHandler(this.individualGameLog);
 

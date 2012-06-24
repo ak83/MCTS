@@ -36,6 +36,9 @@ public class Experiment {
     }
 
 
+    /**
+     * Starts experiment.
+     */
     public void runExperiment() {
         // create experiment directory and individual games directory
         String individualGamesDirPath = this.name + File.separator + Constants.INDIVIDUAL_GAMES_DIR_NAME;
@@ -94,20 +97,20 @@ public class Experiment {
 
         // write this experiments info to log file
 
-        this.log.info("××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××\r\n××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
+        String newLine = System.getProperty("line.separator");
+
+        this.log.info("××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××" + newLine
+                + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
 
         String whiteAvgDTMDiff = "Whites average DTM difference from optimal move was " + experimentStats.getWhitesAverageDTMDiff();
         String averageGameLength = "Average game length (in turns) was: " + this.experimentStats.getAverageGameLength();
 
-        this.log.info("Experiment " + this.name + " summary:\r\n" + whiteAvgDTMDiff + "\r\n" + averageGameLength);
-        this.log.info("Chess games were written in "
-                + pgnFilePath
-                + ", details of these matches are in "
-                + this.name
-                + "/"
-                + Constants.LOG_FILENAME
-                + ".\r\n END OF EXPERIMENT"
-                + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××\r\n××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
+        this.log.info("Experiment " + this.name + " summary:" + newLine + whiteAvgDTMDiff + newLine + averageGameLength);
+        this.log.info("\tNode summary: " + this.experimentStats.getNodeStatistics().toString() + newLine + "\tSelected nodes summary: "
+                + this.experimentStats.getSelectedNodeStatistics().toString());
+        this.log.info("Chess games were written in " + pgnFilePath + ", details of these matches are in " + this.name + "/" + Constants.LOG_FILENAME + "."
+                + newLine + " END OF EXPERIMENT" + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××" + newLine
+                + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
 
     }
 

@@ -3,6 +3,9 @@ package experiment;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import mct.MCTNodeStatistics;
+import moveChoosers.WhiteMoveChooser;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.plot.CategoryPlot;
@@ -251,6 +254,59 @@ public class ExperimentSeriesStatistics {
         rez += "Average DTM difference: " + this.getAverageDTMDiff() + System.getProperty("line.separator");
         rez += "Average MCTS tree size: " + this.getAverageTreeSize() + System.getProperty("line.separator");
         rez += "Number of MCTS tree collapses per game: " + this.getAverageNumberOfCollapses() + System.getProperty("line.separator");
+
+        return rez;
+    }
+
+
+    /**
+     * Calculates node related statistics.
+     * 
+     * @return node related statistics
+     */
+    public MCTNodeStatistics getNodeStatistics() {
+        MCTNodeStatistics rez = new MCTNodeStatistics();
+        for (ExperimentStatistics stats : this.experimentStatistics) {
+            for (ChessGameStatistics chessStats : stats.getChessGameStatistics()) {
+                rez.updateNodeStats(chessStats.getStatisticsOfMCTS().getNodeStatistics());
+            }
+        }
+
+        return rez;
+    }
+
+
+    /**
+     * Calculates statistics related to {@link MCTNode}s that were selected by
+     * {@link WhiteMoveChooser}.
+     * 
+     * @return static related to nodes chosen by white player
+     */
+    public MCTNodeStatistics getNodesSelectedStatistics() {
+        MCTNodeStatistics rez = new MCTNodeStatistics();
+        for (ExperimentStatistics stats : this.experimentStatistics) {
+            for (ChessGameStatistics chessStats : stats.getChessGameStatistics()) {
+                rez.updateNodeStats(chessStats.getStatisticsOfMCTS().getNodesSelectedStatistics());
+            }
+        }
+
+        return rez;
+    }
+
+
+    /**
+     * Calculates statistics related to {@link MCTNode}s that were selected by
+     * {@link WhiteMoveChooser}.
+     * 
+     * @return calculated statistics
+     */
+    public MCTNodeStatistics getSelectedNodeStatistics() {
+        MCTNodeStatistics rez = new MCTNodeStatistics();
+        for (ExperimentStatistics stats : this.experimentStatistics) {
+            for (ChessGameStatistics chessStats : stats.getChessGameStatistics()) {
+                rez.updateNodeStats(chessStats.getStatisticsOfMCTS().getNodeStatistics());
+            }
+        }
 
         return rez;
     }

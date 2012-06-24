@@ -50,8 +50,11 @@ public class ExperimentSeries {
         ExperimentSeries.log = Logger.getLogger("MCTS.Main");
 
         // write summary into log
-        String summary = "Experiment series summary:" + System.getProperty("line.separator") + this.stasts.getSummary() + System.getProperty("line.separator");
+        final String newLine = System.getProperty("line.separator");
+        String summary = "Experiment series summary:" + newLine + this.stasts.getSummary() + newLine;
         ExperimentSeries.log.info(summary);
+        ExperimentSeries.log.info("Node statistics: " + this.stasts.getNodeStatistics().toString() + newLine + "Nodes Selected statistics: "
+                + this.stasts.getNodesSelectedStatistics().toString());
         ExperimentSeries.log.info("END");
     }
 }

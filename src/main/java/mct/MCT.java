@@ -299,11 +299,22 @@ public class MCT {
 
         if (this.root.isWhitesMove) {
 
+            // update MCTS related statistics
+            this.stats.updateNodeStats(this.root);
+
+            // choose white move
             rez = WhiteMoveChooser.chooseAMove(this.root, whiteChoosingStrategy, this.log);
 
-            rez = this.root.nextMoves.get(rez).moveNumber;
+            // node that was chosen by move chooser
+            MCTNode selectedNode = this.root.nextMoves.get(rez);
+
+            // update selected node statistics
+            this.stats.getNodesSelectedStatistics().updateSingleNodeStats(selectedNode);
+
+            rez = selectedNode.moveNumber;
         }
         else {
+            // choose black move
             rez = BlackMoveChooser.chooseBlackKingMove(this.mainChessboard, blackChoosingStrategy, this.log);
         }
 
@@ -339,8 +350,7 @@ public class MCT {
      * @return statistics
      */
     public MCTStats getMCTStatistics() {
-        MCTStats rez = new MCTStats(this.stats);
-        return rez;
+        return this.stats;
     }
 
 

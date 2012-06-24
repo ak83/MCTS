@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import mct.MCTNodeStatistics;
+import moveChoosers.WhiteMoveChooser;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.plot.CategoryPlot;
@@ -167,6 +170,36 @@ public class ExperimentStatistics {
         }
 
         return total;
+    }
+
+
+    /**
+     * Calculates and returns node statistics from all chess games.
+     * 
+     * @return node statistics.
+     */
+    public MCTNodeStatistics getNodeStatistics() {
+        MCTNodeStatistics rez = new MCTNodeStatistics();
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            rez.updateNodeStats(stats.getStatisticsOfMCTS().getNodeStatistics());
+        }
+        return rez;
+    }
+
+
+    /**
+     * Calculates and returns node statistics from all chess games that were
+     * selected by {@link WhiteMoveChooser}.
+     * 
+     * @return node statistics.
+     */
+    public MCTNodeStatistics getSelectedNodeStatistics() {
+        MCTNodeStatistics rez = new MCTNodeStatistics();
+        for (ChessGameStatistics stats : this.chessGameStatistics) {
+            rez.updateNodeStats(stats.getStatisticsOfMCTS().getNodesSelectedStatistics());
+        }
+
+        return rez;
     }
 
 
