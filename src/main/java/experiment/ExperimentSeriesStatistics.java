@@ -326,6 +326,18 @@ public class ExperimentSeriesStatistics {
         columnNames.add("\"average MCTS tree size\"");
         columnNames.add("\"White success rate\"");
 
+        columnNames.add("\"Check mates per node\"");
+        columnNames.add("\"Average visit count\"");
+        columnNames.add("\"Average max sub tree depth\"");
+        columnNames.add("\"Average UCT rank\"");
+        columnNames.add("\"Average nodes check mate ratio\"");
+
+        columnNames.add("\"Check mates per selected node\"");
+        columnNames.add("\"Average visit count per selected node\"");
+        columnNames.add("\"Average max sub tree depth per selected node\"");
+        columnNames.add("\"Average UCT rank per selected node\"");
+        columnNames.add("\"Average nodes check mate ratio per selected node\"");
+
         return columnNames;
     }
 
@@ -348,6 +360,22 @@ public class ExperimentSeriesStatistics {
             row.add(this.experimentStatistics.get(x).getNumberOfTreeCollapses());
             row.add(this.experimentStatistics.get(x).getAverageTreeSize());
             row.add(this.experimentStatistics.get(x).getAverageWhiteSuccessRate());
+
+            // nodes searched
+
+            row.add(this.getNodeStatistics().getAverageCheckmatesPerNode());
+            row.add(this.getNodeStatistics().getAverageVisitCount());
+            row.add(this.getNodeStatistics().getAverageMaxSubTreeDepth());
+            row.add(this.getNodeStatistics().getAverageUCTRank());
+            row.add(this.getNodeStatistics().getCheckmateRation());
+
+            // nodes selected
+
+            row.add(this.getSelectedNodeStatistics().getAverageCheckmatesPerNode());
+            row.add(this.getSelectedNodeStatistics().getAverageVisitCount());
+            row.add(this.getSelectedNodeStatistics().getAverageMaxSubTreeDepth());
+            row.add(this.getSelectedNodeStatistics().getAverageUCTRank());
+            row.add(this.getSelectedNodeStatistics().getCheckmateRation());
 
             // add current row to data
             data.add(row);

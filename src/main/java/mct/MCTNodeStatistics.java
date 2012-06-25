@@ -80,7 +80,6 @@ public class MCTNodeStatistics {
      * Gets node related statistics in human readable format.
      * 
      * @return node related summary
-     * 
      */
     @Override
     public String toString() {

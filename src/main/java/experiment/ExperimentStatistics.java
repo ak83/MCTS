@@ -417,6 +417,18 @@ public class ExperimentStatistics {
         columnNames.add("\"average DTM difference\"");
         columnNames.add("\"number of MCTS tree collapses\"");
         columnNames.add("\"average MCTS tree size\"");
+
+        columnNames.add("\"Check mates per node\"");
+        columnNames.add("\"Average visit count\"");
+        columnNames.add("\"Average max sub tree depth\"");
+        columnNames.add("\"Average UCT rank\"");
+        columnNames.add("\"Average nodes check mate ratio\"");
+
+        columnNames.add("\"Check mates per selected node\"");
+        columnNames.add("\"Average visit count per selected node\"");
+        columnNames.add("\"Average max sub tree depth per selected node\"");
+        columnNames.add("\"Average UCT rank per selected node\"");
+        columnNames.add("\"Average nodes check mate ratio per selected node\"");
         return columnNames;
 
     }
@@ -439,6 +451,22 @@ public class ExperimentStatistics {
             values.add(this.chessGameStatistics.get(x).getAverageWhitesDTMDiff());
             values.add(this.chessGameStatistics.get(x).getNumberOfMCTSTreeCollapses());
             values.add(this.chessGameStatistics.get(x).getAverageTreeSize());
+
+            // nodes searched
+
+            values.add(this.getNodeStatistics().getAverageCheckmatesPerNode());
+            values.add(this.getNodeStatistics().getAverageVisitCount());
+            values.add(this.getNodeStatistics().getAverageMaxSubTreeDepth());
+            values.add(this.getNodeStatistics().getAverageUCTRank());
+            values.add(this.getNodeStatistics().getCheckmateRation());
+
+            // nodes selected
+
+            values.add(this.getSelectedNodeStatistics().getAverageCheckmatesPerNode());
+            values.add(this.getSelectedNodeStatistics().getAverageVisitCount());
+            values.add(this.getSelectedNodeStatistics().getAverageMaxSubTreeDepth());
+            values.add(this.getSelectedNodeStatistics().getAverageUCTRank());
+            values.add(this.getSelectedNodeStatistics().getCheckmateRation());
 
             // add row to data
             data.add(values);
