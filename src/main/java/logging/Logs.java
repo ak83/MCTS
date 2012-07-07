@@ -7,7 +7,8 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import exec.Constants;
+import config.MCTSSetup;
+
 
 /**
  * Class that holds and configures loggers.
@@ -43,9 +44,9 @@ public class Logs {
 
         // file handler setup
         Handler fh = null;
-        String logPath = experimentDir + File.separator + Constants.LOG_FILENAME;
+        String logPath = experimentDir + File.separator + MCTSSetup.LOG_FILENAME;
         try {
-            fh = new FileHandler(experimentDir.equalsIgnoreCase("") ? Constants.LOG_FILENAME : logPath);
+            fh = new FileHandler(experimentDir.equalsIgnoreCase("") ? MCTSSetup.LOG_FILENAME : logPath);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -58,12 +59,12 @@ public class Logs {
 
         // console handler
         Handler ch = new ConsoleHandler();
-        ch.setLevel(Constants.CONSOLE_LOG_LEVEL);
+        ch.setLevel(MCTSSetup.CONSOLE_LOG_LEVEL);
 
         // logger setup
         Logs.logger.addHandler(fh);
         Logs.logger.addHandler(ch);
-        Logs.logger.setLevel(Constants.FILE_LOG_LEVEL);
+        Logs.logger.setLevel(MCTSSetup.FILE_LOG_LEVEL);
     }
 
 }

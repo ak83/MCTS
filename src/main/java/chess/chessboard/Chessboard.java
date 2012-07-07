@@ -3,12 +3,13 @@ package chess.chessboard;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import config.MCTSSetup;
+
 import mct.MCTNode;
 import utils.ChessboardUtils;
 import utils.Utils;
 import chess.Move;
 import exceptions.ChessboardException;
-import exec.Constants;
 
 public class Chessboard extends SimpleChessboard implements Cloneable {
 
@@ -36,7 +37,7 @@ public class Chessboard extends SimpleChessboard implements Cloneable {
         // tukaj pride zacetna posatvitev
         // /////////////////////////////
 
-        if (Constants.ENDING.equalsIgnoreCase("KRK")) {
+        if (MCTSSetup.ENDING.equalsIgnoreCase("KRK")) {
             // this.board[0] = 0;
             // this.board[4] = 4;
             // this.board[67] = 28;
@@ -45,18 +46,18 @@ public class Chessboard extends SimpleChessboard implements Cloneable {
             this.board[2] = 4;
             this.board[67] = 28;
         }
-        else if (Constants.ENDING.equalsIgnoreCase("KQK")) {
+        else if (MCTSSetup.ENDING.equalsIgnoreCase("KQK")) {
             this.board[0] = 3;
             this.board[4] = 4;
             this.board[67] = 28;
         }
-        else if (Constants.ENDING.equalsIgnoreCase("KRRK")) {
+        else if (MCTSSetup.ENDING.equalsIgnoreCase("KRRK")) {
             this.board[0] = 0;
             this.board[4] = 4;
             this.board[7] = 7;
             this.board[67] = 28;
         }
-        else if (Constants.ENDING.equalsIgnoreCase("KBBK")) {
+        else if (MCTSSetup.ENDING.equalsIgnoreCase("KBBK")) {
             this.board[2] = 2;
             this.board[4] = 4;
             this.board[5] = 5;

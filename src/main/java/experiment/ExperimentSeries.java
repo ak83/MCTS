@@ -3,11 +3,12 @@ package experiment;
 import java.io.File;
 import java.util.logging.Logger;
 
+import config.MCTSSetup;
+
 import logging.Logs;
 import utils.ExperimentUtils;
 import utils.IOUtils;
 import utils.Utils;
-import exec.Constants;
 
 /** Class that handles running multiple experiments */
 public class ExperimentSeries {
@@ -22,15 +23,15 @@ public class ExperimentSeries {
      * Run experiments defined in configuration file
      */
     public void runExperiments() {
-        String rootDir = ExperimentUtils.testParameterToString(Constants.testParameter) + "--" + Utils.today();
+        String rootDir = ExperimentUtils.testParameterToString(MCTSSetup.testParameter) + "--" + Utils.today();
 
         new File(rootDir).mkdir();
 
         // run experiment for each test parameter value
-        for (int x = 0; x < Constants.testParameterValues.size(); x++) {
+        for (int x = 0; x < MCTSSetup.testParameterValues.size(); x++) {
 
-            Double parameterValue = Constants.testParameterValues.get(x);
-            ExperimentUtils.setTestParameter(Constants.testParameter, parameterValue);
+            Double parameterValue = MCTSSetup.testParameterValues.get(x);
+            ExperimentUtils.setTestParameter(MCTSSetup.testParameter, parameterValue);
 
             Experiment experiment = new Experiment(rootDir + File.separator + "experiment" + x);
             experiment.runExperiment();
@@ -39,7 +40,7 @@ public class ExperimentSeries {
 
         // save statistics outputs
         this.stasts.writeDTMDiffToCsv(rootDir);
-        this.stasts.saveUltimateChart(rootDir + File.separator + IOUtils.ULTIMATE_FILE_NAME + ".jpg", Constants.testParameter);
+        this.stasts.saveUltimateChart(rootDir + File.separator + IOUtils.ULTIMATE_FILE_NAME + ".jpg", MCTSSetup.testParameter);
 
         this.stasts.writeUltimateCSV(rootDir + File.separator + IOUtils.ULTIMATE_FILE_NAME + ".csv");
 

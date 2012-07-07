@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import javax.management.RuntimeErrorException;
 
+import config.MCTSSetup;
+
 import utils.MCTUtils;
 import utils.Utils;
 import chess.chessboard.Chessboard;
 import chess.chessboard.ChessboardEvalState;
 import chess.chessboard.SimpleChessboard;
 import exceptions.ChessboardException;
-import exec.Constants;
 
 /**
  * Class that represents node in Monte Carlo tree.
@@ -91,7 +92,7 @@ public class MCTNode {
         this.moveDepth = 0;
         this.moveNumber = 0;
         this.visitCount = 1;
-        this.c = Constants.C;
+        this.c = MCTSSetup.C;
         this.isWhitesMove = true;
         this.chessboard = (SimpleChessboard) board.clone();
         try {
@@ -117,7 +118,7 @@ public class MCTNode {
         this.moveDepth = this.parent.moveDepth + 1;
         this.moveNumber = moveNumber;
         this.visitCount = 0;
-        this.c = Constants.C;
+        this.c = MCTSSetup.C;
         this.isWhitesMove = !parent.isWhitesMove;
         this.mcDepth = parent.mcDepth + 1;
 
@@ -145,7 +146,7 @@ public class MCTNode {
         this.moveDepth = depth;
         this.moveNumber = moveNumber;
         this.visitCount = 1;
-        this.c = Constants.C;
+        this.c = MCTSSetup.C;
         this.isWhitesMove = Utils.isWhitesMoveAtDepth(depth);
 
         SimpleChessboard temp = new Chessboard(boardState, "temp");

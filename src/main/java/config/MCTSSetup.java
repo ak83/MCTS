@@ -1,4 +1,4 @@
-package exec;
+package config;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,14 +15,14 @@ import utils.ExperimentUtils;
 import experiment.MCTestParameter;
 
 /**
- * Class that controls the parameters of MCT algorithm. Also handles help
- * output.
+ * Class that controls the parameters of MCT algorithm. Also handles help output
+ * and reading configuration file.
  * 
  * @author Andraz Kohne
  */
-public class Constants {
+public class MCTSSetup {
 
-    private Constants() {};
+    private MCTSSetup() {};
 
     /**
      * directory name where output of individual games is saved in experiment
@@ -230,46 +230,46 @@ public class Constants {
      */
     public static void initConstants(String[] param) {
 
-        if (Constants.ENDING.equalsIgnoreCase("KRRK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KRRK_ENDING;
+        if (MCTSSetup.ENDING.equalsIgnoreCase("KRRK")) {
+            MCTSSetup.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KRRK_ENDING;
         }
-        else if (Constants.ENDING.equalsIgnoreCase("KQK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KQK_ENDING;
+        else if (MCTSSetup.ENDING.equalsIgnoreCase("KQK")) {
+            MCTSSetup.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KQK_ENDING;
         }
-        else if (Constants.ENDING.equalsIgnoreCase("KRK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KRK_ENDING;
+        else if (MCTSSetup.ENDING.equalsIgnoreCase("KRK")) {
+            MCTSSetup.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KRK_ENDING;
         }
-        else if (Constants.ENDING.equalsIgnoreCase("KBBK")) {
-            Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KBBK_ENDING;
+        else if (MCTSSetup.ENDING.equalsIgnoreCase("KBBK")) {
+            MCTSSetup.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.KBBK_ENDING;
         }
 
         // Otional arguments
         for (int x = 0; x < param.length; x++) {
             if (param[x].equals("--ig")) {
-                Constants.WRITE_INDIVIDUAL_GAMES = false;
+                MCTSSetup.WRITE_INDIVIDUAL_GAMES = false;
             }
             else if (param[x].substring(0, 4).equals("--emd")) {
                 x++;
-                Constants.EMD_DIR = param[x];
+                MCTSSetup.EMD_DIR = param[x];
             }
             else if (param[x].equals("--conf")) {
                 x++;
-                Constants.CONFIG_FILENAME = param[x];
+                MCTSSetup.CONFIG_FILENAME = param[x];
             }
             else if (param[x].equals("--pgn")) {
                 x++;
-                Constants.PGN_FILENAME = param[x];
+                MCTSSetup.PGN_FILENAME = param[x];
             }
             else if (param[x].equals("--log")) {
                 x++;
-                Constants.LOG_FILENAME = param[x];
+                MCTSSetup.LOG_FILENAME = param[x];
             }
             else if (param[x].equals("--fruit")) {
                 x++;
-                Constants.FRUIT_FILEPATH = param[x];
+                MCTSSetup.FRUIT_FILEPATH = param[x];
             }
             else if (param[x].equals("--help")) {
-                System.out.println(Constants.HELP);
+                System.out.println(MCTSSetup.HELP);
                 System.exit(0);
             }
             else {
@@ -286,21 +286,20 @@ public class Constants {
      * @return parameters converted to string.
      */
     public static String constantsString() {
-        String rez = "NUMBER_OF_GAMES_PLAYED " + Constants.NUMBER_OF_GAMES_PLAYED + "\r\n";
-        rez += "PGN_FILENAME " + Constants.PGN_FILENAME + "\r\n";
-        rez += "LOG_FILENAME " + Constants.LOG_FILENAME + "\r\n";
-        rez += "CONFIG_FILENAME " + Constants.CONFIG_FILENAME + "\r\n";
-        rez += "FRUIT_FILEPATH " + Constants.FRUIT_FILEPATH + "\r\n";
-        rez += "EMD_DIR " + Constants.EMD_DIR + "\r\n";
-        rez += "MAX_DEPTH " + Constants.MAX_DEPTH + " (maximum number of plys in chessgame)\r\n";
-        rez += "C " + Constants.C + "\r\n";
-        rez += "GOBAN " + Constants.GOBAN + "\r\n";
-        rez += "NUMBER_OF_SIMULATIONS_PER_EVALUATION " + Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION
-                + " (how many simulation we run per every added node)\r\n";
-        rez += "ENDING " + Constants.ENDING + "\r\n";
+        String rez = "NUMBER_OF_GAMES_PLAYED " + MCTSSetup.NUMBER_OF_GAMES_PLAYED + "\r\n";
+        rez += "PGN_FILENAME " + MCTSSetup.PGN_FILENAME + "\r\n";
+        rez += "LOG_FILENAME " + MCTSSetup.LOG_FILENAME + "\r\n";
+        rez += "CONFIG_FILENAME " + MCTSSetup.CONFIG_FILENAME + "\r\n";
+        rez += "FRUIT_FILEPATH " + MCTSSetup.FRUIT_FILEPATH + "\r\n";
+        rez += "EMD_DIR " + MCTSSetup.EMD_DIR + "\r\n";
+        rez += "MAX_DEPTH " + MCTSSetup.MAX_DEPTH + " (maximum number of plys in chessgame)\r\n";
+        rez += "C " + MCTSSetup.C + "\r\n";
+        rez += "GOBAN " + MCTSSetup.GOBAN + "\r\n";
+        rez += "NUMBER_OF_SIMULATIONS_PER_EVALUATION " + MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION + " (how many simulation we run per every added node)\r\n";
+        rez += "ENDING " + MCTSSetup.ENDING + "\r\n";
 
-        rez += "BLACK_SIMULATION_STRATEGY " + Constants.BLACK_SIMULATION_STRATEGY;
-        switch (Constants.BLACK_SIMULATION_STRATEGY) {
+        rez += "BLACK_SIMULATION_STRATEGY " + MCTSSetup.BLACK_SIMULATION_STRATEGY;
+        switch (MCTSSetup.BLACK_SIMULATION_STRATEGY) {
             case RANDOM:
                 rez += " (black doesn' use heuristics).\r\n";
                 break;
@@ -315,8 +314,8 @@ public class Constants {
                 break;
         }
 
-        rez += "WHITE_SIMULATION_STRATEGY " + Constants.WHITE_SIMULATION_STRATEGY;
-        switch (Constants.WHITE_SIMULATION_STRATEGY) {
+        rez += "WHITE_SIMULATION_STRATEGY " + MCTSSetup.WHITE_SIMULATION_STRATEGY;
+        switch (MCTSSetup.WHITE_SIMULATION_STRATEGY) {
             case RANDOM:
                 rez += " (white is using random strategy - it doesn't use heuristics)\r\n";
                 break;
@@ -326,11 +325,11 @@ public class Constants {
                 break;
         }
 
-        rez += "NUMBER_OF_INITAL_STEPS " + Constants.NUMBER_OF_INITAL_STEPS + " (number of MC steps before game starts).\r\n";
-        rez += "NUMBER_OF_RUNNING_STEPS " + Constants.NUMBER_OF_RUNNING_STEPS + " (number of MC steps performed before whites move).\r\n";
+        rez += "NUMBER_OF_INITAL_STEPS " + MCTSSetup.NUMBER_OF_INITAL_STEPS + " (number of MC steps before game starts).\r\n";
+        rez += "NUMBER_OF_RUNNING_STEPS " + MCTSSetup.NUMBER_OF_RUNNING_STEPS + " (number of MC steps performed before whites move).\r\n";
 
-        rez += "WHITE_MOVE_CHOOSER_STRATEGY " + Constants.WHITE_MOVE_CHOOSER_STRATEGY + " (white draws moves by selecting child node of root -";
-        switch (Constants.WHITE_MOVE_CHOOSER_STRATEGY) {
+        rez += "WHITE_MOVE_CHOOSER_STRATEGY " + MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY + " (white draws moves by selecting child node of root -";
+        switch (MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY) {
             case RANDOM:
                 rez += " chooses random node).\r\n";
                 break;
@@ -342,8 +341,8 @@ public class Constants {
                 break;
         }
 
-        rez += "BLACK_MOVE_CHOOSER_STRATEGY " + Constants.BLACK_MOVE_CHOOSER_STRATEGY;
-        switch (Constants.BLACK_MOVE_CHOOSER_STRATEGY) {
+        rez += "BLACK_MOVE_CHOOSER_STRATEGY " + MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY;
+        switch (MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY) {
             case RANDOM:
                 rez += " (black doesn' use heuristics).\r\n";
                 break;
@@ -358,35 +357,34 @@ public class Constants {
                 break;
         }
 
-        rez += "SELECTION_EVALUATES_CHESSBOARD " + Constants.SELECTION_EVALUATES_CHESSBOARD
+        rez += "SELECTION_EVALUATES_CHESSBOARD " + MCTSSetup.SELECTION_EVALUATES_CHESSBOARD
                 + " (if set and if selection find node that represents mat it ends).\r\n";
 
-        rez += "SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING " + Constants.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING
+        rez += "SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING " + MCTSSetup.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING
                 + " (if set selection, when choosing next node, only takes nodes with highest visitcount in account).\r\n";
 
-        rez += "WRITE_INDIVIDUAL_GAMES " + Constants.WRITE_INDIVIDUAL_GAMES + " (if set program writes individual games also to sgames dir).\r\n";
+        rez += "WRITE_INDIVIDUAL_GAMES " + MCTSSetup.WRITE_INDIVIDUAL_GAMES + " (if set program writes individual games also to sgames dir).\r\n";
         rez += "\r\n";
         rez += "HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 "
-                + Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3
+                + MCTSSetup.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3
                 + " (if set and white king is more than 3 title away from black king, then white moves king closer to black king).\r\n";
 
-        rez += "HEURISTICS_white_KING_only_moves_coser_to_black_king " + Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king
+        rez += "HEURISTICS_white_KING_only_moves_coser_to_black_king " + MCTSSetup.HEURISTICS_white_KING_only_moves_coser_to_black_king
                 + " (if set white king can't increase distance to white king).\r\n";
 
-        rez += "HEURISTICS_check_for_urgent_moves " + Constants.HEURISTICS_check_for_urgent_moves
+        rez += "HEURISTICS_check_for_urgent_moves " + MCTSSetup.HEURISTICS_check_for_urgent_moves
                 + " (if set white checks if any of his figures are in dagner and tries to move them to safety).\r\n";
 
-        rez += "HEURISTICS_only_safe_moves " + Constants.HEURISTICS_only_safe_moves + " (if set white tries to move figures to safe titles)\r\n";
+        rez += "HEURISTICS_only_safe_moves " + MCTSSetup.HEURISTICS_only_safe_moves + " (if set white tries to move figures to safe titles)\r\n";
 
-        rez += "HEURISTICS_avoid_move_repetition " + Constants.HEURISTICS_avoid_move_repetition + "\r\n";
+        rez += "HEURISTICS_avoid_move_repetition " + MCTSSetup.HEURISTICS_avoid_move_repetition + "\r\n";
 
-        if (Constants.ENDING.equalsIgnoreCase("KRK")) {
-            rez += "KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition " + Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition
+        if (MCTSSetup.ENDING.equalsIgnoreCase("KRK")) {
+            rez += "KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition " + MCTSSetup.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition
                     + " (if set, when king are in opposition white tries to check).\r\n";
         }
-        else if (Constants.ENDING.equalsIgnoreCase("KBBK")) {
-            rez += "KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals "
-                    + Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals
+        else if (MCTSSetup.ENDING.equalsIgnoreCase("KBBK")) {
+            rez += "KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals " + MCTSSetup.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals
                     + " (if set white tries to put bishops on adjacent diagonals).\r\n";
         }
 
@@ -400,7 +398,7 @@ public class Constants {
     public static void readConfigFile() {
         int currentLine = 0;
         try {
-            File confFile = new File(Constants.CONFIG_FILENAME);
+            File confFile = new File(MCTSSetup.CONFIG_FILENAME);
             if (!confFile.exists()) {
                 System.out.println("Konfiguracijska datoteka ne obstaja!");
                 System.exit(2);
@@ -415,7 +413,7 @@ public class Constants {
                 }
 
                 if (currentLine == 1) {
-                    Constants.parseTestParameterAndValues(line);
+                    MCTSSetup.parseTestParameterAndValues(line);
                     continue;
                 }
 
@@ -434,8 +432,8 @@ public class Constants {
                         System.err.println("*** ERROR: In config file token after 'number_of_games' must be an integer (line: " + currentLine + ").");
                         System.exit(1);
                     }
-                    Constants.NUMBER_OF_GAMES_PLAYED = numOfGames;
-                    Constants.FILE_MANDATORY_PARAMETERS[0] = true;
+                    MCTSSetup.NUMBER_OF_GAMES_PLAYED = numOfGames;
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[0] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("c")) {
@@ -452,8 +450,8 @@ public class Constants {
                         System.err.println("*** ERROR: In config file token after 'c' must be double (line: " + currentLine + ").");
                     }
 
-                    Constants.C = c;
-                    Constants.FILE_MANDATORY_PARAMETERS[1] = true;
+                    MCTSSetup.C = c;
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[1] = true;
                 }
                 else if (words[0].equalsIgnoreCase("goban")) {
                     if (words.length != 2) {
@@ -470,8 +468,8 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.GOBAN = goban;
-                    Constants.FILE_MANDATORY_PARAMETERS[2] = true;
+                    MCTSSetup.GOBAN = goban;
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[2] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("number_of_simulations_per_evaluation")) {
@@ -491,8 +489,8 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION = numOfSim;
-                    Constants.FILE_MANDATORY_PARAMETERS[3] = true;
+                    MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION = numOfSim;
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[3] = true;
                 }
                 else if (words[0].equalsIgnoreCase("number_of_inital_steps") || words[0].equalsIgnoreCase("initial_steps")) {
                     if (words.length != 2) {
@@ -509,8 +507,8 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.NUMBER_OF_INITAL_STEPS = numOfSteps;
-                    Constants.FILE_MANDATORY_PARAMETERS[4] = true;
+                    MCTSSetup.NUMBER_OF_INITAL_STEPS = numOfSteps;
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[4] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("number_of_running_steps") || words[0].equalsIgnoreCase("running_steps")) {
@@ -528,8 +526,8 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.NUMBER_OF_RUNNING_STEPS = numOfSteps;
-                    Constants.FILE_MANDATORY_PARAMETERS[5] = true;
+                    MCTSSetup.NUMBER_OF_RUNNING_STEPS = numOfSteps;
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[5] = true;
 
                 }
                 else if (words[0].equalsIgnoreCase("ending")) {
@@ -547,8 +545,8 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.ENDING = words[1];
-                    Constants.FILE_MANDATORY_PARAMETERS[6] = true;
+                    MCTSSetup.ENDING = words[1];
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[6] = true;
                 }
                 else if (words[0].equalsIgnoreCase("white_move_chooser_strategy") || words[0].equalsIgnoreCase("white_strat")) {
                     if (words.length != 2) {
@@ -566,16 +564,16 @@ public class Constants {
                     }
 
                     if (visitCount) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
                     }
                     else if (rating) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
                     }
                     else if (random) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
                     }
 
-                    Constants.FILE_MANDATORY_PARAMETERS[7] = true;
+                    MCTSSetup.FILE_MANDATORY_PARAMETERS[7] = true;
                 }
 
                 /*
@@ -604,7 +602,7 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.FILE_LOG_LEVEL = level;
+                    MCTSSetup.FILE_LOG_LEVEL = level;
                 }
                 else if (words[0].equalsIgnoreCase("console_log_level")) {
                     if (words.length != 2) {
@@ -625,14 +623,14 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.CONSOLE_LOG_LEVEL = level;
+                    MCTSSetup.CONSOLE_LOG_LEVEL = level;
                 }
                 else if (words[0].equalsIgnoreCase("selection_evaluates")) {
                     if (words.length != 1) {
                         System.err.println("There must be no other tokens after selection_evaluates (line: " + currentLine + " ).");
                         System.exit(1);
                     }
-                    Constants.SELECTION_EVALUATES_CHESSBOARD = true;
+                    MCTSSetup.SELECTION_EVALUATES_CHESSBOARD = true;
                 }
                 else if (words[0].equalsIgnoreCase("selection_uses_visti_count") || words[0].equalsIgnoreCase("suvc")) {
                     if (words.length != 1) {
@@ -640,7 +638,7 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING = true;
+                    MCTSSetup.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING = true;
                 }
                 /* *************************************************************************************************
                  * *****************************HEURISTICS***********************
@@ -649,37 +647,37 @@ public class Constants {
                  * *********************************
                  * ********************************
                  */
-                else if (words[0].equalsIgnoreCase("GENERAL") || words[0].equalsIgnoreCase(Constants.ENDING)) {
+                else if (words[0].equalsIgnoreCase("GENERAL") || words[0].equalsIgnoreCase(MCTSSetup.ENDING)) {
                     if (words.length != 2) {
                         System.err.println("*** ERROR: Config file must have exactly 2 token when setting heuristics (line: " + currentLine + ").");
                         System.exit(1);
                     }
                     if (words[1].equalsIgnoreCase("kingMovesCloserIfTooFar")) {
-                        Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = true;
+                        MCTSSetup.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = true;
                     }
                     else if (words[1].equalsIgnoreCase("kingMovesOnlyCloser")) {
-                        Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king = true;
+                        MCTSSetup.HEURISTICS_white_KING_only_moves_coser_to_black_king = true;
                     }
                     else if (words[1].equalsIgnoreCase("checkForUrgentMoves")) {
-                        Constants.HEURISTICS_check_for_urgent_moves = true;
+                        MCTSSetup.HEURISTICS_check_for_urgent_moves = true;
                     }
                     else if (words[1].equalsIgnoreCase("safeMovesOnly")) {
-                        Constants.HEURISTICS_only_safe_moves = true;
+                        MCTSSetup.HEURISTICS_only_safe_moves = true;
                     }
                     else if (words[1].equalsIgnoreCase("basic")) {
-                        Constants.HEURISTICS_check_for_urgent_moves = true;
-                        Constants.HEURISTICS_only_safe_moves = true;
-                        Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
-                        Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king = false;
+                        MCTSSetup.HEURISTICS_check_for_urgent_moves = true;
+                        MCTSSetup.HEURISTICS_only_safe_moves = true;
+                        MCTSSetup.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
+                        MCTSSetup.HEURISTICS_white_KING_only_moves_coser_to_black_king = false;
                     }
                     else if (words[1].equalsIgnoreCase("avoidMoveRepetition")) {
-                        Constants.HEURISTICS_avoid_move_repetition = true;
+                        MCTSSetup.HEURISTICS_avoid_move_repetition = true;
                     }
-                    else if (words[1].equalsIgnoreCase("checksIfKingsInOpposition") && Constants.ENDING.equalsIgnoreCase("KRK")) {
-                        Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = true;
+                    else if (words[1].equalsIgnoreCase("checksIfKingsInOpposition") && MCTSSetup.ENDING.equalsIgnoreCase("KRK")) {
+                        MCTSSetup.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = true;
                     }
-                    else if (words[1].equalsIgnoreCase("bishopsOnAdjacentDiagonals") && Constants.ENDING.equalsIgnoreCase("KBBK")) {
-                        Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = true;
+                    else if (words[1].equalsIgnoreCase("bishopsOnAdjacentDiagonals") && MCTSSetup.ENDING.equalsIgnoreCase("KBBK")) {
+                        MCTSSetup.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = true;
                     }
                     else {
                         System.err.println("*** ERROR: " + words[1] + " does not represent valid heuristic (line: " + currentLine + ").");
@@ -693,16 +691,16 @@ public class Constants {
                     }
 
                     if (words[1].equalsIgnoreCase("random")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.RANDOM;
+                        MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.RANDOM;
                     }
                     else if (words[1].equalsIgnoreCase("center") || words[1].equalsIgnoreCase("centre")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.CENTER;
+                        MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.CENTER;
                     }
                     else if (words[1].equalsIgnoreCase("normal")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.GOOD;
+                        MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.GOOD;
                     }
                     else if (words[1].equalsIgnoreCase("perfect")) {
-                        Constants.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.PERFECT;
+                        MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.PERFECT;
                     }
                     else {
                         System.err.println(words[1] + " is not valid strategy (line: " + currentLine + " ).");
@@ -715,13 +713,13 @@ public class Constants {
                         System.exit(1);
                     }
                     if (words[1].equalsIgnoreCase("random")) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
                     }
                     else if (words[1].equalsIgnoreCase("vc") || words[1].equalsIgnoreCase("visit_count") || words[1].equalsIgnoreCase("visitCount")) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
                     }
                     else if (words[1].equalsIgnoreCase("rating")) {
-                        Constants.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
                     }
                     else {
                         System.err.println(words[1] + " is not valid strategy (line: " + currentLine + " ).");
@@ -734,16 +732,16 @@ public class Constants {
                         System.exit(1);
                     }
 
-                    Constants.HEURISTICS_check_for_urgent_moves = false;
-                    Constants.HEURISTICS_only_safe_moves = false;
-                    Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
-                    Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king = false;
-                    Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = false;
-                    Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = false;
+                    MCTSSetup.HEURISTICS_check_for_urgent_moves = false;
+                    MCTSSetup.HEURISTICS_only_safe_moves = false;
+                    MCTSSetup.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = false;
+                    MCTSSetup.HEURISTICS_white_KING_only_moves_coser_to_black_king = false;
+                    MCTSSetup.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition = false;
+                    MCTSSetup.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals = false;
 
-                    Constants.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.RANDOM;
+                    MCTSSetup.WHITE_SIMULATION_STRATEGY = WhiteFinderStrategy.RANDOM;
                 }
-                else if (Constants.doesStringMatchValidEnding(words[0])) {
+                else if (MCTSSetup.doesStringMatchValidEnding(words[0])) {
                     // we do nothing here, because, if token is valid ending,
                     // but not current ending then we ignore it
                 }
@@ -761,8 +759,8 @@ public class Constants {
 
         StringBuffer sb = new StringBuffer(300);
         boolean missing = false;
-        for (int x = 0; x < Constants.FILE_MANDATORY_PARAMETERS.length; x++) {
-            if (!Constants.FILE_MANDATORY_PARAMETERS[x]) {
+        for (int x = 0; x < MCTSSetup.FILE_MANDATORY_PARAMETERS.length; x++) {
+            if (!MCTSSetup.FILE_MANDATORY_PARAMETERS[x]) {
                 missing = true;
                 switch (x) {
                     case 0:
@@ -832,9 +830,9 @@ public class Constants {
         }
 
         // convert string representation of parameter to enum
-        Constants.testParameter = ExperimentUtils.mcTestParameterStringToEnum(lineArgs[1]);
+        MCTSSetup.testParameter = ExperimentUtils.mcTestParameterStringToEnum(lineArgs[1]);
 
-        if (Constants.testParameter == null) {
+        if (MCTSSetup.testParameter == null) {
             System.err.println("Invalid test parameter");
         }
 
@@ -845,7 +843,7 @@ public class Constants {
 
         // fill test parameter values
         for (int x = 2; x < lineArgs.length; x++) {
-            Constants.testParameterValues.add(Double.parseDouble(lineArgs[x]));
+            MCTSSetup.testParameterValues.add(Double.parseDouble(lineArgs[x]));
         }
 
     }

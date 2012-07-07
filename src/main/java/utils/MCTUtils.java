@@ -2,6 +2,8 @@ package utils;
 
 import java.util.ArrayList;
 
+import config.MCTSSetup;
+
 import mct.MCTNode;
 import moveFinders.BlackFinderStrategy;
 import moveFinders.BlackMoveFinder;
@@ -9,7 +11,6 @@ import moveFinders.WhiteFinderStrategy;
 import moveFinders.WhiteMoveFinder;
 import chess.chessboard.Chessboard;
 import exceptions.ChessboardException;
-import exec.Constants;
 
 /**
  * Class that holds method that are needed by Monte Carlo Tree.
@@ -73,7 +74,7 @@ public class MCTUtils {
         }
 
         // if flag is on then we only use those with highest visit count
-        if (Constants.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING) {
+        if (MCTSSetup.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING) {
             int maxVisitCount = Integer.MIN_VALUE;
             ArrayList<Integer> filteredRez = new ArrayList<Integer>();
             for (Integer x : rez) {

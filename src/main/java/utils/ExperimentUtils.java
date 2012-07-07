@@ -1,6 +1,6 @@
 package utils;
 
-import exec.Constants;
+import config.MCTSSetup;
 import experiment.MCTestParameter;
 
 public class ExperimentUtils {
@@ -63,13 +63,13 @@ public class ExperimentUtils {
     public static void setTestParameter(MCTestParameter parameter, Double value) {
         switch (parameter) {
             case C:
-                Constants.C = value;
+                MCTSSetup.C = value;
                 break;
             case GOBAN:
-                Constants.GOBAN = value.intValue();
+                MCTSSetup.GOBAN = value.intValue();
                 break;
             case STEPS:
-                Constants.NUMBER_OF_RUNNING_STEPS = value.intValue();
+                MCTSSetup.NUMBER_OF_RUNNING_STEPS = value.intValue();
                 break;
 
         }

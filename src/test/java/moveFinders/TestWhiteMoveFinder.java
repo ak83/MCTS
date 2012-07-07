@@ -13,9 +13,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import config.MCTSSetup;
+
 import chess.Move;
 import chess.chessboard.Chessboard;
-import exec.Constants;
 
 public class TestWhiteMoveFinder {
 
@@ -25,10 +26,10 @@ public class TestWhiteMoveFinder {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        Constants.HEURISTICS_check_for_urgent_moves = true;
-        Constants.HEURISTICS_only_safe_moves = true;
-        Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = true;
-        Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king = true;
+        MCTSSetup.HEURISTICS_check_for_urgent_moves = true;
+        MCTSSetup.HEURISTICS_only_safe_moves = true;
+        MCTSSetup.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 = true;
+        MCTSSetup.HEURISTICS_white_KING_only_moves_coser_to_black_king = true;
 
         TreeMap<Integer, Integer> initialPostion = new TreeMap<Integer, Integer>();
         initialPostion.put(52, 0);

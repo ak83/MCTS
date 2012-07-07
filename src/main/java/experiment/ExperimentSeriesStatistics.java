@@ -14,11 +14,12 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import config.MCTSSetup;
+
 import utils.ChartUtils;
 import utils.ExperimentUtils;
 import utils.IOUtils;
 import chess.chessgame.ChessGameStatistics;
-import exec.Constants;
 
 public class ExperimentSeriesStatistics {
 
@@ -117,7 +118,7 @@ public class ExperimentSeriesStatistics {
         String ending = ".jpg";
         String separator = "/";
 
-        String categoryAxis = ExperimentUtils.testParameterToString(Constants.testParameter);
+        String categoryAxis = ExperimentUtils.testParameterToString(MCTSSetup.testParameter);
 
         // DTM diff
         ChartUtils.saveIndividualChart(dir + separator + IOUtils.WHITE_DTM_DIFFERENCE_FILE_NAME + ending, this.buildDTMDataset(),
@@ -395,7 +396,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildDTMDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x).getWhitesAverageDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY, Constants.testParameterValues.get(x));
+            dataset.setValue(this.experimentStatistics.get(x).getWhitesAverageDTMDiff(), ChartUtils.DTM_DIFF_CATHEGORY, MCTSSetup.testParameterValues.get(x));
         }
 
         return dataset;
@@ -413,7 +414,7 @@ public class ExperimentSeriesStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
             dataset.setValue(this.experimentStatistics.get(x).getAverageWhiteSuccessRate(), ChartUtils.WHITE_SUCCESS_RATE_CATEGORY,
-                    Constants.testParameterValues.get(x));
+                    MCTSSetup.testParameterValues.get(x));
         }
 
         return dataset;
@@ -431,7 +432,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildAGLDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x).getAverageGameLength(), ChartUtils.GAME_LENGTH_CATEGORY, Constants.testParameterValues.get(x));
+            dataset.setValue(this.experimentStatistics.get(x).getAverageGameLength(), ChartUtils.GAME_LENGTH_CATEGORY, MCTSSetup.testParameterValues.get(x));
         }
 
         return dataset;
@@ -449,7 +450,7 @@ public class ExperimentSeriesStatistics {
     private CategoryDataset buildAverageTreeSizeDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
-            dataset.setValue(this.experimentStatistics.get(x).getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY, Constants.testParameterValues.get(x));
+            dataset.setValue(this.experimentStatistics.get(x).getAverageTreeSize(), ChartUtils.TREE_SIZE_CATEGORY, MCTSSetup.testParameterValues.get(x));
         }
 
         return dataset;
@@ -468,7 +469,7 @@ public class ExperimentSeriesStatistics {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int x = 0; x < this.experimentStatistics.size(); x++) {
             dataset.setValue(this.experimentStatistics.get(x).getNumberOfTreeCollapses(), ChartUtils.NUMBER_OF_MC_TREE_COLLAPSES_CATHEGORY,
-                    Constants.testParameterValues.get(x));
+                    MCTSSetup.testParameterValues.get(x));
         }
 
         return dataset;

@@ -3,12 +3,13 @@ package experiment;
 import java.io.File;
 import java.util.logging.Logger;
 
+import config.MCTSSetup;
+
 import logging.Logs;
 import utils.IOUtils;
 import chess.chessgame.ChessGame;
 import chess.chessgame.ChessGameResults;
 import exceptions.ChessboardException;
-import exec.Constants;
 
 /**
  * This class represent experiment (series of chess games with same parameters
@@ -41,7 +42,7 @@ public class Experiment {
      */
     public void runExperiment() {
         // create experiment directory and individual games directory
-        String individualGamesDirPath = this.name + File.separator + Constants.INDIVIDUAL_GAMES_DIR_NAME;
+        String individualGamesDirPath = this.name + File.separator + MCTSSetup.INDIVIDUAL_GAMES_DIR_NAME;
         new File(this.name).mkdir();
         new File(individualGamesDirPath).mkdir();
 
@@ -49,10 +50,10 @@ public class Experiment {
         Logs.initLoggers(this.name);
         this.log = Logger.getLogger("MCTS.Experiment");
 
-        this.log.info(Constants.constantsString());
+        this.log.info(MCTSSetup.constantsString());
 
         // run chess games
-        for (int x = 0; x < Constants.NUMBER_OF_GAMES_PLAYED; x++) {
+        for (int x = 0; x < MCTSSetup.NUMBER_OF_GAMES_PLAYED; x++) {
             ChessGame game = new ChessGame(individualGamesDirPath + File.separator + "game" + x + ".pgn");
             try {
                 ChessGameResults gameResult = game.playGame(x);
@@ -91,7 +92,7 @@ public class Experiment {
 
         this.experimentStats.saveUltimateChart(this.name + File.separator + IOUtils.ULTIMATE_FILE_NAME + ".jpg");
 
-        String pgnFilePath = this.name + File.separator + Constants.PGN_FILENAME;
+        String pgnFilePath = this.name + File.separator + MCTSSetup.PGN_FILENAME;
 
         IOUtils.writeToFile(pgnFilePath, this.pgn);
 
@@ -108,7 +109,7 @@ public class Experiment {
         this.log.info("Experiment " + this.name + " summary:" + newLine + whiteAvgDTMDiff + newLine + averageGameLength);
         this.log.info("\tNode summary: " + this.experimentStats.getNodeStatistics().toString() + newLine + "\tSelected nodes summary: "
                 + this.experimentStats.getSelectedNodeStatistics().toString());
-        this.log.info("Chess games were written in " + pgnFilePath + ", details of these matches are in " + this.name + "/" + Constants.LOG_FILENAME + "."
+        this.log.info("Chess games were written in " + pgnFilePath + ", details of these matches are in " + this.name + "/" + MCTSSetup.LOG_FILENAME + "."
                 + newLine + " END OF EXPERIMENT" + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××" + newLine
                 + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
 

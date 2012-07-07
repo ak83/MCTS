@@ -2,7 +2,9 @@ package start;
 
 import java.io.File;
 
-import exec.Constants;
+import config.DatabaseSetup;
+import config.MCTSSetup;
+
 import experiment.ExperimentSeries;
 
 /**
@@ -19,10 +21,11 @@ public class Main {
      *            command line arguments
      */
     public static void main(String[] args) {
-        Constants.readConfigFile();
-        Constants.initConstants(args);
+        MCTSSetup.readConfigFile();
+        MCTSSetup.initConstants(args);
+        DatabaseSetup.readConfigFile(DatabaseSetup.CONFIG_FILE);
 
-        if (!new File(Constants.FRUIT_FILEPATH).exists()) {
+        if (!new File(MCTSSetup.FRUIT_FILEPATH).exists()) {
             System.err.println("Fruit file path is not set correctly. Ending program");
             System.exit(1);
         }

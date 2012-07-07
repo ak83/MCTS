@@ -5,10 +5,11 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
+import config.MCTSSetup;
+
 import chess.Move;
 import chess.chessboard.Chessboard;
 import exceptions.ChessboardException;
-import exec.Constants;
 
 /**
  * Class that handles choosing white simulation ply number.
@@ -60,7 +61,7 @@ public class WhiteMoveFinder {
     private static int findKRKWhiteMove(Chessboard board) throws ChessboardException {
         ArrayList<Move> rez = WhiteMoveFinder.generalHeuristics(board);
 
-        if (Constants.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition) {
+        if (MCTSSetup.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition) {
             ArrayList<Move> opp = board.KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(rez);
             if (opp.size() != 0) {
                 rez = opp;
@@ -84,7 +85,7 @@ public class WhiteMoveFinder {
 
         ArrayList<Move> rez = WhiteMoveFinder.generalHeuristics(board);
 
-        if (Constants.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals) {
+        if (MCTSSetup.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals) {
             ArrayList<Move> diagonal = board.KBBKWhiteMovesWhereBishopsAreOnAdjacentDiagonals(rez);
             if (diagonal.size() != 0) {
                 rez = diagonal;
@@ -124,21 +125,21 @@ public class WhiteMoveFinder {
             throw new RuntimeErrorException(new Error(e));
         }
 
-        if (Constants.HEURISTICS_check_for_urgent_moves) {
+        if (MCTSSetup.HEURISTICS_check_for_urgent_moves) {
             ArrayList<Move> urgent = board.whiteUrgentMoves(rez);
             if (urgent.size() > 0) {
                 rez = urgent;
             }
         }
 
-        if (Constants.HEURISTICS_only_safe_moves) {
+        if (MCTSSetup.HEURISTICS_only_safe_moves) {
             ArrayList<Move> safe = board.whiteSafeMoves(rez);
             if (safe.size() != 0) {
                 rez = safe;
             }
         }
 
-        if (Constants.HEURISTICS_avoid_move_repetition) {
+        if (MCTSSetup.HEURISTICS_avoid_move_repetition) {
             ArrayList<Move> avoidance = new ArrayList<Move>();
             try {
                 avoidance = board.movesWhereWhiteAvoidsMoveRepetition(rez);
@@ -152,14 +153,14 @@ public class WhiteMoveFinder {
             }
         }
 
-        if (Constants.HEURISTICS_white_KING_only_moves_coser_to_black_king) {
+        if (MCTSSetup.HEURISTICS_white_KING_only_moves_coser_to_black_king) {
             ArrayList<Move> kingCloser = board.movesWhereWhiteKingMovesCloserOrEqualToBlackKind(rez);
             if (kingCloser.size() > 0) {
                 rez = kingCloser;
             }
         }
 
-        if (Constants.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3) {
+        if (MCTSSetup.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3) {
             if (board.distanceBewteenKings() > 3) {
                 ArrayList<Move> kingMoves = board.filterMovesToWhiteKingMoves(rez);
                 kingMoves = board.movesWhereWhiteKingMovesCloserOrEqualToBlackKind(kingMoves);

@@ -5,6 +5,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import config.MCTSSetup;
+
 import mct.MCT;
 import mct.MCTStats;
 import utils.FruitUtils;
@@ -12,7 +14,6 @@ import utils.IOUtils;
 import utils.Utils;
 import chess.chessboard.ChessboardEvalState;
 import exceptions.ChessboardException;
-import exec.Constants;
 
 /**
  * Class that handles playing a match logic.
@@ -86,7 +87,7 @@ public class ChessGame {
         this.fen += "[fen \"" + this.MCTree.getFEN() + "\"]\n\n";
         boolean didWhiteWin = false;
 
-        for (int x = 0; x < Constants.NUMBER_OF_INITAL_STEPS; x++) {
+        for (int x = 0; x < MCTSSetup.NUMBER_OF_INITAL_STEPS; x++) {
             this.MCTree.oneMCTStep();
         }
 
@@ -130,11 +131,11 @@ public class ChessGame {
 
             if (whitesTurn) {
 
-                for (int x = 0; x < Constants.NUMBER_OF_RUNNING_STEPS; x++) {
+                for (int x = 0; x < MCTSSetup.NUMBER_OF_RUNNING_STEPS; x++) {
                     this.MCTree.oneMCTStep();
                 }
 
-                moveNumber = this.MCTree.chooseAMoveNumber(Constants.WHITE_MOVE_CHOOSER_STRATEGY, Constants.BLACK_MOVE_CHOOSER_STRATEGY);
+                moveNumber = this.MCTree.chooseAMoveNumber(MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY, MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY);
 
                 dtmDiff = FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils.moveNumberToFruitString(moveNumber), fruitOutput) - perfectDTM;
 
@@ -143,7 +144,7 @@ public class ChessGame {
                 this.fen += Utils.whiteMoveNumberToFenString(moveNumber, turnDepth, perfectMove + ", diff=" + dtmDiff) + " ";
             }
             else {
-                moveNumber = this.MCTree.chooseAMoveNumber(Constants.WHITE_MOVE_CHOOSER_STRATEGY, Constants.BLACK_MOVE_CHOOSER_STRATEGY);
+                moveNumber = this.MCTree.chooseAMoveNumber(MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY, MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY);
 
                 dtmDiff = perfectDTM - FruitUtils.getDTMOfMoveFromFruitOutput(FruitUtils.moveNumberToFruitString(moveNumber), fruitOutput);
 
@@ -176,18 +177,18 @@ public class ChessGame {
         this.matchStats.setStatisticsOfMCTS(this.MCTree.getMCTStatistics());
         this.matchStats.didWhiteWin = didWhiteWin;
 
-        String whiteStrat = Utils.whiteStrategyToString(Constants.WHITE_MOVE_CHOOSER_STRATEGY);
+        String whiteStrat = Utils.whiteStrategyToString(MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY);
 
-        String blackStrat = Utils.blackStrategyToString(Constants.BLACK_MOVE_CHOOSER_STRATEGY);
+        String blackStrat = Utils.blackStrategyToString(MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY);
 
         // calculate number of plies made
         int plyCount = didWhiteWin ? (turnDepth * 2 - 1) : (turnDepth * 2);
 
         // construct, write and return this matches pgn
-        String preamble = Utils.constructPreamble(whiteStrat, blackStrat, Constants.C, Constants.GOBAN, didWhiteWin, round, plyCount,
-                Constants.NUMBER_OF_INITAL_STEPS, Constants.NUMBER_OF_RUNNING_STEPS, Constants.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
+        String preamble = Utils.constructPreamble(whiteStrat, blackStrat, MCTSSetup.C, MCTSSetup.GOBAN, didWhiteWin, round, plyCount,
+                MCTSSetup.NUMBER_OF_INITAL_STEPS, MCTSSetup.NUMBER_OF_RUNNING_STEPS, MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
-        if (Constants.WRITE_INDIVIDUAL_GAMES) {
+        if (MCTSSetup.WRITE_INDIVIDUAL_GAMES) {
             IOUtils.writeToFile(this.pgnFileName, this.fen);
         }
 

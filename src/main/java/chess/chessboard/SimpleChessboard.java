@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import config.MCTSSetup;
+
 import utils.ChessboardUtils;
 import utils.Utils;
 import chess.Move;
 import exceptions.ChessboardException;
-import exec.Constants;
 
 public class SimpleChessboard implements Cloneable {
 
@@ -696,7 +697,7 @@ public class SimpleChessboard implements Cloneable {
         if (this.isBlackKingMated()) { return ChessboardEvalState.BLACK_KING_MATED; }
         if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
         if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return ChessboardEvalState.WHITE_PIECE_IN_DANGER; }
-        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
+        if (this.numberOfMovesMade > MCTSSetup.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
         if (this.wasBoardStateRepeatedThreeTimes) { return ChessboardEvalState.DRAW; }
 
         return ChessboardEvalState.NORMAl;
@@ -714,7 +715,7 @@ public class SimpleChessboard implements Cloneable {
 
         if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
         if (this.wasBoardStateRepeatedThreeTimes) { return ChessboardEvalState.DRAW; }
-        if (this.numberOfMovesMade > Constants.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
+        if (this.numberOfMovesMade > MCTSSetup.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
 
         return ChessboardEvalState.NORMAl;
     }

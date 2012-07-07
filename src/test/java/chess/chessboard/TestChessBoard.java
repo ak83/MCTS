@@ -11,11 +11,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import config.MCTSSetup;
+
 import chess.Move;
 import chess.chessboard.Chessboard;
 import chess.chessboard.SimpleChessboard;
 
-import exec.Constants;
 
 public class TestChessBoard {
 
@@ -27,7 +28,7 @@ public class TestChessBoard {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        Constants.ENDING = "KRK";
+        MCTSSetup.ENDING = "KRK";
         TreeMap<Integer, Integer> initialCbKRKState = new TreeMap<Integer, Integer>();
         initialCbKRKState.put(51, 4);
         initialCbKRKState.put(66, 0);
@@ -37,7 +38,7 @@ public class TestChessBoard {
         System.out.println(TestChessBoard.cbKRK);
         TestChessBoard.cbKRKAllMoves = TestChessBoard.cbKRK.getAllLegalWhitePlies();
 
-        Constants.ENDING = "KRRK";
+        MCTSSetup.ENDING = "KRRK";
         TreeMap<Integer, Integer> initialCbKRRKState = new TreeMap<Integer, Integer>();
         initialCbKRRKState.put(52, 4);
         initialCbKRRKState.put(38, 0);
