@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
-import config.MCTSSetup;
+import config.IOSetup;
 
 import utils.FruitUtils;
 import utils.MoveFindersUtils;
@@ -119,13 +119,13 @@ public class BlackMoveFinder {
     private static int findBlackPerfectMove(SimpleChessboard board) {
         try {
             Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(MCTSSetup.FRUIT_FILEPATH);
+            Process pr = rt.exec(IOSetup.FRUIT_FILEPATH);
             FruitUtils.writeToProcess(pr, "ucinewgame");
             FruitUtils.writeToProcess(pr, "setoption name Hash value 128");
             FruitUtils.writeToProcess(pr, "setoption name MultiPV value 100");
-            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value " + MCTSSetup.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name NalimovPath value " + IOSetup.EMD_DIR);
             FruitUtils.writeToProcess(pr, "setoption name NalimovCache value 32");
-            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value " + MCTSSetup.EMD_DIR);
+            FruitUtils.writeToProcess(pr, "setoption name EGBB Path value " + IOSetup.EMD_DIR);
             FruitUtils.writeToProcess(pr, "setoption name EGBB Cache value 32");
             // writeToProcess(pr,
             // "position fen r7/8/5k2/8/8/8/R7/K7 w - - 0 1");

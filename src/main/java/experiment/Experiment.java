@@ -3,6 +3,7 @@ package experiment;
 import java.io.File;
 import java.util.logging.Logger;
 
+import config.IOSetup;
 import config.MCTSSetup;
 
 import logging.Logs;
@@ -42,7 +43,7 @@ public class Experiment {
      */
     public void runExperiment() {
         // create experiment directory and individual games directory
-        String individualGamesDirPath = this.name + File.separator + MCTSSetup.INDIVIDUAL_GAMES_DIR_NAME;
+        String individualGamesDirPath = this.name + File.separator + IOSetup.INDIVIDUAL_GAMES_DIR_NAME;
         new File(this.name).mkdir();
         new File(individualGamesDirPath).mkdir();
 
@@ -92,7 +93,7 @@ public class Experiment {
 
         this.experimentStats.saveUltimateChart(this.name + File.separator + IOUtils.ULTIMATE_FILE_NAME + ".jpg");
 
-        String pgnFilePath = this.name + File.separator + MCTSSetup.PGN_FILENAME;
+        String pgnFilePath = this.name + File.separator + IOSetup.PGN_FILENAME;
 
         IOUtils.writeToFile(pgnFilePath, this.pgn);
 
@@ -109,7 +110,7 @@ public class Experiment {
         this.log.info("Experiment " + this.name + " summary:" + newLine + whiteAvgDTMDiff + newLine + averageGameLength);
         this.log.info("\tNode summary: " + this.experimentStats.getNodeStatistics().toString() + newLine + "\tSelected nodes summary: "
                 + this.experimentStats.getSelectedNodeStatistics().toString());
-        this.log.info("Chess games were written in " + pgnFilePath + ", details of these matches are in " + this.name + "/" + MCTSSetup.LOG_FILENAME + "."
+        this.log.info("Chess games were written in " + pgnFilePath + ", details of these matches are in " + this.name + "/" + IOSetup.LOG_FILENAME + "."
                 + newLine + " END OF EXPERIMENT" + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××" + newLine
                 + "××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××××");
 

@@ -5,6 +5,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import config.IOSetup;
 import config.MCTSSetup;
 
 import mct.MCT;
@@ -188,7 +189,7 @@ public class ChessGame {
         String preamble = Utils.constructPreamble(whiteStrat, blackStrat, MCTSSetup.C, MCTSSetup.GOBAN, didWhiteWin, round, plyCount,
                 MCTSSetup.NUMBER_OF_INITAL_STEPS, MCTSSetup.NUMBER_OF_RUNNING_STEPS, MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
-        if (MCTSSetup.WRITE_INDIVIDUAL_GAMES) {
+        if (IOSetup.WRITE_INDIVIDUAL_GAMES) {
             IOUtils.writeToFile(this.pgnFileName, this.fen);
         }
 

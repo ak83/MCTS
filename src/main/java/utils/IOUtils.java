@@ -3,10 +3,28 @@ package utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import config.IOSetup;
 
 /**
  * Class with methods for input/output
@@ -117,6 +135,110 @@ public class IOUtils {
             System.err.println("Could not save " + filePath);
             e.printStackTrace();
             throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Reads data from xml file.
+     * 
+     * @param file
+     *            xml file
+     * @return vector of label loaded from xml file
+     * @throws IllegalArgumentException
+     *             if file does not exist
+     */
+    public static ArrayList<String> readXMLFile(String file) throws IllegalArgumentException {
+        ArrayList<String> ret = new ArrayList<String>();
+        File xmlFile = new File(file);
+        if (!xmlFile.exists()) { throw new IllegalArgumentException("File does not exist"); }
+
+        try {
+            // initialize document reader
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(xmlFile);
+            document.getDocumentElement().normalize();
+
+            // fill logic with labels
+            NodeList experimentList = document.getElementsByTagName("Experiment");
+            for (int i = 0; i < experimentList.getLength(); i++) {
+                Node label = experimentList.item(i).getFirstChild().getFirstChild();
+                ret.add(label.getNodeValue());
+            }
+        }
+        catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (SAXException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return ret;
+    }
+
+
+    /**
+     * Creates new xml file.
+     * 
+     * @param path
+     *            file path
+     * @throws IllegalArgumentException
+     *             if xml file already exists
+     */
+    public static void createNewSettingsXMLFile(String path) {
+
+        try {
+
+            File xmlFile = new File(path);
+            if (xmlFile.exists()) { throw new IllegalArgumentException("File " + xmlFile.getAbsolutePath() + " already exists"); }
+
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
+
+            Document doc = documentBuilder.newDocument();
+
+            // create root node
+            Element root = doc.createElement("MCTSTests");
+            doc.appendChild(root);
+
+            Element experimentElement = doc.createElement("Experiment");
+            root.appendChild(experimentElement);
+
+            // create id node with default value
+            Element labelNode = doc.createElement("label");
+            experimentElement.appendChild(labelNode);
+            labelNode.appendChild(doc.createTextNode("none"));
+
+            // put default label to logic
+            IOSetup.testLabels.add(IOSetup.DEFAULT_TEST_LABEL);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            DOMSource domSource = new DOMSource(doc);
+            StreamResult streamResult = new StreamResult(xmlFile);
+
+            transformer.transform(domSource, streamResult);
+
+        }
+        catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch (TransformerException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 

@@ -24,12 +24,6 @@ public class MCTSSetup {
 
     private MCTSSetup() {};
 
-    /**
-     * directory name where output of individual games is saved in experiment
-     * directory
-     */
-    public static final String         INDIVIDUAL_GAMES_DIR_NAME                                                       = "sgames";
-
     /** Parameter on which experiments will be performed */
     public static MCTestParameter      testParameter;
 
@@ -40,32 +34,6 @@ public class MCTSSetup {
      * Number of match that will be played.
      */
     public static int                  NUMBER_OF_GAMES_PLAYED;
-
-    /**
-     * File to which ogn output will be saved.
-     */
-    public static String               PGN_FILENAME                                                                    = "test.pgn";
-
-    /**
-     * File to which mathes will be logged.
-     */
-    public static String               LOG_FILENAME                                                                    = "test.log";
-
-    /**
-     * Config file from which parameters are read.
-     */
-    public static String               CONFIG_FILENAME                                                                 = "MCTS.conf";
-
-    /**
-     * Fruit executable file path. Required only if black plays with perfect
-     * information.
-     */
-    public static String               FRUIT_FILEPATH                                                                  = "Fruit-2-3-1.exe";
-
-    /**
-     * Directory where emd files are stored.
-     */
-    public static String               EMD_DIR                                                                         = System.getProperty("user.dir");
 
     /**
      * maximum tree depth ( maximum ply count for single match) - 1.
@@ -134,22 +102,6 @@ public class MCTSSetup {
      * Which ending will be played by application.
      */
     public static String               ENDING;
-
-    /**
-     * If <code>true</code> application will also write pgns of individual
-     * matches played in sgames directory.
-     */
-    public static boolean              WRITE_INDIVIDUAL_GAMES                                                          = true;
-
-    /**
-     * Filters which information will be logged to log file.
-     */
-    public static Level                FILE_LOG_LEVEL                                                                  = Level.ALL;
-
-    /**
-     * Filters which information will be logged to console.
-     */
-    public static Level                CONSOLE_LOG_LEVEL                                                               = Level.OFF;
 
     /**
      * If <code>true</code> white will try to check black king when they are in
@@ -246,27 +198,27 @@ public class MCTSSetup {
         // Otional arguments
         for (int x = 0; x < param.length; x++) {
             if (param[x].equals("--ig")) {
-                MCTSSetup.WRITE_INDIVIDUAL_GAMES = false;
+                IOSetup.WRITE_INDIVIDUAL_GAMES = false;
             }
             else if (param[x].substring(0, 4).equals("--emd")) {
                 x++;
-                MCTSSetup.EMD_DIR = param[x];
+                IOSetup.EMD_DIR = param[x];
             }
             else if (param[x].equals("--conf")) {
                 x++;
-                MCTSSetup.CONFIG_FILENAME = param[x];
+                IOSetup.CONFIG_FILENAME = param[x];
             }
             else if (param[x].equals("--pgn")) {
                 x++;
-                MCTSSetup.PGN_FILENAME = param[x];
+                IOSetup.PGN_FILENAME = param[x];
             }
             else if (param[x].equals("--log")) {
                 x++;
-                MCTSSetup.LOG_FILENAME = param[x];
+                IOSetup.LOG_FILENAME = param[x];
             }
             else if (param[x].equals("--fruit")) {
                 x++;
-                MCTSSetup.FRUIT_FILEPATH = param[x];
+                IOSetup.FRUIT_FILEPATH = param[x];
             }
             else if (param[x].equals("--help")) {
                 System.out.println(MCTSSetup.HELP);
@@ -287,11 +239,11 @@ public class MCTSSetup {
      */
     public static String constantsString() {
         String rez = "NUMBER_OF_GAMES_PLAYED " + MCTSSetup.NUMBER_OF_GAMES_PLAYED + "\r\n";
-        rez += "PGN_FILENAME " + MCTSSetup.PGN_FILENAME + "\r\n";
-        rez += "LOG_FILENAME " + MCTSSetup.LOG_FILENAME + "\r\n";
-        rez += "CONFIG_FILENAME " + MCTSSetup.CONFIG_FILENAME + "\r\n";
-        rez += "FRUIT_FILEPATH " + MCTSSetup.FRUIT_FILEPATH + "\r\n";
-        rez += "EMD_DIR " + MCTSSetup.EMD_DIR + "\r\n";
+        rez += "PGN_FILENAME " + IOSetup.PGN_FILENAME + "\r\n";
+        rez += "LOG_FILENAME " + IOSetup.LOG_FILENAME + "\r\n";
+        rez += "CONFIG_FILENAME " + IOSetup.CONFIG_FILENAME + "\r\n";
+        rez += "FRUIT_FILEPATH " + IOSetup.FRUIT_FILEPATH + "\r\n";
+        rez += "EMD_DIR " + IOSetup.EMD_DIR + "\r\n";
         rez += "MAX_DEPTH " + MCTSSetup.MAX_DEPTH + " (maximum number of plys in chessgame)\r\n";
         rez += "C " + MCTSSetup.C + "\r\n";
         rez += "GOBAN " + MCTSSetup.GOBAN + "\r\n";
@@ -363,7 +315,7 @@ public class MCTSSetup {
         rez += "SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING " + MCTSSetup.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING
                 + " (if set selection, when choosing next node, only takes nodes with highest visitcount in account).\r\n";
 
-        rez += "WRITE_INDIVIDUAL_GAMES " + MCTSSetup.WRITE_INDIVIDUAL_GAMES + " (if set program writes individual games also to sgames dir).\r\n";
+        rez += "WRITE_INDIVIDUAL_GAMES " + IOSetup.WRITE_INDIVIDUAL_GAMES + " (if set program writes individual games also to sgames dir).\r\n";
         rez += "\r\n";
         rez += "HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3 "
                 + MCTSSetup.HEURISTICS_white_king_moves_closer_if_distance_from_black_king_is_larger_than_3
@@ -398,7 +350,7 @@ public class MCTSSetup {
     public static void readConfigFile() {
         int currentLine = 0;
         try {
-            File confFile = new File(MCTSSetup.CONFIG_FILENAME);
+            File confFile = new File(IOSetup.CONFIG_FILENAME);
             if (!confFile.exists()) {
                 System.out.println("Konfiguracijska datoteka ne obstaja!");
                 System.exit(2);
@@ -602,7 +554,7 @@ public class MCTSSetup {
                         System.exit(1);
                     }
 
-                    MCTSSetup.FILE_LOG_LEVEL = level;
+                    IOSetup.FILE_LOG_LEVEL = level;
                 }
                 else if (words[0].equalsIgnoreCase("console_log_level")) {
                     if (words.length != 2) {
@@ -623,7 +575,7 @@ public class MCTSSetup {
                         System.exit(1);
                     }
 
-                    MCTSSetup.CONSOLE_LOG_LEVEL = level;
+                    IOSetup.CONSOLE_LOG_LEVEL = level;
                 }
                 else if (words[0].equalsIgnoreCase("selection_evaluates")) {
                     if (words.length != 1) {
