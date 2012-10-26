@@ -5,15 +5,14 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import config.IOSetup;
-import config.MCTSSetup;
-
 import mct.MCT;
 import mct.MCTStats;
 import utils.FruitUtils;
 import utils.IOUtils;
 import utils.Utils;
 import chess.chessboard.ChessboardEvalState;
+import config.IOSetup;
+import config.MCTSSetup;
 import exceptions.ChessboardException;
 
 /**
@@ -82,7 +81,7 @@ public class ChessGame {
      */
     public ChessGameResults playGame(int round) throws ChessboardException {
 
-        this.log.info("\r\n*************************\r\nZACETEK NOVE IGRE\r\n*************************\r\n");
+        this.log.info("\r\n*************************\r\nSTARTING NEW GAME " + round + "\r\n*************************\r\n");
 
         long startTime = System.currentTimeMillis();
         this.fen += "[fen \"" + this.MCTree.getFEN() + "\"]\n\n";
@@ -96,7 +95,6 @@ public class ChessGame {
 
         int turnDepth = 1;
         while (true) {
-
             this.log.fine("Stanje sahovnice je:\r\n" + this.MCTree.getMainChessboard() + "To stanje se je pojavilo "
                     + this.MCTree.getMainChessboard().howManyTimeHasCurrentStateAppeared() + "-krat.\r\n");
 
@@ -168,6 +166,7 @@ public class ChessGame {
             this.MCTree.makeMCMove(moveNumber);
 
         }
+        // End of the chess game. From here on we just deal with output.
 
         if (!didWhiteWin) {
             turnDepth--;
@@ -186,7 +185,7 @@ public class ChessGame {
         int plyCount = didWhiteWin ? (turnDepth * 2 - 1) : (turnDepth * 2);
 
         // construct, write and return this matches pgn
-        String preamble = Utils.constructPreamble(whiteStrat, blackStrat, MCTSSetup.C, MCTSSetup.GOBAN, didWhiteWin, round, plyCount,
+        String preamble = Utils.constructPreamble(whiteStrat, blackStrat, MCTSSetup.C, MCTSSetup.THRESHOLD_T, didWhiteWin, round, plyCount,
                 MCTSSetup.NUMBER_OF_INITAL_STEPS, MCTSSetup.NUMBER_OF_RUNNING_STEPS, MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION);
         this.fen = preamble + this.fen;
         if (IOSetup.WRITE_INDIVIDUAL_GAMES) {

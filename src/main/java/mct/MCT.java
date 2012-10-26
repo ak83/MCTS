@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import config.MCTSSetup;
-
 import moveChoosers.BlackMoveChooser;
 import moveChoosers.WhiteChooserStrategy;
 import moveChoosers.WhiteMoveChooser;
 import moveFinders.BlackFinderStrategy;
-import moveFinders.BlackMoveFinder;
-import moveFinders.WhiteMoveFinder;
+import moveFinders.WhiteFinderStrategy;
+import utils.ChessboardUtils;
 import utils.MCTUtils;
 import utils.Utils;
+import chess.Move;
 import chess.chessboard.Chessboard;
 import chess.chessboard.ChessboardEvalState;
 import chess.chessboard.SimpleChessboard;
+import config.MCTSSetup;
 import exceptions.ChessboardException;
 
 /**
@@ -53,28 +53,33 @@ public class MCT {
      */
     public MCT(Logger log) {
         this.log = log;
-
     }
 
 
     /**
-     * Selection phase of MCT algorithm.
+     * Selection phase of MCT algorithm. It traverses the tree from the root
+     * node. Along the way it chooses most promising nodes. <br/>
+     * It adds a new child if it reaches a node which does not have all legal
+     * children added or has been visited fewer times than the value of the
+     * threshold T.<br/>
+     * If it reaches a child that represent a terminal game state, it just
+     * returns that node.
      * 
      * @param node
      *            node to be evaluated
-     * @return last node where selection stopped
+     * @return last node where selection stopped or the node that has been added
+     *         to the tree.
      * @throws ChessboardException
      */
-    public MCTNode selection(MCTNode node) throws ChessboardException {
-        if (MCTSSetup.SELECTION_EVALUATES_CHESSBOARD) {
-            if (node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) { return node; }
-        }
+    private MCTNode selection(MCTNode node) throws ChessboardException {
+        if (node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) { return this.expansion(node); }
 
-        boolean maxDepthReached = node.moveDepth > MCTSSetup.MAX_DEPTH;
-        boolean gobanStrategy = node.visitCount < MCTSSetup.GOBAN;
+        boolean terminaStateReached = node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl;
+        boolean gobanStrategy = node.visitCount < MCTSSetup.THRESHOLD_T;
         boolean nerazvitiNasledniki = node.nextMoves == null;
 
-        if (maxDepthReached || gobanStrategy || nerazvitiNasledniki || node.nextMoves.size() == 0) { return node; }
+        if (terminaStateReached || nerazvitiNasledniki || node.nextMoves.size() == 0 || !node.areAllChildrenAdded()) { return this.expansion(node); }
+        if (gobanStrategy) { return this.simulationAddsOneNode(node); }
 
         ArrayList<Integer> maxRatingIndexes = MCTUtils.getInedexesWithMaxRating(node);
 
@@ -89,7 +94,45 @@ public class MCT {
 
 
     /**
-     * Backpropagation phase of MCT algorithm
+     * Expands given node. If node represents terminal chessboard state then
+     * this method just returns given node. Otherwise it adds a new child to the
+     * node.
+     * 
+     * @param node
+     * @return node if the node represent the terminal game state, otherwise it
+     *         returns the newly added node.
+     * @throws ChessboardException
+     *             if a new child cannot be added.
+     */
+    private MCTNode expansion(MCTNode node) throws ChessboardException {
+        if (node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) { return node; }
+
+        if (node.nextMoves == null) {
+            node.nextMoves = new ArrayList<MCTNode>();
+        }
+
+        if (!node.areAllChildrenAdded()) {
+            ArrayList<Move> unexpandedMoves = new ArrayList<Move>();
+            for (Move move : node.validMoves) {
+                int index = Utils.indexOfMoveNumberInNextMoves(move.moveNumber, node);
+                if (index == -1) {
+                    unexpandedMoves.add(move);
+                }
+            }
+
+            Move addedMove = ChessboardUtils.getRandomMoveFromList(unexpandedMoves);
+            this.simulationChessboard.makeAMove(addedMove.moveNumber);
+            node.addNextMove(addedMove.moveNumber);
+            return node.nextMoves.get(node.nextMoves.size() - 1);
+        }
+
+        throw new ChessboardException("All children are allready added");
+    }
+
+
+    /**
+     * Backpropagation phase of MCTS algorithm. It updates visitcount, value and
+     * other variables from the given node to the root node.
      * 
      * @param node
      *            node from which we start backpropagation
@@ -100,13 +143,13 @@ public class MCT {
      * @param addedNodeDepth
      *            depth of node from which backpropagation starts
      */
-    public void backPropagation(MCTNode node, int numberOfMats, int numberOfSimulationsPerNode, int addedNodeDepth, boolean doesAddedNodeRepresentsMat) {
+    private void backPropagation(MCTNode node, int numberOfMats, int addedNodeDepth, boolean doesAddedNodeRepresentsMat) {
 
         // update subtree size
         node.updateNumberOfSuccessors();
 
         node.numberOfMatsInNode += numberOfMats;
-        node.visitCount += numberOfSimulationsPerNode;
+        node.visitCount += MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION;
 
         if (addedNodeDepth > node.maximumSubTreeDepth) {
             node.maximumSubTreeDepth = addedNodeDepth - node.mcDepth;
@@ -117,120 +160,86 @@ public class MCT {
         }
 
         if (node.parent != null) {
-            this.backPropagation(node.parent, numberOfMats, numberOfSimulationsPerNode, addedNodeDepth, doesAddedNodeRepresentsMat);
+            this.backPropagation(node.parent, numberOfMats, addedNodeDepth, doesAddedNodeRepresentsMat);
         }
     }
 
 
     /**
-     * This method adds one node to current true, with MCTS algorithm.
+     * Performs a random simulation according to the {@link WhiteFinderStrategy}
+     * and {@link BlackFinderStrategy}.<br/>
+     * It plays random moves until a move is played that is not yet a part of
+     * the tree or until a node that represent terminal game state is reached.
      * 
      * @param node
-     *            to which subtree we add node
+     *            added node or the node that represent a terminal game state.
      * @return added node or current node if no node was added
      * @throws ChessboardException
      */
-    public MCTNode simulationAddsOneNode(MCTNode node) throws ChessboardException {
+    private MCTNode simulationAddsOneNode(MCTNode node) throws ChessboardException {
+
         MCTNode currNode = node;
-
-        if (node.nextMoves == null) {
+        while (currNode.getEvalFromWhitesPerspective() == ChessboardEvalState.NORMAl) {
+            if (currNode.nextMoves == null) { return this.expansion(currNode); }
             int moveNo = MCTUtils.findNextMove(currNode, MCTSSetup.WHITE_SIMULATION_STRATEGY, MCTSSetup.BLACK_SIMULATION_STRATEGY);
-
-            if (moveNo == -1) { return currNode; }
-
-            this.simulationChessboard.makeAMove(moveNo);
-            node.addNextMove(moveNo);
-
-            return node.nextMoves.get(0);
-        }
-
-        while (true) {
-
-            if (currNode.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) {
-                if (currNode.getEvalFromWhitesPerspective() == ChessboardEvalState.BLACK_KING_MATED) {
-                    this.stats.numberOfMatsInSimAddsOneNode++;
-                }
-                return node;
-            }
-
-            int moveNo = MCTUtils.findNextMove(currNode, MCTSSetup.WHITE_SIMULATION_STRATEGY, MCTSSetup.BLACK_SIMULATION_STRATEGY);
-
-            if (moveNo == -1) {
-                // ni vec moznih naslednjih potez
-                return currNode;
-            }
-
-            if (currNode.nextMoves == null) {
-                currNode.addNextMove(moveNo);
-                this.simulationChessboard.makeAMove(moveNo);
-
-                return currNode.nextMoves.get(0);
-            }
-
             int moveIndex = Utils.indexOfMoveNumberInNextMoves(moveNo, currNode);
 
+            // if the move is not in currNode's children
             if (moveIndex == -1) {
                 currNode.addNextMove(moveNo);
                 this.simulationChessboard.makeAMove(moveNo);
-
-                int temp = currNode.nextMoves.size() - 1;
-                return currNode.nextMoves.get(temp);
+                return currNode.nextMoves.get(currNode.nextMoves.size() - 1);
             }
             else {
                 this.simulationChessboard.makeAMove(moveNo);
-
                 currNode = currNode.nextMoves.get(moveIndex);
             }
-
-            if (currNode.moveDepth > MCTSSetup.MAX_DEPTH) { return currNode; }
         }
+
+        if (currNode.getEvalFromWhitesPerspective() == ChessboardEvalState.BLACK_KING_MATED) {
+            ++this.stats.numberOfMatsInSimAddsOneNode;
+        }
+
+        return currNode;
+
     }
 
 
     /**
-     * Runs simulations to evaluate node
+     * Runs simulations to evaluate the node. Simulations start at the
+     * chessboard state represented by the given node. It chooses moves at
+     * random according to {@link WhiteFinderStrategy} and
+     * {@link BlackFinderStrategy}.
      * 
      * @param node
      *            node from which we run simulations
-     * @return number of mats that happened in simulations
+     * @return number of mats that happened in simulations.
      * @throws ChessboardException
      */
-    public int simulation(MCTNode node) throws ChessboardException {
+    private int simulation(MCTNode node) throws ChessboardException {
         int rez = 0;
-        SimpleChessboard temp = new Chessboard("resetBoard", node);
+        Chessboard temp = new Chessboard("resetBoard", node);
 
         for (int x = 0; x < MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION; x++) {
-            int currDepth = node.moveDepth;
-            boolean itsWhitesTurn = Utils.isWhitesTurn(node);
             this.simulationChessboard = new Chessboard(temp, "simulation Chessboard");
 
             while (true) {
-                ChessboardEvalState eval = this.simulationChessboard.evaluateChessboardFromWhitesPerpective();
-
-                if (eval != ChessboardEvalState.NORMAl) {
-                    if (eval == ChessboardEvalState.BLACK_KING_MATED) {
-                        this.stats.numberOfMatsInSimulation++;
-                        rez++;
-                    }
-                    break;
+                ChessboardEvalState gameState = this.simulationChessboard.evaluateChessboardFromWhitesPerpective();
+                if (gameState == ChessboardEvalState.NORMAl) {
+                    ArrayList<Move> legalMoves = this.simulationChessboard.getLegalMoves();
+                    Random random = new Random();
+                    Move selectedMove = legalMoves.get(random.nextInt(legalMoves.size()));
+                    this.simulationChessboard.makeAMove(selectedMove.moveNumber);
                 }
                 else {
-                    if (itsWhitesTurn) {
-                        int moveNo = WhiteMoveFinder.findWhiteMove(this.simulationChessboard, MCTSSetup.WHITE_SIMULATION_STRATEGY);
-                        this.simulationChessboard.makeAMove(moveNo);
-                        itsWhitesTurn = !itsWhitesTurn;
+                    if (gameState == ChessboardEvalState.BLACK_KING_MATED) {
+                        ++this.stats.numberOfMatsInSimulation;
+                        ++rez;
                     }
-                    else {
-                        int moveNo = BlackMoveFinder.findBlackKingMove(this.simulationChessboard, MCTSSetup.BLACK_SIMULATION_STRATEGY);
-                        this.simulationChessboard.makeAMove(moveNo);
-                        itsWhitesTurn = !itsWhitesTurn;
-                    }
-                }
-                currDepth++;
-                if (currDepth > MCTSSetup.MAX_DEPTH) {
                     break;
                 }
             }
+
         }
 
         return rez;
@@ -247,21 +256,19 @@ public class MCT {
         this.resetSimulationChessboard();
 
         MCTNode node = this.selection(this.root);
-
-        node = this.simulationAddsOneNode(node);
-
         int diff = this.simulation(node);
 
         SimpleChessboard newCB = new Chessboard("temp eval", node);
 
         boolean nodeIsMat = newCB.evaluateChessboard() == ChessboardEvalState.BLACK_KING_MATED;
 
-        this.backPropagation(node, diff, MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION, node.mcDepth, nodeIsMat);
+        this.backPropagation(node, diff, node.mcDepth, nodeIsMat);
     }
 
 
     /**
-     * Makes a move update on MC tree.
+     * Chooses a root child that represent move number. If such child does not
+     * exist then a new root node is created (a tree collapse happens).
      * 
      * @param moveNumber
      *            move that will be made
@@ -286,13 +293,13 @@ public class MCT {
 
 
     /**
-     * Finds move number fir given strategies.
+     * Finds a legal move that can be played.
      * 
      * @param whiteChoosingStrategy
-     *            white move choosing strategy
+     *            white player strategy
      * @param blackChoosingStrategy
-     *            black move choosing strategy
-     * @return move number
+     *            black player strategy.
+     * @return random legal move number.
      * @throws ChessboardException
      */
     public int chooseAMoveNumber(WhiteChooserStrategy whiteChoosingStrategy, BlackFinderStrategy blackChoosingStrategy) throws ChessboardException {
@@ -330,7 +337,6 @@ public class MCT {
      * @throws ChessboardException
      */
     public ChessboardEvalState evaluateMainChessBoardState() throws ChessboardException {
-        if (this.root.moveDepth > MCTSSetup.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
         return this.mainChessboard.evaluateChessboard();
     }
 
@@ -362,7 +368,6 @@ public class MCT {
      */
     public int getCurrentTreeSize() {
 
-        // return subtree size + 1 (root node)
         return this.root.getNumberOfSuccessors() + 1;
     }
 

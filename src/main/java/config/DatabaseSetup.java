@@ -24,7 +24,7 @@ public class DatabaseSetup {
     public static String  USER;
 
     /** Flag that tells if program will use DB */
-    public static boolean DB_ENABLED;
+    public static boolean DB_ENABLED  = true;
 
 
     /**
@@ -41,7 +41,7 @@ public class DatabaseSetup {
         DatabaseSetup.HOST = bundle.getString("host");
         DatabaseSetup.PASSWORD = bundle.getString("password");
         DatabaseSetup.USER = bundle.getString("username");
-        DatabaseSetup.DB_ENABLED = Boolean.parseBoolean(bundle.getString("db.enabled"));
+        DatabaseSetup.DB_ENABLED = false;// Boolean.parseBoolean(bundle.getString("db.enabled"));
     }
 
 }

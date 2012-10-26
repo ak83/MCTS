@@ -5,10 +5,9 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
-import config.MCTSSetup;
-
 import chess.Move;
 import chess.chessboard.Chessboard;
+import config.MCTSSetup;
 import exceptions.ChessboardException;
 
 /**
@@ -22,6 +21,33 @@ public class WhiteMoveFinder {
 
 
     /**
+     * Finds whites moves for given strategy.
+     * 
+     * @param board
+     *            board on which we search
+     * @param strategy
+     *            white simulation strategy
+     * @return legal moves according to {@link WhiteFinderStrategy}
+     * @throws ChessboardException
+     */
+    public static ArrayList<Move> findWhiteMoves(Chessboard board, WhiteFinderStrategy strategy) throws ChessboardException {
+        switch (strategy) {
+            case RANDOM:
+                return board.getAllLegalWhiteMoves();
+            case KRRK_ENDING:
+            case KQK_ENDING:
+                return WhiteMoveFinder.generalHeuristics(board);
+            case KRK_ENDING:
+                return WhiteMoveFinder.findKRKWhiteMove(board);
+            case KBBK_ENDING:
+                return WhiteMoveFinder.findKBBKWhiteMove(board);
+            default:
+                return null;
+        }
+    }
+
+
+    /**
      * Finds whites move number for given strategy and set heuristics.
      * 
      * @param board
@@ -32,19 +58,12 @@ public class WhiteMoveFinder {
      * @throws ChessboardException
      */
     public static int findWhiteMove(Chessboard board, WhiteFinderStrategy strategy) throws ChessboardException {
-        switch (strategy) {
-            case RANDOM:
-                return WhiteMoveFinder.findRandomWhiteMove(board.getAllLegalWhitePlies());
-            case KRRK_ENDING:
-                return WhiteMoveFinder.findKRRKWhiteMove(board);
-            case KQK_ENDING:
-                return WhiteMoveFinder.findKQKWhiteMove(board);
-            case KRK_ENDING:
-                return WhiteMoveFinder.findKRKWhiteMove(board);
-            case KBBK_ENDING:
-                return WhiteMoveFinder.findKBBKWhiteMove(board);
-            default:
-                return -1;
+        ArrayList<Move> rez = WhiteMoveFinder.findWhiteMoves(board, strategy);
+        if (rez == null) {
+            return -1;
+        }
+        else {
+            return WhiteMoveFinder.getRandomMoveNumberFromArrayList(rez);
         }
     }
 
@@ -58,17 +77,18 @@ public class WhiteMoveFinder {
      * @return whites move corresponding to set heuristics
      * @throws ChessboardException
      */
-    private static int findKRKWhiteMove(Chessboard board) throws ChessboardException {
+    @SuppressWarnings("unchecked")
+    public static ArrayList<Move> findKRKWhiteMove(Chessboard board) throws ChessboardException {
         ArrayList<Move> rez = WhiteMoveFinder.generalHeuristics(board);
 
         if (MCTSSetup.KRK_HEURISTICS_white_checkes_if_kings_are_in_opposition) {
             ArrayList<Move> opp = board.KRKWhiteMovesWhereRookChecksIfKingsAreInOpposition(rez);
             if (opp.size() != 0) {
-                rez = opp;
+                rez = (ArrayList<Move>) opp.clone();
             }
         }
 
-        return WhiteMoveFinder.getRandomMoveNumberFromArrayList(rez);
+        return rez;
     }
 
 
@@ -81,18 +101,19 @@ public class WhiteMoveFinder {
      * @return whites move corresponding to set heuristics
      * @throws ChessboardException
      */
-    private static int findKBBKWhiteMove(Chessboard board) throws ChessboardException {
+    @SuppressWarnings("unchecked")
+    private static ArrayList<Move> findKBBKWhiteMove(Chessboard board) throws ChessboardException {
 
         ArrayList<Move> rez = WhiteMoveFinder.generalHeuristics(board);
 
         if (MCTSSetup.KBBK_HEURISTICS_white_tries_to_put_bishops_on_adjacent_diagonals) {
             ArrayList<Move> diagonal = board.KBBKWhiteMovesWhereBishopsAreOnAdjacentDiagonals(rez);
             if (diagonal.size() != 0) {
-                rez = diagonal;
+                rez = (ArrayList<Move>) diagonal.clone();
             }
         }
 
-        return WhiteMoveFinder.getRandomMoveNumberFromArrayList(rez);
+        return rez;
     }
 
 
@@ -103,7 +124,7 @@ public class WhiteMoveFinder {
      *            moves
      * @return random move number from list
      */
-    private static int getRandomMoveNumberFromArrayList(ArrayList<Move> moves) {
+    public static int getRandomMoveNumberFromArrayList(ArrayList<Move> moves) {
         int index = WhiteMoveFinder.random.nextInt(moves.size());
         return moves.get(index).moveNumber;
     }
@@ -119,7 +140,7 @@ public class WhiteMoveFinder {
     protected static ArrayList<Move> generalHeuristics(Chessboard board) {
         ArrayList<Move> rez = null;
         try {
-            rez = board.getAllLegalWhitePlies();
+            rez = board.getAllLegalWhiteMoves();
         }
         catch (ChessboardException e) {
             throw new RuntimeErrorException(new Error(e));
@@ -171,51 +192,6 @@ public class WhiteMoveFinder {
         }
 
         return rez;
-    }
-
-
-    /**
-     * Gets random ply number from a list of plies
-     * 
-     * @param plies
-     *            list of plies
-     * @return ply number selected from plies
-     */
-    private static int findRandomWhiteMove(ArrayList<Move> plies) {
-        int rez = WhiteMoveFinder.random.nextInt(plies.size());
-        return plies.get(rez).moveNumber;
-    }
-
-
-    /**
-     * Finds next whites ply number in simulations for KRRK ending for set
-     * heuristics.
-     * 
-     * @param board
-     *            chess board on which we search for ply number
-     * @return valid ply number that corresponds to set heuristics
-     * @throws ChessboardException
-     */
-    private static int findKRRKWhiteMove(Chessboard board) throws ChessboardException {
-        ArrayList<Move> rez = WhiteMoveFinder.generalHeuristics(board);
-
-        return WhiteMoveFinder.getRandomMoveNumberFromArrayList(rez);
-    }
-
-
-    /**
-     * Finds next whites ply number in simulations for KQK ending for set
-     * heuristics.
-     * 
-     * @param board
-     *            chess board on which we search for move
-     * @return valid ply number that corresponds to set heuristics
-     * @throws ChessboardException
-     */
-    private static int findKQKWhiteMove(Chessboard board) throws ChessboardException {
-        ArrayList<Move> rez = WhiteMoveFinder.generalHeuristics(board);
-
-        return WhiteMoveFinder.getRandomMoveNumberFromArrayList(rez);
     }
 
 }

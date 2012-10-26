@@ -39,7 +39,7 @@ public class TestWhiteMoveFinder {
 
         System.out.println(TestWhiteMoveFinder.cbKRK);
 
-        TestWhiteMoveFinder.allCbKRKMoves = TestWhiteMoveFinder.cbKRK.getAllLegalWhitePlies();
+        TestWhiteMoveFinder.allCbKRKMoves = TestWhiteMoveFinder.cbKRK.getAllLegalWhiteMoves();
         int x = 0;
         for (Move move : TestWhiteMoveFinder.allCbKRKMoves) {
             System.out.println(x + ": " + move);

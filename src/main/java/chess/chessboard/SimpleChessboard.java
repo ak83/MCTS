@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import config.MCTSSetup;
-
 import utils.ChessboardUtils;
 import utils.Utils;
 import chess.Move;
+import config.MCTSSetup;
 import exceptions.ChessboardException;
 
 public class SimpleChessboard implements Cloneable {
@@ -323,7 +322,7 @@ public class SimpleChessboard implements Cloneable {
      * @return ArrayList<Move> vseh moznih belih potez
      * @throws ChessboardException
      */
-    public ArrayList<Move> getAllLegalWhitePlies() throws ChessboardException {
+    public ArrayList<Move> getAllLegalWhiteMoves() throws ChessboardException {
 
         ArrayList<Move> rez = new ArrayList<Move>();
         for (int x = 0; x < 16; x++) {
@@ -693,12 +692,19 @@ public class SimpleChessboard implements Cloneable {
      * 
      * @return evaluation of chess board state
      */
-    public ChessboardEvalState evaluateChessboardFromWhitesPerpective() throws ChessboardException {
-        if (this.isBlackKingMated()) { return ChessboardEvalState.BLACK_KING_MATED; }
-        if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
-        if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return ChessboardEvalState.WHITE_PIECE_IN_DANGER; }
-        if (this.numberOfMovesMade > MCTSSetup.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
-        if (this.wasBoardStateRepeatedThreeTimes) { return ChessboardEvalState.DRAW; }
+    public ChessboardEvalState evaluateChessboardFromWhitesPerpective() {
+        try {
+            if (this.isBlackKingMated()) { return ChessboardEvalState.BLACK_KING_MATED; }
+            if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
+            if (this.isAnyWhiteFigureUnderAttackFromBlack() && !this.isWhitesTurn) { return ChessboardEvalState.WHITE_PIECE_IN_DANGER; }
+            if (this.numberOfMovesMade >= MCTSSetup.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
+            if (this.wasBoardStateRepeatedThreeTimes) { return ChessboardEvalState.DRAW; }
+        }
+        catch (ChessboardException e) {
+            e.printStackTrace();
+            System.err.println("UNEXPECTED STATE OF CHESSBOARD");
+            System.exit(1);
+        }
 
         return ChessboardEvalState.NORMAl;
     }
@@ -715,7 +721,7 @@ public class SimpleChessboard implements Cloneable {
 
         if (this.isBlackKingPatted()) { return ChessboardEvalState.PAT; }
         if (this.wasBoardStateRepeatedThreeTimes) { return ChessboardEvalState.DRAW; }
-        if (this.numberOfMovesMade > MCTSSetup.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
+        if (this.numberOfMovesMade >= MCTSSetup.MAX_DEPTH) { return ChessboardEvalState.TOO_MANY_MOVES_MADE; }
 
         return ChessboardEvalState.NORMAl;
     }

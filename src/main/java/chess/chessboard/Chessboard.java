@@ -3,12 +3,15 @@ package chess.chessboard;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import config.MCTSSetup;
-
 import mct.MCTNode;
+import moveFinders.BlackFinderStrategy;
+import moveFinders.BlackMoveFinder;
+import moveFinders.WhiteFinderStrategy;
+import moveFinders.WhiteMoveFinder;
 import utils.ChessboardUtils;
 import utils.Utils;
 import chess.Move;
+import config.MCTSSetup;
 import exceptions.ChessboardException;
 
 public class Chessboard extends SimpleChessboard implements Cloneable {
@@ -412,6 +415,23 @@ public class Chessboard extends SimpleChessboard implements Cloneable {
             }
         }
         return rez;
+    }
+
+
+    /**
+     * Generates list of legal moves with accordance to the
+     * {@link WhiteFinderStrategy} and {@link BlackFinderStrategy}.
+     * 
+     * @return a list of moves that are valid in simulations.
+     * @throws ChessboardException
+     */
+    public ArrayList<Move> getLegalMoves() throws ChessboardException {
+        if (this.isWhitesTurn) {
+            return WhiteMoveFinder.findWhiteMoves(this, MCTSSetup.WHITE_SIMULATION_STRATEGY);
+        }
+        else {
+            return BlackMoveFinder.findBlackKingMoves(this, MCTSSetup.BLACK_SIMULATION_STRATEGY);
+        }
     }
 
 }

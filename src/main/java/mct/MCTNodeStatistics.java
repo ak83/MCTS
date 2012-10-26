@@ -2,6 +2,7 @@ package mct;
 
 import moveChoosers.WhiteMoveChooser;
 import utils.MCTUtils;
+import chess.chessboard.ChessboardEvalState;
 
 /**
  * Contains statistics related to {@link MCTNode}.
@@ -36,6 +37,8 @@ public class MCTNodeStatistics {
      *            parent of {@link MCTNode}s that will update statistics
      */
     public void updateNodeStats(MCTNode node) {
+        // if this is terminal node, we dont to add statistics from its children
+        if (node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) { return; }
         for (MCTNode son : node.nextMoves) {
             this.sumOfCheckmatesPerNode += son.numberOfMatsInNode;
             this.sumOfVisitCountPerNode += son.visitCount;

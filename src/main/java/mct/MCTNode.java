@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import javax.management.RuntimeErrorException;
 
-import config.MCTSSetup;
-
+import moveFinders.WhiteFinderStrategy;
 import utils.MCTUtils;
 import utils.Utils;
+import chess.Move;
 import chess.chessboard.Chessboard;
 import chess.chessboard.ChessboardEvalState;
 import chess.chessboard.SimpleChessboard;
+import config.MCTSSetup;
 import exceptions.ChessboardException;
 
 /**
@@ -57,7 +58,7 @@ public class MCTNode {
     public boolean              isWhitesMove;
 
     /** Chess board state belonging to this ply */
-    public SimpleChessboard     chessboard;
+    public Chessboard           chessboard;
 
     /**
      * Tells depth difference between this node and it's deepest descendant.
@@ -80,6 +81,12 @@ public class MCTNode {
      */
     private int                 numberOfSuccessors                            = 0;
 
+    /**
+     * All moves that are possible from this node according to
+     * {@link WhiteFinderStrategy}
+     */
+    public ArrayList<Move>      validMoves;
+
 
     /**
      * Constructor that has receives board state from <code>board</code>.
@@ -94,9 +101,10 @@ public class MCTNode {
         this.visitCount = 1;
         this.c = MCTSSetup.C;
         this.isWhitesMove = true;
-        this.chessboard = (SimpleChessboard) board.clone();
+        this.chessboard = (Chessboard) board.clone();
         try {
             this.evalFromWhitesPerspective = board.evaluateChessboardFromWhitesPerpective();
+            this.validMoves = this.chessboard.getLegalMoves();
         }
         catch (ChessboardException e) {
             throw new RuntimeErrorException(new Error(e));
@@ -122,10 +130,11 @@ public class MCTNode {
         this.isWhitesMove = !parent.isWhitesMove;
         this.mcDepth = parent.mcDepth + 1;
 
-        SimpleChessboard temp = new Chessboard("temp", parent);
+        Chessboard temp = new Chessboard("temp", parent);
         temp.makeAMove(moveNumber);
         this.chessboard = temp;
         this.evalFromWhitesPerspective = temp.evaluateChessboardFromWhitesPerpective();
+        this.validMoves = this.chessboard.getLegalMoves();
     }
 
 
@@ -149,10 +158,11 @@ public class MCTNode {
         this.c = MCTSSetup.C;
         this.isWhitesMove = Utils.isWhitesMoveAtDepth(depth);
 
-        SimpleChessboard temp = new Chessboard(boardState, "temp");
+        Chessboard temp = new Chessboard(boardState, "temp");
         temp.makeAMove(moveNumber);
         this.chessboard = temp;
         this.evalFromWhitesPerspective = temp.evaluateChessboardFromWhitesPerpective();
+        this.validMoves = this.chessboard.getLegalMoves();
     }
 
 
@@ -164,12 +174,14 @@ public class MCTNode {
      *            move number
      * @throws ChessboardException
      */
-    public void addNextMove(int moveNumber) throws ChessboardException {
+    public MCTNode addNextMove(int moveNumber) throws ChessboardException {
         if (this.nextMoves == null) {
             this.nextMoves = new ArrayList<MCTNode>();
         }
 
-        this.nextMoves.add(new MCTNode(this, moveNumber));
+        final MCTNode newNode = new MCTNode(this, moveNumber);
+        this.nextMoves.add(newNode);
+        return newNode;
     }
 
 
@@ -253,6 +265,20 @@ public class MCTNode {
      */
     public int getNumberOfSuccessors() {
         return this.numberOfSuccessors;
+    }
+
+
+    public ArrayList<Move> getLegalMoves() {
+        return this.validMoves;
+    }
+
+
+    /**
+     * Check is each possible move (according to {@link WhiteFinderStrategy} )
+     * has been added as a child node.
+     */
+    public boolean areAllChildrenAdded() {
+        return this.validMoves.size() == this.nextMoves.size();
     }
 
 }

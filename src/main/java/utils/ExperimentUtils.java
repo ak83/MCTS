@@ -66,7 +66,7 @@ public class ExperimentUtils {
                 MCTSSetup.C = value;
                 break;
             case GOBAN:
-                MCTSSetup.GOBAN = value.intValue();
+                MCTSSetup.THRESHOLD_T = value.intValue();
                 break;
             case STEPS:
                 MCTSSetup.NUMBER_OF_RUNNING_STEPS = value.intValue();

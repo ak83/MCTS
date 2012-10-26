@@ -36,9 +36,9 @@ public class MCTSSetup {
     public static int                  NUMBER_OF_GAMES_PLAYED;
 
     /**
-     * maximum tree depth ( maximum ply count for single match) - 1.
+     * The maximum tree depth ( maximum ply count for single match).
      */
-    public static int                  MAX_DEPTH                                                                       = 99;
+    public static int                  MAX_DEPTH                                                                       = 100;
 
     /**
      * C constant to be used by MCT nodes.
@@ -48,7 +48,7 @@ public class MCTSSetup {
     /**
      * Goban value to be used by MCT algorithm.
      */
-    public static int                  GOBAN;
+    public static int                  THRESHOLD_T;
 
     /**
      * How many simulations is run on node that is newly added to MC tree.
@@ -246,7 +246,7 @@ public class MCTSSetup {
         rez += "EMD_DIR " + IOSetup.EMD_DIR + "\r\n";
         rez += "MAX_DEPTH " + MCTSSetup.MAX_DEPTH + " (maximum number of plys in chessgame)\r\n";
         rez += "C " + MCTSSetup.C + "\r\n";
-        rez += "GOBAN " + MCTSSetup.GOBAN + "\r\n";
+        rez += "GOBAN " + MCTSSetup.THRESHOLD_T + "\r\n";
         rez += "NUMBER_OF_SIMULATIONS_PER_EVALUATION " + MCTSSetup.NUMBER_OF_SIMULATIONS_PER_EVALUATION + " (how many simulation we run per every added node)\r\n";
         rez += "ENDING " + MCTSSetup.ENDING + "\r\n";
 
@@ -420,7 +420,7 @@ public class MCTSSetup {
                         System.exit(1);
                     }
 
-                    MCTSSetup.GOBAN = goban;
+                    MCTSSetup.THRESHOLD_T = goban;
                     MCTSSetup.FILE_MANDATORY_PARAMETERS[2] = true;
 
                 }

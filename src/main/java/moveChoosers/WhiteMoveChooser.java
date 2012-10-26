@@ -62,6 +62,7 @@ public class WhiteMoveChooser {
      * @return indexes of son nodes with highest visit count
      */
     private static int chooseMaxVisitCountMove(MCTNode node) {
+
         ArrayList<Integer> rezCand = new ArrayList<Integer>();
 
         int maxVC = 0;

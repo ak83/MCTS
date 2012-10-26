@@ -5,13 +5,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
-import config.IOSetup;
-
 import utils.FruitUtils;
 import utils.MoveFindersUtils;
 import chess.Move;
 import chess.chessboard.Chessboard;
 import chess.chessboard.SimpleChessboard;
+import config.IOSetup;
 import exceptions.ChessboardException;
 
 /**
@@ -26,6 +25,53 @@ public class BlackMoveFinder {
 
 
     /**
+     * Finds the black player's move numbers for the given strategy.
+     * 
+     * @param board
+     *            board on which we look for move number
+     * @param strategy
+     *            desired black king strategy
+     * @return a list of move numbers for the given {@link BlackFinderStrategy}
+     * @throws ChessboardException
+     */
+    @SuppressWarnings("unchecked")
+    public static ArrayList<Move> findBlackKingMoves(Chessboard board, BlackFinderStrategy strategy) throws ChessboardException {
+        ArrayList<Move> moves = board.getAllLegalBlackKingMoves();
+
+        if (moves.size() == 0) { return null; }
+
+        switch (strategy) {
+            case RANDOM:
+                return moves;
+            case CENTER:
+                return BlackMoveFinder.findBlackKingCenterMove(moves);
+            case PERFECT:
+                return BlackMoveFinder.findBlackPerfectMove(board);
+            case GOOD: { // crni tezi proti centru, toda ce je mozno pa poje
+                         // belo
+                // figuro, poleg tega se pa tudi izgiba opoziciji kraljev
+                ArrayList<Move> blackEats = board.movesWhereBlackKingEatsWhite();
+                if (blackEats.size() == 0) {
+                    ArrayList<Move> avoidsOpp = board.movesWhereBlackKingEvadesOposition(moves);
+                    if (avoidsOpp.size() == 0) {
+                        return BlackMoveFinder.findBlackKingCenterMove(moves);
+                    }
+                    else {
+                        return BlackMoveFinder.findBlackKingCenterMove(avoidsOpp);
+                    }
+                }
+                else {
+                    return (ArrayList<Move>) blackEats.clone();
+                }
+            }
+            default:
+                return null;
+        }
+
+    }
+
+
+    /**
      * Finds blacks black move number for given strategy.
      * 
      * @param board
@@ -36,40 +82,13 @@ public class BlackMoveFinder {
      * @throws ChessboardException
      */
     public static int findBlackKingMove(Chessboard board, BlackFinderStrategy strategy) throws ChessboardException {
-        ArrayList<Move> moves = board.getAllLegalBlackKingMoves();
-
-        if (moves.size() == 0) { return -1; }
-
-        switch (strategy) {
-            case RANDOM:
-                return BlackMoveFinder.findBlackKingRandomMove(moves);
-            case CENTER:
-                return BlackMoveFinder.findBlackKingCenterMove(moves);
-            case PERFECT:
-                return BlackMoveFinder.findBlackPerfectMove(board);
-            case GOOD: { // crni tezi proti centru, toda ce je mozno pa poje
-                         // belo
-                // figuro, poleg tega se pa tudi izgiba opoziciji kraljev
-                ArrayList<Move> blackEats = board.movesWhereBlackKingEatsWhite();
-                if (blackEats.size() == 0) {
-                    if (true) {
-                        ArrayList<Move> avoidsOpp = board.movesWhereBlackKingEvadesOposition(moves);
-                        if (avoidsOpp.size() == 0) {
-                            return BlackMoveFinder.findBlackKingCenterMove(moves);
-                        }
-                        else {
-                            return BlackMoveFinder.findBlackKingCenterMove(avoidsOpp);
-                        }
-                    }
-                }
-                else {
-                    return BlackMoveFinder.findBlackKingRandomMove(blackEats);
-                }
-            }
-            default:
-                return -1;
+        ArrayList<Move> moves = BlackMoveFinder.findBlackKingMoves(board, strategy);
+        if (moves == null) {
+            return -1;
         }
-
+        else {
+            return BlackMoveFinder.findBlackKingRandomMove(moves);
+        }
     }
 
 
@@ -79,9 +98,9 @@ public class BlackMoveFinder {
      * 
      * @param moves
      *            moves from which we get those who go towards center.
-     * @return move number for center black king strategy
+     * @return moves for center black king strategy
      */
-    private static int findBlackKingCenterMove(ArrayList<Move> moves) {
+    private static ArrayList<Move> findBlackKingCenterMove(ArrayList<Move> moves) {
         int minDist = MoveFindersUtils.findMinimumDistanceFromCenterFromPlies(moves);
         ArrayList<Move> rezMoves = new ArrayList<Move>();
 
@@ -92,7 +111,7 @@ public class BlackMoveFinder {
             }
         }
 
-        return BlackMoveFinder.findBlackKingRandomMove(rezMoves);
+        return rezMoves;
     }
 
 
@@ -116,7 +135,7 @@ public class BlackMoveFinder {
      *            board on which we search for move
      * @return move number for black king that uses perfect strategy
      */
-    private static int findBlackPerfectMove(SimpleChessboard board) {
+    private static ArrayList<Move> findBlackPerfectMove(SimpleChessboard board) {
         try {
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(IOSetup.FRUIT_FILEPATH);
@@ -143,12 +162,15 @@ public class BlackMoveFinder {
             input.close();
             pr.destroy();
             h = h.substring(9, 13);
-            return board.constructMoveNumberFromString(h);
+            int bestMove = board.constructMoveNumberFromString(h);
+            ArrayList<Move> rez = new ArrayList<Move>();
+            rez.add(new Move(bestMove));
+            return rez;
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return -1;
+        return null;
     }
 
 

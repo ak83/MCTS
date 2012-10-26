@@ -1,5 +1,10 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import chess.Move;
+
 /**
  * Class that hold util methods for Chessboard (some older methods are in
  * exec.Utils.java).
@@ -111,6 +116,20 @@ public class ChessboardUtils {
             return true;
         else
             return false;
+    }
+
+
+    /**
+     * Picks a random move from the given list.
+     * 
+     * @param list
+     *            a list of moves to choose from
+     * @return chosen {@link Move}
+     */
+    public static Move getRandomMoveFromList(ArrayList<Move> list) {
+        Random random = new Random();
+        int index = random.nextInt(list.size());
+        return list.get(index);
     }
 
 
