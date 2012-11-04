@@ -39,7 +39,7 @@ public class MCTNodeStatistics {
     public void updateNodeStats(MCTNode node) {
         // if this is terminal node, we dont to add statistics from its children
         if (node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) { return; }
-        for (MCTNode son : node.nextMoves) {
+        for (MCTNode son : node.children.values()) {
             this.sumOfCheckmatesPerNode += son.numberOfMatsInNode;
             this.sumOfVisitCountPerNode += son.visitCount;
             this.sumOfMaxSubTreeDepthPerNode += son.maximumSubTreeDepth;

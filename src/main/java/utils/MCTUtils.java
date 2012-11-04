@@ -2,14 +2,13 @@ package utils;
 
 import java.util.ArrayList;
 
-import config.MCTSSetup;
-
 import mct.MCTNode;
 import moveFinders.BlackFinderStrategy;
 import moveFinders.BlackMoveFinder;
 import moveFinders.WhiteFinderStrategy;
 import moveFinders.WhiteMoveFinder;
 import chess.chessboard.Chessboard;
+import config.MCTSSetup;
 import exceptions.ChessboardException;
 
 /**
@@ -49,42 +48,40 @@ public class MCTUtils {
      * 
      * @param node
      *            parent of children we computing ratings from.
-     * @return list of indexes, which tell us which children have highest
-     *         rating.
+     * @return list of <code>node</code>'s children that have highest UCT value
      */
-    public static ArrayList<Integer> getInedexesWithMaxRating(MCTNode node) {
-        ArrayList<Integer> rez = new ArrayList<Integer>();
+    public static ArrayList<MCTNode> getNodesWithMaxRating(MCTNode node) {
+        ArrayList<MCTNode> rez = new ArrayList<MCTNode>();
 
-        if (node.nextMoves.size() == 0) { return rez; }
+        if (node.children.size() == 0) { return rez; }
 
         double maxRating = -Double.MAX_VALUE;
         double currRating = -Double.MAX_VALUE;
 
-        for (int x = 0; x < node.nextMoves.size(); x++) {
-            currRating = MCTUtils.computeNodeRating(node.nextMoves.get(x));
+        for (MCTNode currNode : node.children.values()) {
+            currRating = MCTUtils.computeNodeRating(currNode);
 
             if (currRating > maxRating) {
                 maxRating = currRating;
-                rez = new ArrayList<Integer>();
+                rez = new ArrayList<MCTNode>();
             }
 
             if (currRating == maxRating) {
-                rez.add(x);
+                rez.add(currNode);
             }
         }
 
         // if flag is on then we only use those with highest visit count
         if (MCTSSetup.SELECTION_ALSO_USES_VISIT_COUNT_FOR_NODE_CHOOSING) {
             int maxVisitCount = Integer.MIN_VALUE;
-            ArrayList<Integer> filteredRez = new ArrayList<Integer>();
-            for (Integer x : rez) {
-                MCTNode currNode = node.nextMoves.get(x);
+            ArrayList<MCTNode> filteredRez = new ArrayList<MCTNode>();
+            for (MCTNode currNode : rez) {
                 if (currNode.visitCount > maxVisitCount) {
                     maxVisitCount = currNode.visitCount;
-                    filteredRez = new ArrayList<Integer>();
+                    filteredRez = new ArrayList<MCTNode>();
                 }
                 if (currNode.visitCount == maxVisitCount) {
-                    filteredRez.add(x);
+                    filteredRez.add(currNode);
                 }
             }
             return filteredRez;

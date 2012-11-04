@@ -1,6 +1,7 @@
 package mct;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.management.RuntimeErrorException;
 
@@ -22,70 +23,70 @@ import exceptions.ChessboardException;
 public class MCTNode {
 
     /** Parent of current node */
-    public MCTNode              parent;
+    public MCTNode                parent;
 
     /** This nodes descendants */
-    public ArrayList<MCTNode>   nextMoves;
+    public HashMap<Move, MCTNode> children;
 
     /**
      * consecutive ply number of node (consecutive ply made in chess game).
      */
-    public int                  moveDepth;
+    public int                    moveDepth;
 
     /** Nodes depth in MCT tree. */
-    public int                  mcDepth                                       = 1;
+    public int                    mcDepth                                       = 1;
 
     /** Ply number. */
-    public int                  moveNumber;
+    public int                    moveNumber;
 
     /** How many times has this node been visited. */
-    public int                  visitCount;
+    public int                    visitCount;
 
     /**
      * Number of times check mate has been achieved when NCT algorithm visited
      * this node
      */
-    public int                  numberOfMatsInNode                            = 0;
+    public int                    numberOfMatsInNode                            = 0;
 
     /**
      * C constant in MCT algorithm. Represents exploration/exploitation ration.
      * Higher that C value is more it favors exploration, lower the C value is
      * more it favors exploitation.
      */
-    public double               c;
+    public double                 c;
 
     /** Tells if its whites turn in current ply */
-    public boolean              isWhitesMove;
+    public boolean                isWhitesMove;
 
     /** Chess board state belonging to this ply */
-    public Chessboard           chessboard;
+    public Chessboard             chessboard;
 
     /**
      * Tells depth difference between this node and it's deepest descendant.
      */
-    public int                  maximumSubTreeDepth                           = -1;
+    public int                    maximumSubTreeDepth                           = -1;
     /**
      * Tells depth difference between this node and it's highest descendant that
      * represents check mate.
      */
-    public int                  minimumDepthOfDescendadWhoRepresentsCheckMate = Integer.MAX_VALUE;
+    public int                    minimumDepthOfDescendadWhoRepresentsCheckMate = Integer.MAX_VALUE;
 
     /**
      * Value of evaluateChessboardFromWhitesPerspective from chess board that is
      * represented with this node
      */
-    private ChessboardEvalState evalFromWhitesPerspective;
+    private ChessboardEvalState   evalFromWhitesPerspective;
 
     /**
      * Number of nodes successors (subtree size)
      */
-    private int                 numberOfSuccessors                            = 0;
+    private int                   numberOfSuccessors                            = 0;
 
     /**
      * All moves that are possible from this node according to
      * {@link WhiteFinderStrategy}
      */
-    public ArrayList<Move>      validMoves;
+    public ArrayList<Move>        validMoves;
 
 
     /**
@@ -168,19 +169,19 @@ public class MCTNode {
 
     /**
      * Creates child node that represents chess board state that we get by
-     * making a move from current instances chess board state.
+     * making a move from current instance's chess board state.
      * 
-     * @param moveNumber
-     *            move number
+     * @param move
+     *            the move made from this instance
      * @throws ChessboardException
      */
-    public MCTNode addNextMove(int moveNumber) throws ChessboardException {
-        if (this.nextMoves == null) {
-            this.nextMoves = new ArrayList<MCTNode>();
+    public MCTNode addNextMove(Move move) throws ChessboardException {
+        if (this.children == null) {
+            this.children = new HashMap<Move, MCTNode>();
         }
 
-        final MCTNode newNode = new MCTNode(this, moveNumber);
-        this.nextMoves.add(newNode);
+        final MCTNode newNode = new MCTNode(this, move.moveNumber);
+        this.children.put(move, newNode);
         return newNode;
     }
 
@@ -195,11 +196,11 @@ public class MCTNode {
                 + this.numberOfMatsInNode + ", visitCount: " + this.visitCount + ", isWhitesMove: " + this.isWhitesMove + ", maximumSubTreeDepth: "
                 + this.maximumSubTreeDepth + ", minumumDepthOfDescendWhoRepresentsMat: " + this.minimumDepthOfDescendadWhoRepresentsCheckMate
                 + ", checkmateRatio " + (this.numberOfMatsInNode / (double) this.visitCount);
-        if (this.nextMoves == null) {
+        if (this.children == null) {
             s = s + ", stevilo naslednikov: nerazvito";
         }
         else {
-            s = s + ", stevilo naslednikov: " + this.nextMoves.size();
+            s = s + ", stevilo naslednikov: " + this.children.size();
         }
         return s;
     }
@@ -215,13 +216,14 @@ public class MCTNode {
         String newLine = System.getProperty("line.separator");
         sb.append("\tid,\tdepth,\tmove,\tnumberOfCheckmates,\tvisitcount,\tUCTRank,\tmaximumSubTreeDepth,\tminimumDepthOfDescendadThatRepresentCheckmate,\tcheckmateRatio"
                 + newLine);
-        if (this.nextMoves != null) {
-            for (int x = 0; x < this.nextMoves.size(); x++) {
-                MCTNode n = this.nextMoves.get(x);
-                sb.append("\t" + (x + 1) + ",\t" + n.moveDepth + ",\t" + Utils.singleMoveNumberToString(n.moveNumber) + ",\t" + n.numberOfMatsInNode + ",\t"
-                        + n.visitCount + ",\t" + MCTUtils.computeNodeRating(n) + ",\t" + n.maximumSubTreeDepth + ",\t"
-                        + (n.minimumDepthOfDescendadWhoRepresentsCheckMate != Integer.MAX_VALUE ? n.minimumDepthOfDescendadWhoRepresentsCheckMate : "-1")
-                        + ",\t" + (n.numberOfMatsInNode / (double) n.visitCount) + newLine);;
+        int x = 0;
+        if (this.children != null) {
+            for (MCTNode son : this.children.values()) {
+                sb.append("\t" + (x + 1) + ",\t" + son.moveDepth + ",\t" + Utils.singleMoveNumberToString(son.moveNumber) + ",\t" + son.numberOfMatsInNode
+                        + ",\t" + son.visitCount + ",\t" + MCTUtils.computeNodeRating(son) + ",\t" + son.maximumSubTreeDepth + ",\t"
+                        + (son.minimumDepthOfDescendadWhoRepresentsCheckMate != Integer.MAX_VALUE ? son.minimumDepthOfDescendadWhoRepresentsCheckMate : "-1")
+                        + ",\t" + (son.numberOfMatsInNode / (double) son.visitCount) + newLine);
+                ++x;
             }
         }
         else {
@@ -246,12 +248,12 @@ public class MCTNode {
      * successor nodes must also be updated.
      */
     public void updateNumberOfSuccessors() {
-        if (this.nextMoves != null) {
+        if (this.children != null) {
             // initialize to number of child nodes
-            this.numberOfSuccessors = this.nextMoves.size();
+            this.numberOfSuccessors = this.children.size();
 
             // add number of child nodes successors
-            for (MCTNode subNode : this.nextMoves) {
+            for (MCTNode subNode : this.children.values()) {
                 this.numberOfSuccessors += subNode.getNumberOfSuccessors();
             }
         }
@@ -278,7 +280,7 @@ public class MCTNode {
      * has been added as a child node.
      */
     public boolean areAllChildrenAdded() {
-        return this.validMoves.size() == this.nextMoves.size();
+        return this.validMoves.size() == this.children.size();
     }
 
 }

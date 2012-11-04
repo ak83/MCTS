@@ -361,25 +361,6 @@ public class Utils {
 
 
     /**
-     * Returns index of nodes children that has selected move number.
-     * 
-     * @param movenumber
-     *            move number
-     * @param node
-     *            node which children will be checked
-     * @return index of nodes children that has selected move number or -1 if
-     *         such child doesn't exist
-     */
-    public static int indexOfMoveNumberInNextMoves(int movenumber, MCTNode node) {
-        for (int x = 0; x < node.nextMoves.size(); x++) {
-            if (movenumber == node.nextMoves.get(x).moveNumber) { return x; }
-        }
-
-        return -1;
-    }
-
-
-    /**
      * Converts list of integers to string, similar to pythons join metod.
      * 
      * @param list

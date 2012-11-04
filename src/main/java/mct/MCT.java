@@ -1,6 +1,7 @@
 package mct;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -11,7 +12,6 @@ import moveFinders.BlackFinderStrategy;
 import moveFinders.WhiteFinderStrategy;
 import utils.ChessboardUtils;
 import utils.MCTUtils;
-import utils.Utils;
 import chess.Move;
 import chess.chessboard.Chessboard;
 import chess.chessboard.ChessboardEvalState;
@@ -76,20 +76,20 @@ public class MCT {
 
         boolean terminaStateReached = node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl;
         boolean gobanStrategy = node.visitCount < MCTSSetup.THRESHOLD_T;
-        boolean nerazvitiNasledniki = node.nextMoves == null;
+        boolean nerazvitiNasledniki = node.children == null;
 
-        if (terminaStateReached || nerazvitiNasledniki || node.nextMoves.size() == 0 || !node.areAllChildrenAdded()) { return this.expansion(node); }
+        if (terminaStateReached || nerazvitiNasledniki || node.children.size() == 0 || !node.areAllChildrenAdded()) { return this.expansion(node); }
         if (gobanStrategy) { return this.simulationAddsOneNode(node); }
 
-        ArrayList<Integer> maxRatingIndexes = MCTUtils.getInedexesWithMaxRating(node);
+        // get children with highest UCT value
+        ArrayList<MCTNode> maxRatingNodes = MCTUtils.getNodesWithMaxRating(node);
 
-        int selectedIndex = this.random.nextInt(maxRatingIndexes.size());
-        selectedIndex = maxRatingIndexes.get(selectedIndex);
+        // select random node
+        int selectedMove = this.random.nextInt(maxRatingNodes.size());
+        MCTNode selectedNode = maxRatingNodes.get(selectedMove);
 
-        int moveNo = node.nextMoves.get(selectedIndex).moveNumber;
-
-        this.simulationChessboard.makeAMove(moveNo);
-        return this.selection(node.nextMoves.get(selectedIndex));
+        this.simulationChessboard.makeAMove(selectedNode.moveNumber);
+        return this.selection(selectedNode);
     }
 
 
@@ -107,23 +107,21 @@ public class MCT {
     private MCTNode expansion(MCTNode node) throws ChessboardException {
         if (node.getEvalFromWhitesPerspective() != ChessboardEvalState.NORMAl) { return node; }
 
-        if (node.nextMoves == null) {
-            node.nextMoves = new ArrayList<MCTNode>();
+        if (node.children == null) {
+            node.children = new HashMap<Move, MCTNode>();
         }
 
         if (!node.areAllChildrenAdded()) {
             ArrayList<Move> unexpandedMoves = new ArrayList<Move>();
             for (Move move : node.validMoves) {
-                int index = Utils.indexOfMoveNumberInNextMoves(move.moveNumber, node);
-                if (index == -1) {
+                if (node.children.get(move) == null) {
                     unexpandedMoves.add(move);
                 }
             }
 
             Move addedMove = ChessboardUtils.getRandomMoveFromList(unexpandedMoves);
             this.simulationChessboard.makeAMove(addedMove.moveNumber);
-            node.addNextMove(addedMove.moveNumber);
-            return node.nextMoves.get(node.nextMoves.size() - 1);
+            return node.addNextMove(addedMove);
         }
 
         throw new ChessboardException("All children are allready added");
@@ -180,19 +178,17 @@ public class MCT {
 
         MCTNode currNode = node;
         while (currNode.getEvalFromWhitesPerspective() == ChessboardEvalState.NORMAl) {
-            if (currNode.nextMoves == null) { return this.expansion(currNode); }
+            if (currNode.children == null) { return this.expansion(currNode); }
             int moveNo = MCTUtils.findNextMove(currNode, MCTSSetup.WHITE_SIMULATION_STRATEGY, MCTSSetup.BLACK_SIMULATION_STRATEGY);
-            int moveIndex = Utils.indexOfMoveNumberInNextMoves(moveNo, currNode);
 
             // if the move is not in currNode's children
-            if (moveIndex == -1) {
-                currNode.addNextMove(moveNo);
+            if (currNode.children.get(new Move(moveNo)) == null) {
                 this.simulationChessboard.makeAMove(moveNo);
-                return currNode.nextMoves.get(currNode.nextMoves.size() - 1);
+                return currNode.addNextMove(new Move(moveNo));
             }
             else {
                 this.simulationChessboard.makeAMove(moveNo);
-                currNode = currNode.nextMoves.get(moveIndex);
+                currNode = currNode.children.get(new Move(moveNo));
             }
         }
 
@@ -276,15 +272,15 @@ public class MCT {
      */
     public void makeMCMove(int moveNumber) throws ChessboardException {
 
-        int index = Utils.indexOfMoveNumberInNextMoves(moveNumber, this.root);
+        Move move = new Move(moveNumber);
 
-        if (index == -1) {
+        if (this.root.children.get(move) == null) {
             this.log.fine("V polpotezi " + (this.root.moveDepth + 1) + " je prišlo do zrušitve drevesa");
             this.stats.numberOfMCTreeColapses++;
             this.root = new MCTNode(moveNumber, this.root.moveDepth + 1, this.mainChessboard);
         }
         else {
-            this.root = this.root.nextMoves.get(index);
+            this.root = this.root.children.get(move);
         }
 
         this.mainChessboard.makeAMove(moveNumber);
@@ -314,7 +310,7 @@ public class MCT {
             rez = WhiteMoveChooser.chooseAMove(this.root, whiteChoosingStrategy, this.log);
 
             // node that was chosen by move chooser
-            MCTNode selectedNode = this.root.nextMoves.get(rez);
+            MCTNode selectedNode = this.root.children.get(new Move(rez));
 
             // update selected node statistics
             this.stats.getNodesSelectedStatistics().updateSingleNodeStats(selectedNode);
