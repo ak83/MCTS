@@ -135,7 +135,7 @@ public class MCT {
      * @param node
      *            node from which we start backpropagation
      * @param numberOfMats
-     *            number of check mates that in simulations evaluating node
+     *            number of check mates that appeared in the simulations
      * @param numberOfSimulationsPerNode
      *            number of simulation used to evaluate node
      * @param addedNodeDepth

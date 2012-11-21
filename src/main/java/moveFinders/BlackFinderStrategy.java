@@ -16,7 +16,7 @@ public enum BlackFinderStrategy {
      * black tries to move towards center of the chess board and if it has a
      * chance eats whites piece
      */
-    GOOD,
+    CUSTOM,
     /** black plays with perfect information */
     PERFECT
 }

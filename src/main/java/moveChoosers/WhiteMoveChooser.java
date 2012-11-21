@@ -38,10 +38,10 @@ public class WhiteMoveChooser {
             case RANDOM:
                 rez = WhiteMoveChooser.chooseRandomNode(node);
                 break;
-            case VISIT_COUNT:
+            case MAX_VISIT_COUNT:
                 rez = WhiteMoveChooser.chooseMaxVisitCountMove(node);
                 break;
-            case RATING:
+            case MAX_UCT:
                 rez = WhiteMoveChooser.chooseMaxRatingNode(node);
                 break;
         }

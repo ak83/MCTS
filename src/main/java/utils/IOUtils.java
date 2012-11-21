@@ -34,6 +34,8 @@ import config.IOSetup;
 public class IOUtils {
 
     private IOUtils() {}
+    
+    public static final String NEW_LINE = System.getProperty("line.separator");
 
     /**
      * prefix of files that contain whites average DTM difference from optimal

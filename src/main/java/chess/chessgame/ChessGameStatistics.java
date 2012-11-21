@@ -145,4 +145,10 @@ public class ChessGameStatistics {
         return this.didWhiteWin;
     }
 
+
+    
+    public HashMap<Integer, Integer> getBlacksDiffFromOptimal() {
+        return blacksDiffFromOptimal;
+    }
+
 }

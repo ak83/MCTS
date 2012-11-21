@@ -58,7 +58,7 @@ public class MCTSSetup {
     /**
      * Black simulation strategy that will be used by algorithm.
      */
-    public static BlackFinderStrategy  BLACK_SIMULATION_STRATEGY                                                       = BlackFinderStrategy.GOOD;
+    public static BlackFinderStrategy  BLACK_SIMULATION_STRATEGY                                                       = BlackFinderStrategy.CUSTOM;
 
     /**
      * White simulation strategy that will be used by algorithm.
@@ -78,12 +78,12 @@ public class MCTSSetup {
     /**
      * White chooser strategy used by application.
      */
-    public static WhiteChooserStrategy WHITE_MOVE_CHOOSER_STRATEGY                                                     = WhiteChooserStrategy.VISIT_COUNT;
+    public static WhiteChooserStrategy WHITE_MOVE_CHOOSER_STRATEGY                                                     = WhiteChooserStrategy.MAX_VISIT_COUNT;
 
     /**
      * Black chooser strategy used by application.
      */
-    public static BlackFinderStrategy  BLACK_MOVE_CHOOSER_STRATEGY                                                     = BlackFinderStrategy.GOOD;
+    public static BlackFinderStrategy  BLACK_MOVE_CHOOSER_STRATEGY                                                     = BlackFinderStrategy.CUSTOM;
 
     /**
      * If <code>true</code>, selection stops at nodes that don't represent
@@ -258,7 +258,7 @@ public class MCTSSetup {
             case CENTER:
                 rez += " (black king tries to move towards center).\r\n";
                 break;
-            case GOOD:
+            case CUSTOM:
                 rez += " (black king tries to move towards center, but if it's possible eats white figure and evades king opposition).\r\n";
                 break;
             case PERFECT:
@@ -285,10 +285,10 @@ public class MCTSSetup {
             case RANDOM:
                 rez += " chooses random node).\r\n";
                 break;
-            case VISIT_COUNT:
+            case MAX_VISIT_COUNT:
                 rez += " chooses node with maximum visit count).\r\n";
                 break;
-            case RATING:
+            case MAX_UCT:
                 rez += " choose with maximum rating).\r\n";
                 break;
         }
@@ -301,7 +301,7 @@ public class MCTSSetup {
             case CENTER:
                 rez += " (black king tries to move towards center).\r\n";
                 break;
-            case GOOD:
+            case CUSTOM:
                 rez += " (black king tries to move towards center, but if it's possible eats white figure and evades king opposition).\r\n";
                 break;
             case PERFECT:
@@ -516,10 +516,10 @@ public class MCTSSetup {
                     }
 
                     if (visitCount) {
-                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.MAX_VISIT_COUNT;
                     }
                     else if (rating) {
-                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.MAX_UCT;
                     }
                     else if (random) {
                         MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
@@ -649,7 +649,7 @@ public class MCTSSetup {
                         MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.CENTER;
                     }
                     else if (words[1].equalsIgnoreCase("normal")) {
-                        MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.GOOD;
+                        MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.CUSTOM;
                     }
                     else if (words[1].equalsIgnoreCase("perfect")) {
                         MCTSSetup.BLACK_MOVE_CHOOSER_STRATEGY = BlackFinderStrategy.PERFECT;
@@ -668,10 +668,10 @@ public class MCTSSetup {
                         MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RANDOM;
                     }
                     else if (words[1].equalsIgnoreCase("vc") || words[1].equalsIgnoreCase("visit_count") || words[1].equalsIgnoreCase("visitCount")) {
-                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.VISIT_COUNT;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.MAX_VISIT_COUNT;
                     }
                     else if (words[1].equalsIgnoreCase("rating")) {
-                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.RATING;
+                        MCTSSetup.WHITE_MOVE_CHOOSER_STRATEGY = WhiteChooserStrategy.MAX_UCT;
                     }
                     else {
                         System.err.println(words[1] + " is not valid strategy (line: " + currentLine + " ).");

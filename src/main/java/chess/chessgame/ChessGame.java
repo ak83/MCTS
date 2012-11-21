@@ -11,12 +11,14 @@ import utils.FruitUtils;
 import utils.IOUtils;
 import utils.Utils;
 import chess.chessboard.ChessboardEvalState;
+import config.DatabaseSetup;
 import config.IOSetup;
 import config.MCTSSetup;
+import database.DBHandler;
 import exceptions.ChessboardException;
 
 /**
- * Class that handles playing a match logic.
+ * Class that handles playing a chess game.
  * 
  * @author Andraz Kohne
  */
@@ -71,7 +73,7 @@ public class ChessGame {
 
 
     /**
-     * Plays a match.
+     * Plays a chess game. It outputs game's information to log and database.
      * 
      * @param round
      *            which which round is played, needed for logging purposes
@@ -192,6 +194,11 @@ public class ChessGame {
             IOUtils.writeToFile(this.pgnFileName, this.fen);
         }
 
+        if (DatabaseSetup.DB_ENABLED) {
+            // write this chess game to the database
+            DBHandler dbh = new DBHandler(DatabaseSetup.HOST, DatabaseSetup.USER, DatabaseSetup.PASSWORD);
+            dbh.insertChessGame(this);
+        }
         return new ChessGameResults(this.fen + "\n\n", this.matchStats);
     }
 
@@ -244,5 +251,15 @@ public class ChessGame {
 
         this.log.removeHandler(this.individualGameLog);
 
+    }
+
+
+    public String getFen() {
+        return fen;
+    }
+
+
+    public ChessGameStatistics getMatchStats() {
+        return matchStats;
     }
 }

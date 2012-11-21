@@ -8,10 +8,10 @@ package moveChoosers;
  */
 public enum WhiteChooserStrategy {
 
-    /** Wihte chooses random node */
+    /** White chooses random node */
     RANDOM,
     /** White chooses node with highest visit count */
-    VISIT_COUNT,
+    MAX_VISIT_COUNT,
     /** White chooses node with highest MCT rating */
-    RATING
+    MAX_UCT
 }

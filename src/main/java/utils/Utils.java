@@ -10,6 +10,9 @@ import moveFinders.BlackFinderStrategy;
 
 /** Class holds various utility methods */
 public class Utils {
+    
+    
+    public final static String CSV_DELIMITER = "\t";
 
     /**
      * Checks if two chess board positions are adjacent.
@@ -111,7 +114,7 @@ public class Utils {
             case CENTER:
                 str += "tezi k centru ne glede na belega";
                 break;
-            case GOOD:
+            case CUSTOM:
                 str += "tezi k centru, ce je mozno poje belega";
                 break;
             case PERFECT:
@@ -643,10 +646,10 @@ public class Utils {
             case RANDOM:
                 chooser += "random";
                 break;
-            case VISIT_COUNT:
+            case MAX_VISIT_COUNT:
                 chooser += "max Visit Count";
                 break;
-            case RATING:
+            case MAX_UCT:
                 chooser += "max Rating";
                 break;
         }

@@ -47,7 +47,7 @@ public class BlackMoveFinder {
                 return BlackMoveFinder.findBlackKingCenterMove(moves);
             case PERFECT:
                 return BlackMoveFinder.findBlackPerfectMove(board);
-            case GOOD: { // crni tezi proti centru, toda ce je mozno pa poje
+            case CUSTOM: { // crni tezi proti centru, toda ce je mozno pa poje
                          // belo
                 // figuro, poleg tega se pa tudi izgiba opoziciji kraljev
                 ArrayList<Move> blackEats = board.movesWhereBlackKingEatsWhite();
